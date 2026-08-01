@@ -3507,3 +3507,47 @@ body {
     border-radius: 0;
   }
 }
+
+/* Accurate single-piece UK map, extracted from the approved pixel reference. */
+.uk-plot {
+  top: 2%;
+  left: 8%;
+  width: auto;
+  height: 96%;
+  aspect-ratio: 1173 / 1341;
+}
+
+.uk-silhouette {
+  filter: drop-shadow(7px 7px 0 rgba(7, 31, 26, .82));
+}
+
+.uk-silhouette-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  user-select: none;
+  pointer-events: none;
+  image-rendering: pixelated;
+}
+
+.map-marker .site-pixel-icon {
+  scale: .76;
+}
+
+.map-marker .marker-pulse {
+  inset: 7px;
+}
+
+@media (max-width: 720px) {
+  .uk-plot {
+    top: 38%;
+    left: 11%;
+    width: 78%;
+    height: auto;
+  }
+
+  .map-marker .site-pixel-icon {
+    scale: .64;
+  }
+}

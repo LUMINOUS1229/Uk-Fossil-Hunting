@@ -72,8 +72,8 @@ const locations: Location[] = [
     findRating: 5,
     accessRating: 3,
     familyRating: 3,
-    mapX: 86,
-    mapY: 90,
+    mapX: 86.2,
+    mapY: 87.7,
     departure: "London St Pancras",
     station: "Folkestone Central",
     local: "Local taxi or town bus toward East Cliff",
@@ -124,8 +124,8 @@ const locations: Location[] = [
     findRating: 5,
     accessRating: 4,
     familyRating: 4,
-    mapX: 82,
-    mapY: 84,
+    mapX: 85.8,
+    mapY: 82.8,
     departure: "London St Pancras or Victoria",
     station: "Herne Bay",
     local: "Local bus or taxi to Reculver Drive, Beltinge",
@@ -176,8 +176,8 @@ const locations: Location[] = [
     findRating: 5,
     accessRating: 3,
     familyRating: 4,
-    mapX: 84,
-    mapY: 76,
+    mapX: 87,
+    mapY: 76.5,
     departure: "London Liverpool Street",
     station: "Walton-on-the-Naze",
     local: "Taxi to Naze Tower or walk through town",
@@ -228,8 +228,8 @@ const locations: Location[] = [
     findRating: 5,
     accessRating: 2,
     familyRating: 1,
-    mapX: 44,
-    mapY: 80,
+    mapX: 64.4,
+    mapY: 81.8,
     departure: "London Paddington",
     station: "Swindon",
     local: "Local bus or taxi to Royal Wootton Bassett",
@@ -279,8 +279,8 @@ const locations: Location[] = [
     findRating: 5,
     accessRating: 5,
     familyRating: 5,
-    mapX: 64,
-    mapY: 92,
+    mapX: 71.8,
+    mapY: 89.8,
     departure: "London Victoria",
     station: "Chichester",
     local: "Local bus toward Bracklesham / East Wittering",
@@ -331,8 +331,8 @@ const locations: Location[] = [
     findRating: 5,
     accessRating: 4,
     familyRating: 4,
-    mapX: 41,
-    mapY: 94,
+    mapX: 57.4,
+    mapY: 90.2,
     departure: "London Waterloo",
     station: "Axminster",
     local: "Jurassic Coaster bus or taxi to Charmouth",
@@ -589,7 +589,7 @@ const copy = {
     fromLondon: "from London", fieldSites: "FIELD SITES · 06", close: "Close", explore: "Explore 6 field sites", findShort: "Finds", accessShort: "Access",
     routeToggle: "From London routes", fieldSite: "Field site", research: "In research", railRoute: "Rail route",
     questLabel: "MAIN QUEST", questTitle: "FOSSIL TRAIL", questHint: "Choose a fossil marker to begin", questSites: "SITES TO EXPLORE",
-    mapCredit: "Map data © OpenStreetMap contributors", researchLabel: "IN RESEARCH", dismiss: "Dismiss",
+    mapCredit: "Pixel map · locations approximate", researchLabel: "IN RESEARCH", dismiss: "Dismiss",
     aboutEyebrow: "About this field map", aboutTitle: "A route planner, not a promise.",
     aboutBody: "This map turns scattered fossil guides into six practical journeys from London. Each field sheet combines the train, last-mile walk, approximate collecting zone, likely finds and the rules that matter on the day.",
     approxStrong: "Coordinates stay approximate.", approxBody: "The goal is to guide safe access—not publish sensitive or rare specimen locations.",
@@ -611,7 +611,7 @@ const copy = {
     fromLondon: "从伦敦出发", fieldSites: "重点地点 · 06", close: "关闭", explore: "探索 6 个重点地点", findShort: "发现", accessShort: "通行",
     routeToggle: "显示伦敦出发路线", fieldSite: "完整地点", research: "调研中", railRoute: "铁路路线",
     questLabel: "主线任务", questTitle: "寻找英国化石", questHint: "选择一个化石图标开始", questSites: "个探索地点",
-    mapCredit: "地图数据 © OpenStreetMap 贡献者", researchLabel: "调研中", dismiss: "关闭",
+    mapCredit: "像素底图 · 地点为近似位置", researchLabel: "调研中", dismiss: "关闭",
     aboutEyebrow: "关于这张野外地图", aboutTitle: "它是路线计划，不是安全承诺。",
     aboutBody: "这张地图把分散的化石攻略整理成六条从伦敦出发的实际行程。每张地点卡都结合了火车、最后一段步行、大致采集区、常见化石和当天必须遵守的规则。",
     approxStrong: "坐标始终保持近似。", approxBody: "目标是引导安全抵达，而不是公开敏感地点或稀有标本的精确位置。",
@@ -667,15 +667,15 @@ const detailCopy = {
 } as const;
 
 const upcoming = [
-  { name: "Whitby", x: 68, y: 48, note: "Jurassic ammonites · route risk review", noteZh: "侏罗纪菊石 · 路线风险审核中" },
-  { name: "West Runton", x: 91, y: 65, note: "Mammal remains · collecting restrictions", noteZh: "哺乳动物遗存 · 采集限制审核中" },
-  { name: "Warden Point", x: 78, y: 81, note: "London Clay · coming soon", noteZh: "伦敦黏土层 · 即将上线" },
-  { name: "Abbey Wood", x: 69, y: 82, note: "Permission required", noteZh: "需要事先获得许可" },
-  { name: "Yaverland", x: 69, y: 94, note: "Dinosaur remains · coming soon", noteZh: "恐龙遗存 · 即将上线" },
-  { name: "Samphire Hoe", x: 89, y: 91, note: "Chalk fossils · coming soon", noteZh: "白垩化石 · 即将上线" },
+  { name: "Whitby", x: 73.5, y: 57, note: "Jurassic ammonites · route risk review", noteZh: "侏罗纪菊石 · 路线风险审核中" },
+  { name: "West Runton", x: 86.8, y: 70.2, note: "Mammal remains · collecting restrictions", noteZh: "哺乳动物遗存 · 采集限制审核中" },
+  { name: "Warden Point", x: 84.6, y: 83.2, note: "London Clay · coming soon", noteZh: "伦敦黏土层 · 即将上线" },
+  { name: "Abbey Wood", x: 79, y: 82.2, note: "Permission required", noteZh: "需要事先获得许可" },
+  { name: "Yaverland", x: 70.3, y: 90.6, note: "Dinosaur remains · coming soon", noteZh: "恐龙遗存 · 即将上线" },
+  { name: "Samphire Hoe", x: 87, y: 86.1, note: "Chalk fossils · coming soon", noteZh: "白垩化石 · 即将上线" },
 ];
 
-const londonPoint = { x: 70, y: 84 };
+const londonPoint = { x: 77.2, y: 82.3 };
 
 const riskClass = (risk: Risk) => `risk-${risk.toLowerCase()}`;
 const riskLabel = (risk: Risk, language: Language) => language === "en" ? risk : ({ LOW: "低", MODERATE: "中", HIGH: "高" }[risk]);
@@ -834,14 +834,7 @@ export function FossilMap() {
           </div>
           <div className="uk-plot">
             <div className="uk-silhouette" aria-hidden="true">
-              <div className="land scotland" />
-              <div className="land england" />
-              <div className="land wales" />
-              <div className="land cornwall" />
-              <div className="land kent" />
-              <div className="map-road road-a" />
-              <div className="map-road road-b" />
-              <div className="map-road road-c" />
+              <img className="uk-silhouette-image" src="/uk-pixel-map.png" alt="" draggable={false} />
             </div>
 
             <div className="london-node" style={{ left: `${londonPoint.x}%`, top: `${londonPoint.y}%` }}>
