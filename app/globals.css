@@ -262,7 +262,7 @@ button {
 .pixel-ichthyosaur {
   position: absolute;
   top: 76px;
-  right: -84px;
+  left: -84px;
   width: 80px;
   height: 37px;
   image-rendering: pixelated;
@@ -359,11 +359,11 @@ button {
 
 .ichthy-bubbles {
   top: -5px;
-  left: 82px;
+  left: -12px;
   width: 4px;
   height: 4px;
   border: 1px solid var(--sea-deep);
-  box-shadow: 8px -6px 0 -1px var(--paper), 8px -6px 0 0 var(--sea-deep), 17px 2px 0 -1px var(--paper), 17px 2px 0 0 var(--sea-deep);
+  box-shadow: -8px -6px 0 -1px var(--paper), -8px -6px 0 0 var(--sea-deep), -17px 2px 0 -1px var(--paper), -17px 2px 0 0 var(--sea-deep);
 }
 
 @keyframes dino-cross {
@@ -388,8 +388,8 @@ button {
 
 @keyframes ichthy-cross {
   from { transform: translateX(0) translateY(0); }
-  50% { transform: translateX(-180px) translateY(-3px); }
-  to { transform: translateX(-360px) translateY(0); }
+  50% { transform: translateX(180px) translateY(-3px); }
+  to { transform: translateX(360px) translateY(0); }
 }
 
 @keyframes ichthy-tail {
@@ -3549,5 +3549,463 @@ body {
 
   .map-marker .site-pixel-icon {
     scale: .64;
+  }
+}
+
+/* Readability, decluttered location anchors, and hover summaries */
+.brand {
+  font-size: 15px;
+}
+
+.brand-title small {
+  font-size: .72em;
+}
+
+.language-toggle {
+  font-size: 12px;
+}
+
+.top-actions button {
+  font-size: 14px;
+}
+
+.eyebrow {
+  font-size: 12px;
+}
+
+.guide-scope dt {
+  font-size: 10px;
+}
+
+.guide-scope dd {
+  font-size: 13px;
+}
+
+.quest-hud {
+  width: 230px;
+}
+
+.quest-hud > span {
+  font-size: 9px;
+}
+
+.quest-hud > strong {
+  font-size: 19px;
+}
+
+.quest-hud > small {
+  font-size: 10px;
+}
+
+.quest-hud > div i {
+  font-size: 8px;
+}
+
+.location-list {
+  width: min(470px, 32vw);
+}
+
+.list-heading {
+  font-size: 11px;
+}
+
+.location-list > button {
+  grid-template-columns: 48px 1fr auto;
+  gap: 10px;
+  padding: 10px;
+}
+
+.location-list strong {
+  font-size: 14px;
+}
+
+.location-list small {
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.location-list .list-profile {
+  font-size: 10px;
+}
+
+.list-risk {
+  font-size: 9px;
+}
+
+.list-icon-wrap > i {
+  font-size: 8px;
+}
+
+.map-credit-note {
+  position: absolute;
+  right: 24px;
+  bottom: 20px;
+  z-index: 12;
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  background: var(--paper-deep);
+  color: var(--ink-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  box-shadow: 4px 4px 0 rgba(245, 138, 59, .42);
+}
+
+.map-marker {
+  width: 16px;
+  height: 16px;
+  overflow: visible;
+  animation: marker-in 500ms var(--delay) both;
+}
+
+.map-marker:hover,
+.map-marker:focus-visible {
+  z-index: 45;
+  transform: translate(-50%, -50%);
+}
+
+.marker-anchor {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 4;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--ink);
+  background: var(--rust);
+  box-shadow: 2px 2px 0 var(--paper-deep);
+  transform: translate(-50%, -50%);
+}
+
+.marker-pulse,
+.map-marker .marker-pulse {
+  inset: -4px;
+  border-width: 1px;
+}
+
+.marker-leader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: var(--leader-length);
+  height: 2px;
+  background: repeating-linear-gradient(90deg, var(--rust) 0 5px, transparent 5px 8px);
+  transform: rotate(var(--leader-angle));
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.marker-visual {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  display: block;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%) translate(var(--marker-x), var(--marker-y));
+  transition: transform 180ms steps(2, end);
+}
+
+.map-marker:hover .marker-visual,
+.map-marker:focus-visible .marker-visual {
+  transform: translate(-50%, -50%) translate(var(--marker-x), var(--marker-y)) scale(1.06);
+}
+
+.map-marker .site-pixel-icon {
+  position: absolute;
+  inset: 0;
+  scale: .78;
+}
+
+.map-marker.high-risk .site-pixel-icon {
+  border-color: var(--danger);
+}
+
+.marker-card {
+  top: 50%;
+  display: flex;
+  width: 255px;
+  max-width: min(255px, 34vw);
+  padding: 14px 15px;
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 220ms ease,
+    transform 220ms cubic-bezier(.2, .8, .2, 1),
+    visibility 0s linear 220ms;
+}
+
+.map-marker.popup-right .marker-card {
+  right: auto;
+  left: calc(100% + 14px);
+  transform: translateY(-50%) translateX(-9px) scale(.97);
+}
+
+.map-marker.popup-left .marker-card {
+  right: calc(100% + 14px);
+  left: auto;
+  transform: translateY(-50%) translateX(9px) scale(.97);
+}
+
+.map-marker:hover .marker-card,
+.map-marker:focus-visible .marker-card {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(-50%) translateX(0) scale(1);
+  transition-delay: 0s;
+}
+
+.marker-card strong {
+  font-size: 16px;
+}
+
+.marker-card small {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.marker-card em {
+  margin-top: 8px;
+  font-size: 10px;
+}
+
+.detail-safety p {
+  font-size: 13px;
+}
+
+.risk-pill {
+  font-size: 10px;
+}
+
+.field-water > span,
+.collecting-zone > span,
+.hazard-zone span,
+.rail-track span,
+.route-note span,
+.route-note strong,
+.field-map-title span,
+.field-legend span {
+  font-size: 10px;
+}
+
+.map-node strong {
+  font-size: 12px;
+}
+
+.map-node small {
+  font-size: 10px;
+}
+
+.map-amenity {
+  font-size: 9px;
+}
+
+.field-map-title strong {
+  font-size: 28px;
+}
+
+.osm-credit {
+  font-size: 8px;
+}
+
+.back-button {
+  font-size: 13px;
+}
+
+.place-heading p {
+  font-size: 10px;
+}
+
+.place-tags span {
+  font-size: 10px;
+}
+
+.profile-rating > span {
+  font-size: 9px;
+}
+
+.section-nav a {
+  font-size: 11px;
+}
+
+.section-title > span {
+  font-size: 10px;
+}
+
+.section-title h2 {
+  font-size: 28px;
+}
+
+.journey-time span {
+  font-size: 10px;
+}
+
+.journey-step small {
+  font-size: 9px;
+}
+
+.journey-step strong {
+  font-size: 14px;
+}
+
+.journey-step p,
+.route-facts p,
+.time-grid p,
+.finds-grid article > p,
+.hazard-list li,
+.sssi-card p,
+.rules-section > ul li,
+.safety-grid p {
+  font-size: 12px;
+}
+
+.primary-action,
+.secondary-action,
+.tide-action {
+  font-size: 12px;
+}
+
+.route-list p {
+  font-size: 13px;
+}
+
+.route-list li > span,
+.route-facts span,
+.time-grid span,
+.finds-grid .rarity,
+.finds-grid article > small,
+.time-hero span,
+.kit-title,
+.large-risk span,
+.sssi-card span,
+.source-block span,
+.safety-grid b {
+  font-size: 9px;
+}
+
+.finds-grid h3 {
+  font-size: 20px;
+}
+
+.finds-grid .find-zh,
+.caveat,
+.not-applicable,
+.kit-group > div > span,
+.sssi-card strong,
+.source-block a,
+.source-block strong,
+.fine-print {
+  font-size: 11px;
+}
+
+.coastguard-note,
+.modal-note {
+  font-size: 13px;
+}
+
+.modal > p:not(.eyebrow):not(.fine-print) {
+  font-size: 14px;
+}
+
+.safety-grid strong {
+  font-size: 22px;
+}
+
+.sssi-card strong {
+  font-size: 22px;
+}
+
+@media (max-width: 980px) {
+  .location-list {
+    width: 38vw;
+  }
+
+  .quest-hud {
+    width: 200px;
+  }
+}
+
+@media (max-width: 720px) {
+  .brand {
+    font-size: 12px;
+  }
+
+  .language-toggle,
+  .top-actions button,
+  .top-actions .safety-link {
+    font-size: 10px;
+  }
+
+  .quest-hud > strong {
+    font-size: 13px;
+  }
+
+  .map-marker .site-pixel-icon {
+    scale: .68;
+  }
+
+  .marker-card {
+    max-width: 220px;
+  }
+
+  .map-credit-note {
+    right: 14px;
+    bottom: 80px;
+    font-size: 8px;
+  }
+
+  .location-list strong {
+    font-size: 14px;
+  }
+
+  .location-list small {
+    font-size: 11px;
+  }
+
+  .brand-title {
+    white-space: nowrap;
+  }
+
+  .brand-title small {
+    display: none;
+  }
+
+  .header-left {
+    gap: 6px;
+  }
+
+  .brand {
+    gap: 6px;
+    font-size: 10px;
+    letter-spacing: .08em;
+    white-space: nowrap;
+  }
+
+  .language-toggle {
+    gap: 2px;
+    padding-left: 6px;
+    font-size: 9px;
+    white-space: nowrap;
+  }
+
+  .top-actions {
+    gap: 8px;
+  }
+
+  .top-actions button,
+  .top-actions .safety-link {
+    font-size: 10px;
+    white-space: nowrap;
+  }
+
+  .quest-hud,
+  .map-credit-note {
+    display: none;
+  }
+
+  .mobile-sites-button {
+    font-size: 12px;
   }
 }

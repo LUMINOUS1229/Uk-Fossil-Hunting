@@ -666,16 +666,29 @@ const detailCopy = {
   },
 } as const;
 
-const upcoming = [
-  { name: "Whitby", x: 73.5, y: 57, note: "Jurassic ammonites · route risk review", noteZh: "侏罗纪菊石 · 路线风险审核中" },
-  { name: "West Runton", x: 86.8, y: 70.2, note: "Mammal remains · collecting restrictions", noteZh: "哺乳动物遗存 · 采集限制审核中" },
-  { name: "Warden Point", x: 84.6, y: 83.2, note: "London Clay · coming soon", noteZh: "伦敦黏土层 · 即将上线" },
-  { name: "Abbey Wood", x: 79, y: 82.2, note: "Permission required", noteZh: "需要事先获得许可" },
-  { name: "Yaverland", x: 70.3, y: 90.6, note: "Dinosaur remains · coming soon", noteZh: "恐龙遗存 · 即将上线" },
-  { name: "Samphire Hoe", x: 87, y: 86.1, note: "Chalk fossils · coming soon", noteZh: "白垩化石 · 即将上线" },
-];
+const markerOffsets: Record<string, { x: number; y: number }> = {
+  folkestone: { x: 38, y: 22 },
+  "herne-bay": { x: 46, y: -8 },
+  walton: { x: 28, y: -40 },
+  "wootton-bassett": { x: -30, y: -32 },
+  bracklesham: { x: 22, y: 40 },
+  charmouth: { x: -38, y: 30 },
+};
 
-const londonPoint = { x: 77.2, y: 82.3 };
+const markerStyle = (location: Location, index: number) => {
+  const offset = markerOffsets[location.id] ?? { x: 0, y: 0 };
+  const length = Math.hypot(offset.x, offset.y);
+  const angle = Math.atan2(offset.y, offset.x) * 180 / Math.PI;
+  return {
+    left: `${location.mapX}%`,
+    top: `${location.mapY}%`,
+    "--delay": `${index * 80}ms`,
+    "--marker-x": `${offset.x}px`,
+    "--marker-y": `${offset.y}px`,
+    "--leader-length": `${length}px`,
+    "--leader-angle": `${angle}deg`,
+  } as React.CSSProperties;
+};
 
 const riskClass = (risk: Risk) => `risk-${risk.toLowerCase()}`;
 const riskLabel = (risk: Risk, language: Language) => language === "en" ? risk : ({ LOW: "低", MODERATE: "中", HIGH: "高" }[risk]);
@@ -745,9 +758,7 @@ export function FossilMap() {
   const [introPhase, setIntroPhase] = useState<IntroPhase>("loading");
   const [language, setLanguage] = useState<Language>("zh");
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [showLondon, setShowLondon] = useState(true);
   const [modal, setModal] = useState<"about" | "safety" | null>(null);
-  const [comingSoon, setComingSoon] = useState<string | null>(null);
   const [mobileList, setMobileList] = useState(false);
   const localizedLocations = useMemo(() => locations.map((location) => localizeLocation(location, language)), [language]);
   const selected = useMemo(() => localizedLocations.find((location) => location.id === selectedId) ?? null, [localizedLocations, selectedId]);
@@ -783,7 +794,6 @@ export function FossilMap() {
   }, [modal, selectedId]);
 
   const openLocation = (id: string) => {
-    setComingSoon(null);
     setMobileList(false);
     setSelectedId(id);
   };
@@ -837,57 +847,27 @@ export function FossilMap() {
               <img className="uk-silhouette-image" src="/uk-pixel-map.png" alt="" draggable={false} />
             </div>
 
-            <div className="london-node" style={{ left: `${londonPoint.x}%`, top: `${londonPoint.y}%` }}>
-              <span />
-              <b>{t.london}</b>
-            </div>
-
-            {showLondon && localizedLocations.map((location) => {
-              const dx = location.mapX - londonPoint.x;
-              const dy = location.mapY - londonPoint.y;
-              const left = Math.min(location.mapX, londonPoint.x);
-              const top = Math.min(location.mapY, londonPoint.y);
-              const width = Math.max(Math.abs(dx), 0.35);
-              const height = Math.max(Math.abs(dy), 0.35);
-              const direction = (dx >= 0 && dy >= 0) || (dx < 0 && dy < 0) ? "down-right" : "down-left";
-              return (
-                <span
-                  key={`line-${location.id}`}
-                  className={`london-route ${direction}`}
-                  style={{ left: `${left}%`, top: `${top}%`, width: `${width}%`, height: `${height}%` }}
-                />
-              );
-            })}
-
             {localizedLocations.map((location, index) => (
               <button
                 key={location.id}
-                className={`map-marker ${location.risk === "HIGH" ? "high-risk" : ""}`}
-                style={{ left: `${location.mapX}%`, top: `${location.mapY}%`, "--delay": `${index * 80}ms` } as React.CSSProperties}
+                className={`map-marker ${location.risk === "HIGH" ? "high-risk" : ""} ${location.mapX > 75 ? "popup-left" : "popup-right"}`}
+                style={markerStyle(location, index)}
                 onClick={() => openLocation(location.id)}
                 aria-label={`${t.open} ${location.name}`}
               >
                 <span className="marker-pulse" />
-                <PixelSiteIcon id={location.id} />
-                <span className="marker-card">
-                  <strong>{location.shortName}</strong>
-                  <small>{location.period} · {location.finds[0].name}</small>
-                  <small>{t.findShort} {location.findRating}/5 · {t.accessShort} {location.accessRating}/5</small>
-                  <em>{location.duration} {t.fromLondon}</em>
+                <span className="marker-anchor" />
+                <span className="marker-leader" />
+                <span className="marker-visual">
+                  <PixelSiteIcon id={location.id} />
+                  <span className="marker-card">
+                    <strong>{location.shortName}</strong>
+                    <small>{location.region}</small>
+                    <small>{location.period} · {location.finds[0].name}</small>
+                    <small>{t.findShort} {location.findRating}/5 · {t.accessShort} {location.accessRating}/5</small>
+                    <em>{location.duration} {t.fromLondon}</em>
+                  </span>
                 </span>
-              </button>
-            ))}
-
-            {upcoming.map((place) => (
-              <button
-                key={place.name}
-                className="future-marker"
-                style={{ left: `${place.x}%`, top: `${place.y}%` }}
-                onClick={() => setComingSoon(place.name)}
-                aria-label={`${place.name}, ${t.research}`}
-              >
-                <span />
-                <small>{place.name}</small>
               </button>
             ))}
           </div>
@@ -918,28 +898,7 @@ export function FossilMap() {
           {t.explore} <span>↑</span>
         </button>
 
-        <div className="map-controls">
-          <label className="route-toggle">
-            <input type="checkbox" checked={showLondon} onChange={(event) => setShowLondon(event.target.checked)} />
-            <span className="toggle-track"><span /></span>
-            {t.routeToggle}
-          </label>
-          <div className="legend">
-            <span><i className="legend-site" /> {t.fieldSite}</span>
-            <span><i className="legend-future" /> {t.research}</span>
-            <span><i className="legend-rail" /> {t.railRoute}</span>
-          </div>
-          <small>{t.mapCredit}</small>
-        </div>
-
-        {comingSoon && (
-          <div className="coming-toast" role="status">
-            <span>{t.researchLabel}</span>
-            <strong>{comingSoon}</strong>
-            <p>{language === "zh" ? upcoming.find((place) => place.name === comingSoon)?.noteZh : upcoming.find((place) => place.name === comingSoon)?.note}</p>
-            <button onClick={() => setComingSoon(null)}>{t.dismiss}</button>
-          </div>
-        )}
+        <small className="map-credit-note">{t.mapCredit}</small>
       </section>
 
       {selected && <LocationDetail location={selected} language={language} onBack={() => setSelectedId(null)} />}
