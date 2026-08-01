@@ -4009,3 +4009,100 @@ body {
     font-size: 12px;
   }
 }
+
+/* Framed ammonite brand mark */
+.brand .ammonite-mark,
+.brand .ammonite-mark.small {
+  position: relative;
+  display: inline-grid;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid currentColor;
+  border-radius: 0;
+  box-shadow: 3px 3px 0 rgba(245, 243, 233, .2);
+}
+
+.brand .ammonite-shell,
+.brand .ammonite-mark.small .ammonite-shell {
+  position: relative;
+  display: block;
+  width: 22px;
+  height: 20px;
+  border: 2px solid currentColor;
+  border-radius: 52% 55% 48% 46%;
+  clip-path: none;
+}
+
+.brand .ammonite-shell::before {
+  position: absolute;
+  top: 4px;
+  left: 5px;
+  width: 7px;
+  height: 7px;
+  margin: 0;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  content: "";
+}
+
+.brand .ammonite-shell::after {
+  position: absolute;
+  right: -3px;
+  bottom: -4px;
+  width: 13px;
+  height: 7px;
+  margin: 0;
+  border: 0;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  content: "";
+  transform: rotate(8deg);
+}
+
+.brand .ammonite-shell i {
+  position: absolute;
+  top: 0;
+  left: 9px;
+  display: block;
+  width: 1.5px;
+  height: 5px;
+  background: currentColor;
+  transform-origin: 1px 10px;
+}
+
+.brand .ammonite-shell i:nth-child(1) { transform: rotate(-68deg); }
+.brand .ammonite-shell i:nth-child(2) { transform: rotate(-38deg); }
+.brand .ammonite-shell i:nth-child(3) { transform: rotate(-8deg); }
+.brand .ammonite-shell i:nth-child(4) { transform: rotate(24deg); }
+.brand .ammonite-shell i:nth-child(5) { transform: rotate(56deg); }
+
+@media (max-width: 720px) {
+  .brand .ammonite-mark,
+  .brand .ammonite-mark.small {
+    flex-basis: 29px;
+    width: 29px;
+    height: 29px;
+  }
+
+  .brand .ammonite-shell,
+  .brand .ammonite-mark.small .ammonite-shell {
+    width: 18px;
+    height: 16px;
+  }
+
+  .brand .ammonite-shell::before {
+    top: 3px;
+    left: 4px;
+    width: 6px;
+    height: 6px;
+  }
+
+  .brand .ammonite-shell i {
+    left: 7px;
+    height: 4px;
+    transform-origin: 1px 8px;
+  }
+}

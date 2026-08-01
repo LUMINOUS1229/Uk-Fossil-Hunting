@@ -696,7 +696,13 @@ const riskLabel = (risk: Risk, language: Language) => language === "en" ? risk :
 function AmmoniteMark({ small = false }: { small?: boolean }) {
   return (
     <span className={`ammonite-mark ${small ? "small" : ""}`} aria-hidden="true">
-      <span />
+      <span className="ammonite-shell">
+        <i />
+        <i />
+        <i />
+        <i />
+        <i />
+      </span>
     </span>
   );
 }
@@ -826,11 +832,6 @@ export function FossilMap() {
           <p className="eyebrow">{t.heroEyebrow}</p>
           <h1 className="fossil-title"><span>Fossil Hunters</span><small>in UK</small></h1>
           <p className="adventure-subtitle">{t.heroSubtitle}</p>
-          <dl className="guide-scope">
-            <div><dt>{t.scopeSites}</dt><dd>06</dd></div>
-            <div><dt>{t.scopeStart}</dt><dd>{t.scopeStartValue}</dd></div>
-            <div><dt>{t.scopeCheck}</dt><dd>{t.scopeCheckValue}</dd></div>
-          </dl>
         </div>
 
         <div className="uk-map" aria-label={language === "en" ? "Interactive map of UK fossil locations" : "英国化石地点互动地图"}>
