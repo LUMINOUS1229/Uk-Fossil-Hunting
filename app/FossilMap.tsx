@@ -677,8 +677,8 @@ const markerOffsets: Record<string, { x: number; y: number }> = {
 
 const markerStyle = (location: Location, index: number) => {
   const offset = markerOffsets[location.id] ?? { x: 0, y: 0 };
-  const length = Math.hypot(offset.x, offset.y);
-  const angle = Math.atan2(offset.y, offset.x) * 180 / Math.PI;
+  const length = Math.hypot(offset.x, offset.y).toFixed(2);
+  const angle = (Math.atan2(offset.y, offset.x) * 180 / Math.PI).toFixed(2);
   return {
     left: `${location.mapX}%`,
     top: `${location.mapY}%`,
