@@ -7,8 +7,8 @@ const sans = Inter({ variable: "--font-sans", subsets: ["latin"], weight: ["400"
 const mono = DM_Mono({ variable: "--font-mono", subsets: ["latin"], weight: ["400", "500"] });
 
 export const metadata: Metadata = {
-  title: "UK Fossil Hunting",
-  description: "Field-ready fossil hunting routes from London.",
+  title: "英国化石猎人",
+  description: "一起去探险吧。六条从伦敦出发的英国化石路线。",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

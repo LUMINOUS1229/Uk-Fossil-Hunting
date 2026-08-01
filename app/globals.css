@@ -297,20 +297,58 @@ button {
 
 .overview-title h1 {
   margin: 0;
-  max-width: 520px;
-  font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(54px, 5.6vw, 92px);
-  font-weight: 600;
-  letter-spacing: -0.05em;
-  line-height: 0.84;
+  max-width: 620px;
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: clamp(48px, 5vw, 78px);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 0.95;
 }
 
-.overview-title .intro {
-  max-width: 390px;
-  margin: 28px 0 0 6px;
+.adventure-subtitle {
+  margin: 18px 0 0;
+  color: var(--rust);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: clamp(20px, 2vw, 28px);
+  font-weight: 600;
+  letter-spacing: -.035em;
+}
+
+.guide-scope {
+  display: grid;
+  grid-template-columns: .7fr 1fr 1.2fr;
+  max-width: 450px;
+  margin: 28px 0 0;
+  padding: 12px 0;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+
+.guide-scope > div {
+  min-width: 0;
+  padding: 0 12px;
+  border-left: 1px solid var(--line);
+}
+
+.guide-scope > div:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.guide-scope dt {
   color: var(--ink-soft);
-  font-size: 14px;
-  line-height: 1.65;
+  font-family: var(--font-mono), monospace;
+  font-size: 7px;
+  letter-spacing: .09em;
+}
+
+.guide-scope dd {
+  overflow: hidden;
+  margin: 7px 0 0;
+  font-size: 10px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .uk-map {
@@ -693,6 +731,14 @@ button {
   margin-top: 2px;
   color: var(--ink-soft);
   font-size: 8px;
+}
+
+.location-list .list-profile {
+  margin-top: 4px;
+  color: var(--rust);
+  font-family: var(--font-mono), monospace;
+  font-size: 7px;
+  letter-spacing: .02em;
 }
 
 .list-risk {
@@ -1231,6 +1277,43 @@ button {
   padding: 4px 6px;
   border: 1px solid rgba(23,39,36,.2);
   font-size: 7px;
+}
+
+.field-profile {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(23,39,36,.13);
+}
+
+.profile-rating > span {
+  display: block;
+  color: var(--ink-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: 6px;
+  letter-spacing: .06em;
+  white-space: nowrap;
+}
+
+.profile-rating > div {
+  display: flex;
+  gap: 3px;
+  margin-top: 6px;
+}
+
+.profile-rating i {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--ink-soft);
+  border-radius: 50%;
+}
+
+.profile-rating i.filled {
+  border-color: var(--rust);
+  background: var(--rust);
 }
 
 .section-nav {
@@ -1940,10 +2023,28 @@ button {
     line-height: .86;
   }
 
-  .overview-title .intro {
-    width: 81%;
-    margin-top: 18px;
-    font-size: 11px;
+  .adventure-subtitle {
+    margin-top: 12px;
+    font-size: 19px;
+  }
+
+  .guide-scope {
+    width: 92%;
+    margin-top: 16px;
+    padding: 9px 0;
+  }
+
+  .guide-scope > div {
+    padding: 0 7px;
+  }
+
+  .guide-scope dt {
+    font-size: 6px;
+  }
+
+  .guide-scope dd {
+    margin-top: 4px;
+    font-size: 8px;
   }
 
   .uk-map {
@@ -2117,10 +2218,6 @@ button {
   .lang-zh .overview-title h1 {
     font-size: clamp(40px, 11.8vw, 55px);
     line-height: 1.05;
-  }
-
-  .lang-zh .overview-title .intro {
-    width: 88%;
   }
 
   .section-nav {

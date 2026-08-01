@@ -24,6 +24,9 @@ type Location = {
   type: string;
   risk: Risk;
   level: string;
+  findRating: number;
+  accessRating: number;
+  familyRating: number;
   mapX: number;
   mapY: number;
   departure: string;
@@ -65,6 +68,9 @@ const locations: Location[] = [
     type: "Cliff & foreshore",
     risk: "HIGH",
     level: "Confident beginner+",
+    findRating: 5,
+    accessRating: 3,
+    familyRating: 3,
     mapX: 86,
     mapY: 90,
     departure: "London St Pancras",
@@ -114,6 +120,9 @@ const locations: Location[] = [
     type: "Tidal foreshore",
     risk: "MODERATE",
     level: "Patient beginner",
+    findRating: 5,
+    accessRating: 4,
+    familyRating: 4,
     mapX: 82,
     mapY: 84,
     departure: "London St Pancras or Victoria",
@@ -163,6 +172,9 @@ const locations: Location[] = [
     type: "Cliff & foreshore",
     risk: "MODERATE",
     level: "Beginner friendly",
+    findRating: 5,
+    accessRating: 3,
+    familyRating: 4,
     mapX: 84,
     mapY: 76,
     departure: "London Liverpool Street",
@@ -212,6 +224,9 @@ const locations: Location[] = [
     type: "Inland stream",
     risk: "HIGH",
     level: "Experienced adults",
+    findRating: 5,
+    accessRating: 2,
+    familyRating: 1,
     mapX: 44,
     mapY: 80,
     departure: "London Paddington",
@@ -260,6 +275,9 @@ const locations: Location[] = [
     type: "Sandy foreshore",
     risk: "LOW",
     level: "First-time friendly",
+    findRating: 5,
+    accessRating: 5,
+    familyRating: 5,
     mapX: 64,
     mapY: 92,
     departure: "London Victoria",
@@ -309,6 +327,9 @@ const locations: Location[] = [
     type: "Cliff & shingle beach",
     risk: "MODERATE",
     level: "Beginner with care",
+    findRating: 5,
+    accessRating: 4,
+    familyRating: 4,
     mapX: 41,
     mapY: 94,
     departure: "London Waterloo",
@@ -561,10 +582,10 @@ const localizeLocation = (location: Location, language: Language): Location => {
 const copy = {
   en: {
     returnMap: "Return to UK map", about: "About", safetyFirst: "Safety first",
-    heroEyebrow: "A field map for real days out", heroA: "Find fossils.", heroB: "Know the way back.",
-    intro: "Six practical routes from London—mapped from the train platform to the safest place to search.",
+    heroEyebrow: "6 FIELD SITES · ROUTES FROM LONDON", heroTitle: "UK Fossil Hunters", heroSubtitle: "Let’s go exploring.",
+    scopeSites: "FIELD SITES", scopeStart: "STARTING FROM", scopeStartValue: "LONDON", scopeCheck: "CHECK BEFORE", scopeCheckValue: "TIDE & ACCESS",
     northSea: "NORTH SEA", channel: "ENGLISH CHANNEL", london: "London", open: "Open",
-    fromLondon: "from London", fieldSites: "FIELD SITES · 06", close: "Close", explore: "Explore 6 field sites",
+    fromLondon: "from London", fieldSites: "FIELD SITES · 06", close: "Close", explore: "Explore 6 field sites", findShort: "Finds", accessShort: "Access",
     routeToggle: "From London routes", fieldSite: "Field site", research: "In research", railRoute: "Rail route",
     mapCredit: "Map data © OpenStreetMap contributors", researchLabel: "IN RESEARCH", dismiss: "Dismiss",
     aboutEyebrow: "About this field map", aboutTitle: "A route planner, not a promise.",
@@ -582,10 +603,10 @@ const copy = {
   },
   zh: {
     returnMap: "返回英国总览地图", about: "关于", safetyFirst: "安全须知",
-    heroEyebrow: "一张真正用于出发的野外地图", heroA: "寻找化石。", heroB: "也要知道如何安全返回。",
-    intro: "六条从伦敦出发的可执行路线——从火车站台一直标到更安全的搜索区域。",
+    heroEyebrow: "6 个重点地点 · 从伦敦出发", heroTitle: "英国化石猎人", heroSubtitle: "一起去探险吧。",
+    scopeSites: "收录地点", scopeStart: "默认出发地", scopeStartValue: "伦敦", scopeCheck: "出发前确认", scopeCheckValue: "潮汐与通行",
     northSea: "北海", channel: "英吉利海峡", london: "伦敦", open: "打开",
-    fromLondon: "从伦敦出发", fieldSites: "重点地点 · 06", close: "关闭", explore: "探索 6 个重点地点",
+    fromLondon: "从伦敦出发", fieldSites: "重点地点 · 06", close: "关闭", explore: "探索 6 个重点地点", findShort: "发现", accessShort: "通行",
     routeToggle: "显示伦敦出发路线", fieldSite: "完整地点", research: "调研中", railRoute: "铁路路线",
     mapCredit: "地图数据 © OpenStreetMap 贡献者", researchLabel: "调研中", dismiss: "关闭",
     aboutEyebrow: "关于这张野外地图", aboutTitle: "它是路线计划，不是安全承诺。",
@@ -620,6 +641,7 @@ const detailCopy = {
     coastguardA: "In a coastal emergency, call", coastguardB: "and ask for", status: "STATUS",
     siteSpecific: "Rules are site-specific. Check current designation and access notices.", source: "SOURCE", reviewed: "LAST REVIEWED",
     precision: "Location precision: approximate · Guidance may change",
+    findFrequency: "FIND FREQUENCY", accessRating: "ACCESS", familyRating: "FAMILY",
   },
   zh: {
     risk: "风险", lowWater: "低潮水位", collectingArea: "大致采集区域", hazard: "危险区域", rail: "铁路",
@@ -637,6 +659,7 @@ const detailCopy = {
     coastguardA: "发生海岸紧急情况时，请拨打", coastguardB: "并要求联系", status: "保护状态",
     siteSpecific: "不同地点的规则各不相同。请核对最新保护地指定信息和通行告示。", source: "信息来源", reviewed: "最后核验",
     precision: "地点精度：近似 · 指南可能更新",
+    findFrequency: "发现频率", accessRating: "通行难度", familyRating: "亲子适合度",
   },
 } as const;
 
@@ -663,7 +686,7 @@ function AmmoniteMark({ small = false }: { small?: boolean }) {
 }
 
 export function FossilMap() {
-  const [language, setLanguage] = useState<Language>("en");
+  const [language, setLanguage] = useState<Language>("zh");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showLondon, setShowLondon] = useState(true);
   const [modal, setModal] = useState<"about" | "safety" | null>(null);
@@ -719,8 +742,13 @@ export function FossilMap() {
       <section className={`overview ${selected ? "is-zoomed" : ""}`} aria-hidden={Boolean(selected)}>
         <div className="overview-title">
           <p className="eyebrow">{t.heroEyebrow}</p>
-          <h1>{t.heroA}<br />{t.heroB}</h1>
-          <p className="intro">{t.intro}</p>
+          <h1>{t.heroTitle}</h1>
+          <p className="adventure-subtitle">{t.heroSubtitle}</p>
+          <dl className="guide-scope">
+            <div><dt>{t.scopeSites}</dt><dd>06</dd></div>
+            <div><dt>{t.scopeStart}</dt><dd>{t.scopeStartValue}</dd></div>
+            <div><dt>{t.scopeCheck}</dt><dd>{t.scopeCheckValue}</dd></div>
+          </dl>
         </div>
 
         <div className="uk-map" aria-label={language === "en" ? "Interactive map of UK fossil locations" : "英国化石地点互动地图"}>
@@ -773,6 +801,7 @@ export function FossilMap() {
                 <span className="marker-card">
                   <strong>{location.shortName}</strong>
                   <small>{location.period} · {location.finds[0].name}</small>
+                  <small>{t.findShort} {location.findRating}/5 · {t.accessShort} {location.accessRating}/5</small>
                   <em>{location.duration} {t.fromLondon}</em>
                 </span>
               </button>
@@ -804,6 +833,7 @@ export function FossilMap() {
               <span>
                 <strong>{location.shortName}</strong>
                 <small>{location.period} · {location.level}</small>
+                <small className="list-profile">{t.findShort} {location.findRating}/5 · {t.accessShort} {location.accessRating}/5</small>
               </span>
               <span className={`list-risk ${riskClass(location.risk)}`}>{riskLabel(location.risk, language)}</span>
             </button>
@@ -918,6 +948,11 @@ function LocationDetail({ location, language, onBack }: { location: Location; la
             <p>{location.region}</p>
             <h2>{location.name}</h2>
             <div className="place-tags"><span>{location.period}</span><span>{location.type}</span><span>{location.level}</span></div>
+            <div className="field-profile">
+              <ProfileRating label={t.findFrequency} rating={location.findRating} />
+              <ProfileRating label={t.accessRating} rating={location.accessRating} />
+              <ProfileRating label={t.familyRating} rating={location.familyRating} />
+            </div>
           </div>
         </div>
 
@@ -1022,4 +1057,15 @@ function JourneyStep({ label, value, detail }: { label: string; value: string; d
 
 function KitList({ title, symbol, items, danger = false }: { title: string; symbol: string; items: string[]; danger?: boolean }) {
   return <div className={`kit-group ${danger ? "danger" : ""}`}><span className="kit-title">{title}</span><div>{items.map((item) => <span key={item}><i>{symbol}</i>{item}</span>)}</div></div>;
+}
+
+function ProfileRating({ label, rating }: { label: string; rating: number }) {
+  return (
+    <div className="profile-rating">
+      <span>{label}</span>
+      <div aria-label={`${label}: ${rating} / 5`}>
+        {[1, 2, 3, 4, 5].map((value) => <i key={value} className={value <= rating ? "filled" : ""} />)}
+      </div>
+    </div>
+  );
 }
