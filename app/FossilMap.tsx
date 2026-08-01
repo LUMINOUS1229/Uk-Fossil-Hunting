@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 type Risk = "LOW" | "MODERATE" | "HIGH";
 type Language = "en" | "zh";
+type IntroPhase = "loading" | "reveal" | "done";
 
 type Find = {
   glyph: string;
@@ -685,7 +686,40 @@ function AmmoniteMark({ small = false }: { small?: boolean }) {
   );
 }
 
+function PixelDinosaur() {
+  return (
+    <div className="dino-track" aria-hidden="true">
+      <div className="pixel-dino">
+        <div className="dino-tail" />
+        <div className="dino-body" />
+        <div className="dino-neck" />
+        <div className="dino-head" />
+        <div className="dino-snout" />
+        <div className="dino-eye" />
+        <div className="dino-arm" />
+        <div className="dino-leg leg-front"><span /></div>
+        <div className="dino-leg leg-back"><span /></div>
+      </div>
+    </div>
+  );
+}
+
+function IntroScreen({ phase }: { phase: Exclude<IntroPhase, "done"> }) {
+  return (
+    <div className={`intro-screen ${phase}`} role="status" aria-label="正在加载英国化石地图">
+      <div className="intro-stage">
+        <div className="intro-copy">
+          <h1>英国化石猎人</h1>
+          <p>一起去探险吧。</p>
+        </div>
+        <PixelDinosaur />
+      </div>
+    </div>
+  );
+}
+
 export function FossilMap() {
+  const [introPhase, setIntroPhase] = useState<IntroPhase>("loading");
   const [language, setLanguage] = useState<Language>("zh");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showLondon, setShowLondon] = useState(true);
@@ -699,6 +733,20 @@ export function FossilMap() {
   useEffect(() => {
     document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
   }, [language]);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setIntroPhase("done");
+      return;
+    }
+
+    const revealTimer = window.setTimeout(() => setIntroPhase("reveal"), 2200);
+    const doneTimer = window.setTimeout(() => setIntroPhase("done"), 3550);
+    return () => {
+      window.clearTimeout(revealTimer);
+      window.clearTimeout(doneTimer);
+    };
+  }, []);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -718,7 +766,8 @@ export function FossilMap() {
   };
 
   return (
-    <main className={`site-shell ${selected ? "detail-open" : ""} lang-${language}`}>
+    <main className={`site-shell ${selected ? "detail-open" : ""} lang-${language} intro-${introPhase}`}>
+      {introPhase !== "done" && <IntroScreen phase={introPhase} />}
       <header className="topbar">
         <div className="header-left">
           <button className="brand" onClick={() => setSelectedId(null)} aria-label={t.returnMap}>

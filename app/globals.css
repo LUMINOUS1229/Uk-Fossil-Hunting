@@ -61,6 +61,262 @@ button {
   background-size: 44px 44px;
 }
 
+/* Opening sequence */
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  min-height: 100svh;
+  background:
+    linear-gradient(rgba(23, 39, 36, .035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 39, 36, .035) 1px, transparent 1px),
+    var(--paper);
+  background-size: 44px 44px;
+}
+
+.intro-stage {
+  width: min(620px, calc(100vw - 40px));
+  text-align: center;
+}
+
+.intro-copy h1 {
+  margin: 0;
+  font-family: var(--font-sans), "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: clamp(44px, 7vw, 84px);
+  font-weight: 700;
+  letter-spacing: -.065em;
+  line-height: 1;
+}
+
+.intro-copy p {
+  margin: 15px 0 0;
+  color: var(--rust);
+  font-size: clamp(18px, 2vw, 25px);
+  font-weight: 600;
+  letter-spacing: -.03em;
+}
+
+.dino-track {
+  position: relative;
+  width: min(270px, 72vw);
+  height: 68px;
+  margin: 34px auto 0;
+  overflow: hidden;
+  border-bottom: 2px solid rgba(23, 39, 36, .2);
+  transform-origin: 50% 65%;
+}
+
+.dino-track::after {
+  position: absolute;
+  right: 16px;
+  bottom: 5px;
+  width: 4px;
+  height: 4px;
+  background: var(--ink-soft);
+  box-shadow: 9px 0 var(--ink-soft), 23px 0 var(--ink-soft), 41px 0 var(--ink-soft);
+  content: "";
+  opacity: .35;
+}
+
+.pixel-dino {
+  position: absolute;
+  bottom: 6px;
+  left: -82px;
+  width: 78px;
+  height: 53px;
+  image-rendering: pixelated;
+  animation: dino-cross 2.15s linear infinite;
+}
+
+.dino-tail,
+.dino-body,
+.dino-neck,
+.dino-head,
+.dino-snout,
+.dino-arm,
+.dino-leg {
+  position: absolute;
+  background: var(--ink);
+}
+
+.dino-tail {
+  top: 24px;
+  left: 0;
+  width: 25px;
+  height: 12px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 48% 70%, 48% 55%, 22% 55%, 22% 38%, 0 38%);
+}
+
+.dino-body {
+  top: 19px;
+  left: 20px;
+  width: 31px;
+  height: 21px;
+  background: var(--moss);
+  box-shadow: 4px -4px var(--moss), 12px -4px var(--moss);
+}
+
+.dino-neck {
+  top: 10px;
+  left: 45px;
+  width: 9px;
+  height: 23px;
+  background: var(--moss);
+}
+
+.dino-head {
+  top: 6px;
+  left: 49px;
+  width: 21px;
+  height: 18px;
+  background: var(--moss);
+}
+
+.dino-snout {
+  top: 15px;
+  left: 64px;
+  width: 14px;
+  height: 11px;
+  background: var(--moss);
+}
+
+.dino-eye {
+  position: absolute;
+  top: 10px;
+  left: 61px;
+  z-index: 2;
+  width: 4px;
+  height: 4px;
+  background: var(--paper);
+  box-shadow: 1px 0 var(--paper);
+}
+
+.dino-arm {
+  top: 28px;
+  left: 47px;
+  width: 12px;
+  height: 4px;
+  background: var(--moss);
+  box-shadow: 8px 4px var(--moss);
+}
+
+.dino-leg {
+  top: 35px;
+  width: 6px;
+  height: 14px;
+  background: var(--moss);
+  transform-origin: top center;
+}
+
+.dino-leg span {
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 12px;
+  height: 4px;
+  background: var(--moss);
+}
+
+.leg-front {
+  left: 39px;
+  animation: dino-leg-front .42s steps(2, end) infinite;
+}
+
+.leg-back {
+  left: 25px;
+  animation: dino-leg-back .42s steps(2, end) infinite;
+}
+
+.pixel-dino > div:not(.dino-leg):not(.dino-eye) {
+  animation: dino-bob .42s steps(2, end) infinite;
+}
+
+@keyframes dino-cross {
+  from { transform: translateX(0); }
+  to { transform: translateX(360px); }
+}
+
+@keyframes dino-bob {
+  0%, 100% { margin-top: 0; }
+  50% { margin-top: -2px; }
+}
+
+@keyframes dino-leg-front {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(6px) scaleY(.78); }
+}
+
+@keyframes dino-leg-back {
+  0%, 100% { transform: translateX(6px) scaleY(.78); }
+  50% { transform: translateX(0); }
+}
+
+.intro-loading .topbar,
+.intro-loading .overview {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.intro-loading .overview {
+  transform: scale(1.12);
+}
+
+.intro-reveal .topbar,
+.intro-reveal .overview {
+  visibility: visible;
+}
+
+.intro-screen.reveal {
+  animation: intro-curtain 1.25s .1s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.intro-screen.reveal .intro-copy {
+  animation: intro-title-away .72s cubic-bezier(.4, 0, .2, 1) both;
+}
+
+.intro-screen.reveal .dino-track {
+  animation: intro-dino-zoom 1s .08s cubic-bezier(.2, .75, .2, 1) both;
+}
+
+.intro-reveal .overview:not(.is-zoomed) {
+  animation: intro-map-in 1.2s .12s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.intro-reveal .topbar {
+  animation: intro-header-in .65s .62s ease both;
+}
+
+@keyframes intro-title-away {
+  0% { opacity: 1; transform: scale(1); filter: blur(0); }
+  65% { opacity: .18; }
+  100% { opacity: 0; transform: scale(1.18); filter: blur(6px); }
+}
+
+@keyframes intro-dino-zoom {
+  0% { opacity: 1; transform: scale(1); }
+  42% { opacity: 1; transform: scale(1.35); }
+  100% { opacity: 0; transform: scale(8); }
+}
+
+@keyframes intro-curtain {
+  0%, 26% { background-color: var(--paper); }
+  72% { opacity: .72; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes intro-map-in {
+  0% { opacity: 0; transform: scale(1.15); filter: blur(7px); }
+  100% { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+@keyframes intro-header-in {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .lang-zh .overview-title h1,
 .lang-zh .place-heading h2,
 .lang-zh .section-title h2,
@@ -2260,6 +2516,20 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .intro-screen {
+    display: none !important;
+  }
+
+  .intro-loading .topbar,
+  .intro-loading .overview {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .intro-loading .overview {
+    transform: scale(1);
+  }
+
   *, *::before, *::after {
     scroll-behavior: auto !important;
     animation-duration: .01ms !important;
