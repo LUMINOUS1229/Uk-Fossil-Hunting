@@ -68,7 +68,7 @@ const locations: Location[] = [
     age: "c. 110 million years",
     type: "Cliff & foreshore",
     risk: "HIGH",
-    level: "Confident beginner+",
+    level: "Easy · Beginner welcome",
     findRating: 5,
     accessRating: 3,
     familyRating: 3,
@@ -384,7 +384,7 @@ const locationZh: Record<string, LocationTranslation> = {
     region: "肯特郡 · 英格兰东南海岸",
     period: "早白垩世",
     type: "悬崖与潮间带",
-    level: "有一定经验的新手",
+    level: "简单 · 欢迎新手",
     local: "当地出租车或开往 East Cliff 方向的市内巴士",
     walk: "步行 25–35 分钟至 Warren 入口",
     duration: "1小时45分–2小时15分",
@@ -583,10 +583,10 @@ const localizeLocation = (location: Location, language: Language): Location => {
 const copy = {
   en: {
     returnMap: "Return to UK map", about: "About", safetyFirst: "Safety first",
-    heroEyebrow: "6 FIELD SITES · ROUTES FROM LONDON", heroTitle: "Fossil Hunters", heroSubtitle: "Let’s go exploring.",
+    heroEyebrow: "N+ FIELD SITES · ROUTES FROM LONDON", heroTitle: "Fossil Hunters", heroSubtitle: "Let’s go exploring.",
     scopeSites: "FIELD SITES", scopeStart: "STARTING FROM", scopeStartValue: "LONDON", scopeCheck: "CHECK BEFORE", scopeCheckValue: "TIDE & ACCESS",
     northSea: "NORTH SEA", channel: "ENGLISH CHANNEL", london: "London", open: "Open",
-    fromLondon: "from London", fieldSites: "FIELD SITES · 06", close: "Close", explore: "Explore 6 field sites", findShort: "Finds", accessShort: "Access",
+    fromLondon: "from London", fieldSites: "FIELD SITES · N+", close: "Close", explore: "Explore N+ field sites", findShort: "Finds", accessShort: "Access",
     routeToggle: "From London routes", fieldSite: "Field site", research: "In research", railRoute: "Rail route",
     questLabel: "MAIN QUEST", questTitle: "FOSSIL TRAIL", questHint: "Choose a fossil marker to begin", questSites: "SITES TO EXPLORE",
     mapCredit: "Pixel map · locations approximate", researchLabel: "IN RESEARCH", dismiss: "Dismiss",
@@ -605,10 +605,10 @@ const copy = {
   },
   zh: {
     returnMap: "返回英国总览地图", about: "关于", safetyFirst: "安全须知",
-    heroEyebrow: "6 个重点地点 · 从伦敦出发", heroTitle: "Fossil Hunters", heroSubtitle: "一起去探险吧。",
+    heroEyebrow: "N+ 个重点地点 · 从伦敦出发", heroTitle: "Fossil Hunters", heroSubtitle: "一起去探险吧。",
     scopeSites: "收录地点", scopeStart: "默认出发地", scopeStartValue: "伦敦", scopeCheck: "出发前确认", scopeCheckValue: "潮汐与通行",
     northSea: "北海", channel: "英吉利海峡", london: "伦敦", open: "打开",
-    fromLondon: "从伦敦出发", fieldSites: "重点地点 · 06", close: "关闭", explore: "探索 6 个重点地点", findShort: "发现", accessShort: "通行",
+    fromLondon: "从伦敦出发", fieldSites: "重点地点 · N+", close: "关闭", explore: "探索 N+ 个重点地点", findShort: "发现", accessShort: "通行",
     routeToggle: "显示伦敦出发路线", fieldSite: "完整地点", research: "调研中", railRoute: "铁路路线",
     questLabel: "主线任务", questTitle: "寻找英国化石", questHint: "选择一个化石图标开始", questSites: "个探索地点",
     mapCredit: "像素底图 · 地点为近似位置", researchLabel: "调研中", dismiss: "关闭",
@@ -841,7 +841,7 @@ export function FossilMap() {
             <span>{t.questLabel}</span>
             <strong>{t.questTitle}</strong>
             <small>{t.questHint}</small>
-            <div><b>06</b><i>{t.questSites}</i></div>
+            <div><b>N+</b><i>{t.questSites}</i></div>
           </div>
           <div className="uk-plot">
             <div className="uk-silhouette" aria-hidden="true">
