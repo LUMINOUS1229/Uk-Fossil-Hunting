@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #f3efe5;
-  --paper-deep: #e8e1d2;
-  --ink: #172724;
-  --ink-soft: #4d5c56;
-  --moss: #35594f;
-  --sea: #cadbd9;
-  --sea-deep: #9db9b7;
-  --rust: #c45a34;
-  --danger: #923f32;
-  --line: rgba(23, 39, 36, 0.18);
+  --paper: #0a2c24;
+  --paper-deep: #071f1a;
+  --ink: #f5f3e9;
+  --ink-soft: #b8cdc4;
+  --moss: #72a998;
+  --sea: #103b32;
+  --sea-deep: #2b6658;
+  --rust: #f58a3b;
+  --danger: #ff6746;
+  --line: rgba(245, 243, 233, 0.2);
 }
 
 * {
@@ -2689,5 +2689,821 @@ button {
     animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: .01ms !important;
+  }
+}
+
+/* Pixel expedition theme */
+body {
+  background: var(--paper-deep);
+}
+
+.site-shell {
+  background:
+    linear-gradient(rgba(245, 243, 233, .045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 243, 233, .045) 1px, transparent 1px),
+    var(--paper);
+  background-size: 16px 16px;
+}
+
+.site-shell::before {
+  opacity: .13;
+  mix-blend-mode: screen;
+  background: repeating-linear-gradient(135deg, transparent 0 15px, rgba(245, 138, 59, .18) 15px 16px);
+  background-size: 32px 32px;
+}
+
+.intro-screen {
+  background:
+    linear-gradient(rgba(245, 243, 233, .045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 243, 233, .045) 1px, transparent 1px),
+    var(--paper);
+  background-size: 16px 16px;
+}
+
+.intro-copy h1,
+.overview-title h1 {
+  color: var(--ink);
+  font-family: var(--font-mono), monospace;
+  letter-spacing: -.075em;
+  text-shadow: 5px 5px 0 rgba(0, 0, 0, .24);
+}
+
+.intro-copy p,
+.adventure-subtitle,
+.fossil-title small {
+  color: var(--rust);
+}
+
+.dino-track {
+  background: linear-gradient(to bottom, transparent 61px, rgba(43, 102, 88, .22) 61px);
+}
+
+.dino-track::before {
+  background: rgba(245, 243, 233, .35);
+}
+
+.dino-track::after {
+  background: var(--rust);
+  box-shadow: 9px 0 var(--rust), 23px 0 var(--rust), 41px 0 var(--rust);
+}
+
+.topbar {
+  height: 76px;
+  border-bottom: 3px solid var(--ink);
+  background: rgba(7, 31, 26, .94);
+  box-shadow: 0 5px 0 var(--rust);
+  backdrop-filter: none;
+}
+
+.brand {
+  color: var(--ink);
+}
+
+.brand .ammonite-mark {
+  color: var(--rust);
+  border-radius: 0;
+  box-shadow: 3px 3px 0 rgba(245, 243, 233, .2);
+}
+
+.language-toggle {
+  color: var(--ink-soft);
+}
+
+.language-toggle button:hover,
+.language-toggle button.active {
+  color: var(--rust);
+}
+
+.top-actions button:hover {
+  border-bottom-color: var(--rust);
+  color: var(--rust);
+}
+
+.alert-dot {
+  border-radius: 0;
+  box-shadow: 3px 3px 0 rgba(245, 138, 59, .28);
+}
+
+.overview {
+  padding-top: 76px;
+}
+
+.overview-title {
+  z-index: 18;
+}
+
+.eyebrow {
+  color: var(--rust);
+}
+
+.eyebrow::before {
+  height: 3px;
+}
+
+.guide-scope {
+  border-top: 3px solid var(--ink);
+  border-bottom-color: var(--line);
+  background: rgba(7, 31, 26, .46);
+  box-shadow: 5px 5px 0 rgba(245, 138, 59, .26);
+}
+
+.guide-scope dt {
+  color: var(--ink-soft);
+}
+
+.guide-scope dd {
+  color: var(--ink);
+  font-family: var(--font-mono), monospace;
+}
+
+.uk-map {
+  inset: 76px 0 0 31%;
+  background:
+    linear-gradient(rgba(245, 243, 233, .055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 243, 233, .055) 1px, transparent 1px),
+    linear-gradient(135deg, #123f34, #0b3128);
+  background-size: 16px 16px, 16px 16px, 100% 100%;
+  box-shadow: inset 8px 0 0 rgba(7, 31, 26, .45);
+}
+
+.uk-map::before,
+.uk-map::after {
+  display: none;
+}
+
+.north-sea-label,
+.channel-label {
+  color: rgba(245, 243, 233, .42);
+  font-size: 8px;
+  text-shadow: 2px 2px 0 var(--paper-deep);
+}
+
+.quest-hud {
+  position: absolute;
+  top: 27px;
+  right: 28px;
+  z-index: 18;
+  width: 205px;
+  padding: 13px 14px;
+  border: 3px solid var(--ink);
+  background: var(--paper-deep);
+  box-shadow: 6px 6px 0 var(--rust);
+  font-family: var(--font-mono), monospace;
+  text-transform: uppercase;
+}
+
+.quest-hud > span,
+.quest-hud > small,
+.quest-hud > strong {
+  display: block;
+}
+
+.quest-hud > span {
+  color: var(--rust);
+  font-size: 7px;
+  letter-spacing: .18em;
+}
+
+.quest-hud > strong {
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 15px;
+  letter-spacing: .06em;
+}
+
+.quest-hud > small {
+  margin-top: 6px;
+  color: var(--ink-soft);
+  font-size: 7px;
+  line-height: 1.5;
+}
+
+.quest-hud > div {
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--line);
+}
+
+.quest-hud > div b {
+  color: var(--rust);
+  font-size: 20px;
+  line-height: .8;
+}
+
+.quest-hud > div i {
+  color: var(--ink);
+  font-size: 6px;
+  font-style: normal;
+  letter-spacing: .09em;
+}
+
+.uk-plot {
+  top: 5%;
+}
+
+.uk-silhouette {
+  filter: drop-shadow(7px 7px 0 rgba(7, 31, 26, .82));
+}
+
+.land {
+  border: 0;
+  background: var(--ink);
+}
+
+.map-road {
+  height: 3px;
+  background: repeating-linear-gradient(90deg, var(--paper) 0 6px, transparent 6px 10px);
+}
+
+.map-road::after {
+  display: none;
+}
+
+.london-node {
+  gap: 7px;
+}
+
+.london-node span {
+  width: 13px;
+  height: 13px;
+  border: 3px solid var(--ink);
+  border-radius: 0;
+  background: var(--rust);
+  box-shadow: 3px 3px 0 var(--paper-deep);
+}
+
+.london-node b {
+  padding: 3px 5px;
+  background: var(--paper-deep);
+  color: var(--ink);
+  box-shadow: 3px 3px 0 var(--rust);
+}
+
+.london-route {
+  opacity: .9;
+  image-rendering: pixelated;
+}
+
+.london-route.down-right {
+  background: repeating-linear-gradient(to bottom right, transparent 0 5px, var(--rust) 5px 8px, transparent 8px 13px);
+}
+
+.london-route.down-left {
+  background: repeating-linear-gradient(to bottom left, transparent 0 5px, var(--rust) 5px 8px, transparent 8px 13px);
+}
+
+.map-marker {
+  width: 50px;
+  height: 50px;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  box-shadow: none;
+}
+
+.map-marker:hover,
+.map-marker:focus-visible {
+  background: transparent;
+  transform: translate(-50%, -50%) scale(1.12);
+}
+
+.map-marker.high-risk {
+  box-shadow: none;
+}
+
+.map-marker.high-risk .site-pixel-icon {
+  border-color: var(--danger);
+}
+
+.marker-pulse {
+  inset: 1px;
+  border: 2px solid var(--rust);
+  border-radius: 0;
+}
+
+.marker-card {
+  left: calc(100% + 10px);
+  padding: 11px 12px;
+  border: 2px solid var(--ink);
+  background: var(--paper-deep);
+  color: var(--ink);
+  box-shadow: 5px 5px 0 var(--rust);
+  backdrop-filter: none;
+}
+
+.marker-card small {
+  color: var(--ink-soft);
+}
+
+.marker-card em {
+  color: var(--rust);
+}
+
+.site-pixel-icon {
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  overflow: hidden;
+  border: 3px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper-deep);
+  box-shadow: 4px 4px 0 var(--rust);
+  color: var(--rust);
+  image-rendering: pixelated;
+}
+
+.site-pixel-icon > i,
+.site-pixel-icon > b,
+.site-pixel-icon > em {
+  position: absolute;
+  display: block;
+  font-style: normal;
+  transform-origin: 0 0;
+}
+
+.site-pixel-icon.compact {
+  width: 34px;
+  height: 34px;
+  border-width: 2px;
+  box-shadow: 3px 3px 0 var(--rust);
+}
+
+.site-pixel-icon.compact > * {
+  scale: .7;
+}
+
+/* Folkestone · ammonite */
+.icon-folkestone > i {
+  top: 6px;
+  left: 6px;
+  width: 26px;
+  height: 26px;
+  border: 4px solid var(--rust);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 3px var(--paper-deep);
+}
+
+.icon-folkestone > b {
+  top: 14px;
+  left: 14px;
+  width: 13px;
+  height: 13px;
+  border: 4px solid var(--rust);
+  border-radius: 50%;
+}
+
+.icon-folkestone > em {
+  top: 20px;
+  left: 21px;
+  width: 5px;
+  height: 5px;
+  background: var(--ink);
+}
+
+/* Herne Bay · shark tooth */
+.icon-herne-bay > i {
+  top: 8px;
+  left: 8px;
+  width: 28px;
+  height: 28px;
+  background: var(--rust);
+  clip-path: polygon(0 0, 100% 0, 74% 31%, 58% 100%, 43% 72%, 27% 100%, 19% 32%);
+}
+
+.icon-herne-bay > b {
+  top: 8px;
+  left: 8px;
+  width: 28px;
+  height: 6px;
+  background: var(--ink);
+  box-shadow: 0 4px 0 var(--paper-deep);
+}
+
+.icon-herne-bay > em {
+  top: 18px;
+  left: 28px;
+  width: 4px;
+  height: 11px;
+  background: var(--ink);
+}
+
+/* Walton · fossil wood */
+.icon-walton > i {
+  top: 12px;
+  left: 6px;
+  width: 31px;
+  height: 20px;
+  border: 4px solid var(--rust);
+  background: var(--paper-deep);
+  box-shadow: 4px -4px 0 var(--rust), 4px 4px 0 var(--rust);
+}
+
+.icon-walton > b {
+  top: 15px;
+  left: 9px;
+  width: 10px;
+  height: 10px;
+  border: 3px solid var(--ink);
+  box-shadow: inset 0 0 0 2px var(--paper-deep);
+}
+
+.icon-walton > em {
+  top: 16px;
+  left: 24px;
+  width: 4px;
+  height: 13px;
+  background: var(--ink);
+  box-shadow: 7px 0 var(--ink);
+}
+
+/* Wootton Bassett · belemnite */
+.icon-wootton-bassett > i {
+  top: 5px;
+  left: 16px;
+  width: 14px;
+  height: 33px;
+  background: var(--rust);
+  clip-path: polygon(25% 0, 75% 0, 100% 75%, 50% 100%, 0 75%);
+}
+
+.icon-wootton-bassett > b {
+  top: 9px;
+  left: 21px;
+  width: 4px;
+  height: 20px;
+  background: var(--ink);
+}
+
+.icon-wootton-bassett > em {
+  top: 7px;
+  left: 12px;
+  width: 4px;
+  height: 4px;
+  background: var(--ink);
+  box-shadow: 18px 4px var(--ink), -3px 18px var(--ink), 20px 22px var(--ink);
+}
+
+/* Bracklesham Bay · shell */
+.icon-bracklesham > i {
+  top: 8px;
+  left: 7px;
+  width: 30px;
+  height: 29px;
+  background: var(--rust);
+  clip-path: polygon(50% 0, 68% 14%, 86% 20%, 100% 78%, 82% 100%, 18% 100%, 0 78%, 14% 20%, 33% 14%);
+}
+
+.icon-bracklesham > b {
+  top: 13px;
+  left: 20px;
+  width: 4px;
+  height: 22px;
+  background: var(--paper-deep);
+  box-shadow: -8px 3px var(--paper-deep), 8px 3px var(--paper-deep);
+}
+
+.icon-bracklesham > em {
+  top: 32px;
+  left: 9px;
+  width: 27px;
+  height: 4px;
+  background: var(--ink);
+}
+
+/* Charmouth · ichthyosaur */
+.icon-charmouth > i {
+  top: 14px;
+  left: 10px;
+  width: 25px;
+  height: 15px;
+  background: var(--rust);
+  clip-path: polygon(0 34%, 22% 0, 80% 0, 100% 36%, 100% 66%, 80% 100%, 20% 100%, 0 68%);
+}
+
+.icon-charmouth > b {
+  top: 12px;
+  left: 3px;
+  width: 13px;
+  height: 20px;
+  background: var(--rust);
+  clip-path: polygon(0 0, 100% 36%, 100% 64%, 0 100%, 35% 50%);
+}
+
+.icon-charmouth > em {
+  top: 17px;
+  left: 31px;
+  width: 5px;
+  height: 5px;
+  background: var(--ink);
+  box-shadow: -9px 13px 0 1px var(--rust), -4px -11px 0 1px var(--rust);
+}
+
+.future-marker {
+  gap: 8px;
+  color: var(--ink);
+}
+
+.future-marker > span {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--ink-soft);
+  border-radius: 0;
+  background: var(--paper-deep);
+  box-shadow: 3px 3px 0 rgba(245, 138, 59, .55);
+}
+
+.future-marker > span::after {
+  color: var(--rust);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  content: "?";
+}
+
+.future-marker small {
+  border: 1px solid var(--ink);
+  background: var(--paper-deep);
+  color: var(--ink);
+  box-shadow: 3px 3px 0 var(--rust);
+}
+
+.location-list {
+  width: min(405px, 29vw);
+  border: 2px solid var(--ink);
+  background: rgba(7, 31, 26, .92);
+  box-shadow: 6px 6px 0 rgba(245, 138, 59, .75);
+  backdrop-filter: none;
+}
+
+.list-heading {
+  padding: 9px 10px;
+  color: var(--rust);
+}
+
+.location-list > button {
+  grid-template-columns: 45px 1fr auto;
+  gap: 7px;
+  padding: 8px 9px;
+  border-top: 1px dashed var(--line);
+  color: var(--ink);
+}
+
+.location-list > button:hover {
+  background: var(--rust);
+  color: var(--paper-deep);
+}
+
+.location-list > button:hover small,
+.location-list > button:hover .list-profile,
+.location-list > button:hover .list-risk {
+  color: var(--paper-deep) !important;
+}
+
+.list-icon-wrap {
+  position: relative;
+  display: block;
+  width: 38px;
+  height: 36px;
+}
+
+.list-icon-wrap > i {
+  position: absolute;
+  right: -2px;
+  bottom: -1px;
+  z-index: 2;
+  padding: 1px 2px;
+  background: var(--paper-deep);
+  color: var(--ink);
+  font-family: var(--font-mono), monospace;
+  font-size: 6px;
+  font-style: normal;
+}
+
+.location-list small {
+  color: var(--ink-soft);
+}
+
+.risk-low { color: #9de1bd !important; }
+.risk-moderate { color: #ffc26f !important; }
+.risk-high { color: var(--danger) !important; }
+
+.map-controls {
+  padding: 10px;
+  border: 2px solid var(--ink);
+  background: var(--paper-deep);
+  box-shadow: 5px 5px 0 rgba(245, 138, 59, .6);
+}
+
+.toggle-track {
+  border-radius: 0;
+}
+
+.toggle-track span {
+  border-radius: 0;
+  background: var(--ink-soft);
+}
+
+.legend {
+  border-color: var(--line);
+  background: transparent;
+}
+
+.legend-site {
+  border-radius: 0;
+}
+
+.legend-future {
+  border-color: var(--ink);
+  border-radius: 0;
+}
+
+.map-controls > small {
+  color: var(--ink-soft);
+}
+
+.coming-toast {
+  border: 3px solid var(--ink);
+  background: var(--paper-deep);
+  box-shadow: 7px 7px 0 var(--rust);
+}
+
+.mobile-sites-button {
+  border: 2px solid var(--ink);
+  background: var(--rust);
+  color: var(--paper-deep);
+  box-shadow: 5px 5px 0 var(--ink);
+  font-family: var(--font-mono), monospace;
+}
+
+/* Detail screens keep the same game palette. */
+.detail-view,
+.info-panel,
+.modal {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.detail-safety,
+.section-nav,
+.field-legend {
+  background: rgba(7, 31, 26, .95);
+  color: var(--ink);
+  backdrop-filter: none;
+}
+
+.detail-safety {
+  border: 2px solid var(--danger);
+  box-shadow: 5px 5px 0 rgba(255, 103, 70, .42);
+}
+
+.detail-safety p,
+.hazard-list li,
+.modal-note.warning {
+  color: var(--ink);
+}
+
+.field-map {
+  background:
+    linear-gradient(rgba(245, 243, 233, .055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 243, 233, .055) 1px, transparent 1px),
+    var(--paper-deep);
+  background-size: 16px 16px;
+}
+
+.field-land {
+  border: 3px solid var(--ink);
+  background: rgba(245, 243, 233, .9);
+  box-shadow: 7px 7px 0 rgba(245, 138, 59, .35);
+}
+
+.field-water {
+  background: var(--sea-deep);
+}
+
+.place-heading {
+  grid-template-columns: 58px 1fr;
+  border-bottom-width: 3px;
+}
+
+.place-symbol {
+  position: relative;
+  width: 50px;
+  height: 52px;
+}
+
+.place-symbol > span:last-child {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 2px 4px;
+  border: 1px solid var(--ink);
+  background: var(--rust);
+  color: var(--paper-deep);
+  font-family: var(--font-mono), monospace;
+  font-size: 7px;
+}
+
+.place-heading h2,
+.section-title h2,
+.modal h2 {
+  color: var(--ink);
+  font-family: var(--font-mono), monospace;
+}
+
+.place-tags span,
+.kit-group > div > span,
+.safety-grid > div {
+  border-color: var(--line);
+}
+
+.profile-rating i {
+  border-radius: 0;
+}
+
+.info-panel,
+.section-nav,
+.detail-safety,
+.field-legend,
+.guide-scope > div,
+.place-tags span,
+.field-profile,
+.panel-content article {
+  border-color: var(--line);
+}
+
+.section-nav a:hover,
+.section-nav a:focus-visible {
+  color: var(--rust);
+}
+
+@media (max-width: 980px) {
+  .quest-hud {
+    width: 170px;
+  }
+
+  .location-list {
+    width: 35vw;
+  }
+}
+
+@media (max-width: 720px) {
+  .topbar {
+    height: 64px;
+    border-bottom-width: 2px;
+  }
+
+  .overview {
+    padding-top: 64px;
+  }
+
+  .uk-map {
+    inset: 64px 0 0;
+  }
+
+  .quest-hud {
+    top: 35%;
+    right: 14px;
+    width: 150px;
+    padding: 9px 10px;
+    border-width: 2px;
+    box-shadow: 4px 4px 0 var(--rust);
+  }
+
+  .quest-hud > strong {
+    font-size: 11px;
+  }
+
+  .quest-hud > small,
+  .quest-hud > div {
+    display: none;
+  }
+
+  .map-marker {
+    width: 42px;
+    height: 42px;
+  }
+
+  .map-marker .site-pixel-icon {
+    scale: .78;
+  }
+
+  .location-list {
+    width: 100%;
+    border: 2px solid var(--ink);
+    border-bottom: 0;
+    border-radius: 0;
+    background: var(--paper-deep);
+    box-shadow: 0 -6px 0 var(--rust);
+  }
+
+  .info-panel {
+    border-radius: 0;
   }
 }

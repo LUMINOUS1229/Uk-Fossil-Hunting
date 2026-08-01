@@ -588,6 +588,7 @@ const copy = {
     northSea: "NORTH SEA", channel: "ENGLISH CHANNEL", london: "London", open: "Open",
     fromLondon: "from London", fieldSites: "FIELD SITES · 06", close: "Close", explore: "Explore 6 field sites", findShort: "Finds", accessShort: "Access",
     routeToggle: "From London routes", fieldSite: "Field site", research: "In research", railRoute: "Rail route",
+    questLabel: "MAIN QUEST", questTitle: "FOSSIL TRAIL", questHint: "Choose a fossil marker to begin", questSites: "SITES TO EXPLORE",
     mapCredit: "Map data © OpenStreetMap contributors", researchLabel: "IN RESEARCH", dismiss: "Dismiss",
     aboutEyebrow: "About this field map", aboutTitle: "A route planner, not a promise.",
     aboutBody: "This map turns scattered fossil guides into six practical journeys from London. Each field sheet combines the train, last-mile walk, approximate collecting zone, likely finds and the rules that matter on the day.",
@@ -609,6 +610,7 @@ const copy = {
     northSea: "北海", channel: "英吉利海峡", london: "伦敦", open: "打开",
     fromLondon: "从伦敦出发", fieldSites: "重点地点 · 06", close: "关闭", explore: "探索 6 个重点地点", findShort: "发现", accessShort: "通行",
     routeToggle: "显示伦敦出发路线", fieldSite: "完整地点", research: "调研中", railRoute: "铁路路线",
+    questLabel: "主线任务", questTitle: "寻找英国化石", questHint: "选择一个化石图标开始", questSites: "个探索地点",
     mapCredit: "地图数据 © OpenStreetMap 贡献者", researchLabel: "调研中", dismiss: "关闭",
     aboutEyebrow: "关于这张野外地图", aboutTitle: "它是路线计划，不是安全承诺。",
     aboutBody: "这张地图把分散的化石攻略整理成六条从伦敦出发的实际行程。每张地点卡都结合了火车、最后一段步行、大致采集区、常见化石和当天必须遵守的规则。",
@@ -682,6 +684,16 @@ function AmmoniteMark({ small = false }: { small?: boolean }) {
   return (
     <span className={`ammonite-mark ${small ? "small" : ""}`} aria-hidden="true">
       <span />
+    </span>
+  );
+}
+
+function PixelSiteIcon({ id, compact = false }: { id: string; compact?: boolean }) {
+  return (
+    <span className={`site-pixel-icon icon-${id} ${compact ? "compact" : ""}`} aria-hidden="true">
+      <i />
+      <b />
+      <em />
     </span>
   );
 }
@@ -814,6 +826,12 @@ export function FossilMap() {
         <div className="uk-map" aria-label={language === "en" ? "Interactive map of UK fossil locations" : "英国化石地点互动地图"}>
           <div className="north-sea-label">{t.northSea}</div>
           <div className="channel-label">{t.channel}</div>
+          <div className="quest-hud" aria-hidden="true">
+            <span>{t.questLabel}</span>
+            <strong>{t.questTitle}</strong>
+            <small>{t.questHint}</small>
+            <div><b>06</b><i>{t.questSites}</i></div>
+          </div>
           <div className="uk-plot">
             <div className="uk-silhouette" aria-hidden="true">
               <div className="land scotland" />
@@ -857,7 +875,7 @@ export function FossilMap() {
                 aria-label={`${t.open} ${location.name}`}
               >
                 <span className="marker-pulse" />
-                <AmmoniteMark small />
+                <PixelSiteIcon id={location.id} />
                 <span className="marker-card">
                   <strong>{location.shortName}</strong>
                   <small>{location.period} · {location.finds[0].name}</small>
@@ -889,7 +907,10 @@ export function FossilMap() {
           </div>
           {localizedLocations.map((location) => (
             <button key={location.id} onClick={() => openLocation(location.id)}>
-              <span className="list-index">{String(localizedLocations.indexOf(location) + 1).padStart(2, "0")}</span>
+              <span className="list-icon-wrap">
+                <PixelSiteIcon id={location.id} compact />
+                <i>{String(localizedLocations.indexOf(location) + 1).padStart(2, "0")}</i>
+              </span>
               <span>
                 <strong>{location.shortName}</strong>
                 <small>{location.period} · {location.level}</small>
@@ -1003,7 +1024,7 @@ function LocationDetail({ location, language, onBack }: { location: Location; la
       <aside className="info-panel">
         <button className="back-button" onClick={onBack}><span>←</span> {t.allSites}</button>
         <div className="place-heading" style={{ "--place-accent": location.accent } as React.CSSProperties}>
-          <div className="place-number">{locationNumber}</div>
+          <div className="place-symbol"><PixelSiteIcon id={location.id} /><span>{locationNumber}</span></div>
           <div>
             <p>{location.region}</p>
             <h2>{location.name}</h2>
