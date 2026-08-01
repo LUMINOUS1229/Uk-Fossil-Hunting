@@ -78,17 +78,32 @@ button {
 }
 
 .intro-stage {
-  width: min(620px, calc(100vw - 40px));
+  width: min(820px, calc(100vw - 40px));
   text-align: center;
 }
 
 .intro-copy h1 {
   margin: 0;
   font-family: var(--font-sans), "PingFang SC", "Microsoft YaHei", sans-serif;
-  font-size: clamp(44px, 7vw, 84px);
+  font-size: clamp(42px, 6vw, 74px);
   font-weight: 700;
   letter-spacing: -.065em;
   line-height: 1;
+}
+
+.fossil-title {
+  white-space: nowrap;
+}
+
+.fossil-title small {
+  display: inline-block;
+  margin-left: .42em;
+  color: var(--rust);
+  font-size: .28em;
+  font-weight: 700;
+  letter-spacing: .015em;
+  vertical-align: .18em;
+  white-space: nowrap;
 }
 
 .intro-copy p {
@@ -328,12 +343,6 @@ button {
   letter-spacing: -.04em;
 }
 
-.lang-zh .overview-title h1 {
-  max-width: 620px;
-  font-size: clamp(44px, 4.7vw, 76px);
-  line-height: .98;
-}
-
 .lang-zh .overview-title .intro,
 .lang-zh .detail-safety p,
 .lang-zh .route-list p,
@@ -390,6 +399,14 @@ button {
   font-weight: 500;
   letter-spacing: 0.12em;
   cursor: pointer;
+}
+
+.brand-title small {
+  margin-left: 3px;
+  color: var(--rust);
+  font-size: .64em;
+  font-weight: 600;
+  letter-spacing: .06em;
 }
 
 .language-toggle {
@@ -559,6 +576,10 @@ button {
   font-weight: 700;
   letter-spacing: -0.055em;
   line-height: 0.95;
+}
+
+.overview-title .fossil-title {
+  font-size: clamp(43px, 4.4vw, 68px);
 }
 
 .adventure-subtitle {
@@ -2471,11 +2492,6 @@ button {
     font-size: 39px;
   }
 
-  .lang-zh .overview-title h1 {
-    font-size: clamp(40px, 11.8vw, 55px);
-    line-height: 1.05;
-  }
-
   .section-nav {
     top: 0;
     overflow-x: auto;
@@ -2495,6 +2511,11 @@ button {
 }
 
 @media (max-width: 420px) {
+  .intro-copy .fossil-title,
+  .overview-title .fossil-title {
+    font-size: clamp(35px, 11vw, 42px);
+  }
+
   .action-row,
   .route-facts,
   .time-grid,

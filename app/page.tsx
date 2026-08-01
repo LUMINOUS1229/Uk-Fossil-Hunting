@@ -9,17 +9,17 @@ export async function generateMetadata(): Promise<Metadata> {
   const origin = `${protocol}://${host}`;
 
   return {
-    title: "英国化石猎人 — 从伦敦出发的英国化石路线",
+    title: "Fossil Hunters in UK — Routes from London",
     description:
       "一起去探险吧。查看六条从伦敦出发的英国化石路线、潮汐、安全、装备与采集规则。",
     openGraph: {
-      title: "英国化石猎人",
+      title: "Fossil Hunters in UK",
       description: "一起去探险吧。六条从伦敦出发的英国化石路线。",
       images: [{ url: `${origin}/og.png`, width: 1200, height: 630, alt: "UK Fossil Hunting map" }],
     },
     twitter: {
       card: "summary_large_image",
-      title: "英国化石猎人",
+      title: "Fossil Hunters in UK",
       description: "一起去探险吧。六条从伦敦出发的英国化石路线。",
       images: [`${origin}/og.png`],
     },

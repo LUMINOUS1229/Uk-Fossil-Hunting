@@ -583,7 +583,7 @@ const localizeLocation = (location: Location, language: Language): Location => {
 const copy = {
   en: {
     returnMap: "Return to UK map", about: "About", safetyFirst: "Safety first",
-    heroEyebrow: "6 FIELD SITES · ROUTES FROM LONDON", heroTitle: "UK Fossil Hunters", heroSubtitle: "Let’s go exploring.",
+    heroEyebrow: "6 FIELD SITES · ROUTES FROM LONDON", heroTitle: "Fossil Hunters", heroSubtitle: "Let’s go exploring.",
     scopeSites: "FIELD SITES", scopeStart: "STARTING FROM", scopeStartValue: "LONDON", scopeCheck: "CHECK BEFORE", scopeCheckValue: "TIDE & ACCESS",
     northSea: "NORTH SEA", channel: "ENGLISH CHANNEL", london: "London", open: "Open",
     fromLondon: "from London", fieldSites: "FIELD SITES · 06", close: "Close", explore: "Explore 6 field sites", findShort: "Finds", accessShort: "Access",
@@ -604,7 +604,7 @@ const copy = {
   },
   zh: {
     returnMap: "返回英国总览地图", about: "关于", safetyFirst: "安全须知",
-    heroEyebrow: "6 个重点地点 · 从伦敦出发", heroTitle: "英国化石猎人", heroSubtitle: "一起去探险吧。",
+    heroEyebrow: "6 个重点地点 · 从伦敦出发", heroTitle: "Fossil Hunters", heroSubtitle: "一起去探险吧。",
     scopeSites: "收录地点", scopeStart: "默认出发地", scopeStartValue: "伦敦", scopeCheck: "出发前确认", scopeCheckValue: "潮汐与通行",
     northSea: "北海", channel: "英吉利海峡", london: "伦敦", open: "打开",
     fromLondon: "从伦敦出发", fieldSites: "重点地点 · 06", close: "关闭", explore: "探索 6 个重点地点", findShort: "发现", accessShort: "通行",
@@ -709,7 +709,7 @@ function IntroScreen({ phase }: { phase: Exclude<IntroPhase, "done"> }) {
     <div className={`intro-screen ${phase}`} role="status" aria-label="正在加载英国化石地图">
       <div className="intro-stage">
         <div className="intro-copy">
-          <h1>英国化石猎人</h1>
+          <h1 className="fossil-title"><span>Fossil Hunters</span><small>in UK</small></h1>
           <p>一起去探险吧。</p>
         </div>
         <PixelDinosaur />
@@ -772,7 +772,7 @@ export function FossilMap() {
         <div className="header-left">
           <button className="brand" onClick={() => setSelectedId(null)} aria-label={t.returnMap}>
             <AmmoniteMark small />
-            <span>UK FOSSIL HUNTING</span>
+            <span className="brand-title">FOSSIL HUNTERS <small>IN UK</small></span>
           </button>
           <div className="language-toggle" role="group" aria-label={language === "en" ? "Language" : "语言"}>
             <button className={language === "en" ? "active" : ""} onClick={() => setLanguage("en")} aria-pressed={language === "en"}>EN</button>
@@ -791,7 +791,7 @@ export function FossilMap() {
       <section className={`overview ${selected ? "is-zoomed" : ""}`} aria-hidden={Boolean(selected)}>
         <div className="overview-title">
           <p className="eyebrow">{t.heroEyebrow}</p>
-          <h1>{t.heroTitle}</h1>
+          <h1 className="fossil-title"><span>Fossil Hunters</span><small>in UK</small></h1>
           <p className="adventure-subtitle">{t.heroSubtitle}</p>
           <dl className="guide-scope">
             <div><dt>{t.scopeSites}</dt><dd>06</dd></div>
