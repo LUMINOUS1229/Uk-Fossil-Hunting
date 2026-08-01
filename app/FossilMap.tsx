@@ -437,8 +437,8 @@ export function FossilMap() {
           {showLondon && locations.map((location) => {
             const dx = location.mapX - 69;
             const dy = location.mapY - 65;
-            const length = Math.sqrt(dx * dx + dy * dy);
-            const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+            const length = Number(Math.sqrt(dx * dx + dy * dy).toFixed(2));
+            const angle = Number((Math.atan2(dy, dx) * (180 / Math.PI)).toFixed(2));
             return (
               <span
                 key={`line-${location.id}`}
