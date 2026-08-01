@@ -3518,7 +3518,12 @@ body {
 }
 
 .uk-silhouette {
-  filter: drop-shadow(7px 7px 0 rgba(7, 31, 26, .82));
+  filter:
+    drop-shadow(1px 0 0 #ff4fd8)
+    drop-shadow(-1px 0 0 #ff4fd8)
+    drop-shadow(0 1px 0 #ff4fd8)
+    drop-shadow(0 -1px 0 #ff4fd8)
+    drop-shadow(7px 7px 0 rgba(7, 31, 26, .82));
 }
 
 .uk-silhouette-image {
