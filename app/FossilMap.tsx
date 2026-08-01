@@ -686,7 +686,7 @@ function AmmoniteMark({ small = false }: { small?: boolean }) {
   );
 }
 
-function PixelDinosaur() {
+function PixelCreatures() {
   return (
     <div className="dino-track" aria-hidden="true">
       <div className="pixel-dino">
@@ -700,6 +700,17 @@ function PixelDinosaur() {
         <div className="dino-leg leg-front"><span /></div>
         <div className="dino-leg leg-back"><span /></div>
       </div>
+      <div className="pixel-ichthyosaur">
+        <div className="ichthy-tail" />
+        <div className="ichthy-body" />
+        <div className="ichthy-fin" />
+        <div className="ichthy-head" />
+        <div className="ichthy-snout" />
+        <div className="ichthy-flipper" />
+        <div className="ichthy-eye" />
+        <div className="ichthy-highlight" />
+        <div className="ichthy-bubbles" />
+      </div>
     </div>
   );
 }
@@ -712,7 +723,7 @@ function IntroScreen({ phase }: { phase: Exclude<IntroPhase, "done"> }) {
           <h1 className="fossil-title"><span>Fossil Hunters</span><small>in UK</small></h1>
           <p>一起去探险吧。</p>
         </div>
-        <PixelDinosaur />
+        <PixelCreatures />
       </div>
     </div>
   );
