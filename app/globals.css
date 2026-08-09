@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #0a2c24;
-  --paper-deep: #071f1a;
-  --ink: #f5f3e9;
-  --ink-soft: #b8cdc4;
-  --moss: #72a998;
-  --sea: #103b32;
-  --sea-deep: #2b6658;
-  --rust: #f58a3b;
-  --danger: #ff6746;
-  --line: rgba(245, 243, 233, 0.2);
+  --paper: #087a9b;
+  --paper-deep: #043d55;
+  --ink: #f2fbff;
+  --ink-soft: #bde8f2;
+  --moss: #66ddd0;
+  --sea: #096b8b;
+  --sea-deep: #1b9ec0;
+  --rust: #ffd166;
+  --danger: #ff7c72;
+  --line: rgba(226, 248, 255, 0.24);
 }
 
 * {
@@ -2708,7 +2708,7 @@ body {
 .site-shell::before {
   opacity: .13;
   mix-blend-mode: screen;
-  background: repeating-linear-gradient(135deg, transparent 0 15px, rgba(245, 138, 59, .18) 15px 16px);
+  background: repeating-linear-gradient(135deg, transparent 0 15px, rgba(255, 209, 102, .18) 15px 16px);
   background-size: 32px 32px;
 }
 
@@ -2735,7 +2735,7 @@ body {
 }
 
 .dino-track {
-  background: linear-gradient(to bottom, transparent 61px, rgba(43, 102, 88, .22) 61px);
+  background: linear-gradient(to bottom, transparent 61px, rgba(102, 221, 208, .24) 61px);
 }
 
 .dino-track::before {
@@ -2750,7 +2750,7 @@ body {
 .topbar {
   height: 76px;
   border-bottom: 3px solid var(--ink);
-  background: rgba(7, 31, 26, .94);
+  background: rgba(4, 61, 85, .94);
   box-shadow: 0 5px 0 var(--rust);
   backdrop-filter: none;
 }
@@ -2781,7 +2781,7 @@ body {
 
 .alert-dot {
   border-radius: 0;
-  box-shadow: 3px 3px 0 rgba(245, 138, 59, .28);
+  box-shadow: 3px 3px 0 rgba(255, 209, 102, .28);
 }
 
 .overview {
@@ -2803,8 +2803,8 @@ body {
 .guide-scope {
   border-top: 3px solid var(--ink);
   border-bottom-color: var(--line);
-  background: rgba(7, 31, 26, .46);
-  box-shadow: 5px 5px 0 rgba(245, 138, 59, .26);
+  background: rgba(4, 61, 85, .54);
+  box-shadow: 5px 5px 0 rgba(255, 209, 102, .26);
 }
 
 .guide-scope dt {
@@ -2821,9 +2821,9 @@ body {
   background:
     linear-gradient(rgba(245, 243, 233, .055) 1px, transparent 1px),
     linear-gradient(90deg, rgba(245, 243, 233, .055) 1px, transparent 1px),
-    linear-gradient(135deg, #123f34, #0b3128);
+    linear-gradient(135deg, #158cac, #075f7d);
   background-size: 16px 16px, 16px 16px, 100% 100%;
-  box-shadow: inset 8px 0 0 rgba(7, 31, 26, .45);
+  box-shadow: inset 8px 0 0 rgba(4, 61, 85, .45);
 }
 
 .uk-map::before,
@@ -2905,7 +2905,7 @@ body {
 }
 
 .uk-silhouette {
-  filter: drop-shadow(7px 7px 0 rgba(7, 31, 26, .82));
+  filter: drop-shadow(7px 7px 0 rgba(4, 61, 85, .82));
 }
 
 .land {
@@ -3216,7 +3216,7 @@ body {
   border: 2px solid var(--ink-soft);
   border-radius: 0;
   background: var(--paper-deep);
-  box-shadow: 3px 3px 0 rgba(245, 138, 59, .55);
+  box-shadow: 3px 3px 0 rgba(255, 209, 102, .55);
 }
 
 .future-marker > span::after {
@@ -3236,8 +3236,8 @@ body {
 .location-list {
   width: min(405px, 29vw);
   border: 2px solid var(--ink);
-  background: rgba(7, 31, 26, .92);
-  box-shadow: 6px 6px 0 rgba(245, 138, 59, .75);
+  background: rgba(4, 61, 85, .92);
+  box-shadow: 6px 6px 0 rgba(255, 209, 102, .72);
   backdrop-filter: none;
 }
 
@@ -3297,7 +3297,7 @@ body {
   padding: 10px;
   border: 2px solid var(--ink);
   background: var(--paper-deep);
-  box-shadow: 5px 5px 0 rgba(245, 138, 59, .6);
+  box-shadow: 5px 5px 0 rgba(255, 209, 102, .6);
 }
 
 .toggle-track {
@@ -3352,7 +3352,7 @@ body {
 .detail-safety,
 .section-nav,
 .field-legend {
-  background: rgba(7, 31, 26, .95);
+  background: rgba(4, 61, 85, .95);
   color: var(--ink);
   backdrop-filter: none;
 }
@@ -3378,8 +3378,8 @@ body {
 
 .field-land {
   border: 3px solid var(--ink);
-  background: rgba(245, 243, 233, .9);
-  box-shadow: 7px 7px 0 rgba(245, 138, 59, .35);
+  background: rgba(226, 248, 255, .9);
+  box-shadow: 7px 7px 0 rgba(255, 209, 102, .35);
 }
 
 .field-water {
@@ -3519,11 +3519,11 @@ body {
 
 .uk-silhouette {
   filter:
-    drop-shadow(1px 0 0 #ff4fd8)
-    drop-shadow(-1px 0 0 #ff4fd8)
-    drop-shadow(0 1px 0 #ff4fd8)
-    drop-shadow(0 -1px 0 #ff4fd8)
-    drop-shadow(7px 7px 0 rgba(7, 31, 26, .82));
+    drop-shadow(1px 0 0 #72e6eb)
+    drop-shadow(-1px 0 0 #72e6eb)
+    drop-shadow(0 1px 0 #72e6eb)
+    drop-shadow(0 -1px 0 #72e6eb)
+    drop-shadow(7px 7px 0 rgba(4, 61, 85, .82));
 }
 
 .uk-silhouette-image {
@@ -3652,7 +3652,7 @@ body {
   color: var(--ink-soft);
   font-family: var(--font-mono), monospace;
   font-size: 10px;
-  box-shadow: 4px 4px 0 rgba(245, 138, 59, .42);
+  box-shadow: 4px 4px 0 rgba(255, 209, 102, .42);
 }
 
 .map-marker {

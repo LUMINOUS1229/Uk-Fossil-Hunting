@@ -109,7 +109,7 @@ const locations: Location[] = [
     source: "UK Fossils · Natural England site guidance",
     sourceLink: "https://ukfossils.co.uk/folkestone/",
     verified: "01 Aug 2026",
-    accent: "#c75b36",
+    accent: "#36c7d7",
   },
   {
     id: "herne-bay",
@@ -161,7 +161,7 @@ const locations: Location[] = [
     source: "UK Fossils field guide",
     sourceLink: "https://ukfossils.co.uk/herne-bay/",
     verified: "01 Aug 2026",
-    accent: "#3f6e6b",
+    accent: "#68ded2",
   },
   {
     id: "walton",
@@ -213,7 +213,7 @@ const locations: Location[] = [
     source: "UK Fossils · The Naze field guide",
     sourceLink: "https://ukfossils.co.uk/walton-on-the-naze/",
     verified: "01 Aug 2026",
-    accent: "#b9643d",
+    accent: "#52b9e0",
   },
   {
     id: "wootton-bassett",
@@ -264,7 +264,7 @@ const locations: Location[] = [
     source: "UK Fossils · Natural England site designation",
     sourceLink: "https://ukfossils.co.uk/wootton-bassett/",
     verified: "01 Aug 2026",
-    accent: "#6d5b3f",
+    accent: "#87d7ee",
   },
   {
     id: "bracklesham",
@@ -316,7 +316,7 @@ const locations: Location[] = [
     source: "UK Fossils field guide",
     sourceLink: "https://ukfossils.co.uk/bracklesham-bay/",
     verified: "01 Aug 2026",
-    accent: "#47766b",
+    accent: "#2dc4bd",
   },
   {
     id: "charmouth",
@@ -368,7 +368,7 @@ const locations: Location[] = [
     source: "Charmouth Heritage Coast Centre · Fossil Collecting Code",
     sourceLink: "https://charmouth.org/chcc/the-fossil-collecting-code/",
     verified: "01 Aug 2026",
-    accent: "#765341",
+    accent: "#64b9dd",
   },
 ];
 
