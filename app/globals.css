@@ -4771,7 +4771,7 @@ body {
   margin: 0 0 18px;
   padding: 14px 16px;
   border-left: 6px solid var(--rust);
-  background: rgba(255, 209, 102, .14);
+  background: var(--paper-deep);
   color: var(--ink-soft);
   font-size: 13px;
   line-height: 1.7;
@@ -4797,8 +4797,8 @@ body {
   overflow: hidden;
   padding: 14px 13px 16px 21px;
   border: 2px solid var(--line);
-  background: rgba(245, 243, 233, .72);
-  box-shadow: 4px 4px 0 rgba(4, 61, 85, .12);
+  background: var(--paper-deep);
+  box-shadow: 4px 4px 0 rgba(255, 209, 102, .24);
 }
 
 .geology-units article::before {
@@ -4888,10 +4888,11 @@ body {
 .geology-notes aside {
   padding: 14px;
   border: 2px solid var(--line);
+  background: var(--paper-deep);
 }
 
 .geology-notes aside {
-  background: rgba(255, 103, 70, .09);
+  background: color-mix(in srgb, var(--paper-deep) 88%, var(--danger));
 }
 
 .geology-notes > div > span,
@@ -4939,6 +4940,7 @@ body {
   margin-top: 8px;
   padding: 12px 14px;
   border: 2px solid var(--line);
+  background: var(--paper-deep);
   color: var(--ink);
   font-family: var(--font-mono), monospace;
   font-size: 11px;
@@ -4958,11 +4960,11 @@ body {
   padding: 13px 13px 34px;
   border: 2px solid var(--line);
   background:
-    linear-gradient(rgba(4, 61, 85, .035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(4, 61, 85, .035) 1px, transparent 1px),
-    rgba(245, 243, 233, .72);
+    linear-gradient(rgba(226, 248, 255, .045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(226, 248, 255, .045) 1px, transparent 1px),
+    var(--paper-deep);
   background-size: 8px 8px;
-  box-shadow: 4px 4px 0 rgba(4, 61, 85, .11);
+  box-shadow: 4px 4px 0 rgba(255, 209, 102, .22);
 }
 
 .find-card-top {
@@ -4988,7 +4990,12 @@ body {
 
 .finds-grid .find-card-top h3 {
   margin-top: 0;
+  color: var(--ink);
   line-height: 1.2;
+}
+
+.finds-grid .find-card-top .find-zh {
+  color: var(--rust);
 }
 
 .finds-grid .rarity {
@@ -5002,14 +5009,19 @@ body {
 }
 
 .rarity-very-common,
-.rarity-common { color: #277c63; }
-.rarity-occasional { color: #8c6c16; }
-.rarity-uncommon { color: #a64f2d; }
-.rarity-rare { color: #a33b4e; }
-.rarity-very-rare { color: #74449a; }
+.rarity-common { color: #79efc3; }
+.rarity-occasional { color: #ffd166; }
+.rarity-uncommon { color: #ffb071; }
+.rarity-rare { color: #ff8aa1; }
+.rarity-very-rare { color: #d4a5ff; }
 
 .finds-grid article > p {
   margin-top: 16px;
+  color: var(--ink-soft);
+}
+
+.finds-grid article > small {
+  color: var(--ink-soft);
 }
 
 .pixel-fossil {
