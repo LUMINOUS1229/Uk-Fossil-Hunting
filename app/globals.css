@@ -4710,3 +4710,58 @@ body {
     box-shadow: none;
   }
 }
+
+/* Unframed Nori trigger */
+.guide-trigger {
+  width: 72px;
+  height: 60px;
+  justify-content: center;
+  gap: 0;
+  overflow: visible;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.guide-trigger::before,
+.guide-trigger > span {
+  display: none;
+}
+
+.guide-trigger:hover,
+.guide-trigger:focus-visible,
+.nautilus-guide.is-open .guide-trigger {
+  box-shadow: none;
+}
+
+.guide-nautilus-art {
+  margin: 0;
+  transform: scale(1.26);
+}
+
+.guide-trigger:hover .guide-nautilus-art,
+.guide-trigger:focus-visible .guide-nautilus-art {
+  animation: guide-nautilus-unframed-greet .7s steps(2, end) infinite;
+}
+
+@keyframes guide-nautilus-unframed-greet {
+  0%, 100% { transform: scale(1.26) translateY(0); }
+  50% { transform: scale(1.26) translateY(-3px) rotate(-2deg); }
+}
+
+@media (max-width: 720px) {
+  .guide-trigger {
+    width: 66px;
+    height: 56px;
+  }
+
+  .guide-nautilus-art {
+    transform: scale(1.12);
+  }
+
+  .guide-trigger:hover .guide-nautilus-art,
+  .guide-trigger:focus-visible .guide-nautilus-art {
+    animation: none;
+  }
+}
