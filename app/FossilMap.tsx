@@ -682,14 +682,16 @@ const guideCopy = {
     placeholder: "Ask about routes, tides, kit or finds…",
     send: "Ask",
     source: "Answers use the route and safety notes on this site.",
-    welcome: "Hello! I’m Nori, your nautilus guide. Ask me about a location, route, tide window, kit or collecting safety.",
+    welcome: "Hello! I’m Nori, your slightly confused nautilus guide. I know routes, tides, kit and fossils—luo.",
     openSite: "Open site details",
-    presets: ["How do I get to Folkestone?", "What should I check before fossil collecting?", "Which site is best for beginners?"],
+    presets: ["How do I get to Folkestone?", "What should I check before fossil collecting?", "Which site is best for beginners?", "Nori, can you swim?"],
     hover: [
-      "Need a route? Ask me!",
-      "The tide is a deadline, not a suggestion.",
-      "I can search all six field guides.",
-      "Loose fossils first—cliffs are not shelves!",
+      "Need a route? Ask me—luo.",
+      "The tide is a deadline. Very rude of it—luo.",
+      "I can search all six guides. That’s almost seven—luo.",
+      "Loose fossils first. Cliffs are not supermarket shelves—luo.",
+      "My shell has no Wi-Fi, but the site notes do—luo.",
+      "I’m 90% shell and 10% unsolicited advice—luo.",
     ],
   },
   zh: {
@@ -700,14 +702,18 @@ const guideCopy = {
     placeholder: "询问路线、潮汐、装备或化石……",
     send: "提问",
     source: "回答来自本站的路线与安全资料。",
-    welcome: "你好！我是鹦鹉螺诺里。可以问我地点路线、潮汐窗口、装备、常见化石或采集安全。",
+    welcome: "你好螺！我是有点呆、很会吐槽的鹦鹉螺诺里。路线、潮汐、装备和化石都可以问我螺。",
     openSite: "打开地点详情",
-    presets: ["如何去 Folkestone？", "化石采集前我应该注意什么？", "哪个地点最适合新手？"],
+    presets: ["如何去 Folkestone？", "化石采集前我应该注意什么？", "哪个地点最适合新手？", "诺里，你会游泳吗？"],
     hover: [
-      "想查路线？问我吧！",
-      "潮水是截止时间，不是建议哦。",
-      "我能检索本站全部六份地点指南。",
-      "先找松散化石，别在崖壁下停留！",
+      "想查路线？问我螺！",
+      "潮水是截止时间，真是一点面子都不给螺。",
+      "我能检索本站全部六份地点指南，差一点就是七份螺。",
+      "先找松散化石，悬崖可不是超市货架螺！",
+      "我的壳里没有 Wi-Fi，但本站资料里有答案螺。",
+      "本人百分之九十是壳，百分之十是多管闲事螺。",
+      "你盯着我看，是想听冷知识还是冷笑话螺？",
+      "慢慢问，我游得慢，脑子转得也不算快螺。",
     ],
   },
 } as const;
@@ -723,8 +729,92 @@ const locationAliases: Record<string, string[]> = {
 
 const normalizeGuideQuery = (value: string) => value.toLocaleLowerCase().replace(/[？?！!，,。.、:：'’“”"()（）-]/g, " ").replace(/\s+/g, " ").trim();
 
+const pickGuideReply = (lines: readonly string[]) => lines[Math.floor(Math.random() * lines.length)] ?? lines[0];
+
+const finishWithNoriVoice = (text: string, language: Language) => {
+  const trimmed = text.trim();
+  if (language === "zh") {
+    if (/螺[。！？!?]?$/.test(trimmed)) return trimmed;
+    return `${trimmed.replace(/[。！？!?]+$/, "")}螺。`;
+  }
+  if (/luo[.!?]?$/.test(trimmed.toLocaleLowerCase())) return trimmed;
+  return `${trimmed.replace(/[.!?]+$/, "")}—luo.`;
+};
+
+function answerNoriSmallTalk(query: string, language: Language): string | null {
+  const isZh = language === "zh";
+
+  if (/^(诺里 ?)?(你好|您好|嗨|哈喽|hello|hi|hey|早上好|早安|晚上好|在吗|在不在)( ?诺里)?$/.test(query)) {
+    return pickGuideReply(isZh
+      ? ["你好螺！今天也要安全地捡石头螺。", "嗨螺！先说好，我只懂化石，不懂老板为什么还不下班螺。", "在的螺！壳有点重，回复慢半拍也很合理螺。"]
+      : ["Hello! Let’s look for fossils safely—luo.", "Hi! I know fossils, not why Mondays exist—luo.", "I’m here. The shell makes loading slightly slower—luo."]);
+  }
+
+  if (/^(谢谢|感谢|多谢|thank you|thanks|thx)$/.test(query)) {
+    return pickGuideReply(isZh
+      ? ["不客气螺，记得把好看的石头和垃圾分开螺。", "应该的螺，我收取的咨询费是一句夸奖螺。", "谢什么螺，安全回来再谢我也不迟螺。"]
+      : ["You’re welcome. My consultation fee is one compliment—luo.", "Any time. Come back safely and we’re even—luo."]);
+  }
+
+  if (/(你是谁|你叫什么|你的名字|介绍一下自己|who are you|what.*your name)/.test(query)) {
+    return isZh
+      ? "我是诺里，一只负责站内检索、潮汐提醒和偶尔胡说八道的鹦鹉螺。重点是前两项螺。"
+      : "I’m Nori: site searcher, tide nagger and occasional nonsense generator. Focus on the first two—luo.";
+  }
+
+  if (/(你好吗|最近怎么样|心情怎么样|开心吗|how are you|how.*going)/.test(query)) {
+    return pickGuideReply(isZh
+      ? ["挺好螺，今天的壳光泽度有八分螺。", "精神不错螺，就是每次转身都要连壳一起转，有点累螺。", "还行螺，没有被潮水冲走就是好日子螺。"]
+      : ["Pretty good. Shell shine is eight out of ten today—luo.", "Not swept away by the tide, so I call that a good day—luo."]);
+  }
+
+  if (/(可爱|好萌|喜欢你|爱你|想你|cute|adorable|love you|miss you)/.test(query)) {
+    return pickGuideReply(isZh
+      ? ["知道螺，但你再说一遍我也不会拦着螺。", "别夸了螺，壳都要红了——虽然它本来是黄色的螺。", "眼光不错螺，本站最稀有的发现可能就是我螺。"]
+      : ["I know, but I won’t stop you saying it again—luo.", "Excellent taste. I may be the rarest find on this site—luo."]);
+  }
+
+  if (/(几岁|多大|年龄|活了多久|how old)/.test(query)) {
+    return isZh
+      ? "这个问题不礼貌螺。只能告诉你，鹦鹉螺家族比恐龙资格老，但我本人坚持按壳的年轮保密螺。"
+      : "Rude question. My family predates dinosaurs, but my personal shell rings are classified—luo.";
+  }
+
+  if (/(吃什么|爱吃什么|喜欢吃|饿不饿|食物|what.*eat|hungry|favourite food|favorite food)/.test(query)) {
+    return isZh
+      ? "我吃小虾小蟹，偶尔也吃自己刚说过的话螺。"
+      : "Small shrimp, little crabs and occasionally my own words—luo.";
+  }
+
+  if (/(会游泳|怎么游|游得快|swim|fast.*water)/.test(query)) {
+    return isZh
+      ? "会游螺，主要靠喷水推进。速度不快，但倒车技术在海里算一流螺。"
+      : "I jet-propel myself. Not fast, but my reverse parking is elite—luo.";
+  }
+
+  if (/(讲.*笑话|来.*笑话|笑话|逗我|搞笑|joke|make me laugh)/.test(query)) {
+    return pickGuideReply(isZh
+      ? ["为什么菊石从不迷路？因为它一直在原地绕圈螺。", "地质锤去面试，老板问它擅长什么。它说：我特别会敲重点螺。", "潮水问我为什么走得慢。我说：你背个房子试试螺。"]
+      : ["Why don’t ammonites get lost? They keep going around in circles—luo.", "The tide asked why I was slow. I said: try carrying your house—luo."]);
+  }
+
+  if (/(今天天气|明天天气|天气怎么样|实时天气|weather today|weather tomorrow|forecast)/.test(query)) {
+    return isZh
+      ? "我不会看实时天气螺，壳里的气象台还没通电。出发前请查看当地预报、风力和降雨螺。"
+      : "I can’t see live weather; the forecast desk in my shell has no electricity. Check local rain and wind before travelling—luo.";
+  }
+
+  if (/(再见|拜拜|下次见|晚安|goodbye|bye|see you)/.test(query)) {
+    return isZh ? "再见螺！记得带水、查潮汐、别站崖下螺。" : "Bye! Bring water, check the tide and stay away from cliff bases—luo.";
+  }
+
+  return null;
+}
+
 function answerGuideQuestion(question: string, siteLocations: Location[], language: Language): Omit<GuideTurn, "id" | "role"> {
   const query = normalizeGuideQuery(question);
+  const smallTalk = answerNoriSmallTalk(query, language);
+  if (smallTalk) return { text: smallTalk };
   const location = siteLocations.find((item) =>
     [item.id, item.name, item.shortName, ...(locationAliases[item.id] ?? [])]
       .some((alias) => query.includes(normalizeGuideQuery(alias))),
@@ -841,8 +931,8 @@ function answerGuideQuestion(question: string, siteLocations: Location[], langua
 
   return {
     text: isZh
-      ? "我暂时没有在本站资料中找到明确答案。可以试试“如何去 Folkestone”“Charmouth 要带什么”“哪里能找到鲨鱼牙”或“采集前要注意什么”。"
-      : "I couldn’t find a clear match in this site’s notes. Try “How do I get to Folkestone?”, “What kit for Charmouth?”, “Where can I find shark teeth?” or “What should I check before collecting?”.",
+      ? "不知道螺。"
+      : "No idea—luo.",
   };
 }
 
@@ -963,7 +1053,8 @@ function NautilusGuide({ language, siteLocations, onOpenLocation }: { language: 
   const askQuestion = (question: string) => {
     const cleanQuestion = question.trim();
     if (!cleanQuestion) return;
-    const answer = answerGuideQuestion(cleanQuestion, siteLocations, language);
+    const rawAnswer = answerGuideQuestion(cleanQuestion, siteLocations, language);
+    const answer = { ...rawAnswer, text: finishWithNoriVoice(rawAnswer.text, language) };
     setTurns((current) => {
       const nextId = (current.at(-1)?.id ?? 0) + 1;
       return [
