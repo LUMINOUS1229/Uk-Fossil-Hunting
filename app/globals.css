@@ -366,6 +366,112 @@ button {
   box-shadow: -8px -6px 0 -1px var(--paper), -8px -6px 0 0 var(--sea-deep), -17px 2px 0 -1px var(--paper), -17px 2px 0 0 var(--sea-deep);
 }
 
+.pixel-nautilus {
+  position: absolute;
+  top: 53px;
+  left: -58px;
+  z-index: 2;
+  width: 54px;
+  height: 37px;
+  image-rendering: pixelated;
+  animation: nautilus-cross 5.8s linear -1.35s infinite;
+}
+
+.nautilus-shell,
+.nautilus-hood,
+.nautilus-eye,
+.nautilus-tentacles,
+.nautilus-tentacles i {
+  position: absolute;
+}
+
+.nautilus-shell {
+  top: 0;
+  left: 2px;
+  width: 28px;
+  height: 27px;
+  border: 3px solid var(--rust);
+  background: var(--ink);
+  clip-path: polygon(21% 0, 79% 0, 79% 7%, 93% 7%, 93% 21%, 100% 21%, 100% 79%, 93% 79%, 93% 93%, 79% 93%, 79% 100%, 21% 100%, 21% 93%, 7% 93%, 7% 79%, 0 79%, 0 21%, 7% 21%, 7% 7%, 21% 7%);
+  animation: nautilus-bob .9s steps(2, end) infinite;
+}
+
+.nautilus-shell::before {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 11px;
+  height: 11px;
+  border: 3px solid var(--rust);
+  border-right-color: transparent;
+  border-radius: 50%;
+  content: "";
+}
+
+.nautilus-shell::after {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  width: 4px;
+  height: 4px;
+  background: var(--rust);
+  content: "";
+}
+
+.nautilus-shell i {
+  position: absolute;
+  right: 3px;
+  bottom: 2px;
+  width: 3px;
+  height: 8px;
+  background: var(--rust);
+  box-shadow: -5px 2px var(--rust), -10px 2px var(--rust);
+}
+
+.nautilus-hood {
+  top: 14px;
+  left: 27px;
+  width: 15px;
+  height: 13px;
+  background: var(--moss);
+  clip-path: polygon(0 0, 80% 0, 80% 15%, 100% 15%, 100% 77%, 73% 77%, 73% 100%, 0 100%);
+  animation: nautilus-bob .9s steps(2, end) infinite;
+}
+
+.nautilus-eye {
+  top: 17px;
+  left: 34px;
+  z-index: 2;
+  width: 3px;
+  height: 3px;
+  background: var(--paper-deep);
+  box-shadow: 1px 0 var(--paper-deep);
+  animation: nautilus-bob .9s steps(2, end) infinite;
+}
+
+.nautilus-tentacles {
+  top: 24px;
+  left: 37px;
+  width: 17px;
+  height: 12px;
+  transform-origin: left top;
+  animation: nautilus-tentacles .9s steps(2, end) infinite;
+}
+
+.nautilus-tentacles i {
+  top: 0;
+  left: 0;
+  width: 15px;
+  height: 3px;
+  background: var(--moss);
+  transform-origin: left center;
+}
+
+.nautilus-tentacles i:nth-child(1) { transform: rotate(-12deg); }
+.nautilus-tentacles i:nth-child(2) { top: 3px; width: 17px; transform: rotate(1deg); }
+.nautilus-tentacles i:nth-child(3) { top: 6px; width: 14px; transform: rotate(13deg); }
+.nautilus-tentacles i:nth-child(4) { top: 8px; width: 11px; transform: rotate(25deg); }
+
 @keyframes dino-cross {
   from { transform: translateX(0); }
   to { transform: translateX(360px); }
@@ -400,6 +506,22 @@ button {
 @keyframes ichthy-flipper {
   0%, 100% { transform: rotate(0); }
   50% { transform: rotate(16deg); }
+}
+
+@keyframes nautilus-cross {
+  from { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(180px) translateY(-2px); }
+  to { transform: translateX(360px) translateY(0); }
+}
+
+@keyframes nautilus-bob {
+  0%, 100% { margin-top: 0; }
+  50% { margin-top: 2px; }
+}
+
+@keyframes nautilus-tentacles {
+  0%, 100% { transform: skewY(-6deg) scaleX(1); }
+  50% { transform: skewY(8deg) scaleX(.84); }
 }
 
 .intro-loading .topbar,
@@ -2640,6 +2762,422 @@ button {
 
   .modal h2 {
     font-size: 43px;
+  }
+}
+
+/* Nautilus site guide */
+.nautilus-guide {
+  position: fixed;
+  right: 22px;
+  bottom: 20px;
+  z-index: 85;
+  font-family: var(--font-sans), "PingFang SC", "Microsoft YaHei", sans-serif;
+  pointer-events: none;
+}
+
+.guide-trigger,
+.guide-panel,
+.guide-hover-line {
+  pointer-events: auto;
+}
+
+.guide-trigger {
+  position: relative;
+  display: flex;
+  width: 98px;
+  height: 78px;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+  padding: 6px 8px 7px;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background:
+    linear-gradient(to bottom, transparent 41%, rgba(102, 221, 208, .13) 41%),
+    var(--paper-deep);
+  color: var(--ink);
+  box-shadow: 5px 5px 0 var(--rust), 0 12px 30px rgba(0, 0, 0, .22);
+  cursor: pointer;
+  transition: transform 160ms steps(2, end), box-shadow 160ms steps(2, end);
+}
+
+.guide-trigger::before {
+  position: absolute;
+  top: 32px;
+  right: 8px;
+  left: 8px;
+  height: 2px;
+  background: var(--moss);
+  box-shadow: 8px 5px 0 -1px rgba(102, 221, 208, .68), 52px -5px 0 -1px rgba(255, 209, 102, .72);
+  content: "";
+  opacity: .72;
+}
+
+.guide-trigger:hover,
+.guide-trigger:focus-visible,
+.nautilus-guide.is-open .guide-trigger {
+  transform: translateY(-3px);
+  box-shadow: 7px 7px 0 var(--rust), 0 16px 36px rgba(0, 0, 0, .28);
+}
+
+.guide-trigger > span {
+  position: relative;
+  z-index: 3;
+  color: var(--rust);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.guide-nautilus-art {
+  position: relative;
+  z-index: 2;
+  width: 54px;
+  height: 37px;
+  margin-right: 5px;
+  image-rendering: pixelated;
+  transform: scale(1.08);
+  transform-origin: center bottom;
+}
+
+.guide-trigger:hover .guide-nautilus-art,
+.guide-trigger:focus-visible .guide-nautilus-art {
+  animation: guide-nautilus-greet .7s steps(2, end) infinite;
+}
+
+@keyframes guide-nautilus-greet {
+  0%, 100% { transform: scale(1.08) translateY(0); }
+  50% { transform: scale(1.08) translateY(-3px) rotate(-2deg); }
+}
+
+.guide-hover-line {
+  position: absolute;
+  right: 0;
+  bottom: 94px;
+  width: 230px;
+  padding: 12px 14px;
+  border: 2px solid var(--ink);
+  background: var(--paper-deep);
+  color: var(--ink);
+  box-shadow: 5px 5px 0 var(--rust);
+  font-size: 12px;
+  line-height: 1.45;
+  animation: guide-bubble-in 180ms steps(2, end) both;
+}
+
+.guide-hover-line::after {
+  position: absolute;
+  right: 24px;
+  bottom: -10px;
+  width: 14px;
+  height: 10px;
+  background: var(--ink);
+  clip-path: polygon(0 0, 100% 0, 100% 20%, 70% 20%, 70% 50%, 40% 50%, 40% 80%, 0 80%);
+  content: "";
+}
+
+@keyframes guide-bubble-in {
+  from { opacity: 0; transform: translateY(6px) scale(.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.guide-panel {
+  position: absolute;
+  right: 0;
+  bottom: 96px;
+  display: flex;
+  width: min(390px, calc(100vw - 32px));
+  max-height: min(650px, calc(100svh - 126px));
+  flex-direction: column;
+  overflow: hidden;
+  border: 2px solid var(--ink);
+  background: var(--paper-deep);
+  color: var(--ink);
+  box-shadow: 9px 9px 0 var(--rust), 0 24px 60px rgba(0, 0, 0, .34);
+  animation: guide-panel-in 220ms steps(3, end) both;
+}
+
+@keyframes guide-panel-in {
+  from { opacity: 0; transform: translateY(10px) scale(.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.guide-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  padding: 13px 14px;
+  border-bottom: 2px solid var(--ink);
+  background:
+    linear-gradient(90deg, rgba(102, 221, 208, .12) 1px, transparent 1px),
+    linear-gradient(rgba(102, 221, 208, .12) 1px, transparent 1px),
+    var(--sea);
+  background-size: 10px 10px;
+}
+
+.guide-panel-header strong {
+  display: block;
+  color: var(--ink);
+  font-family: var(--font-mono), monospace;
+  font-size: 14px;
+  letter-spacing: -.02em;
+}
+
+.guide-panel-header span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 5px;
+  color: var(--ink-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  letter-spacing: .08em;
+}
+
+.guide-panel-header span i {
+  width: 6px;
+  height: 6px;
+  background: var(--moss);
+  box-shadow: 0 0 0 2px rgba(102, 221, 208, .18);
+}
+
+.guide-panel-header > button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 2px solid var(--ink);
+  background: var(--paper-deep);
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 24px;
+  cursor: pointer;
+}
+
+.guide-turns {
+  display: flex;
+  min-height: 150px;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  padding: 16px 14px 12px;
+  scrollbar-color: var(--rust) transparent;
+}
+
+.guide-turn {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+
+.guide-turn > span {
+  display: grid;
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 2px solid var(--ink);
+  background: var(--rust);
+  color: var(--paper-deep);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  font-weight: 700;
+  box-shadow: 3px 3px 0 rgba(102, 221, 208, .35);
+}
+
+.guide-turn > div {
+  max-width: calc(100% - 37px);
+}
+
+.guide-turn p {
+  margin: 0;
+  padding: 11px 12px;
+  border: 1px solid rgba(242, 251, 255, .4);
+  background: rgba(9, 107, 139, .52);
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.guide-turn.user {
+  flex-direction: row-reverse;
+}
+
+.guide-turn.user > span {
+  background: var(--moss);
+  box-shadow: -3px 3px 0 rgba(255, 209, 102, .32);
+}
+
+.guide-turn.user p {
+  border-color: rgba(255, 209, 102, .55);
+  background: rgba(255, 209, 102, .13);
+}
+
+.guide-turn div > button {
+  margin-top: 7px;
+  padding: 7px 9px;
+  border: 1px solid var(--rust);
+  background: transparent;
+  color: var(--rust);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  cursor: pointer;
+}
+
+.guide-turn div > button:hover,
+.guide-turn div > button:focus-visible {
+  background: var(--rust);
+  color: var(--paper-deep);
+}
+
+.guide-presets {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding: 10px 14px;
+  border-top: 1px solid rgba(242, 251, 255, .22);
+  scrollbar-width: none;
+}
+
+.guide-presets::-webkit-scrollbar {
+  display: none;
+}
+
+.guide-presets button {
+  flex: 0 0 auto;
+  padding: 7px 9px;
+  border: 1px solid rgba(255, 209, 102, .65);
+  background: rgba(255, 209, 102, .08);
+  color: var(--rust);
+  font-size: 10px;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.guide-presets button:hover,
+.guide-presets button:focus-visible {
+  background: var(--rust);
+  color: var(--paper-deep);
+}
+
+.guide-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  padding: 0 14px 10px;
+}
+
+.guide-form label {
+  display: block;
+  min-width: 0;
+}
+
+.guide-form input {
+  width: 100%;
+  height: 42px;
+  padding: 0 11px;
+  border: 2px solid rgba(242, 251, 255, .64);
+  border-radius: 0;
+  outline: 0;
+  background: rgba(242, 251, 255, .08);
+  color: var(--ink);
+  font-size: 11px;
+}
+
+.guide-form input::placeholder {
+  color: rgba(189, 232, 242, .58);
+}
+
+.guide-form input:focus {
+  border-color: var(--rust);
+  box-shadow: inset 0 -3px 0 rgba(255, 209, 102, .28);
+}
+
+.guide-form > button {
+  min-width: 68px;
+  height: 42px;
+  padding: 0 10px;
+  border: 2px solid var(--rust);
+  background: var(--rust);
+  color: var(--paper-deep);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.guide-form > button:disabled {
+  cursor: not-allowed;
+  opacity: .42;
+}
+
+.guide-source {
+  display: block;
+  padding: 0 14px 12px;
+  color: rgba(189, 232, 242, .62);
+  font-size: 8px;
+  line-height: 1.4;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  padding: 0;
+  margin: -1px;
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .nautilus-guide {
+    right: 12px;
+    bottom: 78px;
+  }
+
+  .guide-trigger {
+    width: 76px;
+    height: 68px;
+  }
+
+  .guide-trigger > span {
+    font-size: 8px;
+  }
+
+  .guide-nautilus-art {
+    transform: scale(.92);
+  }
+
+  .guide-trigger:hover .guide-nautilus-art,
+  .guide-trigger:focus-visible .guide-nautilus-art {
+    animation-name: none;
+  }
+
+  .guide-hover-line {
+    bottom: 82px;
+    width: min(230px, calc(100vw - 24px));
+  }
+
+  .guide-panel {
+    bottom: 86px;
+    width: calc(100vw - 24px);
+    max-height: calc(100svh - 184px);
+  }
+
+  .guide-turns {
+    min-height: 120px;
+  }
+
+  .guide-turn p {
+    font-size: 11px;
   }
 }
 

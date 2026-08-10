@@ -666,6 +666,186 @@ const detailCopy = {
   },
 } as const;
 
+type GuideTurn = {
+  id: number;
+  role: "guide" | "user";
+  text: string;
+  locationId?: string;
+};
+
+const guideCopy = {
+  en: {
+    name: "Nori · site guide",
+    status: "SEARCHING THIS SITE ONLY",
+    ask: "Ask Nori",
+    close: "Close guide",
+    placeholder: "Ask about routes, tides, kit or finds…",
+    send: "Ask",
+    source: "Answers use the route and safety notes on this site.",
+    welcome: "Hello! I’m Nori, your nautilus guide. Ask me about a location, route, tide window, kit or collecting safety.",
+    openSite: "Open site details",
+    presets: ["How do I get to Folkestone?", "What should I check before fossil collecting?", "Which site is best for beginners?"],
+    hover: [
+      "Need a route? Ask me!",
+      "The tide is a deadline, not a suggestion.",
+      "I can search all six field guides.",
+      "Loose fossils first—cliffs are not shelves!",
+    ],
+  },
+  zh: {
+    name: "诺里 · 站内向导",
+    status: "仅检索本站资料",
+    ask: "问问诺里",
+    close: "关闭向导",
+    placeholder: "询问路线、潮汐、装备或化石……",
+    send: "提问",
+    source: "回答来自本站的路线与安全资料。",
+    welcome: "你好！我是鹦鹉螺诺里。可以问我地点路线、潮汐窗口、装备、常见化石或采集安全。",
+    openSite: "打开地点详情",
+    presets: ["如何去 Folkestone？", "化石采集前我应该注意什么？", "哪个地点最适合新手？"],
+    hover: [
+      "想查路线？问我吧！",
+      "潮水是截止时间，不是建议哦。",
+      "我能检索本站全部六份地点指南。",
+      "先找松散化石，别在崖壁下停留！",
+    ],
+  },
+} as const;
+
+const locationAliases: Record<string, string[]> = {
+  folkestone: ["folkestone", "folkestone warren", "福克斯通"],
+  "herne-bay": ["herne bay", "beltinge", "赫恩湾"],
+  walton: ["walton", "walton-on-the-naze", "naze", "沃尔顿"],
+  "wootton-bassett": ["wootton", "wootton bassett", "royal wootton bassett", "伍顿巴西特"],
+  bracklesham: ["bracklesham", "bracklesham bay", "布拉克勒舍姆"],
+  charmouth: ["charmouth", "lyme regis", "black ven", "查茅斯", "莱姆里吉斯"],
+};
+
+const normalizeGuideQuery = (value: string) => value.toLocaleLowerCase().replace(/[？?！!，,。.、:：'’“”"()（）-]/g, " ").replace(/\s+/g, " ").trim();
+
+function answerGuideQuestion(question: string, siteLocations: Location[], language: Language): Omit<GuideTurn, "id" | "role"> {
+  const query = normalizeGuideQuery(question);
+  const location = siteLocations.find((item) =>
+    [item.id, item.name, item.shortName, ...(locationAliases[item.id] ?? [])]
+      .some((alias) => query.includes(normalizeGuideQuery(alias))),
+  );
+  const isZh = language === "zh";
+  const asksRoute = /(怎么去|如何去|怎样去|路线|交通|抵达|到达|how.*(get|go)|route|train|travel)/i.test(query);
+  const asksSafety = /(注意|安全|危险|风险|准备|采集前|safe|safety|hazard|risk|before.*collect)/i.test(query);
+  const asksTide = /(潮|时间|什么时候|季节|weather|tide|when|season)/i.test(query);
+  const asksKit = /(装备|带什么|工具|穿什么|equipment|kit|bring|wear|tool)/i.test(query);
+  const asksFinds = /(化石|找到|发现|有什么|find|fossil|tooth|ammonite|belemnite|shell|牙|菊石|箭石|贝壳)/i.test(query);
+  const asksRules = /(规则|允许|可以带走|能带走|敲|挖|rule|allowed|collecting code|hammer|dig)/i.test(query);
+  const asksBeginner = /(新手|第一次|亲子|孩子|家庭|简单|beginner|first time|family|children|easy)/i.test(query);
+
+  if (asksSafety && !location) {
+    return {
+      text: isZh
+        ? "化石采集前先做四件事：①核对当天潮汐和天气，设定折返时间；②确认正式入口与已知出口；③远离崖脚、新鲜落石、裂缝和活动滑坡；④只拾取少量松散材料并遵守当地规则。海岸紧急情况拨打 999，并要求 Coastguard。"
+        : "Before collecting: 1) check the same-day tide and weather and set a turnaround time; 2) confirm the formal access and a known exit; 3) stay clear of cliff bases, fresh falls, cracks and active slips; 4) take only a few loose finds and follow local rules. In a coastal emergency, call 999 and ask for Coastguard.",
+    };
+  }
+
+  if (asksBeginner && !location) {
+    const beginner = [...siteLocations].sort((a, b) => (b.familyRating + b.accessRating) - (a.familyRating + a.accessRating))[0];
+    return {
+      text: isZh
+        ? `本站最适合第一次体验的是 ${beginner.name}：通行与亲子评分都是 ${beginner.accessRating}/5 和 ${beginner.familyRating}/5，现场风险为${riskLabel(beginner.risk, language)}。${beginner.safetyLead}`
+        : `${beginner.name} is the strongest first-trip option on this site: access ${beginner.accessRating}/5, family ${beginner.familyRating}/5, with ${riskLabel(beginner.risk, language)} field risk. ${beginner.safetyLead}`,
+      locationId: beginner.id,
+    };
+  }
+
+  if (location && asksRoute) {
+    return {
+      text: isZh
+        ? `从 ${location.departure} 出发，乘火车到 ${location.station}，典型总耗时约 ${location.duration}。到站后${location.local}，${location.walk}。现场建议：${location.tideWindow}。出发当天请重新确认班次、潮汐与通行。`
+        : `Leave from ${location.departure} and take the train to ${location.station}; typical total time is ${location.duration}. Then ${location.local}; ${location.walk}. Field timing: ${location.tideWindow}. Re-check same-day rail, tide and access conditions.`,
+      locationId: location.id,
+    };
+  }
+
+  if (location && asksSafety) {
+    return {
+      text: isZh
+        ? `${location.name} 的现场风险为${riskLabel(location.risk, language)}。${location.safetyLead} 主要危险包括：${location.hazards.slice(0, 3).join("；")}。`
+        : `${location.name} has ${riskLabel(location.risk, language)} field risk. ${location.safetyLead} Main hazards: ${location.hazards.slice(0, 3).join("; ")}.`,
+      locationId: location.id,
+    };
+  }
+
+  if (location && asksTide) {
+    return {
+      text: isZh
+        ? `${location.name}：${location.tideWindow}。推荐季节为${location.season}；现场条件建议：${location.conditions}。潮汐和通行会变化，请在出发当天再次核对。`
+        : `${location.name}: ${location.tideWindow}. Best season: ${location.season}. Conditions: ${location.conditions}. Tide and access change, so check again on the day.`,
+      locationId: location.id,
+    };
+  }
+
+  if (location && asksKit) {
+    return {
+      text: isZh
+        ? `${location.name} 必须携带：${location.required.join("、")}。建议携带：${location.useful.join("、")}。避免：${location.avoid.join("、")}。`
+        : `${location.name} essentials: ${location.required.join(", ")}. Useful: ${location.useful.join(", ")}. Avoid: ${location.avoid.join(", ")}.`,
+      locationId: location.id,
+    };
+  }
+
+  if (location && asksRules) {
+    return {
+      text: isZh
+        ? `${location.name} 的采集规则：${location.rules.join("；")} 最新现场告示优先于本站资料。`
+        : `${location.name} collecting rules: ${location.rules.join(" ")} Current on-site notices take priority over this guide.`,
+      locationId: location.id,
+    };
+  }
+
+  if (location && asksFinds) {
+    return {
+      text: isZh
+        ? `${location.name} 常见发现包括：${location.finds.map((find) => `${find.name}（${find.rarity}，${find.size}）`).join("、")}。`
+        : `At ${location.name}, look for ${location.finds.map((find) => `${find.name} (${find.rarity}, ${find.size})`).join(", ")}.`,
+      locationId: location.id,
+    };
+  }
+
+  const fossilMatches = siteLocations.filter((item) => item.finds.some((find) => {
+    const names = [find.name, find.zh].map(normalizeGuideQuery);
+    return names.some((name) => name.length > 1 && query.includes(name));
+  }));
+  if (fossilMatches.length > 0) {
+    return {
+      text: isZh
+        ? `本站记录这种化石的地点有：${fossilMatches.map((item) => item.name).join("、")}。告诉我具体地点，我可以继续查路线、时间和装备。`
+        : `This fossil appears in the guides for ${fossilMatches.map((item) => item.name).join(", ")}. Name a location and I can narrow down the route, timing and kit.`,
+    };
+  }
+
+  if (location) {
+    return {
+      text: isZh
+        ? `${location.name} 位于${location.region}，地层为${location.period}，从伦敦出发约 ${location.duration}，现场风险为${riskLabel(location.risk, language)}。可继续问我这里的路线、潮汐、装备、化石或采集规则。`
+        : `${location.name} is in ${location.region}, with ${location.period} geology. It is about ${location.duration} from London and has ${riskLabel(location.risk, language)} field risk. Ask me about its route, tide, kit, finds or rules.`,
+      locationId: location.id,
+    };
+  }
+
+  if (asksTide) {
+    return {
+      text: isZh
+        ? "不同地点的潮汐窗口差异很大。请告诉我地点名，例如 Folkestone、Herne Bay、Bracklesham Bay 或 Charmouth，我会检索对应建议。"
+        : "Tide windows vary widely. Name a location—such as Folkestone, Herne Bay, Bracklesham Bay or Charmouth—and I’ll retrieve its guidance.",
+    };
+  }
+
+  return {
+    text: isZh
+      ? "我暂时没有在本站资料中找到明确答案。可以试试“如何去 Folkestone”“Charmouth 要带什么”“哪里能找到鲨鱼牙”或“采集前要注意什么”。"
+      : "I couldn’t find a clear match in this site’s notes. Try “How do I get to Folkestone?”, “What kit for Charmouth?”, “Where can I find shark teeth?” or “What should I check before collecting?”.",
+  };
+}
+
 const markerOffsets: Record<string, { x: number; y: number }> = {
   folkestone: { x: 38, y: 22 },
   "herne-bay": { x: 46, y: -8 },
@@ -717,6 +897,22 @@ function PixelSiteIcon({ id, compact = false }: { id: string; compact?: boolean 
   );
 }
 
+function NautilusSprite({ className }: { className: string }) {
+  return (
+    <div className={className} aria-hidden="true">
+      <div className="nautilus-shell"><i /></div>
+      <div className="nautilus-hood" />
+      <div className="nautilus-eye" />
+      <div className="nautilus-tentacles">
+        <i />
+        <i />
+        <i />
+        <i />
+      </div>
+    </div>
+  );
+}
+
 function PixelCreatures() {
   return (
     <div className="dino-track" aria-hidden="true">
@@ -742,7 +938,110 @@ function PixelCreatures() {
         <div className="ichthy-highlight" />
         <div className="ichthy-bubbles" />
       </div>
+      <NautilusSprite className="pixel-nautilus" />
     </div>
+  );
+}
+
+function NautilusGuide({ language, siteLocations, onOpenLocation }: { language: Language; siteLocations: Location[]; onOpenLocation: (id: string) => void }) {
+  const t = guideCopy[language];
+  const [open, setOpen] = useState(false);
+  const [hoverLine, setHoverLine] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
+  const [turns, setTurns] = useState<GuideTurn[]>([
+    { id: 0, role: "guide", text: t.welcome },
+  ]);
+
+  useEffect(() => {
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, []);
+
+  const askQuestion = (question: string) => {
+    const cleanQuestion = question.trim();
+    if (!cleanQuestion) return;
+    const answer = answerGuideQuestion(cleanQuestion, siteLocations, language);
+    setTurns((current) => {
+      const nextId = (current.at(-1)?.id ?? 0) + 1;
+      return [
+        ...current.slice(-6),
+        { id: nextId, role: "user", text: cleanQuestion },
+        { id: nextId + 1, role: "guide", ...answer },
+      ];
+    });
+    setQuery("");
+    setOpen(true);
+  };
+
+  const showRandomLine = () => {
+    if (open) return;
+    const choices = t.hover.filter((line) => line !== hoverLine);
+    setHoverLine(choices[Math.floor(Math.random() * choices.length)] ?? t.hover[0]);
+  };
+
+  return (
+    <aside className={`nautilus-guide ${open ? "is-open" : ""}`} aria-label={t.name}>
+      {!open && hoverLine && <div className="guide-hover-line" role="status">{hoverLine}</div>}
+
+      {open && (
+        <section className="guide-panel" role="dialog" aria-label={t.name}>
+          <header className="guide-panel-header">
+            <div>
+              <strong>{t.name}</strong>
+              <span><i /> {t.status}</span>
+            </div>
+            <button type="button" onClick={() => setOpen(false)} aria-label={t.close}>×</button>
+          </header>
+
+          <div className="guide-turns" aria-live="polite">
+            {turns.map((turn) => (
+              <div key={turn.id} className={`guide-turn ${turn.role}`}>
+                <span>{turn.role === "guide" ? "N" : language === "zh" ? "你" : "YOU"}</span>
+                <div>
+                  <p>{turn.text}</p>
+                  {turn.locationId && (
+                    <button type="button" onClick={() => { onOpenLocation(turn.locationId!); setOpen(false); }}>
+                      {t.openSite} <b>→</b>
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="guide-presets" aria-label={language === "zh" ? "推荐问题" : "Suggested questions"}>
+            {t.presets.map((preset) => <button type="button" key={preset} onClick={() => askQuestion(preset)}>{preset}</button>)}
+          </div>
+
+          <form className="guide-form" onSubmit={(event) => { event.preventDefault(); askQuestion(query); }}>
+            <label>
+              <span className="sr-only">{t.placeholder}</span>
+              <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t.placeholder} autoComplete="off" />
+            </label>
+            <button type="submit" disabled={!query.trim()}>{t.send} <span>↗</span></button>
+          </form>
+          <small className="guide-source">{t.source}</small>
+        </section>
+      )}
+
+      <button
+        type="button"
+        className="guide-trigger"
+        aria-expanded={open}
+        aria-label={open ? t.close : t.ask}
+        onClick={() => { setOpen((value) => !value); setHoverLine(null); }}
+        onMouseEnter={showRandomLine}
+        onMouseLeave={() => setHoverLine(null)}
+        onFocus={showRandomLine}
+        onBlur={() => setHoverLine(null)}
+      >
+        <NautilusSprite className="guide-nautilus-art" />
+        <span>{t.ask}</span>
+      </button>
+    </aside>
   );
 }
 
@@ -776,8 +1075,8 @@ export function FossilMap() {
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setIntroPhase("done");
-      return;
+      const reducedMotionTimer = window.setTimeout(() => setIntroPhase("done"), 0);
+      return () => window.clearTimeout(reducedMotionTimer);
     }
 
     const revealTimer = window.setTimeout(() => setIntroPhase("reveal"), 2200);
@@ -903,6 +1202,8 @@ export function FossilMap() {
       </section>
 
       {selected && <LocationDetail location={selected} language={language} onBack={() => setSelectedId(null)} />}
+
+      <NautilusGuide key={language} language={language} siteLocations={localizedLocations} onOpenLocation={openLocation} />
 
       {modal && (
         <div className="modal-backdrop" onMouseDown={(event) => event.target === event.currentTarget && setModal(null)}>
