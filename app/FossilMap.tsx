@@ -8,11 +8,29 @@ type IntroPhase = "loading" | "reveal" | "done";
 
 type Find = {
   glyph: string;
+  category: string;
   name: string;
   zh: string;
   rarity: string;
   size: string;
   tip: string;
+};
+
+type GeologyUnit = {
+  name: string;
+  age: string;
+  environment: string;
+  description: string;
+  fossils: string;
+};
+
+type GeologyProfile = {
+  intro: string;
+  units: GeologyUnit[];
+  beds: string[];
+  fieldNote: string;
+  sourceLabel: string;
+  sourceLink: string;
 };
 
 type Location = {
@@ -45,6 +63,7 @@ type Location = {
   season: string;
   conditions: string;
   finds: Find[];
+  geology?: Record<Language, GeologyProfile>;
   required: string[];
   useful: string[];
   avoid: string[];
@@ -93,11 +112,86 @@ const locations: Location[] = [
     tideWindow: "Arrive 2 hours before low tide",
     season: "Spring–autumn; winter only in settled weather",
     conditions: "Best after safe beach scouring; avoid recent cliff falls",
+    geology: {
+      en: {
+        intro: "Folkestone exposes a compact Early Cretaceous story: shallow green sand below, fossil-rich blue marine clay in the middle, and grey chalk above. Most loose foreshore finds come from the Gault Clay.",
+        units: [
+          {
+            name: "Folkestone Sand Formation",
+            age: "Late Aptian–Early Albian · c. 115 Ma",
+            environment: "Shallow inshore sea",
+            description: "Medium to coarse, glauconite-rich green sand and soft sandstone forming the lower part of the succession.",
+            fossils: "Fossils are uncommon; look for echinoids, oysters, gastropods and ammonites.",
+          },
+          {
+            name: "Gault Clay Formation",
+            age: "Albian · c. 100 Ma",
+            environment: "Calm, relatively deep sea",
+            description: "Stiff blue clay visible around Copt Point. Weathering and waves release most of Folkestone's collectible foreshore fossils.",
+            fossils: "Bivalves, ammonites, belemnites and crinoids are common; crabs, fish and shark remains are less frequent; marine reptiles are rare.",
+          },
+          {
+            name: "Lower Chalk",
+            age: "Cenomanian",
+            environment: "Moderately deep sea",
+            description: "Grey chalk caps the Gault Clay and continues west toward Samphire Hoe.",
+            fossils: "Marine invertebrates are common; fish and reptile remains are rare.",
+          },
+        ],
+        beds: [
+          "Mammillatum beds · Early Albian",
+          "Beds I–VII · Middle Albian · Lower Gault",
+          "Beds VIII–XIII · Late Albian · Upper Gault",
+        ],
+        fieldNote: "Collect only loose, wave-washed material. Do not dig into the Gault cliff or bedrock: Folkestone Warren is an SSSI. If provenance matters, record the bed number and exact loose-find context.",
+        sourceLabel: "Folkestone Fossils · The Geology",
+        sourceLink: "https://www.folkestonefossils.co.uk/the-geology",
+      },
+      zh: {
+        intro: "Folkestone 的海岸剖面浓缩了早白垩世的一段环境变化：下部是浅海绿砂，中部是富含化石的蓝色海相黏土，上部则被灰色白垩层覆盖。潮间带的大多数松散化石来自 Gault Clay。",
+        units: [
+          {
+            name: "Folkestone Sand Formation · 福克斯通砂层",
+            age: "晚阿普第期–早阿尔布期 · 约 1.15 亿年前",
+            environment: "近岸浅海",
+            description: "由富含海绿石的中粗粒绿砂和松软砂岩组成，位于剖面的下部。",
+            fossils: "化石较少，可留意海胆、牡蛎、腹足类和菊石。",
+          },
+          {
+            name: "Gault Clay Formation · 高尔特黏土层",
+            age: "阿尔布期 · 约 1 亿年前",
+            environment: "平静、相对较深的海洋",
+            description: "Copt Point 一带可见的坚硬蓝色黏土。风化和海浪会释放 Folkestone 潮间带中大多数可采集化石。",
+            fossils: "双壳类、菊石、箭石和海百合较常见；螃蟹、鱼类和鲨鱼遗骸较少；海生爬行动物非常罕见。",
+          },
+          {
+            name: "Lower Chalk · 下部白垩层",
+            age: "森诺曼期",
+            environment: "中等深度海洋",
+            description: "灰色白垩层覆盖在 Gault Clay 上方，并向西延伸至 Samphire Hoe。",
+            fossils: "海生无脊椎动物常见，鱼类和爬行动物遗骸罕见。",
+          },
+        ],
+        beds: [
+          "Mammillatum 层 · 早阿尔布期",
+          "第 I–VII 层 · 中阿尔布期 · 下部 Gault",
+          "第 VIII–XIII 层 · 晚阿尔布期 · 上部 Gault",
+        ],
+        fieldNote: "只采集海浪冲刷出的松散材料。Folkestone Warren 属 SSSI，不要挖掘 Gault 悬崖或敲击基岩。若标本需要科学产地信息，请记录层位编号与松散发现环境。",
+        sourceLabel: "Folkestone Fossils · 地质学资料",
+        sourceLink: "https://www.folkestonefossils.co.uk/the-geology",
+      },
+    },
     finds: [
-      { glyph: "◎", name: "Ammonite", zh: "菊石", rarity: "Common", size: "2–15 cm", tip: "Look for ribbed coils or pearly shell." },
-      { glyph: "│", name: "Belemnite", zh: "箭石", rarity: "Common", size: "2–8 cm", tip: "Bullet-shaped guards in dark clay." },
-      { glyph: "✣", name: "Echinoid", zh: "海胆", rarity: "Occasional", size: "2–6 cm", tip: "Five-fold petal pattern on the test." },
-      { glyph: "⌁", name: "Crab", zh: "蟹", rarity: "Uncommon", size: "1–8 cm", tip: "Nodular carapace inside clay concretions." },
+      { glyph: "◎", category: "Ammonites & Heteromorphs", name: "Ammonite", zh: "菊石", rarity: "Common", size: "2–15 cm", tip: "Look for ribbed coils or pearly shell." },
+      { glyph: "│", category: "Other Cephalopods", name: "Belemnite", zh: "箭石", rarity: "Common", size: "2–8 cm", tip: "Bullet-shaped guards in dark clay." },
+      { glyph: "✣", category: "Echinoderms", name: "Echinoid", zh: "海胆", rarity: "Occasional", size: "2–6 cm", tip: "Five-fold petal pattern on the test." },
+      { glyph: "⌁", category: "Crabs", name: "Crab", zh: "蟹", rarity: "Uncommon", size: "1–8 cm", tip: "Nodular carapace inside clay concretions." },
+      { glyph: "◒", category: "Bivalves & Brachiopods", name: "Bivalve", zh: "双壳类", rarity: "Common", size: "1–8 cm", tip: "Fine ribs and paired shell symmetry in blue clay." },
+      { glyph: "✣", category: "Echinoderms", name: "Crinoid ossicle", zh: "海百合茎节", rarity: "Common", size: "2–15 mm", tip: "Tiny discs or star-centred stem segments." },
+      { glyph: "◉", category: "Other Cephalopods", name: "Nautiloid", zh: "鹦鹉螺类", rarity: "Rare", size: "1–5 cm", tip: "A smoother, more robust coil than most ammonites." },
+      { glyph: "▲", category: "Shark Teeth", name: "Shark or fish remain", zh: "鲨鱼或鱼类遗骸", rarity: "Rare", size: "3–30 mm", tip: "Check for glossy enamel teeth, scales and vertebrae." },
+      { glyph: "◇", category: "Reptile", name: "Marine reptile fragment", zh: "海生爬行动物碎片", rarity: "Very rare", size: "Varies", tip: "Record the context and ask a museum before preparing it." },
     ],
     required: ["Sturdy grippy boots", "Gloves", "Eye protection", "Water", "Wrapping tissue"],
     useful: ["Small pick", "Sample boxes", "Knee pads"],
@@ -146,10 +240,10 @@ const locations: Location[] = [
     season: "Spring tides throughout the year",
     conditions: "Light wind and a strong falling tide expose the fish bed",
     finds: [
-      { glyph: "▲", name: "Shark tooth", zh: "鲨鱼牙", rarity: "Common", size: "3–35 mm", tip: "Dark enamel points against pale shingle." },
-      { glyph: "▰", name: "Ray plate", zh: "鳐鱼齿板", rarity: "Common", size: "2–20 mm", tip: "Flat ridged crushing surfaces." },
-      { glyph: "◈", name: "Fish remain", zh: "鱼类遗骸", rarity: "Occasional", size: "2–30 mm", tip: "Glossy teeth, spines and vertebrae." },
-      { glyph: "▱", name: "Turtle fragment", zh: "龟甲碎片", rarity: "Rare", size: "1–5 cm", tip: "Fine pitted texture, unlike flint." },
+      { glyph: "▲", category: "Shark Teeth", name: "Shark tooth", zh: "鲨鱼牙", rarity: "Common", size: "3–35 mm", tip: "Dark enamel points against pale shingle." },
+      { glyph: "▰", category: "Fish", name: "Ray plate", zh: "鳐鱼齿板", rarity: "Common", size: "2–20 mm", tip: "Flat ridged crushing surfaces." },
+      { glyph: "◈", category: "Fish", name: "Fish remain", zh: "鱼类遗骸", rarity: "Occasional", size: "2–30 mm", tip: "Glossy teeth, spines and vertebrae." },
+      { glyph: "▱", category: "Reptile", name: "Turtle fragment", zh: "龟甲碎片", rarity: "Rare", size: "1–5 cm", tip: "Fine pitted texture, unlike flint." },
     ],
     required: ["Wellington boots", "Warm layers", "Small specimen pot", "Tide plan", "Tweezers"],
     useful: ["2 mm sieve", "Knee pads", "Hand lens"],
@@ -198,10 +292,10 @@ const locations: Location[] = [
     season: "Autumn–spring after safe scouring",
     conditions: "Productive after storms, but only once cliffs have settled",
     finds: [
-      { glyph: "▲", name: "Shark tooth", zh: "鲨鱼牙", rarity: "Occasional", size: "5–45 mm", tip: "Blue-black enamel among pyrite and wood." },
-      { glyph: "⌇", name: "Fossil wood", zh: "化石木", rarity: "Common", size: "1–20 cm", tip: "Grain-like texture; often pyritised." },
-      { glyph: "◒", name: "Red Crag shell", zh: "红砂层贝类", rarity: "Common", size: "1–8 cm", tip: "Fragile orange-brown shells in loose sand." },
-      { glyph: "✦", name: "Bird bone", zh: "鸟类骨骼", rarity: "Very rare", size: "1–6 cm", tip: "Thin-walled; report rather than prepare." },
+      { glyph: "▲", category: "Shark Teeth", name: "Shark tooth", zh: "鲨鱼牙", rarity: "Occasional", size: "5–45 mm", tip: "Blue-black enamel among pyrite and wood." },
+      { glyph: "⌇", category: "Plant Fossils", name: "Fossil wood", zh: "化石木", rarity: "Common", size: "1–20 cm", tip: "Grain-like texture; often pyritised." },
+      { glyph: "◒", category: "Bivalves & Brachiopods", name: "Red Crag shell", zh: "红砂层贝类", rarity: "Common", size: "1–8 cm", tip: "Fragile orange-brown shells in loose sand." },
+      { glyph: "✦", category: "Vertebrates", name: "Bird bone", zh: "鸟类骨骼", rarity: "Very rare", size: "1–6 cm", tip: "Thin-walled; report rather than prepare." },
     ],
     required: ["Sturdy boots", "Tide plan", "Water", "Rigid sample boxes", "Tissue"],
     useful: ["Knee pads", "Small trowel", "Hand lens"],
@@ -249,10 +343,10 @@ const locations: Location[] = [
     season: "Drier spells in late spring–early autumn",
     conditions: "Avoid after prolonged rain or any sign of spring activity",
     finds: [
-      { glyph: "│", name: "Belemnite", zh: "箭石", rarity: "Common", size: "1–8 cm", tip: "Smooth bullet-shaped calcite guards." },
-      { glyph: "◎", name: "Ammonite", zh: "菊石", rarity: "Common", size: "1–8 cm", tip: "Small pyritised coils in washed sediment." },
-      { glyph: "▲", name: "Fish & shark tooth", zh: "鱼与鲨鱼牙", rarity: "Occasional", size: "1–12 mm", tip: "Use a fine sieve; most are tiny." },
-      { glyph: "◒", name: "Mollusc", zh: "软体动物", rarity: "Common", size: "2–40 mm", tip: "Delicate shells may retain original form." },
+      { glyph: "│", category: "Other Cephalopods", name: "Belemnite", zh: "箭石", rarity: "Common", size: "1–8 cm", tip: "Smooth bullet-shaped calcite guards." },
+      { glyph: "◎", category: "Ammonites & Heteromorphs", name: "Ammonite", zh: "菊石", rarity: "Common", size: "1–8 cm", tip: "Small pyritised coils in washed sediment." },
+      { glyph: "▲", category: "Shark Teeth", name: "Fish & shark tooth", zh: "鱼与鲨鱼牙", rarity: "Occasional", size: "1–12 mm", tip: "Use a fine sieve; most are tiny." },
+      { glyph: "◒", category: "Bivalves & Brachiopods", name: "Mollusc", zh: "软体动物", rarity: "Common", size: "2–40 mm", tip: "Delicate shells may retain original form." },
     ],
     required: ["Wellington boots", "Gloves", "Water", "OS map", "Phone in dry bag"],
     useful: ["Fine sieve", "Trowel", "Lidded bucket"],
@@ -301,10 +395,10 @@ const locations: Location[] = [
     season: "Spring and early autumn scouring tides",
     conditions: "Good after beach scouring; calm weather suits families",
     finds: [
-      { glyph: "▲", name: "Shark tooth", zh: "鲨鱼牙", rarity: "Common", size: "3–35 mm", tip: "Black triangular enamel on wet sand." },
-      { glyph: "▰", name: "Ray tooth", zh: "鳐鱼牙", rarity: "Common", size: "3–20 mm", tip: "Low rectangular ridged plates." },
-      { glyph: "◒", name: "Bivalve", zh: "双壳类", rarity: "Common", size: "1–10 cm", tip: "Fine shell ribs; lift delicate examples gently." },
-      { glyph: "●", name: "Nummulite", zh: "货币虫", rarity: "Very common", size: "5–25 mm", tip: "Coin-shaped single-celled fossils." },
+      { glyph: "▲", category: "Shark Teeth", name: "Shark tooth", zh: "鲨鱼牙", rarity: "Common", size: "3–35 mm", tip: "Black triangular enamel on wet sand." },
+      { glyph: "▰", category: "Fish", name: "Ray tooth", zh: "鳐鱼牙", rarity: "Common", size: "3–20 mm", tip: "Low rectangular ridged plates." },
+      { glyph: "◒", category: "Bivalves & Brachiopods", name: "Bivalve", zh: "双壳类", rarity: "Common", size: "1–10 cm", tip: "Fine shell ribs; lift delicate examples gently." },
+      { glyph: "●", category: "Microfossils", name: "Nummulite", zh: "货币虫", rarity: "Very common", size: "5–25 mm", tip: "Coin-shaped single-celled fossils." },
     ],
     required: ["Beach shoes or boots", "Tide plan", "Water", "Small containers", "Sun / wind layer"],
     useful: ["Long-handled trowel", "Sieve", "Knee pads"],
@@ -353,10 +447,10 @@ const locations: Location[] = [
     season: "Autumn–spring, after storms once slopes settle",
     conditions: "Fresh wash-outs can be productive; avoid active slips",
     finds: [
-      { glyph: "◎", name: "Ammonite", zh: "菊石", rarity: "Common", size: "1–30 cm", tip: "Ribbed coils inside split nodules or shingle." },
-      { glyph: "│", name: "Belemnite", zh: "箭石", rarity: "Common", size: "2–10 cm", tip: "Dark bullet-like guards among grey shale." },
-      { glyph: "⌁", name: "Coprolite", zh: "粪化石", rarity: "Occasional", size: "1–8 cm", tip: "Irregular dense forms, often with inclusions." },
-      { glyph: "◇", name: "Vertebrate bone", zh: "脊椎动物骨骼", rarity: "Rare", size: "Varies", tip: "Porous structure; record important finds." },
+      { glyph: "◎", category: "Ammonites & Heteromorphs", name: "Ammonite", zh: "菊石", rarity: "Common", size: "1–30 cm", tip: "Ribbed coils inside split nodules or shingle." },
+      { glyph: "│", category: "Other Cephalopods", name: "Belemnite", zh: "箭石", rarity: "Common", size: "2–10 cm", tip: "Dark bullet-like guards among grey shale." },
+      { glyph: "⌁", category: "Trace Fossils", name: "Coprolite", zh: "粪化石", rarity: "Occasional", size: "1–8 cm", tip: "Irregular dense forms, often with inclusions." },
+      { glyph: "◇", category: "Vertebrates", name: "Vertebrate bone", zh: "脊椎动物骨骼", rarity: "Rare", size: "Varies", tip: "Porous structure; record important finds." },
     ],
     required: ["Sturdy boots", "Tide plan", "Waterproof layer", "Wrapping tissue", "Water"],
     useful: ["Safety goggles", "Small geological hammer", "Sample boxes"],
@@ -399,7 +493,17 @@ const locationZh: Record<string, LocationTranslation> = {
     tideWindow: "低潮前 2 小时抵达",
     season: "春至秋；冬季仅限天气稳定时",
     conditions: "安全的海滩冲刷后较佳；避开近期崖体坍塌",
-    findTips: ["寻找带肋纹的螺旋或珍珠光泽外壳。", "深色黏土中的子弹状鞘。", "壳体上可见五瓣花纹。", "黏土结核中呈瘤状的甲壳。"],
+    findTips: [
+      "寻找带肋纹的螺旋或珍珠光泽外壳。",
+      "深色黏土中的子弹状鞘。",
+      "壳体上可见五瓣花纹。",
+      "黏土结核中呈瘤状的甲壳。",
+      "蓝色黏土中可见细肋和成对的壳体对称。",
+      "寻找微小圆片，中心有时呈星形。",
+      "外壳通常比菊石更平滑、更厚实。",
+      "留意有光泽的牙釉质、鳞片和椎骨。",
+      "记录发现环境，处理前先咨询博物馆。",
+    ],
     required: ["防滑结实靴", "手套", "护目镜", "饮用水", "包裹纸巾"],
     useful: ["小型地质镐", "标本盒", "护膝"],
     avoid: ["在悬崖附近使用重锤", "停留在新鲜崩塌物下方"],
@@ -557,11 +661,27 @@ const locationZh: Record<string, LocationTranslation> = {
 };
 
 const rarityZh: Record<string, string> = {
+  "Very common": "非常常见",
   Common: "常见",
   Occasional: "偶见",
   Uncommon: "少见",
   Rare: "罕见",
   "Very rare": "非常罕见",
+};
+
+const fossilCategoryZh: Record<string, string> = {
+  "Ammonites & Heteromorphs": "菊石与异形菊石",
+  "Other Cephalopods": "其他头足类",
+  Echinoderms: "棘皮动物",
+  Crabs: "螃蟹",
+  "Bivalves & Brachiopods": "双壳类与腕足类",
+  "Shark Teeth": "鲨鱼牙",
+  Fish: "鱼类",
+  Reptile: "爬行动物",
+  Microfossils: "微化石",
+  "Trace Fossils": "遗迹化石",
+  "Plant Fossils": "植物化石",
+  Vertebrates: "脊椎动物",
 };
 
 const localizeLocation = (location: Location, language: Language): Location => {
@@ -574,6 +694,7 @@ const localizeLocation = (location: Location, language: Language): Location => {
       ...find,
       name: find.zh,
       zh: find.name,
+      category: fossilCategoryZh[find.category] ?? find.category,
       rarity: rarityZh[find.rarity] ?? find.rarity,
       tip: translation.findTips[index],
     })),
@@ -633,8 +754,8 @@ const detailCopy = {
     nearestStation: "nearest station", access: "Beach / field access", recommendedStart: "recommended start", exitPoint: "Exit point",
     cafe: "Café", onFoot: "ON FOOT", actionMap: "ACTION MAP · COORDINATES APPROXIMATE",
     walkingRoute: "walking route", collectingKey: "collecting area", hazardKey: "hazard", allSites: "All UK sites",
-    locationDetails: "Location details", navRoute: "Route", navFinds: "Finds", navKit: "Kit", navRules: "Rules",
-    section1: "How to get there", section2: "Recommended route", section3: "What you may find", section4: "Best time to visit",
+    locationDetails: "Location details", navRoute: "Route", navGeology: "Geology", navFinds: "Field guide", navKit: "Kit", navRules: "Rules",
+    section1: "How to get there", section2: "Recommended route", section3: "Collector's field guide", section4: "Best time to visit",
     section5: "Equipment", section6: "Safety", section7: "Environment & collecting rules", typicalTotal: "Typical total",
     london: "LONDON", recommendedDeparture: "recommended departure", train: "TRAIN", checkService: "check same-day service", local: "LOCAL",
     planRail: "Plan on National Rail", openMaps: "Open route in maps", terrain: "TERRAIN", exit: "EXIT", typical: "TYPICAL",
@@ -645,14 +766,16 @@ const detailCopy = {
     siteSpecific: "Rules are site-specific. Check current designation and access notices.", source: "SOURCE", reviewed: "LAST REVIEWED",
     precision: "Location precision: approximate · Guidance may change",
     findFrequency: "FIND FREQUENCY", accessRating: "ACCESS", familyRating: "FAMILY",
+    geologyTitle: "Folkestone geology", formations: "FORMATIONS", environment: "ENVIRONMENT", typicalFossils: "TYPICAL FOSSILS",
+    bedContext: "GAULT BED CONTEXT", fieldRule: "FIELD NOTE", reference: "REFERENCE", category: "CATEGORY",
   },
   zh: {
     risk: "风险", lowWater: "低潮水位", collectingArea: "大致采集区域", hazard: "危险区域", rail: "铁路",
     nearestStation: "最近火车站", access: "海滩 / 现场入口", recommendedStart: "推荐起点", exitPoint: "撤离点",
     cafe: "咖啡馆", onFoot: "步行", actionMap: "行动地图 · 坐标为近似位置",
     walkingRoute: "步行路线", collectingKey: "采集区域", hazardKey: "危险区域", allSites: "返回英国全部地点",
-    locationDetails: "地点信息", navRoute: "路线", navFinds: "化石", navKit: "装备", navRules: "规则",
-    section1: "如何抵达", section2: "推荐现场路线", section3: "可能找到什么", section4: "最佳前往时间",
+    locationDetails: "地点信息", navRoute: "路线", navGeology: "地质", navFinds: "图鉴", navKit: "装备", navRules: "规则",
+    section1: "如何抵达", section2: "推荐现场路线", section3: "可收集化石图鉴", section4: "最佳前往时间",
     section5: "装备清单", section6: "安全信息", section7: "环境与采集规则", typicalTotal: "典型总耗时",
     london: "伦敦", recommendedDeparture: "推荐出发站", train: "火车", checkService: "出发当天再次确认班次", local: "当地交通",
     planRail: "在 National Rail 规划行程", openMaps: "在地图中打开路线", terrain: "地形", exit: "撤离", typical: "典型尺寸",
@@ -663,6 +786,8 @@ const detailCopy = {
     siteSpecific: "不同地点的规则各不相同。请核对最新保护地指定信息和通行告示。", source: "信息来源", reviewed: "最后核验",
     precision: "地点精度：近似 · 指南可能更新",
     findFrequency: "发现频率", accessRating: "通行难度", familyRating: "亲子适合度",
+    geologyTitle: "Folkestone 地质剖面", formations: "地层单元", environment: "沉积环境", typicalFossils: "典型化石",
+    bedContext: "GAULT 层位线索", fieldRule: "现场采集提示", reference: "参考资料", category: "类别",
   },
 } as const;
 
@@ -962,6 +1087,14 @@ const markerStyle = (location: Location, index: number) => {
 
 const riskClass = (risk: Risk) => `risk-${risk.toLowerCase()}`;
 const riskLabel = (risk: Risk, language: Language) => language === "en" ? risk : ({ LOW: "低", MODERATE: "中", HIGH: "高" }[risk]);
+const rarityClass = (rarity: string) => {
+  if (/very rare|非常罕见/i.test(rarity)) return "rarity-very-rare";
+  if (/rare|罕见/i.test(rarity)) return "rarity-rare";
+  if (/uncommon|少见/i.test(rarity)) return "rarity-uncommon";
+  if (/occasional|偶见/i.test(rarity)) return "rarity-occasional";
+  if (/very common|非常常见/i.test(rarity)) return "rarity-very-common";
+  return "rarity-common";
+};
 
 function AmmoniteMark({ small = false }: { small?: boolean }) {
   return (
@@ -980,6 +1113,34 @@ function AmmoniteMark({ small = false }: { small?: boolean }) {
 function PixelSiteIcon({ id, compact = false }: { id: string; compact?: boolean }) {
   return (
     <span className={`site-pixel-icon icon-${id} ${compact ? "compact" : ""}`} aria-hidden="true">
+      <i />
+      <b />
+      <em />
+    </span>
+  );
+}
+
+function fossilIconClass(find: Find) {
+  const text = `${find.name} ${find.zh} ${find.category}`.toLowerCase();
+  if (/belemnite|箭石/.test(text)) return "belemnite";
+  if (/nautiloid|鹦鹉螺/.test(text)) return "nautiloid";
+  if (/ammonite|菊石/.test(text)) return "ammonite";
+  if (/crinoid|海百合/.test(text)) return "crinoid";
+  if (/echinoid|海胆/.test(text)) return "echinoid";
+  if (/crab|蟹/.test(text)) return "crab";
+  if (/shark|tooth|ray|鲨|牙|鳐/.test(text)) return "tooth";
+  if (/fish|鱼/.test(text)) return "fish";
+  if (/bivalve|brachiopod|mollusc|shell|双壳|腕足|贝|软体/.test(text)) return "shell";
+  if (/wood|plant|木|植物/.test(text)) return "wood";
+  if (/nummulite|microfossil|货币虫|微化石/.test(text)) return "micro";
+  if (/coprolite|trace|粪|遗迹/.test(text)) return "trace";
+  if (/bone|reptile|turtle|bird|vertebrate|骨|爬行|龟|鸟/.test(text)) return "bone";
+  return "fossil";
+}
+
+function PixelFossilIcon({ find }: { find: Find }) {
+  return (
+    <span className={`pixel-fossil fossil-${fossilIconClass(find)}`} aria-hidden="true">
       <i />
       <b />
       <em />
@@ -1328,6 +1489,7 @@ export function FossilMap() {
 function LocationDetail({ location, language, onBack }: { location: Location; language: Language; onBack: () => void }) {
   const t = detailCopy[language];
   const locationNumber = String(locations.findIndex((item) => item.id === location.id) + 1).padStart(2, "0");
+  const geology = location.geology?.[language];
 
   return (
     <section className="detail-view detail-text-only">
@@ -1354,6 +1516,7 @@ function LocationDetail({ location, language, onBack }: { location: Location; la
 
         <nav className="section-nav" aria-label={t.locationDetails}>
           <a href="#get-there">{t.navRoute}</a>
+          {geology && <a href="#geology">{t.navGeology}</a>}
           <a href="#finds">{t.navFinds}</a>
           <a href="#equipment">{t.navKit}</a>
           <a href="#rules">{t.navRules}</a>
@@ -1385,14 +1548,47 @@ function LocationDetail({ location, language, onBack }: { location: Location; la
             </div>
           </section>
 
+          {geology && (
+            <section className="info-section geology-section" id="geology">
+              <SectionTitle number="GEO" title={t.geologyTitle} />
+              <p className="geology-intro">{geology.intro}</p>
+              <div className="geology-label">{t.formations}</div>
+              <div className="geology-units">
+                {geology.units.map((unit, index) => (
+                  <article key={unit.name}>
+                    <header>
+                      <span>{String(index + 1).padStart(2, "0")}</span>
+                      <div><h3>{unit.name}</h3><small>{unit.age}</small></div>
+                    </header>
+                    <p className="geology-environment"><span>{t.environment}</span>{unit.environment}</p>
+                    <p>{unit.description}</p>
+                    <p className="geology-fossils"><span>{t.typicalFossils}</span>{unit.fossils}</p>
+                  </article>
+                ))}
+              </div>
+              <div className="geology-notes">
+                <div>
+                  <span>{t.bedContext}</span>
+                  <ol>{geology.beds.map((bed) => <li key={bed}>{bed}</li>)}</ol>
+                </div>
+                <aside><span>{t.fieldRule}</span><p>{geology.fieldNote}</p></aside>
+              </div>
+              <a className="geology-source" href={geology.sourceLink} target="_blank" rel="noreferrer">
+                <span>{t.reference}</span>{geology.sourceLabel} ↗
+              </a>
+            </section>
+          )}
+
           <section className="info-section" id="finds">
             <SectionTitle number="03" title={t.section3} />
             <div className="finds-grid">
               {location.finds.map((find) => (
                 <article key={find.name}>
-                  <span className="find-glyph">{find.glyph}</span>
-                  <div><h3>{find.name}</h3><p className="find-zh">{find.zh}</p></div>
-                  <span className="rarity">{find.rarity}</span>
+                  <div className="find-card-top">
+                    <PixelFossilIcon find={find} />
+                    <div><span className="find-category">{find.category}</span><h3>{find.name}</h3><p className="find-zh">{find.zh}</p></div>
+                  </div>
+                  <span className={`rarity ${rarityClass(find.rarity)}`}>{find.rarity}</span>
                   <p>{find.tip}</p>
                   <small>{t.typical} · {find.size}</small>
                 </article>

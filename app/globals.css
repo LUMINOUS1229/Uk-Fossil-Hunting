@@ -4765,3 +4765,578 @@ body {
     animation: none;
   }
 }
+
+/* Folkestone geology dossier */
+.geology-intro {
+  margin: 0 0 18px;
+  padding: 14px 16px;
+  border-left: 6px solid var(--rust);
+  background: rgba(255, 209, 102, .14);
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.geology-label {
+  margin-bottom: 8px;
+  color: var(--ink-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: .12em;
+}
+
+.geology-units {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.geology-units article {
+  position: relative;
+  min-height: 310px;
+  overflow: hidden;
+  padding: 14px 13px 16px 21px;
+  border: 2px solid var(--line);
+  background: rgba(245, 243, 233, .72);
+  box-shadow: 4px 4px 0 rgba(4, 61, 85, .12);
+}
+
+.geology-units article::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 9px;
+  border-right: 2px solid var(--line);
+  background: repeating-linear-gradient(0deg, #c6a65e 0 8px, #e7d390 8px 14px);
+  content: "";
+}
+
+.geology-units article:nth-child(2)::before {
+  background: repeating-linear-gradient(0deg, #47788a 0 7px, #84aeb7 7px 12px);
+}
+
+.geology-units article:nth-child(3)::before {
+  background: repeating-linear-gradient(0deg, #dbe3db 0 9px, #b7c9c2 9px 12px);
+}
+
+.geology-units header {
+  display: grid;
+  grid-template-columns: 25px 1fr;
+  gap: 8px;
+  align-items: start;
+  min-height: 82px;
+}
+
+.geology-units header > span {
+  display: grid;
+  width: 23px;
+  height: 23px;
+  place-items: center;
+  border: 2px solid var(--ink);
+  background: var(--rust);
+  color: var(--paper-deep);
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+}
+
+.geology-units h3 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-mono), monospace;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.geology-units header small {
+  display: block;
+  margin-top: 6px;
+  color: var(--rust);
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  line-height: 1.35;
+}
+
+.geology-units article > p {
+  margin: 12px 0 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.geology-units .geology-environment,
+.geology-units .geology-fossils {
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.geology-units article p > span {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--ink);
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  letter-spacing: .08em;
+}
+
+.geology-notes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.geology-notes > div,
+.geology-notes aside {
+  padding: 14px;
+  border: 2px solid var(--line);
+}
+
+.geology-notes aside {
+  background: rgba(255, 103, 70, .09);
+}
+
+.geology-notes > div > span,
+.geology-notes aside > span,
+.geology-source > span {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--rust);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: .09em;
+}
+
+.geology-notes ol {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: geology-bed;
+}
+
+.geology-notes li {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.45;
+  counter-increment: geology-bed;
+}
+
+.geology-notes li::before {
+  margin-right: 7px;
+  color: var(--rust);
+  content: "▰";
+}
+
+.geology-notes p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.geology-source {
+  display: block;
+  margin-top: 8px;
+  padding: 12px 14px;
+  border: 2px solid var(--line);
+  color: var(--ink);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  text-decoration: none;
+}
+
+.geology-source:hover,
+.geology-source:focus-visible {
+  border-color: var(--rust);
+  color: var(--rust);
+}
+
+/* Collectible fossil field guide */
+.finds-grid article {
+  display: block;
+  min-height: 208px;
+  padding: 13px 13px 34px;
+  border: 2px solid var(--line);
+  background:
+    linear-gradient(rgba(4, 61, 85, .035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(4, 61, 85, .035) 1px, transparent 1px),
+    rgba(245, 243, 233, .72);
+  background-size: 8px 8px;
+  box-shadow: 4px 4px 0 rgba(4, 61, 85, .11);
+}
+
+.find-card-top {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding-right: 74px;
+}
+
+.find-category {
+  display: block;
+  overflow: hidden;
+  margin-bottom: 6px;
+  color: var(--rust);
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  letter-spacing: .05em;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+}
+
+.finds-grid .find-card-top h3 {
+  margin-top: 0;
+  line-height: 1.2;
+}
+
+.finds-grid .rarity {
+  top: 12px;
+  right: 10px;
+  padding: 4px 6px;
+  border: 1px solid currentColor;
+  background: var(--paper-deep);
+  box-shadow: 2px 2px 0 rgba(4, 61, 85, .13);
+  letter-spacing: .04em;
+}
+
+.rarity-very-common,
+.rarity-common { color: #277c63; }
+.rarity-occasional { color: #8c6c16; }
+.rarity-uncommon { color: #a64f2d; }
+.rarity-rare { color: #a33b4e; }
+.rarity-very-rare { color: #74449a; }
+
+.finds-grid article > p {
+  margin-top: 16px;
+}
+
+.pixel-fossil {
+  --fossil: var(--rust);
+  position: relative;
+  display: block;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  overflow: hidden;
+  border: 2px solid var(--line);
+  background: var(--paper);
+  box-shadow: 3px 3px 0 rgba(4, 61, 85, .18);
+  image-rendering: pixelated;
+}
+
+.pixel-fossil i,
+.pixel-fossil b,
+.pixel-fossil em {
+  position: absolute;
+  display: block;
+  background: var(--fossil);
+  content: "";
+}
+
+.fossil-ammonite i,
+.fossil-nautiloid i {
+  top: 7px;
+  left: 7px;
+  width: 27px;
+  height: 27px;
+  border: 5px solid var(--fossil);
+  border-radius: 50%;
+  background: transparent;
+}
+
+.fossil-ammonite i::after,
+.fossil-nautiloid i::after {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 7px;
+  height: 7px;
+  border: 3px solid var(--fossil);
+  border-radius: 50%;
+  content: "";
+}
+
+.fossil-ammonite b,
+.fossil-nautiloid b {
+  right: 5px;
+  bottom: 7px;
+  width: 17px;
+  height: 6px;
+}
+
+.fossil-ammonite em,
+.fossil-nautiloid em {
+  right: 7px;
+  bottom: 4px;
+  width: 4px;
+  height: 4px;
+  box-shadow: -7px 0 0 var(--fossil);
+}
+
+.fossil-nautiloid { --fossil: #477f92; }
+.fossil-nautiloid i { border-width: 6px; }
+
+.fossil-belemnite i {
+  top: 5px;
+  left: 18px;
+  width: 12px;
+  height: 34px;
+  clip-path: polygon(30% 0, 70% 0, 100% 78%, 50% 100%, 0 78%);
+}
+
+.fossil-belemnite b {
+  top: 10px;
+  left: 21px;
+  width: 3px;
+  height: 21px;
+  background: #f0bb76;
+}
+
+.fossil-belemnite em {
+  right: 8px;
+  bottom: 8px;
+  width: 5px;
+  height: 5px;
+  box-shadow: -31px -25px 0 #477f92;
+}
+
+.fossil-echinoid i {
+  top: 8px;
+  left: 8px;
+  width: 28px;
+  height: 28px;
+  border: 4px solid var(--fossil);
+  border-radius: 50%;
+  background: transparent;
+}
+
+.fossil-echinoid b {
+  top: 21px;
+  left: 21px;
+  width: 4px;
+  height: 4px;
+  box-shadow: 0 -10px 0 var(--fossil), 0 10px 0 var(--fossil), -10px 0 0 var(--fossil), 10px 0 0 var(--fossil), -7px -7px 0 var(--fossil), 7px 7px 0 var(--fossil);
+}
+
+.fossil-echinoid em {
+  top: 15px;
+  left: 15px;
+  width: 4px;
+  height: 4px;
+  box-shadow: 12px 0 0 #477f92, 6px 12px 0 #477f92;
+}
+
+.fossil-crinoid i {
+  top: 20px;
+  left: 6px;
+  width: 8px;
+  height: 8px;
+  border: 2px solid var(--fossil);
+  background: transparent;
+  box-shadow: 10px 0 0 -2px var(--paper), 10px 0 0 0 var(--fossil), 20px 0 0 -2px var(--paper), 20px 0 0 0 var(--fossil), 30px 0 0 -2px var(--paper), 30px 0 0 0 var(--fossil);
+}
+
+.fossil-crinoid b {
+  top: 23px;
+  left: 9px;
+  width: 2px;
+  height: 2px;
+  background: #477f92;
+  box-shadow: 10px 0 0 #477f92, 20px 0 0 #477f92, 30px 0 0 #477f92;
+}
+
+.fossil-crab i {
+  top: 15px;
+  left: 11px;
+  width: 24px;
+  height: 17px;
+  clip-path: polygon(15% 0, 85% 0, 100% 35%, 83% 100%, 17% 100%, 0 35%);
+}
+
+.fossil-crab b {
+  top: 18px;
+  left: 5px;
+  width: 6px;
+  height: 4px;
+  box-shadow: 30px 0 0 var(--fossil), 2px -7px 0 var(--fossil), 28px -7px 0 var(--fossil), 2px 11px 0 var(--fossil), 28px 11px 0 var(--fossil);
+}
+
+.fossil-crab em {
+  top: 18px;
+  left: 17px;
+  width: 3px;
+  height: 3px;
+  background: var(--paper);
+  box-shadow: 9px 0 0 var(--paper);
+}
+
+.fossil-tooth i {
+  top: 7px;
+  left: 9px;
+  width: 28px;
+  height: 34px;
+  clip-path: polygon(0 0, 100% 0, 68% 30%, 50% 100%, 32% 30%);
+}
+
+.fossil-tooth b {
+  top: 7px;
+  left: 9px;
+  width: 28px;
+  height: 7px;
+  background: #477f92;
+  box-shadow: 5px 5px 0 #477f92, 17px 5px 0 #477f92;
+}
+
+.fossil-fish i {
+  top: 15px;
+  left: 10px;
+  width: 25px;
+  height: 17px;
+  clip-path: polygon(0 50%, 22% 0, 78% 0, 100% 50%, 78% 100%, 22% 100%);
+}
+
+.fossil-fish b {
+  top: 15px;
+  left: 4px;
+  width: 12px;
+  height: 17px;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.fossil-fish em {
+  top: 20px;
+  right: 14px;
+  width: 4px;
+  height: 4px;
+  background: var(--paper);
+}
+
+.fossil-shell i {
+  top: 10px;
+  left: 8px;
+  width: 31px;
+  height: 29px;
+  clip-path: polygon(50% 0, 65% 15%, 82% 12%, 86% 34%, 100% 48%, 90% 100%, 10% 100%, 0 48%, 14% 34%, 18% 12%, 35% 15%);
+}
+
+.fossil-shell b {
+  top: 16px;
+  left: 21px;
+  width: 3px;
+  height: 21px;
+  background: var(--paper);
+  transform: rotate(-22deg);
+  box-shadow: 8px 3px 0 var(--paper), -8px -3px 0 var(--paper);
+}
+
+.fossil-wood i {
+  top: 10px;
+  left: 8px;
+  width: 31px;
+  height: 27px;
+  transform: rotate(-8deg);
+}
+
+.fossil-wood b {
+  top: 14px;
+  left: 13px;
+  width: 4px;
+  height: 20px;
+  background: #f0bb76;
+  transform: rotate(-8deg);
+  box-shadow: 8px 0 0 #f0bb76, 16px 0 0 #f0bb76;
+}
+
+.fossil-micro i {
+  top: 8px;
+  left: 8px;
+  width: 28px;
+  height: 28px;
+  border: 4px solid var(--fossil);
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: inset 0 0 0 5px #e6b85e;
+}
+
+.fossil-micro b {
+  top: 21px;
+  left: 11px;
+  width: 24px;
+  height: 3px;
+  background: #477f92;
+}
+
+.fossil-trace i {
+  top: 14px;
+  left: 7px;
+  width: 12px;
+  height: 9px;
+  box-shadow: 15px 6px 0 var(--fossil), 5px 17px 0 var(--fossil);
+  transform: rotate(15deg);
+}
+
+.fossil-trace b {
+  top: 10px;
+  right: 7px;
+  width: 5px;
+  height: 5px;
+  background: #477f92;
+  box-shadow: -27px 26px 0 #477f92;
+}
+
+.fossil-bone i,
+.fossil-fossil i {
+  top: 20px;
+  left: 7px;
+  width: 33px;
+  height: 8px;
+  transform: rotate(-28deg);
+}
+
+.fossil-bone b,
+.fossil-fossil b {
+  top: 9px;
+  left: 7px;
+  width: 9px;
+  height: 9px;
+  box-shadow: 28px 20px 0 var(--fossil);
+}
+
+.fossil-bone em {
+  top: 30px;
+  left: 5px;
+  width: 6px;
+  height: 6px;
+  background: #477f92;
+  box-shadow: 31px -25px 0 #477f92;
+}
+
+@media (max-width: 760px) {
+  .geology-units {
+    grid-template-columns: 1fr;
+  }
+
+  .geology-units article {
+    min-height: auto;
+  }
+
+  .geology-units header {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .geology-notes {
+    grid-template-columns: 1fr;
+  }
+
+  .find-card-top {
+    padding-right: 64px;
+  }
+
+  .find-category {
+    white-space: normal;
+  }
+}
