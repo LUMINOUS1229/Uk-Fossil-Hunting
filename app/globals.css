@@ -590,11 +590,7 @@ button {
 .lang-zh .overview-title h1,
 .lang-zh .place-heading h2,
 .lang-zh .section-title h2,
-.lang-zh .modal h2 {
-  font-family: var(--font-mono), "PingFang SC", "Microsoft YaHei", monospace;
-  letter-spacing: -.04em;
-}
-
+.lang-zh .modal h2,
 .lang-zh .time-hero strong,
 .lang-zh .journey-time strong,
 .lang-zh .sssi-card strong {
