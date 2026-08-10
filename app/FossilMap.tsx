@@ -799,6 +799,9 @@ const museumCopy = {
     trackerTitle: "My collection log", trackerIntro: "Visited regions and collected specimens are restored automatically for this anonymous profile.",
     regionsProgress: "Regions visited", speciesProgress: "Specimens collected", loading: "Loading collection…", saving: "Saving…",
     saved: "Collection saved", syncError: "Could not sync. Try reloading the collection.", reload: "Reload collection",
+    exportCard: "Export collection card", exportHint: "Download PNG", cardTitle: "FOSSIL FIELD COLLECTION",
+    cardSubtitle: "Personal museum record", visitedList: "VISITED REGIONS", collectionList: "COLLECTED SPECIMENS",
+    noneYet: "None recorded yet", more: "more",
     markVisited: "Mark region visited", visited: "Region visited", collected: "Collected", addCollection: "Add to collection",
     categoryIntro: "GROUP NOTE", rarity: "RARITY", size: "TYPICAL SIZE", starScale: "1–5 starfish rarity scale",
     entries: "museum entries", openSite: "Open field guide", empty: "No specimens match these filters.", progress: "COLLECTION PROGRESS",
@@ -810,6 +813,9 @@ const museumCopy = {
     trackerTitle: "我的收集档案", trackerIntro: "到访地区与已拥有标本会保存到匿名档案，并在下次打开时自动恢复。",
     regionsProgress: "已走过地区", speciesProgress: "已收集品种", loading: "正在加载收藏…", saving: "正在保存…",
     saved: "收藏进度已保存", syncError: "同步失败，请重新加载收藏。", reload: "重新加载收藏",
+    exportCard: "导出图鉴收藏卡", exportHint: "下载 PNG", cardTitle: "化石野外收藏卡",
+    cardSubtitle: "个人图鉴博物馆记录", visitedList: "已到访地区", collectionList: "已拥有标本",
+    noneYet: "暂未记录", more: "项未显示",
     markVisited: "点亮到访地区", visited: "已到访", collected: "已拥有", addCollection: "加入收藏",
     categoryIntro: "门类介绍", rarity: "稀有度", size: "典型尺寸", starScale: "1–5 枚海星稀有度等级",
     entries: "项地区图鉴", openSite: "打开地区攻略", empty: "当前筛选下没有对应标本。", progress: "收集进度",
@@ -1412,6 +1418,28 @@ function StarfishRating({ value, label }: { value: number; label: string }) {
   );
 }
 
+function drawExportStarfish(context: CanvasRenderingContext2D, x: number, y: number, radius: number, fill: string) {
+  context.save();
+  context.translate(x, y);
+  context.beginPath();
+  for (let point = 0; point < 10; point += 1) {
+    const angle = -Math.PI / 2 + point * Math.PI / 5;
+    const pointRadius = point % 2 === 0 ? radius : radius * .38;
+    const px = Math.cos(angle) * pointRadius;
+    const py = Math.sin(angle) * pointRadius;
+    if (point === 0) context.moveTo(px, py);
+    else context.lineTo(px, py);
+  }
+  context.closePath();
+  context.fillStyle = fill;
+  context.fill();
+  context.beginPath();
+  context.arc(0, 0, Math.max(1.5, radius * .13), 0, Math.PI * 2);
+  context.fillStyle = "#043d55";
+  context.fill();
+  context.restore();
+}
+
 function MuseumView({
   language,
   onBack,
@@ -1523,6 +1551,132 @@ function MuseumView({
     : categoryDescriptions[categoryFilter]?.[language] ?? t.intro;
   const syncLabel = syncState === "loading" ? t.loading : syncState === "saving" ? t.saving : syncState === "error" ? t.syncError : t.saved;
 
+  const exportCollectionCard = async () => {
+    await document.fonts.ready;
+    const canvas = document.createElement("canvas");
+    canvas.width = 1200;
+    canvas.height = 675;
+    const context = canvas.getContext("2d");
+    if (!context) return;
+    context.imageSmoothingEnabled = false;
+
+    context.fillStyle = "#043d55";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.strokeStyle = "rgba(189,232,242,.08)";
+    context.lineWidth = 1;
+    for (let x = 0; x <= canvas.width; x += 24) {
+      context.beginPath(); context.moveTo(x, 0); context.lineTo(x, canvas.height); context.stroke();
+    }
+    for (let y = 0; y <= canvas.height; y += 24) {
+      context.beginPath(); context.moveTo(0, y); context.lineTo(canvas.width, y); context.stroke();
+    }
+    context.strokeStyle = "#ffd166";
+    context.lineWidth = 8;
+    context.strokeRect(24, 24, 1152, 627);
+
+    context.fillStyle = "#ffd166";
+    context.font = "600 18px monospace";
+    context.fillText("FOSSIL HUNTERS IN UK · COLLECTION ARCHIVE", 66, 78);
+    context.fillStyle = "#f2fbff";
+    context.font = language === "zh" ? "700 56px sans-serif" : "700 62px Georgia, serif";
+    context.fillText(t.cardTitle, 64, 145, 820);
+    context.fillStyle = "#bde8f2";
+    context.font = language === "zh" ? "400 21px sans-serif" : "400 20px monospace";
+    context.fillText(t.cardSubtitle, 68, 178);
+    for (let star = 0; star < 5; star += 1) drawExportStarfish(context, 974 + star * 36, 112 + (star % 2) * 7, 17, "#ffd166");
+
+    const drawMetric = (x: number, title: string, current: number, total: number) => {
+      const percent = total ? Math.round(current / total * 100) : 0;
+      context.fillStyle = "#096b8b";
+      context.fillRect(x, 215, 500, 118);
+      context.strokeStyle = "rgba(226,248,255,.28)";
+      context.lineWidth = 2;
+      context.strokeRect(x, 215, 500, 118);
+      context.fillStyle = "#bde8f2";
+      context.font = language === "zh" ? "600 18px sans-serif" : "600 16px monospace";
+      context.fillText(title, x + 22, 246);
+      context.fillStyle = "#ffd166";
+      context.font = "700 43px monospace";
+      context.fillText(`${current}/${total}`, x + 20, 295);
+      context.textAlign = "right";
+      context.font = "700 24px monospace";
+      context.fillText(`${percent}%`, x + 476, 285);
+      context.textAlign = "left";
+      context.fillStyle = "#043d55";
+      context.fillRect(x + 170, 298, 306, 10);
+      context.fillStyle = "#ffd166";
+      context.fillRect(x + 170, 298, 306 * percent / 100, 10);
+    };
+    drawMetric(64, t.regionsProgress, visitedCount, locations.length);
+    drawMetric(636, t.speciesProgress, ownedCount, totalFinds);
+
+    const visitedNames = localizedMuseumLocations
+      .filter(({ original }) => progress.visitedLocations.includes(original.id))
+      .map(({ localized }) => localized.shortName);
+    const collectedEntries = localizedMuseumLocations.flatMap(({ original, localized }) => original.finds.map((originalFind, index) => ({
+      key: museumFindKey(original, originalFind),
+      label: `${localized.shortName} · ${localized.finds[index].name}`,
+      stars: rarityStars(originalFind.rarity),
+    }))).filter((entry) => progress.ownedFinds.includes(entry.key));
+
+    context.fillStyle = "#ffd166";
+    context.font = "600 16px monospace";
+    context.fillText(t.visitedList, 66, 390);
+    context.fillText(t.collectionList, 476, 390);
+
+    const shownVisited = visitedNames.length ? visitedNames : [t.noneYet];
+    shownVisited.slice(0, 6).forEach((name, index) => {
+      const y = 424 + index * 35;
+      context.fillStyle = visitedNames.length ? "#66ddd0" : "rgba(189,232,242,.45)";
+      context.fillRect(68, y - 14, 16, 16);
+      if (visitedNames.length) {
+        context.fillStyle = "#043d55";
+        context.font = "700 12px monospace";
+        context.fillText("✓", 71, y - 2);
+      }
+      context.fillStyle = "#f2fbff";
+      context.font = language === "zh" ? "500 18px sans-serif" : "500 17px monospace";
+      context.fillText(name, 96, y, 330);
+    });
+
+    const shownCollected = collectedEntries.length ? collectedEntries.slice(0, 10) : [{ label: t.noneYet, stars: 0, key: "empty" }];
+    shownCollected.forEach((entry, index) => {
+      const column = index % 2;
+      const row = Math.floor(index / 2);
+      const x = 476 + column * 340;
+      const y = 426 + row * 39;
+      context.fillStyle = "#087a9b";
+      context.fillRect(x, y - 22, 320, 31);
+      context.fillStyle = "#f2fbff";
+      context.font = language === "zh" ? "500 14px sans-serif" : "500 13px monospace";
+      const shortLabel = entry.label.length > 25 ? `${entry.label.slice(0, 24)}…` : entry.label;
+      context.fillText(shortLabel, x + 10, y - 2, 190);
+      for (let star = 0; star < 5; star += 1) {
+        drawExportStarfish(context, x + 223 + star * 18, y - 7, 7, star < entry.stars ? "#ffd166" : "rgba(189,232,242,.2)");
+      }
+    });
+    if (collectedEntries.length > shownCollected.length) {
+      context.fillStyle = "#bde8f2";
+      context.font = language === "zh" ? "400 13px sans-serif" : "400 12px monospace";
+      context.fillText(`+ ${collectedEntries.length - shownCollected.length} ${t.more}`, 816, 632);
+    }
+
+    context.fillStyle = "#bde8f2";
+    context.font = "400 12px monospace";
+    context.fillText(`${new Date().toLocaleDateString(language === "zh" ? "zh-CN" : "en-GB")} · ${window.location.host}`, 66, 625);
+
+    const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"));
+    if (!blob) return;
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `fossil-collection-card-${new Date().toISOString().slice(0, 10)}.png`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+
   return (
     <section className="museum-view" aria-label={t.title}>
       <div className="museum-shell">
@@ -1542,9 +1696,14 @@ function MuseumView({
             <span>{t.progress}</span>
             <h2>{t.trackerTitle}</h2>
             <p>{t.trackerIntro}</p>
-            <button className={`museum-sync sync-${syncState}`} onClick={() => profileId && void loadProgress(profileId)} disabled={!profileId || syncState === "loading" || syncState === "saving"}>
-              <i /> {syncLabel}{syncState === "error" ? ` · ${t.reload}` : ""}
-            </button>
+            <div className="museum-tracker-actions">
+              <button className={`museum-sync sync-${syncState}`} onClick={() => profileId && void loadProgress(profileId)} disabled={!profileId || syncState === "loading" || syncState === "saving"}>
+                <i /> {syncLabel}{syncState === "error" ? ` · ${t.reload}` : ""}
+              </button>
+              <button className="museum-export" onClick={() => void exportCollectionCard()} disabled={syncState === "loading"}>
+                <i>↓</i><span>{t.exportCard}<small>{t.exportHint}</small></span>
+              </button>
+            </div>
           </div>
           <div className="museum-progress-grid">
             <div>
