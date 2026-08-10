@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type Risk = "LOW" | "MODERATE" | "HIGH";
 type Language = "en" | "zh";
@@ -703,7 +703,7 @@ const localizeLocation = (location: Location, language: Language): Location => {
 
 const copy = {
   en: {
-    returnMap: "Return to UK map", about: "About", safetyFirst: "Safety first",
+    returnMap: "Return to UK map", museum: "Fossil museum", about: "About", safetyFirst: "Safety first",
     heroEyebrow: "N+ FIELD SITES · ROUTES FROM LONDON", heroTitle: "Fossil Hunters", heroSubtitle: "Let’s go exploring.",
     scopeSites: "FIELD SITES", scopeStart: "STARTING FROM", scopeStartValue: "LONDON", scopeCheck: "CHECK BEFORE", scopeCheckValue: "TIDE & ACCESS",
     northSea: "NORTH SEA", channel: "ENGLISH CHANNEL", london: "London", open: "Open",
@@ -725,7 +725,7 @@ const copy = {
     emergencyStrong: "Emergency: call 999 and ask for Coastguard.", emergencyBody: "Do not attempt a cliff or sea rescue yourself.",
   },
   zh: {
-    returnMap: "返回英国总览地图", about: "关于", safetyFirst: "安全须知",
+    returnMap: "返回英国总览地图", museum: "化石图鉴博物馆", about: "关于", safetyFirst: "安全须知",
     heroEyebrow: "N+ 个重点地点 · 从伦敦出发", heroTitle: "Fossil Hunters", heroSubtitle: "一起去探险吧。",
     scopeSites: "收录地点", scopeStart: "默认出发地", scopeStartValue: "伦敦", scopeCheck: "出发前确认", scopeCheckValue: "潮汐与通行",
     northSea: "北海", channel: "英吉利海峡", london: "伦敦", open: "打开",
@@ -790,6 +790,92 @@ const detailCopy = {
     bedContext: "GAULT 层位线索", fieldRule: "现场采集提示", reference: "参考资料", category: "类别",
   },
 } as const;
+
+const museumCopy = {
+  en: {
+    back: "Back to the map", eyebrow: "FIELD COLLECTION · PERSONAL ARCHIVE", title: "Fossil Field Museum",
+    intro: "Browse collectible fossils by field region and biological group, then build your own field record.",
+    allRegions: "All regions", allCategories: "All groups", regionFilter: "REGIONS", categoryFilter: "FOSSIL GROUPS",
+    trackerTitle: "My collection log", trackerIntro: "Visited regions and collected specimens are restored automatically for this anonymous profile.",
+    regionsProgress: "Regions visited", speciesProgress: "Specimens collected", loading: "Loading collection…", saving: "Saving…",
+    saved: "Collection saved", syncError: "Could not sync. Try reloading the collection.", reload: "Reload collection",
+    markVisited: "Mark region visited", visited: "Region visited", collected: "Collected", addCollection: "Add to collection",
+    categoryIntro: "GROUP NOTE", rarity: "RARITY", size: "TYPICAL SIZE", starScale: "1–5 starfish rarity scale",
+    entries: "museum entries", openSite: "Open field guide", empty: "No specimens match these filters.", progress: "COLLECTION PROGRESS",
+  },
+  zh: {
+    back: "返回地图", eyebrow: "野外收藏 · 个人档案", title: "化石图鉴博物馆",
+    intro: "按采集地区与生物门类浏览可收集化石，并建立属于自己的野外收藏记录。",
+    allRegions: "全部地区", allCategories: "全部门类", regionFilter: "采集地区", categoryFilter: "化石门类",
+    trackerTitle: "我的收集档案", trackerIntro: "到访地区与已拥有标本会保存到匿名档案，并在下次打开时自动恢复。",
+    regionsProgress: "已走过地区", speciesProgress: "已收集品种", loading: "正在加载收藏…", saving: "正在保存…",
+    saved: "收藏进度已保存", syncError: "同步失败，请重新加载收藏。", reload: "重新加载收藏",
+    markVisited: "点亮到访地区", visited: "已到访", collected: "已拥有", addCollection: "加入收藏",
+    categoryIntro: "门类介绍", rarity: "稀有度", size: "典型尺寸", starScale: "1–5 枚海星稀有度等级",
+    entries: "项地区图鉴", openSite: "打开地区攻略", empty: "当前筛选下没有对应标本。", progress: "收集进度",
+  },
+} as const;
+
+const categoryDescriptions: Record<string, Record<Language, string>> = {
+  "Ammonites & Heteromorphs": {
+    en: "Coiled or uncoiled ammonoid shells. Ribs, keels and suture patterns help separate groups.",
+    zh: "包括盘卷与异形菊石。壳体肋纹、腹棱和缝合线是辨认不同类群的重要线索。",
+  },
+  "Other Cephalopods": {
+    en: "Belemnite guards and nautiloid shells record several very different cephalopod body plans.",
+    zh: "箭石的坚硬鞘体与鹦鹉螺类外壳，展示了头足动物截然不同的身体结构。",
+  },
+  Echinoderms: {
+    en: "Echinoids and crinoids often show five-fold symmetry, plates or star-centred stem segments.",
+    zh: "海胆与海百合常保留五辐对称、骨板或中心呈星形的茎节。",
+  },
+  Crabs: {
+    en: "Crustacean carapaces and claws are often preserved inside concretions rather than loose clay.",
+    zh: "甲壳与螯常保存在结核内部，而不是直接散落在黏土表面。",
+  },
+  "Bivalves & Brachiopods": {
+    en: "Paired shells preserve ribs, growth lines and hinge shapes that reveal how the animal lived.",
+    zh: "成对壳体上的肋纹、生长线与铰合结构，可以反映动物生前的生活方式。",
+  },
+  "Shark Teeth": {
+    en: "Durable enamel makes shark teeth common vertebrate finds; crown shape reflects feeding style.",
+    zh: "坚硬牙釉质使鲨鱼牙成为常见脊椎动物化石；齿冠形状常对应不同取食方式。",
+  },
+  Fish: {
+    en: "Teeth, crushing plates, scales, spines and vertebrae are more likely to survive than whole fish.",
+    zh: "牙齿、齿板、鳞片、棘与椎骨比完整鱼体更容易被保存下来。",
+  },
+  Reptile: {
+    en: "Turtle and marine-reptile fragments are scientifically important; record context before preparation.",
+    zh: "龟类与海生爬行动物碎片具有较高科研价值，处理前应先记录发现环境。",
+  },
+  Microfossils: {
+    en: "Small fossils such as nummulites may be abundant but usually need a hand lens for close study.",
+    zh: "货币虫等微化石数量可能很多，但通常需要借助手持放大镜观察结构。",
+  },
+  "Trace Fossils": {
+    en: "Burrows, tracks and coprolites preserve behaviour rather than the animal's body itself.",
+    zh: "洞穴、足迹与粪化石保存的是动物活动行为，而不是动物身体本身。",
+  },
+  "Plant Fossils": {
+    en: "Wood grain, growth structure and mineral replacement help distinguish fossil wood from rock.",
+    zh: "木纹、生长构造和矿物交代特征，可以帮助区分化石木与普通岩石。",
+  },
+  Vertebrates: {
+    en: "Porous or thin-walled bones can be fragile and significant; unusual finds should be recorded.",
+    zh: "多孔或薄壁骨骼通常脆弱且可能具有科研价值，异常发现应及时记录。",
+  },
+};
+
+const rarityStars = (rarity: string) => {
+  if (/very rare|非常罕见/i.test(rarity)) return 5;
+  if (/rare|罕见/i.test(rarity)) return 4;
+  if (/uncommon|少见/i.test(rarity)) return 3;
+  if (/occasional|偶见/i.test(rarity)) return 2;
+  return 1;
+};
+
+const museumFindKey = (location: Location, find: Find) => `${location.id}:${find.name}`;
 
 type GuideTurn = {
   id: number;
@@ -1311,10 +1397,254 @@ function IntroScreen({ phase }: { phase: Exclude<IntroPhase, "done"> }) {
   );
 }
 
+type MuseumProgress = {
+  visitedLocations: string[];
+  ownedFinds: string[];
+};
+
+type MuseumSyncState = "loading" | "saving" | "saved" | "error";
+
+function StarfishRating({ value, label }: { value: number; label: string }) {
+  return (
+    <div className="starfish-rating" aria-label={`${label}: ${value} / 5`} title={`${value} / 5`}>
+      {[1, 2, 3, 4, 5].map((star) => <span key={star} className={star <= value ? "filled" : ""}><i /></span>)}
+    </div>
+  );
+}
+
+function MuseumView({
+  language,
+  onBack,
+  onOpenLocation,
+}: {
+  language: Language;
+  onBack: () => void;
+  onOpenLocation: (id: string) => void;
+}) {
+  const t = museumCopy[language];
+  const [regionFilter, setRegionFilter] = useState("all");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [profileId, setProfileId] = useState<string | null>(null);
+  const [progress, setProgress] = useState<MuseumProgress>({ visitedLocations: [], ownedFinds: [] });
+  const [syncState, setSyncState] = useState<MuseumSyncState>("loading");
+  const saveQueue = useRef<Promise<void>>(Promise.resolve());
+
+  const categories = useMemo(() => [...new Set(locations.flatMap((location) => location.finds.map((find) => find.category)))], []);
+  const localizedMuseumLocations = useMemo(() => locations.map((location) => ({
+    original: location,
+    localized: localizeLocation(location, language),
+  })), [language]);
+  const validFindKeys = useMemo(() => new Set(locations.flatMap((location) => location.finds.map((find) => museumFindKey(location, find)))), []);
+
+  const loadProgress = async (id: string) => {
+    setSyncState("loading");
+    try {
+      const response = await fetch(`/api/museum-progress?profile=${encodeURIComponent(id)}`, { cache: "no-store" });
+      if (!response.ok) throw new Error("progress load failed");
+      const data = await response.json() as Partial<MuseumProgress>;
+      setProgress({
+        visitedLocations: Array.isArray(data.visitedLocations) ? data.visitedLocations.filter((item): item is string => typeof item === "string") : [],
+        ownedFinds: Array.isArray(data.ownedFinds) ? data.ownedFinds.filter((item): item is string => typeof item === "string") : [],
+      });
+      setSyncState("saved");
+    } catch {
+      setSyncState("error");
+    }
+  };
+
+  useEffect(() => {
+    const startTimer = window.setTimeout(() => {
+      const profileKey = "fossil-museum-profile-v1";
+      let id = window.localStorage.getItem(profileKey);
+      if (!id || !/^[a-zA-Z0-9_-]{12,80}$/.test(id)) {
+        const randomPart = typeof crypto.randomUUID === "function"
+          ? crypto.randomUUID().replaceAll("-", "")
+          : `${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        id = `museum_${randomPart}`;
+        window.localStorage.setItem(profileKey, id);
+      }
+      setProfileId(id);
+      void loadProgress(id);
+    }, 0);
+    return () => window.clearTimeout(startTimer);
+  }, []);
+
+  const saveProgress = (next: MuseumProgress) => {
+    setProgress(next);
+    if (!profileId) return;
+    setSyncState("saving");
+    saveQueue.current = saveQueue.current
+      .catch(() => undefined)
+      .then(async () => {
+        setSyncState("saving");
+        const response = await fetch("/api/museum-progress", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ profileId, ...next }),
+        });
+        if (!response.ok) throw new Error("progress save failed");
+      })
+      .then(() => setSyncState("saved"))
+      .catch(() => setSyncState("error"));
+  };
+
+  const toggleVisited = (locationId: string) => {
+    const active = progress.visitedLocations.includes(locationId);
+    saveProgress({
+      ...progress,
+      visitedLocations: active
+        ? progress.visitedLocations.filter((id) => id !== locationId)
+        : [...progress.visitedLocations, locationId],
+    });
+  };
+
+  const toggleOwned = (key: string) => {
+    const active = progress.ownedFinds.includes(key);
+    saveProgress({
+      ...progress,
+      ownedFinds: active ? progress.ownedFinds.filter((id) => id !== key) : [...progress.ownedFinds, key],
+    });
+  };
+
+  const visitedCount = progress.visitedLocations.filter((id) => locations.some((location) => location.id === id)).length;
+  const ownedCount = progress.ownedFinds.filter((id) => validFindKeys.has(id)).length;
+  const totalFinds = validFindKeys.size;
+  const visibleLocations = localizedMuseumLocations
+    .filter(({ original }) => regionFilter === "all" || original.id === regionFilter)
+    .map(({ original, localized }) => ({
+      original,
+      localized,
+      entries: original.finds.map((find, index) => ({ original: find, localized: localized.finds[index] }))
+        .filter(({ original: find }) => categoryFilter === "all" || find.category === categoryFilter),
+    }))
+    .filter(({ entries }) => entries.length > 0);
+  const categoryDescription = categoryFilter === "all"
+    ? t.intro
+    : categoryDescriptions[categoryFilter]?.[language] ?? t.intro;
+  const syncLabel = syncState === "loading" ? t.loading : syncState === "saving" ? t.saving : syncState === "error" ? t.syncError : t.saved;
+
+  return (
+    <section className="museum-view" aria-label={t.title}>
+      <div className="museum-shell">
+        <button className="museum-back" onClick={onBack}><span>←</span> {t.back}</button>
+
+        <header className="museum-hero">
+          <div>
+            <p>{t.eyebrow}</p>
+            <h1>{t.title}</h1>
+            <span>{t.intro}</span>
+          </div>
+          <div className="museum-hero-mark" aria-hidden="true"><AmmoniteMark /><b>M</b></div>
+        </header>
+
+        <section className="museum-tracker" aria-label={t.trackerTitle}>
+          <div className="museum-tracker-copy">
+            <span>{t.progress}</span>
+            <h2>{t.trackerTitle}</h2>
+            <p>{t.trackerIntro}</p>
+            <button className={`museum-sync sync-${syncState}`} onClick={() => profileId && void loadProgress(profileId)} disabled={!profileId || syncState === "loading" || syncState === "saving"}>
+              <i /> {syncLabel}{syncState === "error" ? ` · ${t.reload}` : ""}
+            </button>
+          </div>
+          <div className="museum-progress-grid">
+            <div>
+              <span>{t.regionsProgress}</span><strong>{visitedCount}<small> / {locations.length}</small></strong>
+              <progress max={locations.length} value={visitedCount} />
+            </div>
+            <div>
+              <span>{t.speciesProgress}</span><strong>{ownedCount}<small> / {totalFinds}</small></strong>
+              <progress max={totalFinds} value={ownedCount} />
+            </div>
+          </div>
+        </section>
+
+        <section className="museum-filters">
+          <div>
+            <span>{t.regionFilter}</span>
+            <div className="museum-chip-row">
+              <button className={regionFilter === "all" ? "active" : ""} onClick={() => setRegionFilter("all")}>{t.allRegions}</button>
+              {localizedMuseumLocations.map(({ original, localized }) => (
+                <button key={original.id} className={regionFilter === original.id ? "active" : ""} onClick={() => setRegionFilter(original.id)}>
+                  {localized.shortName}
+                  {progress.visitedLocations.includes(original.id) && <i aria-label={t.visited}>✓</i>}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <span>{t.categoryFilter}</span>
+            <div className="museum-chip-row category-chips">
+              <button className={categoryFilter === "all" ? "active" : ""} onClick={() => setCategoryFilter("all")}>{t.allCategories}</button>
+              {categories.map((category) => (
+                <button key={category} className={categoryFilter === category ? "active" : ""} onClick={() => setCategoryFilter(category)}>
+                  {language === "zh" ? fossilCategoryZh[category] ?? category : category}
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <aside className="museum-category-note">
+          <span>{t.categoryIntro}</span>
+          <h2>{categoryFilter === "all" ? t.allCategories : language === "zh" ? fossilCategoryZh[categoryFilter] ?? categoryFilter : categoryFilter}</h2>
+          <p>{categoryDescription}</p>
+          <small><StarfishRating value={5} label={t.rarity} /> {t.starScale}</small>
+        </aside>
+
+        <div className="museum-regions">
+          {visibleLocations.map(({ original, localized, entries }) => {
+            const visited = progress.visitedLocations.includes(original.id);
+            return (
+              <section className="museum-region" key={original.id}>
+                <header className="museum-region-head">
+                  <div className="museum-region-title">
+                    <PixelSiteIcon id={original.id} compact />
+                    <div><span>{localized.region}</span><h2>{localized.name}</h2><p>{localized.period} · {entries.length} {t.entries}</p></div>
+                  </div>
+                  <div className="museum-region-actions">
+                    <button className={visited ? "visited" : ""} aria-pressed={visited} onClick={() => toggleVisited(original.id)}>
+                      <i>{visited ? "✓" : "+"}</i>{visited ? t.visited : t.markVisited}
+                    </button>
+                    <button onClick={() => onOpenLocation(original.id)}>{t.openSite} ↗</button>
+                  </div>
+                </header>
+
+                <div className="museum-specimen-grid">
+                  {entries.map(({ original: originalFind, localized: find }) => {
+                    const key = museumFindKey(original, originalFind);
+                    const owned = progress.ownedFinds.includes(key);
+                    const stars = rarityStars(originalFind.rarity);
+                    return (
+                      <article className={`museum-specimen ${owned ? "is-owned" : ""}`} key={key}>
+                        <div className="museum-specimen-top">
+                          <PixelFossilIcon find={find} />
+                          <div><span>{find.category}</span><h3>{find.name}</h3><p>{find.zh}</p></div>
+                        </div>
+                        <div className="museum-rarity"><span>{t.rarity}</span><StarfishRating value={stars} label={t.rarity} /><b>{stars}/5</b></div>
+                        <p className="museum-specimen-tip">{find.tip}</p>
+                        <small>{t.size} · {find.size}</small>
+                        <button className="museum-collect" aria-pressed={owned} onClick={() => toggleOwned(key)}>
+                          <i>{owned ? "✓" : "+"}</i>{owned ? t.collected : t.addCollection}
+                        </button>
+                      </article>
+                    );
+                  })}
+                </div>
+              </section>
+            );
+          })}
+          {visibleLocations.length === 0 && <p className="museum-empty">{t.empty}</p>}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function FossilMap() {
   const [introPhase, setIntroPhase] = useState<IntroPhase>("loading");
   const [language, setLanguage] = useState<Language>("zh");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [museumOpen, setMuseumOpen] = useState(false);
   const [modal, setModal] = useState<"about" | "safety" | null>(null);
   const [mobileList, setMobileList] = useState(false);
   const localizedLocations = useMemo(() => locations.map((location) => localizeLocation(location, language)), [language]);
@@ -1343,24 +1673,26 @@ export function FossilMap() {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         if (modal) setModal(null);
+        else if (museumOpen) setMuseumOpen(false);
         else if (selectedId) setSelectedId(null);
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [modal, selectedId]);
+  }, [modal, museumOpen, selectedId]);
 
   const openLocation = (id: string) => {
     setMobileList(false);
+    setMuseumOpen(false);
     setSelectedId(id);
   };
 
   return (
-    <main className={`site-shell ${selected ? "detail-open" : ""} lang-${language} intro-${introPhase}`}>
+    <main className={`site-shell ${selected ? "detail-open" : ""} ${museumOpen ? "museum-open" : ""} lang-${language} intro-${introPhase}`}>
       {introPhase !== "done" && <IntroScreen phase={introPhase} />}
       <header className="topbar">
         <div className="header-left">
-          <button className="brand" onClick={() => setSelectedId(null)} aria-label={t.returnMap}>
+          <button className="brand" onClick={() => { setSelectedId(null); setMuseumOpen(false); }} aria-label={t.returnMap}>
             <AmmoniteMark small />
             <span className="brand-title">FOSSIL HUNTERS <small>IN UK</small></span>
           </button>
@@ -1371,14 +1703,15 @@ export function FossilMap() {
           </div>
         </div>
         <div className="top-actions">
-          <button onClick={() => setModal("about")}>{t.about}</button>
+          <button className="museum-link" onClick={() => { setSelectedId(null); setMuseumOpen(true); }}>✦ {t.museum}</button>
+          <button className="about-link" onClick={() => setModal("about")}>{t.about}</button>
           <button className="safety-link" onClick={() => setModal("safety")}>
             <span className="alert-dot" /> {t.safetyFirst}
           </button>
         </div>
       </header>
 
-      <section className={`overview ${selected ? "is-zoomed" : ""}`} aria-hidden={Boolean(selected)}>
+      <section className={`overview ${selected || museumOpen ? "is-zoomed" : ""}`} aria-hidden={Boolean(selected || museumOpen)}>
         <div className="overview-title">
           <p className="eyebrow">{t.heroEyebrow}</p>
           <h1 className="fossil-title"><span>Fossil Hunters</span><small>in UK</small></h1>
@@ -1454,6 +1787,8 @@ export function FossilMap() {
       </section>
 
       {selected && <LocationDetail location={selected} language={language} onBack={() => setSelectedId(null)} />}
+
+      {museumOpen && <MuseumView language={language} onBack={() => setMuseumOpen(false)} onOpenLocation={openLocation} />}
 
       <NautilusGuide key={language} language={language} siteLocations={localizedLocations} onOpenLocation={openLocation} />
 

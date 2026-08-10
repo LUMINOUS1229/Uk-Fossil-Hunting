@@ -5352,3 +5352,695 @@ body {
     white-space: normal;
   }
 }
+
+/* Fossil field museum and collection tracker */
+.museum-open .nautilus-guide {
+  display: none;
+}
+
+.top-actions .museum-link {
+  color: var(--rust);
+}
+
+.museum-view {
+  position: fixed;
+  inset: 74px 0 0;
+  z-index: 40;
+  overflow-y: auto;
+  background:
+    linear-gradient(rgba(226, 248, 255, .035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(226, 248, 255, .035) 1px, transparent 1px),
+    var(--paper);
+  background-size: 16px 16px;
+  color: var(--ink);
+  animation: detail-in 420ms steps(4, end) both;
+}
+
+.museum-shell {
+  width: min(1240px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 24px 0 72px;
+}
+
+.museum-back {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 0;
+  border: 0;
+  border-bottom: 2px solid var(--rust);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.museum-back span {
+  color: var(--rust);
+  font-size: 17px;
+}
+
+.museum-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 130px;
+  gap: 30px;
+  align-items: center;
+  margin-top: 20px;
+  padding: 34px 36px;
+  border: 3px solid var(--ink);
+  background: var(--paper-deep);
+  box-shadow: 8px 8px 0 var(--rust);
+}
+
+.museum-hero p,
+.museum-tracker-copy > span,
+.museum-filters > div > span,
+.museum-category-note > span {
+  margin: 0 0 10px;
+  color: var(--rust);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.museum-hero h1 {
+  max-width: 800px;
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-display), serif;
+  font-size: clamp(48px, 7vw, 86px);
+  font-weight: 600;
+  letter-spacing: -.045em;
+  line-height: .9;
+}
+
+.lang-zh .museum-hero h1 {
+  font-family: var(--font-sans), "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: clamp(44px, 6vw, 76px);
+  font-weight: 700;
+  letter-spacing: -.04em;
+}
+
+.museum-hero > div:first-child > span {
+  display: block;
+  max-width: 720px;
+  margin-top: 20px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.museum-hero-mark {
+  position: relative;
+  display: grid;
+  width: 112px;
+  height: 112px;
+  place-items: center;
+  border: 3px solid var(--ink);
+  background: var(--sea);
+  box-shadow: 6px 6px 0 rgba(255, 209, 102, .4);
+}
+
+.museum-hero-mark .ammonite-mark {
+  transform: scale(1.35);
+}
+
+.museum-hero-mark > b {
+  position: absolute;
+  right: 5px;
+  bottom: 4px;
+  color: var(--rust);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+}
+
+.museum-tracker {
+  display: grid;
+  grid-template-columns: minmax(260px, .8fr) 1.2fr;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.museum-tracker-copy,
+.museum-progress-grid {
+  padding: 22px;
+  border: 2px solid var(--line);
+  background: var(--paper-deep);
+}
+
+.museum-tracker-copy h2 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-mono), monospace;
+  font-size: 22px;
+}
+
+.museum-tracker-copy p {
+  margin: 10px 0 14px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.museum-sync {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  background: var(--sea);
+  color: var(--ink-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  cursor: pointer;
+}
+
+.museum-sync:disabled {
+  cursor: wait;
+  opacity: .8;
+}
+
+.museum-sync i {
+  width: 7px;
+  height: 7px;
+  background: var(--moss);
+  box-shadow: 0 0 0 2px rgba(102, 221, 208, .14);
+}
+
+.museum-sync.sync-loading i,
+.museum-sync.sync-saving i {
+  animation: museum-sync-pulse .7s steps(2, end) infinite;
+}
+
+.museum-sync.sync-error i {
+  background: var(--danger);
+}
+
+@keyframes museum-sync-pulse {
+  50% { opacity: .25; }
+}
+
+.museum-progress-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.museum-progress-grid > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  padding: 18px;
+  border: 2px solid var(--line);
+  background: var(--sea);
+}
+
+.museum-progress-grid span {
+  color: var(--ink-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.museum-progress-grid strong {
+  margin: 8px 0 12px;
+  color: var(--rust);
+  font-family: var(--font-mono), monospace;
+  font-size: 34px;
+  line-height: 1;
+}
+
+.museum-progress-grid strong small {
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.museum-progress-grid progress {
+  width: 100%;
+  height: 10px;
+  overflow: hidden;
+  border: 1px solid var(--ink-soft);
+  border-radius: 0;
+  appearance: none;
+}
+
+.museum-progress-grid progress::-webkit-progress-bar { background: var(--paper-deep); }
+.museum-progress-grid progress::-webkit-progress-value { background: var(--rust); }
+.museum-progress-grid progress::-moz-progress-bar { background: var(--rust); }
+
+.museum-filters {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
+  padding: 20px;
+  border: 2px solid var(--line);
+  background: color-mix(in srgb, var(--paper-deep) 86%, transparent);
+}
+
+.museum-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.museum-chip-row button {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  background: var(--sea);
+  color: var(--ink-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  cursor: pointer;
+}
+
+.museum-chip-row button:hover,
+.museum-chip-row button:focus-visible,
+.museum-chip-row button.active {
+  border-color: var(--rust);
+  background: var(--rust);
+  color: var(--paper-deep);
+}
+
+.museum-chip-row button i {
+  display: grid;
+  width: 14px;
+  height: 14px;
+  place-items: center;
+  background: var(--moss);
+  color: var(--paper-deep);
+  font-style: normal;
+  font-size: 8px;
+}
+
+.museum-category-note {
+  position: relative;
+  margin-top: 10px;
+  padding: 18px 230px 18px 20px;
+  border: 2px solid var(--line);
+  border-left: 8px solid var(--rust);
+  background: var(--paper-deep);
+}
+
+.museum-category-note h2 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-mono), monospace;
+  font-size: 20px;
+}
+
+.museum-category-note p {
+  margin: 9px 0 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.museum-category-note > small {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  display: grid;
+  gap: 6px;
+  color: var(--ink-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  transform: translateY(-50%);
+}
+
+.museum-regions {
+  display: grid;
+  gap: 20px;
+  margin-top: 22px;
+}
+
+.museum-region {
+  border: 3px solid var(--ink);
+  background: var(--paper-deep);
+  box-shadow: 7px 7px 0 rgba(255, 209, 102, .25);
+}
+
+.museum-region-head {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 2px solid var(--line);
+  background: var(--sea);
+}
+
+.museum-region-title {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.museum-region-title .site-pixel-icon {
+  scale: .82;
+  transform-origin: left center;
+}
+
+.museum-region-title span {
+  color: var(--rust);
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.museum-region-title h2 {
+  margin: 3px 0;
+  color: var(--ink);
+  font-family: var(--font-mono), monospace;
+  font-size: 22px;
+}
+
+.museum-region-title p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 10px;
+}
+
+.museum-region-actions {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+}
+
+.museum-region-actions button {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  padding: 9px 10px;
+  border: 1px solid var(--ink-soft);
+  background: var(--paper-deep);
+  color: var(--ink);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  cursor: pointer;
+}
+
+.museum-region-actions button:hover,
+.museum-region-actions button:focus-visible,
+.museum-region-actions button.visited {
+  border-color: var(--rust);
+  color: var(--rust);
+}
+
+.museum-region-actions button i {
+  display: grid;
+  width: 15px;
+  height: 15px;
+  place-items: center;
+  background: var(--rust);
+  color: var(--paper-deep);
+  font-style: normal;
+  font-size: 9px;
+}
+
+.museum-specimen-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding: 8px;
+}
+
+.museum-specimen {
+  position: relative;
+  display: flex;
+  min-height: 272px;
+  flex-direction: column;
+  padding: 14px;
+  border: 2px solid var(--line);
+  background:
+    linear-gradient(rgba(226, 248, 255, .035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(226, 248, 255, .035) 1px, transparent 1px),
+    var(--paper-deep);
+  background-size: 8px 8px;
+}
+
+.museum-specimen.is-owned {
+  border-color: var(--rust);
+  box-shadow: inset 0 0 0 2px rgba(255, 209, 102, .15);
+}
+
+.museum-specimen.is-owned::after {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  padding: 4px 6px;
+  background: var(--rust);
+  color: var(--paper-deep);
+  content: "✓";
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+}
+
+.museum-specimen-top {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.museum-specimen-top > div > span {
+  display: block;
+  color: var(--rust);
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.museum-specimen-top h3 {
+  margin: 5px 0 0;
+  color: var(--ink);
+  font-family: var(--font-mono), monospace;
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.museum-specimen-top p {
+  margin: 3px 0 0;
+  color: var(--ink-soft);
+  font-size: 10px;
+}
+
+.museum-rarity {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.museum-rarity > span,
+.museum-rarity > b {
+  color: var(--ink-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  font-weight: 400;
+}
+
+.museum-rarity > b {
+  margin-left: auto;
+  color: var(--rust);
+}
+
+.starfish-rating {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.starfish-rating > span {
+  position: relative;
+  display: block;
+  width: 16px;
+  height: 16px;
+  background: rgba(189, 232, 242, .2);
+  clip-path: polygon(50% 0, 62% 34%, 98% 25%, 70% 51%, 91% 82%, 59% 68%, 50% 100%, 41% 68%, 9% 82%, 30% 51%, 2% 25%, 38% 34%);
+}
+
+.starfish-rating > span:nth-child(even) { transform: rotate(9deg); }
+.starfish-rating > span:nth-child(3) { transform: rotate(-8deg); }
+
+.starfish-rating > span.filled {
+  background: var(--rust);
+  filter: drop-shadow(1px 1px 0 rgba(4, 61, 85, .8));
+}
+
+.starfish-rating > span i {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  width: 2px;
+  height: 2px;
+  background: var(--paper-deep);
+}
+
+.museum-specimen-tip {
+  margin: 11px 0 8px;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.museum-specimen > small {
+  margin-top: auto;
+  color: var(--ink-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+}
+
+.museum-collect {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+  padding: 9px;
+  border: 2px solid var(--rust);
+  background: transparent;
+  color: var(--rust);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  cursor: pointer;
+}
+
+.museum-collect:hover,
+.museum-collect:focus-visible,
+.museum-collect[aria-pressed="true"] {
+  background: var(--rust);
+  color: var(--paper-deep);
+}
+
+.museum-collect i {
+  font-style: normal;
+  font-size: 12px;
+}
+
+.museum-empty {
+  padding: 50px 20px;
+  border: 2px dashed var(--line);
+  background: var(--paper-deep);
+  color: var(--ink-soft);
+  font-family: var(--font-mono), monospace;
+  text-align: center;
+}
+
+@media (max-width: 940px) {
+  .museum-specimen-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .museum-region-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 720px) {
+  .top-actions .about-link {
+    display: none;
+  }
+
+  .museum-view {
+    inset: 64px 0 0;
+  }
+
+  .museum-shell {
+    width: calc(100% - 24px);
+    padding-top: 15px;
+  }
+
+  .museum-hero {
+    grid-template-columns: 1fr;
+    padding: 24px 20px;
+    box-shadow: 5px 5px 0 var(--rust);
+  }
+
+  .museum-hero-mark {
+    display: none;
+  }
+
+  .museum-tracker {
+    grid-template-columns: 1fr;
+  }
+
+  .museum-category-note {
+    padding-right: 20px;
+  }
+
+  .museum-category-note > small {
+    position: static;
+    margin-top: 13px;
+    transform: none;
+  }
+
+  .museum-chip-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+
+  .museum-chip-row button {
+    flex: 0 0 auto;
+  }
+}
+
+@media (max-width: 540px) {
+  .museum-link {
+    width: 48px;
+    overflow: hidden;
+    font-size: 0 !important;
+    white-space: nowrap;
+  }
+
+  .lang-en .museum-link::after {
+    content: "MUSEUM";
+    font-size: 8px;
+  }
+
+  .lang-zh .museum-link::after {
+    content: "图鉴馆";
+    font-size: 9px;
+  }
+
+  .museum-hero h1,
+  .lang-zh .museum-hero h1 {
+    font-size: 39px;
+  }
+
+  .museum-progress-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .museum-region-actions {
+    align-items: stretch;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .museum-region-actions button {
+    justify-content: center;
+  }
+
+  .museum-specimen-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .museum-specimen {
+    min-height: 260px;
+  }
+}
