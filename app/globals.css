@@ -4649,3 +4649,64 @@ body {
     transform-origin: 1px 8px;
   }
 }
+
+/* Text-only location detail layout */
+.nautilus-guide {
+  bottom: 82px;
+}
+
+.detail-view.detail-text-only {
+  display: block;
+  overflow-y: auto;
+  padding: 18px 0 54px;
+  background:
+    linear-gradient(rgba(245, 243, 233, .045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 243, 233, .045) 1px, transparent 1px),
+    var(--paper);
+  background-size: 16px 16px;
+}
+
+.detail-text-only .detail-safety {
+  position: relative;
+  top: auto;
+  right: auto;
+  left: auto;
+  width: min(920px, calc(100% - 40px));
+  margin: 0 auto 14px;
+}
+
+.detail-text-only .info-panel {
+  width: min(920px, calc(100% - 40px));
+  margin: 0 auto;
+  overflow: visible;
+  border: 2px solid var(--line);
+  background: var(--paper-deep);
+  box-shadow: 9px 9px 0 rgba(255, 209, 102, .32);
+}
+
+.detail-text-only .section-nav {
+  top: 0;
+}
+
+@media (max-width: 720px) {
+  .nautilus-guide {
+    bottom: 92px;
+  }
+
+  .detail-view.detail-text-only {
+    padding: 0 0 96px;
+  }
+
+  .detail-text-only .detail-safety {
+    width: 100%;
+    margin: 0;
+    border-width: 0 0 2px;
+  }
+
+  .detail-text-only .info-panel {
+    width: 100%;
+    margin: 0;
+    border: 0;
+    box-shadow: none;
+  }
+}

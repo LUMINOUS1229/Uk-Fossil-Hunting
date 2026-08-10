@@ -1239,40 +1239,10 @@ function LocationDetail({ location, language, onBack }: { location: Location; la
   const locationNumber = String(locations.findIndex((item) => item.id === location.id) + 1).padStart(2, "0");
 
   return (
-    <section className="detail-view">
+    <section className="detail-view detail-text-only">
       <div className="detail-safety">
         <span className={`risk-pill ${riskClass(location.risk)}`}>{riskLabel(location.risk, language)} {t.risk}</span>
         <p>{location.safetyLead}</p>
-      </div>
-
-      <div className="field-map">
-        <div className="field-water"><span>{t.lowWater}</span></div>
-        <div className="field-land" />
-        <div className="cliff-line" />
-        <div className="collecting-zone">
-          <span>{t.collectingArea}</span>
-        </div>
-        <div className="hazard-zone"><span>{t.hazard}</span></div>
-        <div className="rail-track"><span>{t.rail}</span></div>
-        <div className="walk-route route-one" />
-        <div className="walk-route route-two" />
-        <div className="exit-route" />
-        <div className="map-node station-node"><i>◆</i><strong>{location.station}</strong><small>{t.nearestStation}</small></div>
-        <div className="map-node access-node"><i>●</i><strong>{t.access}</strong><small>{t.recommendedStart}</small></div>
-        <div className="map-node escape-node"><i>↗</i><strong>{t.exitPoint}</strong><small>{location.exit.split(/[;；]/)[0]}</small></div>
-        <div className="map-amenity café">{t.cafe}</div>
-        <div className="map-amenity toilets">WC</div>
-        <div className="route-note"><span>{t.onFoot}</span><strong>{location.walk}</strong></div>
-        <div className="field-map-title">
-          <span>{t.actionMap}</span>
-          <strong>{location.shortName.toUpperCase()}</strong>
-        </div>
-        <div className="field-legend">
-          <span><i className="key-walk" /> {t.walkingRoute}</span>
-          <span><i className="key-zone" /> {t.collectingKey}</span>
-          <span><i className="key-hazard" /> {t.hazardKey}</span>
-        </div>
-        <small className="osm-credit">{copy[language].mapCredit}</small>
       </div>
 
       <aside className="info-panel">
