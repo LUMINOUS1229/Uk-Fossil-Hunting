@@ -1460,7 +1460,7 @@ function MuseumView({
   const t = museumCopy[language];
   const [regionFilter, setRegionFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
-  const [revealedCard, setRevealedCard] = useState<string | null>(null);
+  const [revealedCards, setRevealedCards] = useState<string[]>([]);
   const [profileId, setProfileId] = useState<string | null>(null);
   const [progress, setProgress] = useState<MuseumProgress>({ visitedLocations: [], ownedFinds: [] });
   const [syncState, setSyncState] = useState<MuseumSyncState>("loading");
@@ -1782,19 +1782,13 @@ function MuseumView({
                     const key = museumFindKey(original, originalFind);
                     const owned = progress.ownedFinds.includes(key);
                     const stars = rarityStars(originalFind.rarity);
-                    const revealed = revealedCard === key;
+                    const revealed = revealedCards.includes(key);
                     return (
                       <article
                         className={`museum-specimen rarity-tier-${rarityTier(stars)} ${owned ? "is-owned" : ""} ${revealed ? "is-flipped" : ""}`}
                         key={key}
-                        onMouseEnter={() => setRevealedCard(key)}
-                        onMouseLeave={() => setRevealedCard((active) => active === key ? null : active)}
-                        onFocus={() => setRevealedCard(key)}
-                        onBlur={(event) => {
-                          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-                            setRevealedCard((active) => active === key ? null : active);
-                          }
-                        }}
+                        onMouseEnter={() => setRevealedCards((cards) => cards.includes(key) ? cards : [...cards, key])}
+                        onFocus={() => setRevealedCards((cards) => cards.includes(key) ? cards : [...cards, key])}
                       >
                         <div className="museum-card-inner">
                           <button
@@ -1803,7 +1797,7 @@ function MuseumView({
                             aria-label={`${language === "zh" ? "翻开卡牌" : "Reveal card"}: ${find.name}`}
                             aria-hidden={revealed}
                             tabIndex={revealed ? -1 : 0}
-                            onClick={() => setRevealedCard(revealed ? null : key)}
+                            onClick={() => setRevealedCards((cards) => cards.includes(key) ? cards : [...cards, key])}
                           >
                             <span className="museum-card-back-logo"><PixelFossilIcon find={find} /></span>
                             <strong>{fossilAbbreviation(originalFind)}</strong>
