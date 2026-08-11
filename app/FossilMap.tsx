@@ -971,7 +971,7 @@ const copy = {
     heroEyebrow: "N+ FIELD SITES · ROUTES FROM LONDON", heroTitle: "Fossil Hunters", heroSubtitle: "Let’s go exploring.",
     scopeSites: "FIELD SITES", scopeStart: "STARTING FROM", scopeStartValue: "LONDON", scopeCheck: "CHECK BEFORE", scopeCheckValue: "TIDE & ACCESS",
     northSea: "NORTH SEA", channel: "ENGLISH CHANNEL", london: "London", open: "Open",
-    fromLondon: "from London", fieldSites: "FIELD SITES · N+", close: "Close", explore: "Explore N+ field sites", findShort: "Finds", accessShort: "Access",
+    fromLondon: "from London", fieldSites: "FIELD SITES · N+", sitesHint: "Hover for field sites", close: "Close", explore: "Explore N+ field sites", findShort: "Finds", accessShort: "Access",
     routeToggle: "From London routes", fieldSite: "Field site", research: "In research", railRoute: "Rail route",
     questLabel: "MAIN QUEST", questTitle: "FOSSIL TRAIL", questHint: "Choose a fossil marker to begin", questSites: "SITES TO EXPLORE",
     mapCredit: "Pixel map · locations approximate", researchLabel: "IN RESEARCH", dismiss: "Dismiss",
@@ -993,7 +993,7 @@ const copy = {
     heroEyebrow: "N+ 个重点地点 · 从伦敦出发", heroTitle: "Fossil Hunters", heroSubtitle: "一起去探险吧。",
     scopeSites: "收录地点", scopeStart: "默认出发地", scopeStartValue: "伦敦", scopeCheck: "出发前确认", scopeCheckValue: "潮汐与通行",
     northSea: "北海", channel: "英吉利海峡", london: "伦敦", open: "打开",
-    fromLondon: "从伦敦出发", fieldSites: "重点地点 · N+", close: "关闭", explore: "探索 N+ 个重点地点", findShort: "发现", accessShort: "通行",
+    fromLondon: "从伦敦出发", fieldSites: "重点地点 · N+", sitesHint: "悬停查看地点", close: "关闭", explore: "探索 N+ 个重点地点", findShort: "发现", accessShort: "通行",
     routeToggle: "显示伦敦出发路线", fieldSite: "完整地点", research: "调研中", railRoute: "铁路路线",
     questLabel: "主线任务", questTitle: "寻找英国化石", questHint: "选择一个化石图标开始", questSites: "个探索地点",
     mapCredit: "像素底图 · 地点为近似位置", researchLabel: "调研中", dismiss: "关闭",
@@ -2136,11 +2136,12 @@ export function FossilMap() {
         if (modal) setModal(null);
         else if (museumOpen) setMuseumOpen(false);
         else if (selectedId) setSelectedId(null);
+        else if (mobileList) setMobileList(false);
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [modal, museumOpen, selectedId]);
+  }, [modal, mobileList, museumOpen, selectedId]);
 
   const openLocation = (id: string) => {
     setMobileList(false);
@@ -2219,7 +2220,19 @@ export function FossilMap() {
           </div>
         </div>
 
-        <aside className={`location-list ${mobileList ? "mobile-open" : ""}`}>
+        <button
+          className={`location-list-hint ${mobileList ? "is-open" : ""}`}
+          type="button"
+          aria-controls="field-site-list"
+          aria-expanded={mobileList}
+          aria-label={t.sitesHint}
+          onClick={() => setMobileList((open) => !open)}
+        >
+          <span aria-hidden="true">››</span>
+          <strong>{t.sitesHint}</strong>
+        </button>
+
+        <aside id="field-site-list" className={`location-list ${mobileList ? "mobile-open" : ""}`}>
           <div className="list-heading">
             <span>{t.fieldSites}</span>
             <button className="list-close" onClick={() => setMobileList(false)}>{t.close}</button>

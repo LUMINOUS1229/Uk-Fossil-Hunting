@@ -6321,3 +6321,89 @@ body {
     transition-duration: 1ms;
   }
 }
+
+/* Desktop field-site drawer: hidden until the edge hint is hovered or focused. */
+.location-list-hint {
+  display: none;
+}
+
+@keyframes field-site-hint-nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(3px); }
+}
+
+@media (min-width: 721px) {
+  .location-list-hint {
+    position: absolute;
+    bottom: 92px;
+    left: 0;
+    z-index: 17;
+    display: flex;
+    width: 34px;
+    min-height: 164px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 6px;
+    border: 2px solid var(--ink);
+    border-left: 0;
+    background: var(--rust);
+    color: var(--paper-deep);
+    box-shadow: 4px 4px 0 var(--ink);
+    cursor: pointer;
+  }
+
+  .location-list-hint > span {
+    font-family: var(--font-mono), monospace;
+    font-size: 16px;
+    line-height: 1;
+    animation: field-site-hint-nudge 1.15s steps(2, end) infinite;
+  }
+
+  .location-list-hint > strong {
+    color: inherit;
+    font-family: var(--font-mono), monospace;
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: .12em;
+    line-height: 1.35;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+  }
+
+  .location-list-hint:hover,
+  .location-list-hint:focus-visible,
+  .location-list-hint.is-open {
+    background: var(--paper-deep);
+    color: var(--rust);
+    outline: 0;
+  }
+
+  .location-list {
+    max-height: calc(100svh - 128px);
+    overflow-y: auto;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(calc(-100% - 48px));
+    transition: transform 360ms cubic-bezier(.2, .8, .2, 1), opacity 180ms ease;
+  }
+
+  .location-list-hint:hover + .location-list,
+  .location-list-hint:focus-visible + .location-list,
+  .location-list:hover,
+  .location-list:focus-within,
+  .location-list.mobile-open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .location-list,
+  .location-list-hint > span {
+    transition-duration: 1ms;
+    animation: none;
+  }
+}
