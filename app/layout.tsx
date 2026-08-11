@@ -8,7 +8,7 @@ const mono = DM_Mono({ variable: "--font-mono", subsets: ["latin"], weight: ["40
 
 export const metadata: Metadata = {
   title: "Fossil Hunters in UK",
-  description: "一起去探险吧。六条从伦敦出发的英国化石路线。",
+  description: "一起去探险吧。八条从伦敦出发的英国化石路线。",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

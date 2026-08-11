@@ -464,6 +464,196 @@ const locations: Location[] = [
     verified: "01 Aug 2026",
     accent: "#64b9dd",
   },
+  {
+    id: "weymouth",
+    name: "Weymouth / Bowleaze Cove",
+    shortName: "Weymouth",
+    region: "Dorset · Jurassic Coast",
+    period: "Late Jurassic",
+    age: "c. 160–155 million years",
+    type: "Cliff & rocky foreshore",
+    risk: "HIGH",
+    level: "Confident beginners · adults",
+    findRating: 4,
+    accessRating: 3,
+    familyRating: 2,
+    mapX: 62.5,
+    mapY: 89.4,
+    departure: "London Waterloo",
+    station: "Weymouth",
+    local: "Local bus or taxi to Bowleaze Cove",
+    walk: "5–10 min from the cove stop; 40–50 min from Weymouth station",
+    duration: "3 hr 15–4 hr",
+    railLink: "https://www.nationalrail.co.uk/destinations/trains-from-london-to-weymouth/",
+    mapsLink: "https://www.google.com/maps/dir/Weymouth+Station/Bowleaze+Cove",
+    tideLink: "https://www.tidetimes.org.uk/weymouth-tide-times",
+    route: [
+      "Reach Bowleaze Cove and check the tide and weather before entering the beach.",
+      "Use the main beach access and walk east toward Ham Cliff only on a falling tide.",
+      "Search loose shingle and weathered fallen Corallian blocks, keeping clear of cliffs and slips.",
+      "Return the same way well before the tide rises; never rely on the steep Redcliff rope exit.",
+    ],
+    terrain: "Shingle · boulders · soft mud · active landslips",
+    exit: "Bowleaze Cove main beach access; return the same way",
+    tideWindow: "Start around 2 hours before low water",
+    season: "Autumn–spring in settled weather",
+    conditions: "Best after safe beach scour; wait for cliffs and slips to settle",
+    geology: {
+      en: {
+        intro: "Bowleaze Cove crosses Upper Jurassic Oxford Clay and younger Corallian rocks. The change from marine mud to shallower, higher-energy sand and limestone is written into the fossils and abundant burrows.",
+        units: [
+          {
+            name: "Oxford Clay Formation · Weymouth Member",
+            age: "Late Oxfordian · around 160 million years",
+            environment: "Warm shallow marine mud",
+            description: "Organic-rich grey clay exposed around Redcliff and Furzy Cliff, locally folded, faulted and affected by major landslides.",
+            fossils: "Ammonites, belemnites, Gryphaea and occasional vertebrate remains",
+          },
+          {
+            name: "Corallian Group",
+            age: "Late Oxfordian · around 158–155 million years",
+            environment: "Shallow, higher-energy sea",
+            description: "Sandstone and limestone units including the Nothe and Preston Grits; fallen blocks commonly preserve conspicuous burrow systems.",
+            fossils: "Trace fossils, bivalves, gastropods and ammonite fragments",
+          },
+        ],
+        beds: ["Oxford Clay mudstone", "Nothe Grit", "Preston Grit", "Corallian limestone and sandstone"],
+        fieldNote: "Loose blocks are the safest place to read the succession. Large in-situ trace-fossil slabs should be photographed and left where they are.",
+        sourceLabel: "Southampton Wessex Coast Geology · UK Fossils",
+        sourceLink: "https://wessexcoastgeology.soton.ac.uk/Bowleaze-Redcliff.htm",
+      },
+      zh: {
+        intro: "Bowleaze Cove 横跨上侏罗统牛津黏土与较年轻的 Corallian 岩层。从海相软泥到浅水、高能砂岩与石灰岩的环境变化，记录在化石和密集生痕中。",
+        units: [
+          {
+            name: "牛津黏土组 · Weymouth 段",
+            age: "晚牛津期 · 约 1.60 亿年前",
+            environment: "温暖浅海软泥",
+            description: "Redcliff 与 Furzy Cliff 一带出露富有机质灰色黏土，局部受褶皱、断层和大型滑坡影响。",
+            fossils: "菊石、箭石、Gryphaea 牡蛎及偶见脊椎动物遗骸",
+          },
+          {
+            name: "Corallian 群",
+            age: "晚牛津期 · 约 1.58–1.55 亿年前",
+            environment: "浅水、高能海洋",
+            description: "包含 Nothe Grit 与 Preston Grit 等砂岩和石灰岩；坠落岩块上常保存醒目的洞穴生痕。",
+            fossils: "遗迹化石、双壳类、腹足类和菊石碎片",
+          },
+        ],
+        beds: ["牛津黏土泥岩", "Nothe Grit", "Preston Grit", "Corallian 石灰岩与砂岩"],
+        fieldNote: "观察松散岩块最安全。大型原位遗迹化石板应拍照记录并留在原处。",
+        sourceLabel: "Southampton Wessex Coast Geology · UK Fossils",
+        sourceLink: "https://wessexcoastgeology.soton.ac.uk/Bowleaze-Redcliff.htm",
+      },
+    },
+    finds: [
+      { glyph: "◒", category: "Bivalves & Brachiopods", name: "Gryphaea oyster", zh: "魔鬼趾牡蛎", rarity: "Very common", size: "3–12 cm", tip: "Thick, curved oyster shells weather from the clay." },
+      { glyph: "◎", category: "Ammonites & Heteromorphs", name: "Ammonite", zh: "菊石", rarity: "Common", size: "2–20 cm", tip: "Look for ribbed coils or fragments in clay and concretions." },
+      { glyph: "⌁", category: "Trace Fossils", name: "Burrow trace", zh: "洞穴遗迹化石", rarity: "Common", size: "5–60 cm", tip: "Branching tubes stand out on fallen sandstone blocks." },
+      { glyph: "│", category: "Other Cephalopods", name: "Belemnite", zh: "箭石", rarity: "Occasional", size: "2–10 cm", tip: "Smooth bullet-shaped guards occur in loose clay." },
+      { glyph: "◉", category: "Gastropods", name: "Gastropod", zh: "腹足类", rarity: "Occasional", size: "1–8 cm", tip: "Spiralled shells occur in weathered Corallian blocks." },
+      { glyph: "◇", category: "Reptile", name: "Marine reptile remain", zh: "海生爬行动物遗骸", rarity: "Very rare", size: "Varies", tip: "Record the exact context and report bone or teeth before preparation." },
+    ],
+    required: ["Robust boots", "Tide plan", "Gloves", "Water", "Eye protection"],
+    useful: ["Hand lens", "Sample boxes", "Small soft brush"],
+    avoid: ["Climbing cliffs", "Using the Redcliff rope route", "Heavy hammering near slips"],
+    hazards: ["Incoming tide can cut off the route", "Irregular boulders", "Quicksand-like soft mud", "Active landslides and rock movement"],
+    safetyLead: "Return by Bowleaze Cove before the tide rises. Do not use the steep rope exit, and keep well clear of cliffs, fresh falls and moving landslips.",
+    sssi: "South Dorset Coast SSSI · Jurassic Coast World Heritage Site",
+    rules: ["Collect loose material only; do not excavate the cliff.", "Do not remove or hammer large in-situ trace-fossil blocks.", "Keep clear of active slips and never climb the cliff.", "Record and report unusual vertebrate material."],
+    source: "UK Fossils · Southampton Wessex Coast Geology",
+    sourceLink: "https://ukfossils.co.uk/bowleaze-cove/",
+    verified: "11 Aug 2026",
+    accent: "#f2b35f",
+  },
+  {
+    id: "peterborough",
+    name: "Peterborough / King’s Dyke",
+    shortName: "Peterborough",
+    region: "Cambridgeshire · The Fens",
+    period: "Middle Jurassic",
+    age: "c. 165–163 million years",
+    type: "Managed fossil area",
+    risk: "MODERATE",
+    level: "Permit required · beginner friendly",
+    findRating: 5,
+    accessRating: 2,
+    familyRating: 4,
+    mapX: 76.5,
+    mapY: 68.2,
+    departure: "London King’s Cross",
+    station: "Peterborough",
+    local: "Train or taxi toward Whittlesey, then taxi to King’s Dyke",
+    walk: "Short walk from the locked reserve entrance",
+    duration: "1 hr 35–2 hr 10",
+    railLink: "https://www.nationalrail.co.uk/destinations/trains-from-london-to-peterborough/",
+    mapsLink: "https://www.google.com/maps/dir/Peterborough+Station/Kings+Dyke+Nature+Reserve",
+    route: [
+      "Apply for free reserve membership at least one week before travelling and wait for the gate code.",
+      "Travel from Peterborough toward Whittlesey and reach 222 Peterborough Road, PE7 1PD.",
+      "Use only the designated fossil-hunting area, which is replenished with Oxford Clay.",
+      "Stay on reserve paths, close the locked gate and leave the collecting area tidy.",
+    ],
+    terrain: "Managed paths · clay surface · deep mud after rain",
+    exit: "Locked membership gate; keep the access code available",
+    tideWindow: "Tide not applicable",
+    season: "All year with a permit; avoid after heavy rain",
+    conditions: "Clay becomes very muddy; check the latest reserve notice",
+    geology: {
+      en: {
+        intro: "King’s Dyke gives controlled access to fossil-rich Oxford Clay excavated near Whittlesey. These Callovian marine mudstones preserve the animals of a warm Jurassic sea, from tiny shells to giant pliosaurs.",
+        units: [
+          {
+            name: "Oxford Clay Formation · Peterborough Member",
+            age: "Callovian · around 165–163 million years",
+            environment: "Offshore marine mud",
+            description: "Brown-grey, organic-rich mudstone with shell beds and locally crushed ammonites, brought into a purpose-built collecting area.",
+            fossils: "Ammonites, belemnites, bivalves, fish, sharks, marine reptiles and fossil wood",
+          },
+        ],
+        beds: ["Organic-rich mudstone", "Gryphaea shell beds", "Calcareous concretions"],
+        fieldNote: "The fossil area is regularly replenished, so specimens are no longer in their exact quarry layer. Label finds as King’s Dyke fossil area rather than inventing bed-level provenance.",
+        sourceLabel: "British Geological Survey · King’s Dyke Nature Reserve",
+        sourceLink: "https://webapps.bgs.ac.uk/lexicon/lexicon.cfm?pub=PET",
+      },
+      zh: {
+        intro: "King’s Dyke 提供受控的牛津黏土化石采集区，材料来自 Whittlesey 附近。卡洛夫期海相泥岩保存了温暖侏罗纪海洋中的动物，从微小贝类到巨型上龙。",
+        units: [
+          {
+            name: "牛津黏土组 · Peterborough 段",
+            age: "卡洛夫期 · 约 1.65–1.63 亿年前",
+            environment: "离岸海相软泥",
+            description: "富有机质的棕灰色泥岩，夹贝壳层和常被压扁的菊石；材料会运入专门设置的采集区。",
+            fossils: "菊石、箭石、双壳类、鱼类、鲨鱼、海生爬行动物和化石木",
+          },
+        ],
+        beds: ["富有机质泥岩", "Gryphaea 贝壳层", "钙质结核"],
+        fieldNote: "采集区会定期补充材料，因此标本已不在原始采石层位。标签应写 King’s Dyke fossil area，不要推测具体层位。",
+        sourceLabel: "英国地质调查局 · King’s Dyke Nature Reserve",
+        sourceLink: "https://webapps.bgs.ac.uk/lexicon/lexicon.cfm?pub=PET",
+      },
+    },
+    finds: [
+      { glyph: "◎", category: "Ammonites & Heteromorphs", name: "Ammonite", zh: "菊石", rarity: "Common", size: "1–12 cm", tip: "Ribbed or smooth coils are abundant in the clay." },
+      { glyph: "│", category: "Other Cephalopods", name: "Belemnite", zh: "箭石", rarity: "Common", size: "2–12 cm", tip: "Dark bullet-like guards are robust and easy to recognise." },
+      { glyph: "◒", category: "Bivalves & Brachiopods", name: "Bivalve shell", zh: "双壳类", rarity: "Common", size: "1–8 cm", tip: "Shells and moulds may be compressed in the soft clay." },
+      { glyph: "▥", category: "Plant Fossils", name: "Fossil wood", zh: "化石木", rarity: "Common", size: "1–20 cm", tip: "Look for grain-like structure rather than simple dark clay." },
+      { glyph: "▲", category: "Shark Teeth", name: "Shark or fish remain", zh: "鲨鱼或鱼类遗骸", rarity: "Rare", size: "3–40 mm", tip: "Check small dark pieces for glossy enamel, scales or vertebrae." },
+      { glyph: "◇", category: "Reptile", name: "Marine reptile fragment", zh: "海生爬行动物碎片", rarity: "Rare", size: "Varies", tip: "Ichthyosaur, plesiosaur or crocodile material should be recorded and reported." },
+      { glyph: "✦", category: "Crabs", name: "Crustacean", zh: "甲壳类", rarity: "Uncommon", size: "1–6 cm", tip: "Small carapace or claw fragments may sit inside concretions." },
+    ],
+    required: ["Confirmed permit and gate code", "Wellington boots", "Gloves", "Sample boxes", "Water"],
+    useful: ["Small trowel", "Hand lens", "Kneeling mat"],
+    avoid: ["Bringing dogs", "Selling collected fossils", "Entering the active quarry", "Visiting without a confirmed permit"],
+    hazards: ["Locked access", "Very sticky or deep mud", "Uneven clay surface", "Active quarry boundary"],
+    safetyLead: "Access is for current members only. Apply at least one week ahead, wait for confirmation and remain inside the designated fossil area.",
+    sssi: "King’s Dyke Nature Reserve · members-only access",
+    rules: ["Carry a current permit and use the issued gate code.", "Casual collecting is free, but selling fossils from the reserve is prohibited.", "No dogs; keep out of the active quarry.", "Record and report marine reptile or other significant finds."],
+    source: "King’s Dyke Nature Reserve · Peterborough Museum",
+    sourceLink: "https://www.kingsdykenaturereserve.com/fossils/",
+    verified: "11 Aug 2026",
+    accent: "#9fd1a8",
+  },
 ];
 
 type LocationTranslation = Pick<Location,
@@ -658,6 +848,79 @@ const locationZh: Record<string, LocationTranslation> = {
     rules: ["可采集松散海滩化石；未经许可不得挖掘原位悬崖。", "遵守 West Dorset Fossil Collecting Code。", "具有科学价值的重要标本应在 Heritage Centre 登记。", "出售重要发现前，应先提供给英国认可博物馆。"],
     source: "Charmouth Heritage Coast Centre · 化石采集守则",
   },
+  weymouth: {
+    region: "多塞特郡 · 侏罗纪海岸",
+    period: "晚侏罗世",
+    type: "悬崖与岩石潮间带",
+    level: "适合有信心的新手 · 建议成人",
+    local: "乘当地巴士或出租车前往 Bowleaze Cove",
+    walk: "从海湾车站步行 5–10 分钟；从 Weymouth 车站步行 40–50 分钟",
+    duration: "3小时15分–4小时",
+    route: [
+      "抵达 Bowleaze Cove 后，进入海滩前先核对潮汐与天气。",
+      "使用主海滩入口，仅在退潮时向东往 Ham Cliff 行进。",
+      "在松散砾石和风化坠落的 Corallian 岩块中搜索，并远离崖壁和滑坡体。",
+      "涨潮前留出充足时间原路返回；绝不能依赖 Redcliff 陡峭的绳索出口。",
+    ],
+    terrain: "砾石 · 巨石 · 软泥 · 活动滑坡",
+    exit: "Bowleaze Cove 主海滩入口；必须原路返回",
+    tideWindow: "约在低潮前 2 小时开始",
+    season: "秋至春的稳定天气时段",
+    conditions: "安全的海滩冲刷后较佳；等崖壁和滑坡稳定后再前往",
+    findTips: [
+      "厚实弯曲的牡蛎壳会从黏土中风化出来。",
+      "在黏土与结核中寻找带肋纹的螺旋或碎片。",
+      "坠落砂岩块上的分叉管状构造非常醒目。",
+      "松散黏土中偶见光滑的子弹状鞘。",
+      "风化 Corallian 岩块中可见螺旋壳体。",
+      "处理前记录准确发现环境，并报告骨骼或牙齿。",
+    ],
+    required: ["结实防滑靴", "潮汐计划", "手套", "饮用水", "护目镜"],
+    useful: ["手持放大镜", "标本盒", "小软刷"],
+    avoid: ["攀爬悬崖", "使用 Redcliff 绳索路线", "在滑坡附近用重锤"],
+    hazards: ["涨潮可能切断路线", "不规则巨石", "类似流沙的软泥", "活动滑坡与岩块移动"],
+    safetyLead: "涨潮前从 Bowleaze Cove 原路返回。不要使用陡峭绳索出口，并远离崖壁、新鲜坍塌和移动中的滑坡。",
+    sssi: "South Dorset Coast 特别科学价值地点 · 侏罗纪海岸世界遗产",
+    rules: ["只采集松散材料，不得挖掘悬崖。", "不得移走或敲击大型原位遗迹化石岩块。", "远离活动滑坡，绝不攀爬崖壁。", "异常脊椎动物材料应记录并报告。"],
+    source: "UK Fossils · Southampton Wessex Coast Geology",
+  },
+  peterborough: {
+    region: "剑桥郡 · 芬地区",
+    period: "中侏罗世",
+    type: "管理型化石采集区",
+    level: "需要许可 · 新手友好",
+    local: "乘火车或出租车往 Whittlesey，再搭出租车前往 King’s Dyke",
+    walk: "从上锁的保护区入口步行一小段",
+    duration: "1小时35分–2小时10分",
+    route: [
+      "至少提前一周申请免费保护区会员，并等待收到大门密码。",
+      "从 Peterborough 往 Whittlesey 行进，到达 222 Peterborough Road, PE7 1PD。",
+      "只使用会定期补充牛津黏土的指定化石采集区。",
+      "留在保护区路径内，关好上锁大门并保持采集区整洁。",
+    ],
+    terrain: "管理步道 · 黏土表面 · 雨后深泥",
+    exit: "上锁的会员入口；随身保存门禁密码",
+    tideWindow: "不受潮汐影响",
+    season: "持许可全年开放；大雨后避免前往",
+    conditions: "黏土会变得非常泥泞；出发前查看保护区最新通知",
+    findTips: [
+      "带肋或光滑的螺旋壳体在黏土中很常见。",
+      "深色子弹状鞘体坚硬，容易辨认。",
+      "壳体与铸模可能在软黏土中被压扁。",
+      "寻找类似木纹的结构，不要把普通深色黏土误认成化石木。",
+      "检查细小深色碎片上是否有光泽牙釉质、鳞片或椎骨结构。",
+      "鱼龙、蛇颈龙或鳄类材料应记录并报告。",
+      "小型背甲或螯碎片可能藏在结核内。",
+    ],
+    required: ["已确认的许可与门禁密码", "防水长靴", "手套", "标本盒", "饮用水"],
+    useful: ["小铲", "手持放大镜", "跪垫"],
+    avoid: ["携带犬只", "出售采集的化石", "进入活动采石场", "未确认许可就前往"],
+    hazards: ["上锁入口", "非常黏或较深的泥地", "不平整黏土表面", "活动采石场边界"],
+    safetyLead: "只允许当前会员进入。至少提前一周申请，等待确认，并始终留在指定化石采集区内。",
+    sssi: "King’s Dyke Nature Reserve · 仅限会员进入",
+    rules: ["携带有效许可并使用发放的门禁密码。", "休闲采集免费，但严禁出售保护区化石。", "不得带狗，不得进入活动采石场。", "海生爬行动物或其他重要发现应记录并报告。"],
+    source: "King’s Dyke Nature Reserve · Peterborough Museum",
+  },
 };
 
 const rarityZh: Record<string, string> = {
@@ -681,6 +944,7 @@ const fossilCategoryZh: Record<string, string> = {
   Microfossils: "微化石",
   "Trace Fossils": "遗迹化石",
   "Plant Fossils": "植物化石",
+  Gastropods: "腹足类",
   Vertebrates: "脊椎动物",
 };
 
@@ -712,7 +976,7 @@ const copy = {
     questLabel: "MAIN QUEST", questTitle: "FOSSIL TRAIL", questHint: "Choose a fossil marker to begin", questSites: "SITES TO EXPLORE",
     mapCredit: "Pixel map · locations approximate", researchLabel: "IN RESEARCH", dismiss: "Dismiss",
     aboutEyebrow: "About this field map", aboutTitle: "A route planner, not a promise.",
-    aboutBody: "This map turns scattered fossil guides into six practical journeys from London. Each field sheet combines the train, last-mile walk, approximate collecting zone, likely finds and the rules that matter on the day.",
+    aboutBody: "This map turns scattered fossil guides into eight practical journeys from London. Each field sheet combines the train, last-mile walk, approximate collecting zone, likely finds and the rules that matter on the day.",
     approxStrong: "Coordinates stay approximate.", approxBody: "The goal is to guide safe access—not publish sensitive or rare specimen locations.",
     changing: "Travel, tide and access conditions change. Re-check the linked operator, tide table and local guidance before every trip.",
     beforeTrip: "Before every trip", tideDeadline: "The tide is a deadline.",
@@ -734,7 +998,7 @@ const copy = {
     questLabel: "主线任务", questTitle: "寻找英国化石", questHint: "选择一个化石图标开始", questSites: "个探索地点",
     mapCredit: "像素底图 · 地点为近似位置", researchLabel: "调研中", dismiss: "关闭",
     aboutEyebrow: "关于这张野外地图", aboutTitle: "它是路线计划，不是安全承诺。",
-    aboutBody: "这张地图把分散的化石攻略整理成六条从伦敦出发的实际行程。每张地点卡都结合了火车、最后一段步行、大致采集区、常见化石和当天必须遵守的规则。",
+    aboutBody: "这张地图把分散的化石攻略整理成八条从伦敦出发的实际行程。每张地点卡都结合了火车、最后一段步行、大致采集区、常见化石和当天必须遵守的规则。",
     approxStrong: "坐标始终保持近似。", approxBody: "目标是引导安全抵达，而不是公开敏感地点或稀有标本的精确位置。",
     changing: "交通、潮汐和通行条件都会变化。每次出发前请重新查看交通运营方、潮汐表和当地指南。",
     beforeTrip: "每次出发前", tideDeadline: "潮水就是截止时间。",
@@ -766,7 +1030,7 @@ const detailCopy = {
     siteSpecific: "Rules are site-specific. Check current designation and access notices.", source: "SOURCE", reviewed: "LAST REVIEWED",
     precision: "Location precision: approximate · Guidance may change",
     findFrequency: "FIND FREQUENCY", accessRating: "ACCESS", familyRating: "FAMILY",
-    geologyTitle: "Folkestone geology", formations: "FORMATIONS", environment: "ENVIRONMENT", typicalFossils: "TYPICAL FOSSILS",
+    geologyTitle: "Site geology", formations: "FORMATIONS", environment: "ENVIRONMENT", typicalFossils: "TYPICAL FOSSILS",
     bedContext: "GAULT BED CONTEXT", fieldRule: "FIELD NOTE", reference: "REFERENCE", category: "CATEGORY",
   },
   zh: {
@@ -786,7 +1050,7 @@ const detailCopy = {
     siteSpecific: "不同地点的规则各不相同。请核对最新保护地指定信息和通行告示。", source: "信息来源", reviewed: "最后核验",
     precision: "地点精度：近似 · 指南可能更新",
     findFrequency: "发现频率", accessRating: "通行难度", familyRating: "亲子适合度",
-    geologyTitle: "Folkestone 地质剖面", formations: "地层单元", environment: "沉积环境", typicalFossils: "典型化石",
+    geologyTitle: "地点地质剖面", formations: "地层单元", environment: "沉积环境", typicalFossils: "典型化石",
     bedContext: "GAULT 层位线索", fieldRule: "现场采集提示", reference: "参考资料", category: "类别",
   },
 } as const;
@@ -866,6 +1130,10 @@ const categoryDescriptions: Record<string, Record<Language, string>> = {
   "Plant Fossils": {
     en: "Wood grain, growth structure and mineral replacement help distinguish fossil wood from rock.",
     zh: "木纹、生长构造和矿物交代特征，可以帮助区分化石木与普通岩石。",
+  },
+  Gastropods: {
+    en: "Coiled snail shells preserve whorls, apertures and ornament that reflect life on or within the seabed.",
+    zh: "腹足类螺旋壳会保存壳环、壳口与表面纹饰，反映其在海床表面或内部的生活方式。",
   },
   Vertebrates: {
     en: "Porous or thin-walled bones can be fragile and significant; unusual finds should be recorded.",
@@ -950,6 +1218,8 @@ const locationAliases: Record<string, string[]> = {
   "wootton-bassett": ["wootton", "wootton bassett", "royal wootton bassett", "伍顿巴西特"],
   bracklesham: ["bracklesham", "bracklesham bay", "布拉克勒舍姆"],
   charmouth: ["charmouth", "lyme regis", "black ven", "查茅斯", "莱姆里吉斯"],
+  weymouth: ["weymouth", "bowleaze", "bowleaze cove", "redcliff", "韦茅斯"],
+  peterborough: ["peterborough", "king s dyke", "kings dyke", "king’s dyke", "whittlesey", "彼得伯勒"],
 };
 
 const normalizeGuideQuery = (value: string) => value.toLocaleLowerCase().replace(/[？?！!，,。.、:：'’“”"()（）-]/g, " ").replace(/\s+/g, " ").trim();
@@ -1149,8 +1419,8 @@ function answerGuideQuestion(question: string, siteLocations: Location[], langua
   if (asksTide) {
     return {
       text: isZh
-        ? "不同地点的潮汐窗口差异很大。请告诉我地点名，例如 Folkestone、Herne Bay、Bracklesham Bay 或 Charmouth，我会检索对应建议。"
-        : "Tide windows vary widely. Name a location—such as Folkestone, Herne Bay, Bracklesham Bay or Charmouth—and I’ll retrieve its guidance.",
+        ? "不同地点的潮汐窗口差异很大。请告诉我地点名，例如 Folkestone、Herne Bay、Weymouth 或 Charmouth，我会检索对应建议。Peterborough 不受潮汐影响螺。"
+        : "Tide windows vary widely. Name a location—such as Folkestone, Herne Bay, Weymouth or Charmouth—and I’ll retrieve its guidance. Peterborough is not tidal—luo.",
     };
   }
 
@@ -1168,6 +1438,8 @@ const markerOffsets: Record<string, { x: number; y: number }> = {
   "wootton-bassett": { x: -30, y: -32 },
   bracklesham: { x: 22, y: 40 },
   charmouth: { x: -38, y: 30 },
+  weymouth: { x: -10, y: 44 },
+  peterborough: { x: -42, y: -28 },
 };
 
 const markerStyle = (location: Location, index: number) => {
@@ -1230,7 +1502,7 @@ function fossilIconClass(find: Find) {
   if (/crab|蟹/.test(text)) return "crab";
   if (/shark|tooth|ray|鲨|牙|鳐/.test(text)) return "tooth";
   if (/fish|鱼/.test(text)) return "fish";
-  if (/bivalve|brachiopod|mollusc|shell|双壳|腕足|贝|软体/.test(text)) return "shell";
+  if (/bivalve|brachiopod|mollusc|gastropod|shell|双壳|腕足|贝|软体|腹足/.test(text)) return "shell";
   if (/wood|plant|木|植物/.test(text)) return "wood";
   if (/nummulite|microfossil|货币虫|微化石/.test(text)) return "micro";
   if (/coprolite|trace|粪|遗迹/.test(text)) return "trace";
