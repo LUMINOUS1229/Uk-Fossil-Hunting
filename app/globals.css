@@ -6124,3 +6124,141 @@ body {
     min-height: 260px;
   }
 }
+
+/* Museum specimen flip cards */
+.museum-specimen {
+  display: block;
+  min-height: 310px;
+  padding: 0;
+  overflow: visible;
+  background: transparent;
+  perspective: 1100px;
+}
+
+.museum-specimen.rarity-tier-bronze {
+  --museum-card-surface:
+    linear-gradient(rgba(255, 220, 188, .045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 220, 188, .045) 1px, transparent 1px),
+    linear-gradient(145deg, #684231, #3d2b27 78%);
+  border-color: #bd7956;
+  background: transparent;
+}
+
+.museum-specimen.rarity-tier-silver {
+  --museum-card-surface:
+    linear-gradient(rgba(240, 250, 255, .055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(240, 250, 255, .055) 1px, transparent 1px),
+    linear-gradient(145deg, #465864, #293a45 78%);
+  border-color: #b9cbd3;
+  background: transparent;
+}
+
+.museum-specimen.rarity-tier-gold {
+  --museum-card-surface:
+    linear-gradient(rgba(255, 235, 164, .055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 235, 164, .055) 1px, transparent 1px),
+    linear-gradient(145deg, #6d5418, #423614 78%);
+  border-color: var(--rust);
+  background: transparent;
+}
+
+.museum-card-inner {
+  position: relative;
+  width: 100%;
+  min-height: 306px;
+  transform-style: preserve-3d;
+  transition: transform 620ms cubic-bezier(.2, .75, .18, 1);
+  will-change: transform;
+}
+
+.museum-specimen:hover .museum-card-inner,
+.museum-specimen:focus-within .museum-card-inner,
+.museum-specimen.is-flipped .museum-card-inner {
+  transform: rotateY(180deg);
+}
+
+.museum-card-back,
+.museum-card-front {
+  position: absolute;
+  inset: 0;
+  min-height: 306px;
+  overflow: hidden;
+  border: 0;
+  background: var(--museum-card-surface);
+  background-size: 8px 8px, 8px 8px, auto;
+  color: var(--ink);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.museum-card-back {
+  display: flex;
+  flex-direction: column;
+  gap: 58px;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.museum-card-back:focus-visible {
+  outline: 3px solid var(--rust);
+  outline-offset: -7px;
+}
+
+.museum-card-back-logo {
+  display: grid;
+  width: 104px;
+  height: 104px;
+  place-items: center;
+}
+
+.museum-card-back-logo .pixel-fossil {
+  transform: scale(2.05);
+  box-shadow: 3px 3px 0 rgba(4, 61, 85, .5);
+}
+
+.museum-card-back > strong {
+  color: var(--ink);
+  font-family: var(--font-mono), monospace;
+  font-size: 42px;
+  font-weight: 500;
+  letter-spacing: .18em;
+  line-height: 1;
+  text-indent: .18em;
+  text-shadow: 3px 3px 0 rgba(4, 61, 85, .45);
+}
+
+.museum-card-front {
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  transform: rotateY(180deg);
+}
+
+.museum-card-front > small {
+  margin-top: auto;
+  color: var(--ink-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+}
+
+.museum-specimen.is-owned::after {
+  display: none;
+}
+
+@media (max-width: 540px) {
+  .museum-specimen,
+  .museum-card-inner,
+  .museum-card-back,
+  .museum-card-front {
+    min-height: 300px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .museum-card-inner {
+    transition-duration: 1ms;
+  }
+}

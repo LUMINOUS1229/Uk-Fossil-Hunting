@@ -883,6 +883,12 @@ const rarityStars = (rarity: string) => {
 
 const rarityTier = (stars: number) => stars >= 5 ? "gold" : stars >= 3 ? "silver" : "bronze";
 
+const fossilAbbreviation = (find: Find) => {
+  const words = find.name.toUpperCase().match(/[A-Z0-9]+/g)?.filter((word) => !["AND", "OR", "THE", "OF"].includes(word)) ?? [];
+  if (words.length <= 1) return (words[0] ?? "FSL").slice(0, 3);
+  return words.slice(0, 3).map((word) => word[0]).join("");
+};
+
 const museumFindKey = (location: Location, find: Find) => `${location.id}:${find.name}`;
 
 type GuideTurn = {
@@ -1454,6 +1460,7 @@ function MuseumView({
   const t = museumCopy[language];
   const [regionFilter, setRegionFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [revealedCard, setRevealedCard] = useState<string | null>(null);
   const [profileId, setProfileId] = useState<string | null>(null);
   const [progress, setProgress] = useState<MuseumProgress>({ visitedLocations: [], ownedFinds: [] });
   const [syncState, setSyncState] = useState<MuseumSyncState>("loading");
@@ -1775,18 +1782,45 @@ function MuseumView({
                     const key = museumFindKey(original, originalFind);
                     const owned = progress.ownedFinds.includes(key);
                     const stars = rarityStars(originalFind.rarity);
+                    const revealed = revealedCard === key;
                     return (
-                      <article className={`museum-specimen rarity-tier-${rarityTier(stars)} ${owned ? "is-owned" : ""}`} key={key}>
-                        <div className="museum-specimen-top">
-                          <PixelFossilIcon find={find} />
-                          <div><span>{find.category}</span><h3>{find.name}</h3><p>{find.zh}</p></div>
+                      <article
+                        className={`museum-specimen rarity-tier-${rarityTier(stars)} ${owned ? "is-owned" : ""} ${revealed ? "is-flipped" : ""}`}
+                        key={key}
+                        onMouseEnter={() => setRevealedCard(key)}
+                        onMouseLeave={() => setRevealedCard((active) => active === key ? null : active)}
+                        onFocus={() => setRevealedCard(key)}
+                        onBlur={(event) => {
+                          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                            setRevealedCard((active) => active === key ? null : active);
+                          }
+                        }}
+                      >
+                        <div className="museum-card-inner">
+                          <button
+                            type="button"
+                            className="museum-card-back"
+                            aria-label={`${language === "zh" ? "翻开卡牌" : "Reveal card"}: ${find.name}`}
+                            aria-hidden={revealed}
+                            tabIndex={revealed ? -1 : 0}
+                            onClick={() => setRevealedCard(revealed ? null : key)}
+                          >
+                            <span className="museum-card-back-logo"><PixelFossilIcon find={find} /></span>
+                            <strong>{fossilAbbreviation(originalFind)}</strong>
+                          </button>
+                          <div className="museum-card-front" aria-hidden={!revealed}>
+                            <div className="museum-specimen-top">
+                              <PixelFossilIcon find={find} />
+                              <div><span>{find.category}</span><h3>{find.name}</h3><p>{find.zh}</p></div>
+                            </div>
+                            <div className="museum-rarity"><span>{t.rarity}</span><StarfishRating value={stars} label={t.rarity} /><b>{stars}/5</b></div>
+                            <p className="museum-specimen-tip">{find.tip}</p>
+                            <small>{t.size} · {find.size}</small>
+                            <button className="museum-collect" tabIndex={revealed ? 0 : -1} aria-pressed={owned} onClick={() => toggleOwned(key)}>
+                              <i>{owned ? "✓" : "+"}</i>{owned ? t.collected : t.addCollection}
+                            </button>
+                          </div>
                         </div>
-                        <div className="museum-rarity"><span>{t.rarity}</span><StarfishRating value={stars} label={t.rarity} /><b>{stars}/5</b></div>
-                        <p className="museum-specimen-tip">{find.tip}</p>
-                        <small>{t.size} · {find.size}</small>
-                        <button className="museum-collect" aria-pressed={owned} onClick={() => toggleOwned(key)}>
-                          <i>{owned ? "✓" : "+"}</i>{owned ? t.collected : t.addCollection}
-                        </button>
                       </article>
                     );
                   })}
