@@ -6335,7 +6335,8 @@ body {
 @media (min-width: 721px) {
   .location-list-hint {
     position: absolute;
-    bottom: 92px;
+    top: 104px;
+    bottom: auto;
     left: 0;
     z-index: 17;
     display: flex;
