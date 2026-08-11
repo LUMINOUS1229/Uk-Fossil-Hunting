@@ -881,6 +881,8 @@ const rarityStars = (rarity: string) => {
   return 1;
 };
 
+const rarityTier = (stars: number) => stars >= 5 ? "gold" : stars >= 3 ? "silver" : "bronze";
+
 const museumFindKey = (location: Location, find: Find) => `${location.id}:${find.name}`;
 
 type GuideTurn = {
@@ -1645,7 +1647,7 @@ function MuseumView({
       const row = Math.floor(index / 2);
       const x = 476 + column * 340;
       const y = 426 + row * 39;
-      context.fillStyle = "#087a9b";
+      context.fillStyle = entry.stars === 0 ? "#087a9b" : entry.stars >= 5 ? "#6d5418" : entry.stars >= 3 ? "#465864" : "#684231";
       context.fillRect(x, y - 22, 320, 31);
       context.fillStyle = "#f2fbff";
       context.font = language === "zh" ? "500 14px sans-serif" : "500 13px monospace";
@@ -1774,7 +1776,7 @@ function MuseumView({
                     const owned = progress.ownedFinds.includes(key);
                     const stars = rarityStars(originalFind.rarity);
                     return (
-                      <article className={`museum-specimen ${owned ? "is-owned" : ""}`} key={key}>
+                      <article className={`museum-specimen rarity-tier-${rarityTier(stars)} ${owned ? "is-owned" : ""}`} key={key}>
                         <div className="museum-specimen-top">
                           <PixelFossilIcon find={find} />
                           <div><span>{find.category}</span><h3>{find.name}</h3><p>{find.zh}</p></div>
