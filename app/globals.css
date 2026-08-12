@@ -2454,7 +2454,7 @@ button {
   position: relative;
   grid-column: 1 / -1;
   display: grid;
-  height: 154px;
+  height: 138px;
   place-items: center;
   margin: 4px -4px -4px;
   overflow: hidden;
@@ -2468,7 +2468,7 @@ button {
   object-fit: contain;
   object-position: center bottom;
   image-rendering: pixelated;
-  filter: drop-shadow(4px 5px 0 rgba(0, 0, 0, .2));
+  filter: none;
 }
 
 .fine-print {

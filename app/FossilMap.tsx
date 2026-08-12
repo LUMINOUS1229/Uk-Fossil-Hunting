@@ -2278,7 +2278,7 @@ export function FossilMap() {
                   <span aria-hidden="true">✦</span>
                   <div><h3>{t.thanksTitle}</h3><p>{t.thanksBody}</p></div>
                   <div className="about-fossil-pile" aria-hidden="true">
-                    <img src="/acknowledgement-fossils-v2.png" alt="" draggable={false} />
+                    <img src="/acknowledgement-fossils-v3.png" alt="" draggable={false} />
                   </div>
                 </div>
                 <p className="fine-print">{t.changing}</p>
