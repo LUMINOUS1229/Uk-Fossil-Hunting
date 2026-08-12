@@ -977,6 +977,8 @@ const copy = {
     mapCredit: "Pixel map · locations approximate", researchLabel: "IN RESEARCH", dismiss: "Dismiss",
     aboutEyebrow: "About this field map", aboutTitle: "A route planner, not a promise.",
     aboutBody: "This map turns scattered fossil guides into eight practical journeys from London. Each field sheet combines the train, last-mile walk, approximate collecting zone, likely finds and the rules that matter on the day.",
+    thanksTitle: "Acknowledgements",
+    thanksBody: "Thank you to everyone in the UK Fossil Hunting group—from QMUL, UCL, UAL and friends across many different disciplines. Your shared love of the ocean and fossils inspired me to build and keep updating this site. Special thanks to the group organiser for bringing everyone together.",
     approxStrong: "Coordinates stay approximate.", approxBody: "The goal is to guide safe access—not publish sensitive or rare specimen locations.",
     changing: "Travel, tide and access conditions change. Re-check the linked operator, tide table and local guidance before every trip.",
     beforeTrip: "Before every trip", tideDeadline: "The tide is a deadline.",
@@ -999,6 +1001,8 @@ const copy = {
     mapCredit: "像素底图 · 地点为近似位置", researchLabel: "调研中", dismiss: "关闭",
     aboutEyebrow: "关于这张野外地图", aboutTitle: "它是路线计划，不是安全承诺。",
     aboutBody: "这张地图把分散的化石攻略整理成八条从伦敦出发的实际行程。每张地点卡都结合了火车、最后一段步行、大致采集区、常见化石和当天必须遵守的规则。",
+    thanksTitle: "致谢",
+    thanksBody: "感谢 UK Fossil Hunting 的群友们——来自 QMUL、UCL、UAL 等学校、不同专业的朋友们。正是大家对海洋与化石的热爱，带动我制作并持续更新这个网站。也特别感谢群主一直以来的组织，让大家相聚并共同探索。",
     approxStrong: "坐标始终保持近似。", approxBody: "目标是引导安全抵达，而不是公开敏感地点或稀有标本的精确位置。",
     changing: "交通、潮汐和通行条件都会变化。每次出发前请重新查看交通运营方、潮汐表和当地指南。",
     beforeTrip: "每次出发前", tideDeadline: "潮水就是截止时间。",
@@ -2276,6 +2280,10 @@ export function FossilMap() {
                 <h2 id="modal-title">{t.aboutTitle}</h2>
                 <p>{t.aboutBody}</p>
                 <div className="modal-note"><strong>{t.approxStrong}</strong> {t.approxBody}</div>
+                <div className="about-thanks">
+                  <span aria-hidden="true">✦</span>
+                  <div><h3>{t.thanksTitle}</h3><p>{t.thanksBody}</p></div>
+                </div>
                 <p className="fine-print">{t.changing}</p>
               </>
             ) : (
