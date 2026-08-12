@@ -2278,13 +2278,7 @@ export function FossilMap() {
                   <span aria-hidden="true">✦</span>
                   <div><h3>{t.thanksTitle}</h3><p>{t.thanksBody}</p></div>
                   <div className="about-fossil-pile" aria-hidden="true">
-                    <span className="pixel-fossil fossil-ammonite fossil-piece piece-ammonite-one"><i /><b /><em /></span>
-                    <span className="pixel-fossil fossil-shell fossil-piece piece-shell-one"><i /><b /><em /></span>
-                    <span className="pixel-fossil fossil-ammonite fossil-piece piece-ammonite-two"><i /><b /><em /></span>
-                    <span className="pixel-fossil fossil-shell fossil-piece piece-shell-two"><i /><b /><em /></span>
-                    <span className="pixel-fossil fossil-ammonite fossil-piece piece-ammonite-three"><i /><b /><em /></span>
-                    <span className="pixel-fossil fossil-shell fossil-piece piece-shell-three"><i /><b /><em /></span>
-                    <i className="about-pearl pearl-one" /><i className="about-pearl pearl-two" /><i className="about-pearl pearl-three" />
+                    <img src="/acknowledgement-fossils-v2.png" alt="" draggable={false} />
                   </div>
                 </div>
                 <p className="fine-print">{t.changing}</p>
