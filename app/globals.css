@@ -6333,20 +6333,24 @@ body {
 }
 
 @media (min-width: 721px) {
+  .overview {
+    --field-drawer-width: min(470px, 32vw);
+  }
+
   .location-list-hint {
     position: absolute;
     top: 104px;
     bottom: auto;
     left: 0;
-    z-index: 17;
+    z-index: 22;
     display: flex;
-    width: 34px;
-    min-height: 164px;
+    width: 48px;
+    min-height: 214px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    padding: 10px 6px;
+    gap: 14px;
+    padding: 14px 9px;
     border: 2px solid var(--ink);
     border-left: 0;
     background: var(--rust);
@@ -6357,7 +6361,7 @@ body {
 
   .location-list-hint > span {
     font-family: var(--font-mono), monospace;
-    font-size: 16px;
+    font-size: 21px;
     line-height: 1;
     animation: field-site-hint-nudge 1.15s steps(2, end) infinite;
   }
@@ -6365,10 +6369,10 @@ body {
   .location-list-hint > strong {
     color: inherit;
     font-family: var(--font-mono), monospace;
-    font-size: 8px;
+    font-size: 10px;
     font-weight: 500;
     letter-spacing: .12em;
-    line-height: 1.35;
+    line-height: 1.5;
     text-transform: uppercase;
     writing-mode: vertical-rl;
   }
@@ -6382,12 +6386,50 @@ body {
   }
 
   .location-list {
+    z-index: 21;
+    width: var(--field-drawer-width);
     max-height: calc(100svh - 128px);
     overflow-y: auto;
     opacity: 0;
     pointer-events: none;
     transform: translateX(calc(-100% - 48px));
     transition: transform 360ms cubic-bezier(.2, .8, .2, 1), opacity 180ms ease;
+  }
+
+  .overview-title,
+  .overview-title .eyebrow,
+  .overview-title .fossil-title,
+  .overview-title .adventure-subtitle,
+  .quest-hud {
+    transition-timing-function: cubic-bezier(.2, .8, .2, 1);
+  }
+
+  .overview-title {
+    transition-duration: 620ms;
+    transition-property: left, width, transform;
+  }
+
+  .overview-title .eyebrow {
+    transition-duration: 440ms;
+    transition-property: letter-spacing, transform;
+  }
+
+  .overview-title .fossil-title {
+    transform-origin: left center;
+    transition-duration: 600ms;
+    transition-delay: 60ms;
+    transition-property: letter-spacing, transform;
+  }
+
+  .overview-title .adventure-subtitle {
+    transition-duration: 520ms;
+    transition-delay: 130ms;
+    transition-property: letter-spacing, transform;
+  }
+
+  .quest-hud {
+    transition-duration: 300ms;
+    transition-property: opacity, transform;
   }
 
   .location-list-hint:hover + .location-list,
@@ -6399,11 +6441,78 @@ body {
     pointer-events: auto;
     transform: translateX(0);
   }
+
+  .overview:has(.location-list-hint:hover) .overview-title,
+  .overview:has(.location-list-hint:focus-visible) .overview-title,
+  .overview:has(.location-list:hover) .overview-title,
+  .overview:has(.location-list:focus-within) .overview-title,
+  .overview:has(.location-list.mobile-open) .overview-title {
+    left: calc(var(--field-drawer-width) + 64px);
+    width: min(570px, calc(100vw - var(--field-drawer-width) - 92px));
+    transform: translateY(6px);
+  }
+
+  .overview:has(.location-list-hint:hover) .overview-title .eyebrow,
+  .overview:has(.location-list-hint:focus-visible) .overview-title .eyebrow,
+  .overview:has(.location-list:hover) .overview-title .eyebrow,
+  .overview:has(.location-list:focus-within) .overview-title .eyebrow,
+  .overview:has(.location-list.mobile-open) .overview-title .eyebrow {
+    letter-spacing: .3em;
+    transform: translateX(8px);
+  }
+
+  .overview:has(.location-list-hint:hover) .overview-title .fossil-title,
+  .overview:has(.location-list-hint:focus-visible) .overview-title .fossil-title,
+  .overview:has(.location-list:hover) .overview-title .fossil-title,
+  .overview:has(.location-list:focus-within) .overview-title .fossil-title,
+  .overview:has(.location-list.mobile-open) .overview-title .fossil-title {
+    letter-spacing: -.025em;
+    transform: translateX(16px) scale(.9);
+  }
+
+  .overview:has(.location-list-hint:hover) .overview-title .adventure-subtitle,
+  .overview:has(.location-list-hint:focus-visible) .overview-title .adventure-subtitle,
+  .overview:has(.location-list:hover) .overview-title .adventure-subtitle,
+  .overview:has(.location-list:focus-within) .overview-title .adventure-subtitle,
+  .overview:has(.location-list.mobile-open) .overview-title .adventure-subtitle {
+    letter-spacing: .08em;
+    transform: translateX(28px);
+  }
+
+  .overview:has(.location-list-hint:hover) .quest-hud,
+  .overview:has(.location-list-hint:focus-visible) .quest-hud,
+  .overview:has(.location-list:hover) .quest-hud,
+  .overview:has(.location-list:focus-within) .quest-hud,
+  .overview:has(.location-list.mobile-open) .quest-hud {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(28px);
+  }
+}
+
+@media (min-width: 721px) and (max-width: 980px) {
+  .overview {
+    --field-drawer-width: min(420px, 38vw);
+  }
+
+  .overview:has(.location-list-hint:hover) .overview-title,
+  .overview:has(.location-list-hint:focus-visible) .overview-title,
+  .overview:has(.location-list:hover) .overview-title,
+  .overview:has(.location-list:focus-within) .overview-title,
+  .overview:has(.location-list.mobile-open) .overview-title {
+    left: calc(var(--field-drawer-width) + 56px);
+    width: calc(100vw - var(--field-drawer-width) - 72px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .location-list,
-  .location-list-hint > span {
+  .location-list-hint > span,
+  .overview-title,
+  .overview-title .eyebrow,
+  .overview-title .fossil-title,
+  .overview-title .adventure-subtitle,
+  .quest-hud {
     transition-duration: 1ms;
     animation: none;
   }
