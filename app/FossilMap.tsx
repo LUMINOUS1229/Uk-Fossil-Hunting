@@ -1155,12 +1155,6 @@ const rarityStars = (rarity: string) => {
 
 const rarityTier = (stars: number) => stars >= 5 ? "gold" : stars >= 3 ? "silver" : "bronze";
 
-const fossilAbbreviation = (find: Find) => {
-  const words = find.name.toUpperCase().match(/[A-Z0-9]+/g)?.filter((word) => !["AND", "OR", "THE", "OF"].includes(word)) ?? [];
-  if (words.length <= 1) return (words[0] ?? "FSL").slice(0, 3);
-  return words.slice(0, 3).map((word) => word[0]).join("");
-};
-
 const museumFindKey = (location: Location, find: Find) => `${location.id}:${find.name}`;
 
 type GuideTurn = {
@@ -2076,7 +2070,7 @@ function MuseumView({
                             onClick={() => setRevealedCards((cards) => cards.includes(key) ? cards : [...cards, key])}
                           >
                             <span className="museum-card-back-logo"><PixelFossilIcon find={find} /></span>
-                            <strong>{fossilAbbreviation(originalFind)}</strong>
+                            <strong>{originalFind.zh}</strong>
                           </button>
                           <div className="museum-card-front" aria-hidden={!revealed}>
                             <div className="museum-specimen-top">
@@ -2283,6 +2277,15 @@ export function FossilMap() {
                 <div className="about-thanks">
                   <span aria-hidden="true">✦</span>
                   <div><h3>{t.thanksTitle}</h3><p>{t.thanksBody}</p></div>
+                  <div className="about-fossil-pile" aria-hidden="true">
+                    <span className="pixel-fossil fossil-ammonite fossil-piece piece-ammonite-one"><i /><b /><em /></span>
+                    <span className="pixel-fossil fossil-shell fossil-piece piece-shell-one"><i /><b /><em /></span>
+                    <span className="pixel-fossil fossil-ammonite fossil-piece piece-ammonite-two"><i /><b /><em /></span>
+                    <span className="pixel-fossil fossil-shell fossil-piece piece-shell-two"><i /><b /><em /></span>
+                    <span className="pixel-fossil fossil-ammonite fossil-piece piece-ammonite-three"><i /><b /><em /></span>
+                    <span className="pixel-fossil fossil-shell fossil-piece piece-shell-three"><i /><b /><em /></span>
+                    <i className="about-pearl pearl-one" /><i className="about-pearl pearl-two" /><i className="about-pearl pearl-three" />
+                  </div>
                 </div>
                 <p className="fine-print">{t.changing}</p>
               </>

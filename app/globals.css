@@ -2450,6 +2450,68 @@ button {
   line-height: 1.75;
 }
 
+.about-fossil-pile {
+  position: relative;
+  grid-column: 1 / -1;
+  height: 104px;
+  margin: 4px -4px -4px;
+  overflow: hidden;
+  border-top: 1px dashed var(--line);
+}
+
+.about-fossil-pile::after {
+  position: absolute;
+  right: 5%;
+  bottom: 4px;
+  left: 5%;
+  height: 4px;
+  background: var(--rust);
+  box-shadow: 0 5px 0 rgba(255, 209, 102, .28);
+  content: "";
+}
+
+.about-fossil-pile .fossil-piece {
+  position: absolute;
+  bottom: 11px;
+  z-index: 2;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  transform-origin: bottom center;
+}
+
+.about-fossil-pile .piece-ammonite-one { left: 4%; --fossil: #ffd166; transform: rotate(-10deg) scale(1.3); }
+.about-fossil-pile .piece-shell-one { left: 19%; --fossil: #ff9c7a; transform: rotate(8deg) scale(1.02); }
+.about-fossil-pile .piece-ammonite-two { left: 36%; --fossil: #8be0d2; transform: rotate(5deg) scale(.88); }
+.about-fossil-pile .piece-shell-two { left: 51%; --fossil: #ffd166; transform: rotate(-7deg) scale(1.28); }
+.about-fossil-pile .piece-ammonite-three { left: 69%; --fossil: #ffb1d0; transform: rotate(12deg) scale(1.08); }
+.about-fossil-pile .piece-shell-three { left: 84%; --fossil: #8be0d2; transform: rotate(-5deg) scale(.94); }
+
+.about-pearl {
+  position: absolute;
+  z-index: 4;
+  width: 18px;
+  height: 18px;
+  background: #f2fbff;
+  clip-path: polygon(25% 0, 75% 0, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0 75%, 0 25%);
+  box-shadow: inset -4px -4px 0 #9ed7e4;
+}
+
+.about-pearl::after {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 5px;
+  height: 5px;
+  background: #fff;
+  content: "";
+}
+
+.pearl-one { right: 24%; bottom: 12px; }
+.pearl-two { right: 14%; bottom: 23px; width: 14px; height: 14px; }
+.pearl-three { left: 29%; bottom: 10px; width: 12px; height: 12px; }
+
 .fine-print {
   margin: 0;
   color: var(--ink-soft);
@@ -6314,11 +6376,12 @@ body {
 .museum-card-back > strong {
   color: var(--ink);
   font-family: var(--font-mono), monospace;
-  font-size: 42px;
-  font-weight: 500;
-  letter-spacing: .18em;
-  line-height: 1;
-  text-indent: .18em;
+  max-width: 94%;
+  font-size: clamp(21px, 2.5vw, 30px);
+  font-weight: 600;
+  letter-spacing: .06em;
+  line-height: 1.3;
+  text-align: center;
   text-shadow: 3px 3px 0 rgba(4, 61, 85, .45);
 }
 
@@ -6677,8 +6740,8 @@ body {
 }
 
 .museum-specimen-top h3 {
-  font-size: 20px;
-  line-height: 1.3;
+  font-size: 26px;
+  line-height: 1.18;
 }
 
 .museum-specimen-top p {
