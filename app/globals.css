@@ -6332,6 +6332,17 @@ body {
   50% { transform: translateX(3px); }
 }
 
+@keyframes intro-nautilus-stay {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.intro-screen .pixel-nautilus {
+  left: 50%;
+  margin-left: -27px;
+  animation: intro-nautilus-stay 1.05s steps(2, end) infinite;
+}
+
 @media (min-width: 721px) {
   .overview {
     --field-drawer-width: min(470px, 32vw);
@@ -6386,6 +6397,7 @@ body {
   }
 
   .location-list {
+    left: 64px;
     z-index: 21;
     width: var(--field-drawer-width);
     max-height: calc(100svh - 128px);
@@ -6447,8 +6459,8 @@ body {
   .overview:has(.location-list:hover) .overview-title,
   .overview:has(.location-list:focus-within) .overview-title,
   .overview:has(.location-list.mobile-open) .overview-title {
-    left: calc(var(--field-drawer-width) + 64px);
-    width: min(570px, calc(100vw - var(--field-drawer-width) - 92px));
+    left: calc(var(--field-drawer-width) + 88px);
+    width: min(570px, calc(100vw - var(--field-drawer-width) - 116px));
     transform: translateY(6px);
   }
 
@@ -6500,8 +6512,8 @@ body {
   .overview:has(.location-list:hover) .overview-title,
   .overview:has(.location-list:focus-within) .overview-title,
   .overview:has(.location-list.mobile-open) .overview-title {
-    left: calc(var(--field-drawer-width) + 56px);
-    width: calc(100vw - var(--field-drawer-width) - 72px);
+    left: calc(var(--field-drawer-width) + 80px);
+    width: calc(100vw - var(--field-drawer-width) - 96px);
   }
 }
 
