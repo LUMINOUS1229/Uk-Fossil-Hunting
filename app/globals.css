@@ -6748,3 +6748,1113 @@ body {
     min-height: 330px;
   }
 }
+
+/* Editorial coast theme — inspired by the quiet book design of the reference PDF. */
+:root {
+  --paper: #f7f3ed;
+  --paper-deep: #fcf9f4;
+  --ink: #3d5f6b;
+  --ink-soft: #7d8d8d;
+  --moss: #9ebdc1;
+  --sea: #e2edef;
+  --sea-deep: #c5dade;
+  --rust: #d99da1;
+  --danger: #b96966;
+  --line: rgba(61, 95, 107, .16);
+}
+
+body {
+  background: #efebe5;
+  color: var(--ink);
+  font-family: var(--font-sans), "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline-color: var(--rust);
+}
+
+.site-shell,
+.detail-view.detail-text-only,
+.museum-view {
+  background:
+    radial-gradient(circle at 18% 12%, rgba(61, 95, 107, .028) 0 1px, transparent 1.3px),
+    radial-gradient(circle at 74% 43%, rgba(217, 157, 161, .026) 0 1px, transparent 1.25px),
+    var(--paper);
+  background-size: 29px 31px, 37px 41px, auto;
+}
+
+.site-shell::before {
+  opacity: .1;
+  mix-blend-mode: multiply;
+  background:
+    repeating-linear-gradient(112deg, transparent 0 18px, rgba(61, 95, 107, .018) 18px 19px),
+    repeating-radial-gradient(circle at 20% 30%, rgba(61, 95, 107, .035) 0 .6px, transparent .8px 5px);
+  background-size: 41px 43px, 53px 47px;
+}
+
+.topbar {
+  height: 76px;
+  padding-inline: clamp(18px, 3vw, 42px);
+  border-bottom: 1px solid var(--line);
+  background: rgba(247, 243, 237, .92);
+  box-shadow: none;
+  color: var(--ink);
+  backdrop-filter: blur(14px);
+}
+
+.brand {
+  gap: 12px;
+  color: var(--ink);
+  font-family: var(--font-display), "Songti SC", "STSong", serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: .055em;
+}
+
+.brand-title small {
+  color: var(--rust);
+  font-family: var(--font-sans), sans-serif;
+  font-size: .55em;
+  font-weight: 500;
+  letter-spacing: .14em;
+}
+
+.brand .ammonite-mark,
+.brand .ammonite-mark.small {
+  flex-basis: 34px;
+  width: 34px;
+  height: 34px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  box-shadow: none;
+  color: var(--rust);
+}
+
+.brand .ammonite-shell,
+.brand .ammonite-mark.small .ammonite-shell,
+.brand .ammonite-shell::before,
+.brand .ammonite-shell::after {
+  border-width: 1px;
+}
+
+.language-toggle {
+  border-left-color: var(--line);
+  color: var(--ink-soft);
+  font-family: var(--font-sans), sans-serif;
+  font-size: 11px;
+  letter-spacing: .06em;
+}
+
+.language-toggle button:hover,
+.language-toggle button.active,
+.top-actions .museum-link,
+.top-actions button:hover {
+  color: var(--rust);
+}
+
+.top-actions {
+  gap: clamp(14px, 2.4vw, 30px);
+}
+
+.top-actions button {
+  color: var(--ink);
+  font-family: var(--font-sans), sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .06em;
+}
+
+.alert-dot {
+  border-radius: 50%;
+  background: var(--rust);
+  box-shadow: 0 0 0 4px rgba(217, 157, 161, .15);
+}
+
+/* The opening now reads like a book cover rather than a game splash. */
+.intro-screen {
+  isolation: isolate;
+  background: var(--paper);
+}
+
+.intro-screen::before,
+.intro-screen::after {
+  position: absolute;
+  z-index: -1;
+  bottom: -18%;
+  content: "";
+  border-radius: 50% 50% 0 0 / 24% 26% 0 0;
+}
+
+.intro-screen::before {
+  left: -12%;
+  width: 82%;
+  height: 47%;
+  background: #dcebee;
+  transform: rotate(-3deg);
+}
+
+.intro-screen::after {
+  right: -16%;
+  width: 88%;
+  height: 51%;
+  background: #bed4d8;
+  opacity: .82;
+  transform: rotate(2deg);
+}
+
+.intro-stage {
+  position: relative;
+  z-index: 1;
+  transform: translateY(-6vh);
+}
+
+.intro-copy h1,
+.overview-title h1 {
+  color: var(--ink);
+  font-family: var(--font-display), "Songti SC", "STSong", serif;
+  font-weight: 500;
+  letter-spacing: -.025em;
+  text-shadow: none;
+}
+
+.intro-copy h1 {
+  font-size: clamp(48px, 6vw, 78px);
+  line-height: 1.05;
+}
+
+.intro-copy p {
+  margin-top: 18px;
+  color: var(--rust);
+  font-family: "Songti SC", "STSong", var(--font-display), serif;
+  font-size: clamp(16px, 1.7vw, 22px);
+  font-weight: 400;
+  letter-spacing: .14em;
+}
+
+.intro-copy::after {
+  display: block;
+  margin-top: 26px;
+  color: var(--rust);
+  content: "◎";
+  font-family: var(--font-display), serif;
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 1;
+  opacity: .82;
+}
+
+.intro-screen .dino-track {
+  display: none;
+}
+
+.overview {
+  padding-top: 76px;
+}
+
+.overview-title {
+  top: clamp(126px, 15vh, 168px);
+  left: clamp(34px, 7vw, 112px);
+  width: min(38vw, 560px);
+}
+
+.eyebrow {
+  margin-bottom: 18px;
+  color: var(--rust);
+  font-family: var(--font-sans), sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .2em;
+}
+
+.eyebrow::before {
+  width: 32px;
+  height: 1px;
+  background: currentColor;
+}
+
+.overview-title .fossil-title {
+  font-size: clamp(52px, 5.4vw, 82px);
+  line-height: .98;
+}
+
+.fossil-title small {
+  color: var(--rust);
+  font-family: var(--font-sans), sans-serif;
+  font-size: .22em;
+  font-weight: 500;
+  letter-spacing: .12em;
+}
+
+.adventure-subtitle {
+  max-width: 420px;
+  margin-top: 20px;
+  color: var(--ink-soft);
+  font-family: "Songti SC", "STSong", var(--font-display), serif;
+  font-size: clamp(17px, 1.65vw, 23px);
+  font-weight: 400;
+  letter-spacing: .06em;
+  line-height: 1.55;
+}
+
+.guide-scope {
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  box-shadow: none;
+}
+
+.guide-scope dd {
+  color: var(--ink);
+  font-family: var(--font-sans), sans-serif;
+}
+
+.uk-map {
+  inset: 76px 0 0 31%;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .2), transparent 42%),
+    var(--sea);
+  box-shadow: inset 1px 0 0 var(--line);
+}
+
+.uk-map::before,
+.uk-map::after {
+  display: block;
+  border: 1px solid rgba(61, 95, 107, .08);
+}
+
+.uk-map::before {
+  right: -21%;
+  bottom: -38%;
+  box-shadow: 0 0 0 34px rgba(61, 95, 107, .025), 0 0 0 70px rgba(61, 95, 107, .018);
+}
+
+.uk-map::after {
+  top: -34%;
+  left: 18%;
+  box-shadow: 0 0 0 38px rgba(61, 95, 107, .02), 0 0 0 78px rgba(61, 95, 107, .015);
+}
+
+.north-sea-label,
+.channel-label {
+  color: rgba(61, 95, 107, .34);
+  font-family: var(--font-sans), sans-serif;
+  text-shadow: none;
+}
+
+.uk-silhouette {
+  filter: drop-shadow(0 14px 22px rgba(61, 95, 107, .11));
+}
+
+.uk-silhouette-image {
+  opacity: .96;
+  image-rendering: auto;
+}
+
+.quest-hud {
+  width: 225px;
+  padding: 18px;
+  border: 1px solid rgba(61, 95, 107, .2);
+  background: rgba(252, 249, 244, .88);
+  box-shadow: 0 14px 32px rgba(61, 95, 107, .08);
+  color: var(--ink);
+  font-family: var(--font-sans), sans-serif;
+  text-transform: none;
+  backdrop-filter: blur(10px);
+}
+
+.quest-hud > span {
+  color: var(--rust);
+  font-size: 9px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.quest-hud > strong {
+  margin-top: 7px;
+  color: var(--ink);
+  font-family: var(--font-display), "Songti SC", "STSong", serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.quest-hud > small,
+.quest-hud > div i {
+  color: var(--ink-soft);
+}
+
+.quest-hud > div {
+  border-top: 1px solid var(--line);
+}
+
+.quest-hud > div b {
+  color: var(--rust);
+  font-family: var(--font-display), serif;
+  font-weight: 500;
+}
+
+.london-node span,
+.marker-anchor {
+  border: 2px solid var(--paper-deep);
+  border-radius: 50%;
+  background: var(--rust);
+  box-shadow: 0 0 0 1px var(--rust), 0 4px 10px rgba(61, 95, 107, .16);
+}
+
+.london-node b {
+  padding: 3px 7px;
+  background: rgba(252, 249, 244, .88);
+  color: var(--ink);
+  box-shadow: none;
+}
+
+.london-route.down-right,
+.london-route.down-left,
+.marker-leader {
+  background: repeating-linear-gradient(90deg, rgba(217, 157, 161, .9) 0 4px, transparent 4px 8px);
+}
+
+.site-pixel-icon,
+.site-pixel-icon.compact {
+  display: grid;
+  place-items: center;
+  overflow: visible;
+  border: 1px solid rgba(61, 95, 107, .3);
+  border-radius: 50%;
+  background: var(--paper-deep);
+  box-shadow: 0 8px 18px rgba(61, 95, 107, .11);
+  color: var(--ink);
+  image-rendering: auto;
+}
+
+.site-pixel-icon > i,
+.site-pixel-icon > b,
+.site-pixel-icon > em {
+  display: none;
+}
+
+.site-pixel-icon::before {
+  color: var(--rust);
+  font-family: var(--font-display), "Songti SC", serif;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.site-pixel-icon.compact::before {
+  font-size: 20px;
+}
+
+.icon-folkestone::before { content: "◎"; }
+.icon-herne-bay::before { content: "△"; }
+.icon-walton::before { content: "◌"; }
+.icon-wootton-bassett::before { content: "│"; }
+.icon-bracklesham::before { content: "◒"; }
+.icon-charmouth::before { content: "≋"; }
+.icon-weymouth::before { content: "◇"; }
+.icon-peterborough::before { content: "⌁"; }
+
+.map-marker.high-risk .site-pixel-icon {
+  border-color: rgba(185, 105, 102, .7);
+}
+
+.marker-pulse,
+.map-marker .marker-pulse {
+  border: 1px solid rgba(217, 157, 161, .75);
+  border-radius: 50%;
+}
+
+.marker-card {
+  border: 1px solid rgba(61, 95, 107, .2);
+  border-radius: 2px;
+  background: rgba(252, 249, 244, .96);
+  color: var(--ink);
+  box-shadow: 0 14px 32px rgba(61, 95, 107, .13);
+  backdrop-filter: blur(10px);
+}
+
+.marker-card strong {
+  color: var(--ink);
+  font-family: var(--font-display), "Songti SC", serif;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.marker-card small { color: var(--ink-soft); }
+.marker-card em { color: var(--rust); }
+
+.map-credit-note {
+  border: 0;
+  background: transparent;
+  color: var(--ink-soft);
+  box-shadow: none;
+}
+
+.location-list-hint {
+  border: 1px solid var(--line);
+  border-left: 0;
+  background: rgba(252, 249, 244, .92);
+  color: var(--ink);
+  box-shadow: 0 10px 26px rgba(61, 95, 107, .08);
+}
+
+.location-list-hint:hover,
+.location-list-hint:focus-visible,
+.location-list-hint.is-open {
+  background: var(--sea-deep);
+  color: var(--ink);
+}
+
+.location-list,
+.detail-text-only .info-panel {
+  border: 1px solid rgba(61, 95, 107, .2);
+  background: rgba(252, 249, 244, .97);
+  box-shadow: 0 18px 42px rgba(61, 95, 107, .12);
+  color: var(--ink);
+  backdrop-filter: blur(12px);
+}
+
+.list-heading {
+  color: var(--rust);
+  font-family: var(--font-sans), sans-serif;
+}
+
+.location-list > button {
+  border-top: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.location-list > button:hover {
+  background: var(--sea);
+  color: var(--ink);
+}
+
+.location-list > button:hover small,
+.location-list > button:hover .list-profile {
+  color: var(--ink-soft) !important;
+}
+
+.location-list small { color: var(--ink-soft); }
+.location-list .list-profile { color: var(--rust); }
+.list-icon-wrap > i { background: var(--paper-deep); color: var(--ink-soft); }
+.risk-low { color: #638879 !important; }
+.risk-moderate { color: #a57a53 !important; }
+.risk-high { color: var(--danger) !important; }
+
+.mobile-sites-button {
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper-deep);
+  box-shadow: 0 10px 22px rgba(61, 95, 107, .18);
+}
+
+/* Details: a field notebook with quiet chapter markers. */
+.detail-view,
+.info-panel,
+.modal {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.detail-text-only .detail-safety {
+  border: 1px solid rgba(185, 105, 102, .32);
+  background: #f8ecea;
+  box-shadow: none;
+}
+
+.detail-safety p,
+.hazard-list li,
+.modal-note.warning {
+  color: #765e5c;
+}
+
+.risk-pill,
+.list-risk,
+.finds-grid .rarity {
+  border-radius: 999px;
+}
+
+.back-button,
+.museum-back {
+  border-bottom: 1px solid var(--rust);
+  color: var(--ink);
+  font-family: var(--font-sans), sans-serif;
+}
+
+.place-heading {
+  border-bottom: 1px solid var(--line);
+}
+
+.place-heading h2,
+.section-title h2,
+.modal h2,
+.museum-tracker-copy h2,
+.museum-region-title h2,
+.museum-category-note h2 {
+  color: var(--ink);
+  font-family: var(--font-display), "Songti SC", "STSong", serif;
+  font-weight: 600;
+  letter-spacing: -.02em;
+}
+
+.place-heading h2 { font-size: clamp(38px, 5vw, 58px); }
+
+.place-symbol > span:last-child {
+  border: 0;
+  border-radius: 50%;
+  background: var(--rust);
+  color: var(--paper-deep);
+}
+
+.place-tags span,
+.kit-group > div > span {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(226, 237, 239, .52);
+}
+
+.profile-rating i,
+.starfish-rating > span {
+  border-radius: 50%;
+}
+
+.section-nav,
+.detail-safety {
+  background: rgba(252, 249, 244, .94);
+  color: var(--ink);
+  backdrop-filter: blur(10px);
+}
+
+.section-nav {
+  border-color: var(--line);
+}
+
+.section-nav a { color: var(--ink-soft); }
+.section-nav a:hover,
+.section-nav a:focus-visible { color: var(--rust); }
+
+.section-title {
+  align-items: center;
+}
+
+.section-title > span,
+.geology-units header > span {
+  border: 0;
+  border-radius: 50%;
+  background: #f3e4e3;
+  color: var(--rust);
+}
+
+.section-title h2 { font-size: 32px; }
+
+.journey-time,
+.time-hero,
+.sssi-card,
+.geology-intro {
+  border-color: var(--line);
+  background: var(--sea);
+  color: var(--ink);
+}
+
+.journey-time strong,
+.time-hero strong,
+.sssi-card strong {
+  color: var(--ink);
+  font-family: var(--font-display), "Songti SC", serif;
+  font-weight: 600;
+}
+
+.journey-time span,
+.time-hero span,
+.sssi-card span,
+.geology-label,
+.find-category {
+  color: var(--rust);
+}
+
+.primary-action,
+.museum-export,
+.guide-form > button {
+  border-color: var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper-deep);
+}
+
+.primary-action:hover,
+.museum-export:hover,
+.museum-export:focus-visible {
+  border-color: var(--rust);
+  background: var(--rust);
+  color: var(--paper-deep);
+}
+
+.secondary-action,
+.tide-action {
+  border-color: var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+}
+
+.route-list li > span,
+.large-risk,
+.kit-group i {
+  border-color: var(--line);
+  background: var(--paper-deep);
+  color: var(--rust);
+}
+
+.route-list li::before,
+.journey-steps::before {
+  background: var(--line);
+}
+
+.route-facts,
+.time-grid {
+  border-color: var(--line);
+}
+
+.geology-units article,
+.geology-notes > div,
+.geology-notes aside,
+.geology-source,
+.finds-grid article,
+.safety-grid > div,
+.about-thanks {
+  border: 1px solid var(--line);
+  background: var(--paper-deep);
+  box-shadow: 0 10px 24px rgba(61, 95, 107, .055);
+}
+
+.geology-units article::before {
+  border-right: 1px solid var(--line);
+  background: repeating-linear-gradient(0deg, #c8b88d 0 8px, #e5dcc0 8px 14px);
+}
+
+.geology-units article:nth-child(2)::before {
+  background: repeating-linear-gradient(0deg, #88aeb5 0 7px, #bed2d5 7px 12px);
+}
+
+.geology-units article:nth-child(3)::before {
+  background: repeating-linear-gradient(0deg, #d9e4e2 0 9px, #abc5c5 9px 12px);
+}
+
+.geology-units h3,
+.finds-grid .find-card-top h3 {
+  color: var(--ink);
+  font-family: var(--font-display), "Songti SC", serif;
+}
+
+.geology-units article > p,
+.geology-notes li,
+.geology-notes p,
+.finds-grid article > p,
+.finds-grid article > small {
+  color: var(--ink-soft);
+}
+
+.finds-grid article {
+  background: var(--paper-deep);
+  background-size: auto;
+}
+
+.finds-grid .find-card-top .find-zh { color: var(--rust); }
+
+.pixel-fossil {
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--sea);
+  box-shadow: none;
+  image-rendering: auto;
+}
+
+.rarity-very-common,
+.rarity-common { color: #66897a; }
+.rarity-occasional { color: #a88753; }
+.rarity-uncommon { color: #aa795f; }
+.rarity-rare,
+.rarity-very-rare { color: var(--danger); }
+
+.hazard-list li {
+  border-color: rgba(185, 105, 102, .18);
+  background: #fbf2ef;
+}
+
+.coastguard-note,
+.modal-note.warning {
+  border-color: rgba(185, 105, 102, .3);
+  background: #f8ecea;
+}
+
+.source-block {
+  border-radius: 2px;
+  background: var(--ink);
+  color: var(--paper-deep);
+}
+
+.source-block span,
+.source-block p { color: rgba(252, 249, 244, .68); }
+.source-block a,
+.source-block strong { color: var(--paper-deep); }
+
+/* Museum: specimen cards become archival catalogue sheets. */
+.museum-shell { width: min(1180px, calc(100% - 48px)); }
+
+.museum-hero {
+  border: 1px solid var(--line);
+  background: var(--paper-deep);
+  box-shadow: 0 18px 42px rgba(61, 95, 107, .08);
+}
+
+.museum-hero h1 {
+  color: var(--ink);
+  font-weight: 500;
+  letter-spacing: -.025em;
+}
+
+.lang-zh .museum-hero h1 {
+  font-family: "Songti SC", "STSong", var(--font-display), serif;
+  font-weight: 500;
+}
+
+.museum-hero > div:first-child > span,
+.museum-tracker-copy p,
+.museum-category-note p,
+.museum-region-title p,
+.museum-specimen-tip,
+.museum-specimen-top p {
+  color: var(--ink-soft);
+}
+
+.museum-hero-mark {
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--sea);
+  box-shadow: none;
+}
+
+.museum-tracker-copy,
+.museum-progress-grid,
+.museum-progress-grid > div,
+.museum-filters,
+.museum-category-note,
+.museum-region,
+.museum-region-head {
+  border-color: var(--line);
+  background: var(--paper-deep);
+  color: var(--ink);
+  box-shadow: none;
+}
+
+.museum-progress-grid > div,
+.museum-region-head {
+  background: var(--sea);
+}
+
+.museum-progress-grid strong,
+.museum-region-title span,
+.museum-rarity > b,
+.museum-specimen-top > div > span,
+.museum-hero p,
+.museum-tracker-copy > span,
+.museum-filters > div > span,
+.museum-category-note > span {
+  color: var(--rust);
+}
+
+.museum-progress-grid span,
+.museum-progress-grid strong small,
+.museum-rarity > span,
+.museum-specimen > small,
+.museum-card-front > small {
+  color: var(--ink-soft);
+}
+
+.museum-progress-grid progress {
+  border-color: var(--line);
+  border-radius: 999px;
+}
+
+.museum-progress-grid progress::-webkit-progress-bar { background: #dbe6e6; }
+.museum-progress-grid progress::-webkit-progress-value { background: var(--rust); }
+.museum-progress-grid progress::-moz-progress-bar { background: var(--rust); }
+
+.museum-sync,
+.museum-chip-row button,
+.museum-region-actions button {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper-deep);
+  color: var(--ink-soft);
+}
+
+.museum-chip-row button:hover,
+.museum-chip-row button:focus-visible,
+.museum-chip-row button.active {
+  border-color: var(--rust);
+  background: #f3e4e3;
+  color: var(--ink);
+}
+
+.museum-chip-row button i,
+.museum-region-actions button i {
+  border-radius: 50%;
+  background: var(--sea-deep);
+  color: var(--ink);
+}
+
+.museum-category-note {
+  border-left: 4px solid var(--rust);
+}
+
+.museum-region {
+  border: 1px solid var(--line);
+  box-shadow: 0 14px 34px rgba(61, 95, 107, .065);
+}
+
+.museum-region-head {
+  border-bottom: 1px solid var(--line);
+}
+
+.museum-specimen,
+.museum-specimen.rarity-tier-bronze,
+.museum-specimen.rarity-tier-silver,
+.museum-specimen.rarity-tier-gold {
+  border-width: 1px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.museum-specimen.rarity-tier-bronze {
+  --museum-card-surface: linear-gradient(145deg, #faf5ef, #f1e5dc);
+  border-color: #caa58e;
+}
+
+.museum-specimen.rarity-tier-silver {
+  --museum-card-surface: linear-gradient(145deg, #f8faf8, #e6eeee);
+  border-color: #a9bfc1;
+}
+
+.museum-specimen.rarity-tier-gold {
+  --museum-card-surface: linear-gradient(145deg, #fcf8ed, #f1e8cf);
+  border-color: #c8ad72;
+}
+
+.museum-card-back,
+.museum-card-front {
+  color: var(--ink);
+  background: var(--museum-card-surface);
+  background-size: auto;
+}
+
+.museum-card-back > strong,
+.museum-specimen-top h3 {
+  color: var(--ink);
+  font-family: var(--font-display), "Songti SC", serif;
+  font-weight: 600;
+  text-shadow: none;
+}
+
+.museum-card-back-logo .pixel-fossil {
+  box-shadow: none;
+}
+
+.starfish-rating > span {
+  background: rgba(61, 95, 107, .12);
+}
+
+.starfish-rating > span.filled {
+  background: var(--rust);
+  filter: none;
+}
+
+.starfish-rating > span i { background: var(--paper-deep); }
+
+.museum-collect {
+  border: 1px solid var(--rust);
+  border-radius: 999px;
+  color: var(--rust);
+}
+
+.museum-collect:hover,
+.museum-collect:focus-visible,
+.museum-collect[aria-pressed="true"] {
+  background: var(--rust);
+  color: var(--paper-deep);
+}
+
+/* Modals and the small field guide use the same paper-and-ink language. */
+.modal-backdrop {
+  background: rgba(61, 95, 107, .28);
+  backdrop-filter: blur(10px);
+}
+
+.modal {
+  border: 1px solid var(--line);
+  box-shadow: 0 24px 70px rgba(61, 95, 107, .18);
+}
+
+.about-thanks {
+  border-left: 4px solid var(--rust);
+}
+
+.about-thanks h3 { color: var(--rust); }
+.about-thanks p { color: var(--ink); }
+.about-fossil-pile img { image-rendering: auto; opacity: .78; }
+
+.guide-panel,
+.guide-hover-line {
+  border: 1px solid rgba(61, 95, 107, .2);
+  border-radius: 4px;
+  background: var(--paper-deep);
+  color: var(--ink);
+  box-shadow: 0 20px 55px rgba(61, 95, 107, .16);
+}
+
+.guide-panel-header {
+  border-bottom: 1px solid var(--line);
+  background: var(--sea);
+  background-size: auto;
+}
+
+.guide-panel-header strong {
+  color: var(--ink);
+  font-family: var(--font-display), "Songti SC", serif;
+  font-size: 18px;
+}
+
+.guide-panel-header span,
+.guide-source { color: var(--ink-soft); }
+
+.guide-panel-header > button {
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--paper-deep);
+  color: var(--ink);
+}
+
+.guide-turn > span {
+  border: 0;
+  border-radius: 50%;
+  background: var(--rust);
+  box-shadow: none;
+}
+
+.guide-turn.user > span {
+  background: var(--sea-deep);
+  color: var(--ink);
+  box-shadow: none;
+}
+
+.guide-turn p,
+.guide-turn.user p {
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--sea);
+  color: var(--ink);
+}
+
+.guide-turn.user p { background: #f7eceb; }
+
+.guide-turn div > button,
+.guide-presets button {
+  border: 1px solid rgba(217, 157, 161, .65);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--rust);
+}
+
+.guide-form input {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.guide-form input::placeholder { color: rgba(125, 141, 141, .72); }
+
+.guide-trigger {
+  filter: saturate(.55) contrast(.9);
+}
+
+@media (max-width: 720px) {
+  .topbar {
+    height: 64px;
+    padding-inline: 14px;
+    border-bottom-width: 1px;
+  }
+
+  .brand {
+    gap: 7px;
+    font-size: 11px;
+  }
+
+  .brand .ammonite-mark,
+  .brand .ammonite-mark.small {
+    flex-basis: 28px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .overview { padding-top: 64px; }
+
+  .overview-title {
+    top: 92px;
+    left: 20px;
+    width: calc(100% - 40px);
+  }
+
+  .overview-title .fossil-title {
+    font-size: clamp(40px, 12vw, 58px);
+  }
+
+  .adventure-subtitle {
+    max-width: 78vw;
+    margin-top: 13px;
+    font-size: 16px;
+  }
+
+  .uk-map {
+    inset: 64px 0 0;
+    box-shadow: none;
+  }
+
+  .uk-plot {
+    top: 35%;
+  }
+
+  .quest-hud { display: none; }
+
+  .location-list {
+    border: 1px solid var(--line);
+    border-bottom: 0;
+    border-radius: 18px 18px 0 0;
+    background: var(--paper-deep);
+    box-shadow: 0 -12px 38px rgba(61, 95, 107, .14);
+  }
+
+  .detail-text-only .info-panel {
+    border: 0;
+    box-shadow: none;
+  }
+
+  .detail-text-only .detail-safety {
+    border-width: 0 0 1px;
+  }
+
+  .museum-view { inset: 64px 0 0; }
+
+  .museum-hero {
+    box-shadow: 0 12px 28px rgba(61, 95, 107, .08);
+  }
+}
+
+@media (max-width: 420px) {
+  .intro-copy h1 { font-size: 42px; }
+  .overview-title .fossil-title { font-size: 40px; }
+  .eyebrow { margin-bottom: 12px; font-size: 9px; }
+}
