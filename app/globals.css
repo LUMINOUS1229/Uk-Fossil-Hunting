@@ -8037,3 +8037,54 @@ body {
     box-shadow: 0 -12px 38px rgba(23, 63, 103, .14);
   }
 }
+
+/* Compact five-star ratings for map summaries and the field-site drawer. */
+.marker-profile,
+.location-list .list-profile {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.inline-star-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.inline-rating-label {
+  color: var(--rust);
+}
+
+.inline-rating-stars {
+  display: inline-flex;
+  gap: 1px;
+  color: rgba(47, 128, 192, .2);
+  font-size: .9em;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.inline-rating-stars .filled {
+  color: var(--rust);
+}
+
+.rating-divider {
+  color: rgba(23, 63, 103, .35);
+}
+
+.marker-card .marker-profile {
+  margin-top: 7px;
+}
+
+@media (max-width: 420px) {
+  .location-list .list-profile {
+    gap: 4px;
+  }
+
+  .inline-star-rating {
+    gap: 3px;
+  }
+}

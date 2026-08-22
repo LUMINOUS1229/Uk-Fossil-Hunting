@@ -971,7 +971,7 @@ const copy = {
     heroEyebrow: "N+ FIELD SITES · ROUTES FROM LONDON", heroTitle: "Fossil Hunters", heroSubtitle: "Let’s go exploring.",
     scopeSites: "FIELD SITES", scopeStart: "STARTING FROM", scopeStartValue: "LONDON", scopeCheck: "CHECK BEFORE", scopeCheckValue: "TIDE & ACCESS",
     northSea: "NORTH SEA", channel: "ENGLISH CHANNEL", london: "London", open: "Open",
-    fromLondon: "from London", fieldSites: "FIELD SITES · N+", sitesHint: "Hover for field sites", close: "Close", explore: "Explore N+ field sites", findShort: "Finds", accessShort: "Access",
+    fromLondon: "from London", fieldSites: "FIELD SITES · N+", sitesHint: "Click or hover for field sites", close: "Close", explore: "Explore N+ field sites", findShort: "Finds", accessShort: "Access",
     routeToggle: "From London routes", fieldSite: "Field site", research: "In research", railRoute: "Rail route",
     questLabel: "MAIN QUEST", questTitle: "FOSSIL TRAIL", questHint: "Choose a fossil marker to begin", questSites: "SITES TO EXPLORE",
     mapCredit: "Pixel map · locations approximate", researchLabel: "IN RESEARCH", dismiss: "Dismiss",
@@ -995,7 +995,7 @@ const copy = {
     heroEyebrow: "N+ 个重点地点 · 从伦敦出发", heroTitle: "Fossil Hunters", heroSubtitle: "一起去探险吧。",
     scopeSites: "收录地点", scopeStart: "默认出发地", scopeStartValue: "伦敦", scopeCheck: "出发前确认", scopeCheckValue: "潮汐与通行",
     northSea: "北海", channel: "英吉利海峡", london: "伦敦", open: "打开",
-    fromLondon: "从伦敦出发", fieldSites: "重点地点 · N+", sitesHint: "悬停查看地点", close: "关闭", explore: "探索 N+ 个重点地点", findShort: "发现", accessShort: "通行",
+    fromLondon: "从伦敦出发", fieldSites: "重点地点 · N+", sitesHint: "点击悬停查看地点", close: "关闭", explore: "探索 N+ 个重点地点", findShort: "发现", accessShort: "通行",
     routeToggle: "显示伦敦出发路线", fieldSite: "完整地点", research: "调研中", railRoute: "铁路路线",
     questLabel: "主线任务", questTitle: "寻找英国化石", questHint: "选择一个化石图标开始", questSites: "个探索地点",
     mapCredit: "像素底图 · 地点为近似位置", researchLabel: "调研中", dismiss: "关闭",
@@ -1696,6 +1696,17 @@ function StarfishRating({ value, label }: { value: number; label: string }) {
   );
 }
 
+function InlineStarRating({ value, label }: { value: number; label: string }) {
+  return (
+    <span className="inline-star-rating" aria-label={`${label}: ${value} / 5`} title={`${label}: ${value} / 5`}>
+      <span className="inline-rating-label">{label}</span>
+      <span className="inline-rating-stars" aria-hidden="true">
+        {[1, 2, 3, 4, 5].map((star) => <span key={star} className={star <= value ? "filled" : ""}>★</span>)}
+      </span>
+    </span>
+  );
+}
+
 function drawExportStarfish(context: CanvasRenderingContext2D, x: number, y: number, radius: number, fill: string) {
   context.save();
   context.translate(x, y);
@@ -2209,7 +2220,11 @@ export function FossilMap() {
                     <strong>{location.shortName}</strong>
                     <small>{location.region}</small>
                     <small>{location.period} · {location.finds[0].name}</small>
-                    <small>{t.findShort} {location.findRating}/5 · {t.accessShort} {location.accessRating}/5</small>
+                    <small className="marker-profile">
+                      <InlineStarRating label={t.findShort} value={location.findRating} />
+                      <span className="rating-divider" aria-hidden="true">·</span>
+                      <InlineStarRating label={t.accessShort} value={location.accessRating} />
+                    </small>
                     <em>{location.duration} {t.fromLondon}</em>
                   </span>
                 </span>
@@ -2244,7 +2259,11 @@ export function FossilMap() {
               <span>
                 <strong>{location.shortName}</strong>
                 <small>{location.period} · {location.level}</small>
-                <small className="list-profile">{t.findShort} {location.findRating}/5 · {t.accessShort} {location.accessRating}/5</small>
+                <small className="list-profile">
+                  <InlineStarRating label={t.findShort} value={location.findRating} />
+                  <span className="rating-divider" aria-hidden="true">·</span>
+                  <InlineStarRating label={t.accessShort} value={location.accessRating} />
+                </small>
               </span>
               <span className={`list-risk ${riskClass(location.risk)}`}>{riskLabel(location.risk, language)}</span>
             </button>
