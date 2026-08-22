@@ -7240,6 +7240,7 @@ input:focus-visible {
 .icon-walton::before { content: "◌"; }
 .icon-wootton-bassett::before { content: "│"; }
 .icon-bracklesham::before { content: "◒"; }
+.icon-isle-of-wight::before { content: "◆"; }
 .icon-charmouth::before { content: "≋"; }
 .icon-weymouth::before { content: "◇"; }
 .icon-peterborough::before { content: "⌁"; }
