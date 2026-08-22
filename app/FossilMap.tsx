@@ -2379,7 +2379,7 @@ export function FossilMap() {
           </div>
           <div className="uk-plot">
             <div className="uk-silhouette" aria-hidden="true">
-              <img className="uk-silhouette-image" src="/uk-pixel-map.png" alt="" draggable={false} />
+              <img className="uk-silhouette-image" src="/uk-pixel-map-gb.png" alt="" draggable={false} />
             </div>
 
             {localizedLocations.map((location, index) => (
