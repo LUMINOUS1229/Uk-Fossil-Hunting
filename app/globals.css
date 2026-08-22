@@ -7871,3 +7871,169 @@ input:focus-visible {
   .overview-title .fossil-title { font-size: 40px; }
   .eyebrow { margin-bottom: 12px; font-size: 9px; }
 }
+
+/* Blue-and-white field guide palette. */
+:root {
+  --paper: #f7fbff;
+  --paper-deep: #ffffff;
+  --ink: #173f67;
+  --ink-soft: #69839d;
+  --moss: #75acd4;
+  --sea: #e8f3fb;
+  --sea-deep: #bcdcf1;
+  --rust: #2f80c0;
+  --danger: #bd5f61;
+  --line: rgba(23, 63, 103, .16);
+}
+
+body {
+  background: #edf5fb;
+}
+
+.site-shell,
+.detail-view.detail-text-only,
+.museum-view {
+  background:
+    radial-gradient(circle at 18% 12%, rgba(23, 63, 103, .026) 0 1px, transparent 1.3px),
+    radial-gradient(circle at 74% 43%, rgba(47, 128, 192, .022) 0 1px, transparent 1.25px),
+    var(--paper);
+  background-size: 29px 31px, 37px 41px, auto;
+}
+
+.site-shell::before {
+  background:
+    repeating-linear-gradient(112deg, transparent 0 18px, rgba(23, 63, 103, .016) 18px 19px),
+    repeating-radial-gradient(circle at 20% 30%, rgba(23, 63, 103, .03) 0 .6px, transparent .8px 5px);
+}
+
+.topbar {
+  background: rgba(247, 251, 255, .94);
+}
+
+.alert-dot {
+  box-shadow: 0 0 0 4px rgba(47, 128, 192, .14);
+}
+
+.intro-screen::before {
+  background: #dceefa;
+}
+
+.intro-screen::after {
+  background: #acd2ea;
+}
+
+.intro-screen .dino-track {
+  background: linear-gradient(to bottom, transparent 61px, rgba(23, 63, 103, .075) 61px);
+}
+
+.intro-screen .dino-track::before {
+  background: rgba(23, 63, 103, .2);
+}
+
+.uk-map {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .42), transparent 46%),
+    var(--sea);
+}
+
+.uk-map::before,
+.uk-map::after {
+  border-color: rgba(23, 63, 103, .075);
+}
+
+.uk-silhouette {
+  filter: drop-shadow(0 14px 22px rgba(23, 63, 103, .12));
+}
+
+.quest-hud,
+.marker-card,
+.location-list,
+.detail-text-only .info-panel {
+  background: rgba(255, 255, 255, .96);
+  box-shadow: 0 16px 38px rgba(23, 63, 103, .1);
+}
+
+.london-route.down-right,
+.london-route.down-left,
+.marker-leader {
+  background: repeating-linear-gradient(90deg, rgba(47, 128, 192, .9) 0 4px, transparent 4px 8px);
+}
+
+.marker-pulse,
+.map-marker .marker-pulse {
+  border-color: rgba(47, 128, 192, .72);
+}
+
+.site-pixel-icon,
+.site-pixel-icon.compact,
+.pixel-fossil {
+  box-shadow: 0 8px 18px rgba(23, 63, 103, .1);
+}
+
+.location-list-hint:hover,
+.location-list-hint:focus-visible,
+.location-list-hint.is-open,
+.journey-time,
+.time-hero,
+.sssi-card,
+.geology-intro,
+.museum-progress-grid > div,
+.museum-region-head,
+.guide-panel-header,
+.guide-turn p,
+.guide-turn.user p {
+  background: var(--sea);
+}
+
+.section-title > span,
+.geology-units header > span,
+.museum-chip-row button:hover,
+.museum-chip-row button:focus-visible,
+.museum-chip-row button.active {
+  background: #e0f0fb;
+}
+
+.geology-units article,
+.geology-notes > div,
+.geology-notes aside,
+.geology-source,
+.finds-grid article,
+.safety-grid > div,
+.about-thanks,
+.museum-hero,
+.museum-tracker-copy,
+.museum-progress-grid,
+.museum-filters,
+.museum-category-note,
+.museum-region,
+.modal,
+.guide-panel,
+.guide-hover-line {
+  box-shadow: 0 12px 30px rgba(23, 63, 103, .07);
+}
+
+.museum-specimen.rarity-tier-bronze {
+  --museum-card-surface: linear-gradient(145deg, #ffffff, #e3f1fa);
+  border-color: #8bb8d7;
+}
+
+.museum-specimen.rarity-tier-silver {
+  --museum-card-surface: linear-gradient(145deg, #ffffff, #edf5fa);
+  border-color: #a2bccf;
+}
+
+.museum-specimen.rarity-tier-gold {
+  --museum-card-surface: linear-gradient(145deg, #ffffff, #d8ebf8);
+  border-color: #6da7cf;
+}
+
+.modal-backdrop {
+  background: rgba(23, 63, 103, .28);
+}
+
+@media (max-width: 720px) {
+  .location-list {
+    background: var(--paper-deep);
+    box-shadow: 0 -12px 38px rgba(23, 63, 103, .14);
+  }
+}
