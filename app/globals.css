@@ -2478,6 +2478,56 @@ button {
   line-height: 1.55;
 }
 
+.reference-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.reference-list a {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: var(--paper-deep);
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.reference-list a:hover,
+.reference-list a:focus-visible {
+  border-color: var(--rust);
+  background: var(--sea);
+  transform: translateY(-2px);
+}
+
+.reference-list a > span {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--sea);
+  color: var(--rust);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+}
+
+.reference-list strong {
+  font-family: var(--font-display), "Songti SC", serif;
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.reference-list small {
+  color: var(--ink-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+}
+
 .safety-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -6208,6 +6258,31 @@ body {
   .lang-zh .museum-link::after {
     content: "图鉴馆";
     font-size: 9px;
+  }
+
+  .reference-link {
+    width: 34px;
+    overflow: hidden;
+    font-size: 0 !important;
+    white-space: nowrap;
+  }
+
+  .lang-en .reference-link::after {
+    content: "REF";
+    font-size: 8px;
+  }
+
+  .lang-zh .reference-link::after {
+    content: "参考";
+    font-size: 9px;
+  }
+
+  .reference-list a {
+    grid-template-columns: 34px minmax(0, 1fr);
+  }
+
+  .reference-list small {
+    grid-column: 2;
   }
 
   .museum-hero h1,

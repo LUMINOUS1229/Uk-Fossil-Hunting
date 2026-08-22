@@ -967,7 +967,7 @@ const localizeLocation = (location: Location, language: Language): Location => {
 
 const copy = {
   en: {
-    returnMap: "Return to UK map", museum: "Fossil museum", about: "About", safetyFirst: "Safety first",
+    returnMap: "Return to UK map", museum: "Fossil museum", references: "Reference", about: "About", safetyFirst: "Safety first",
     heroEyebrow: "N+ FIELD SITES · ROUTES FROM LONDON", heroTitle: "Fossil Hunters", heroSubtitle: "Let’s go exploring.",
     scopeSites: "FIELD SITES", scopeStart: "STARTING FROM", scopeStartValue: "LONDON", scopeCheck: "CHECK BEFORE", scopeCheckValue: "TIDE & ACCESS",
     northSea: "NORTH SEA", channel: "ENGLISH CHANNEL", london: "London", open: "Open",
@@ -979,6 +979,8 @@ const copy = {
     aboutBody: "This map turns scattered fossil guides into eight practical journeys from London. Each field sheet combines the train, last-mile walk, approximate collecting zone, likely finds and the rules that matter on the day.",
     thanksTitle: "Acknowledgements",
     thanksBody: "Thank you to everyone in the UK Fossil Hunting group—from QMUL, UCL, UAL and friends across many different disciplines. Your shared love of the ocean and fossils inspired me to build and keep updating this site. Special thanks to the group organiser for bringing everyone together.",
+    referencesEyebrow: "Sources & further reading", referencesTitle: "Reference",
+    referencesBody: "Information on this site also draws on the following websites. Friends interested in palaeontology and fossil collecting can visit them to learn more.",
     approxStrong: "Coordinates stay approximate.", approxBody: "The goal is to guide safe access—not publish sensitive or rare specimen locations.",
     changing: "Travel, tide and access conditions change. Re-check the linked operator, tide table and local guidance before every trip.",
     beforeTrip: "Before every trip", tideDeadline: "The tide is a deadline.",
@@ -991,7 +993,7 @@ const copy = {
     emergencyStrong: "Emergency: call 999 and ask for Coastguard.", emergencyBody: "Do not attempt a cliff or sea rescue yourself.",
   },
   zh: {
-    returnMap: "返回英国总览地图", museum: "化石图鉴博物馆", about: "关于", safetyFirst: "安全须知",
+    returnMap: "返回英国总览地图", museum: "化石图鉴博物馆", references: "参考资料", about: "关于", safetyFirst: "安全须知",
     heroEyebrow: "N+ 个重点地点 · 从伦敦出发", heroTitle: "Fossil Hunters", heroSubtitle: "一起去探险吧。",
     scopeSites: "收录地点", scopeStart: "默认出发地", scopeStartValue: "伦敦", scopeCheck: "出发前确认", scopeCheckValue: "潮汐与通行",
     northSea: "北海", channel: "英吉利海峡", london: "伦敦", open: "打开",
@@ -1003,6 +1005,8 @@ const copy = {
     aboutBody: "这张地图把分散的化石攻略整理成八条从伦敦出发的实际行程。每张地点卡都结合了火车、最后一段步行、大致采集区、常见化石和当天必须遵守的规则。",
     thanksTitle: "致谢",
     thanksBody: "感谢 UK Fossil Hunting 的群友们——来自天南地北的朋友们，正是大家对大海与自然生物的热爱，带动我制作并持续更新这个网站。也特别感谢群主一直以来的组织以及提供的化石资料，让大家相聚并共同探索🐚。",
+    referencesEyebrow: "资料来源与延伸阅读", referencesTitle: "参考资料",
+    referencesBody: "本网站参考了以下网站的信息；对古生物以及化石收藏更有兴趣的朋友可以前往了解。",
     approxStrong: "坐标始终保持近似。", approxBody: "目标是引导安全抵达，而不是公开敏感地点或稀有标本的精确位置。",
     changing: "交通、潮汐和通行条件都会变化。每次出发前请重新查看交通运营方、潮汐表和当地指南。",
     beforeTrip: "每次出发前", tideDeadline: "潮水就是截止时间。",
@@ -2134,7 +2138,7 @@ export function FossilMap() {
   const [language, setLanguage] = useState<Language>("zh");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [museumOpen, setMuseumOpen] = useState(false);
-  const [modal, setModal] = useState<"about" | "safety" | null>(null);
+  const [modal, setModal] = useState<"about" | "references" | "safety" | null>(null);
   const [mobileList, setMobileList] = useState(false);
   const localizedLocations = useMemo(() => locations.map((location) => localizeLocation(location, language)), [language]);
   const selected = useMemo(() => localizedLocations.find((location) => location.id === selectedId) ?? null, [localizedLocations, selectedId]);
@@ -2194,6 +2198,7 @@ export function FossilMap() {
         </div>
         <div className="top-actions">
           <button className="museum-link" onClick={() => { setSelectedId(null); setMuseumOpen(true); }}>✦ {t.museum}</button>
+          <button className="reference-link" onClick={() => setModal("references")}>{t.references}</button>
           <button className="about-link" onClick={() => setModal("about")}>{t.about}</button>
           <button className="safety-link" onClick={() => setModal("safety")}>
             <span className="alert-dot" /> {t.safetyFirst}
@@ -2320,6 +2325,24 @@ export function FossilMap() {
                   </div>
                 </div>
                 <p className="fine-print">{t.changing}</p>
+              </>
+            ) : modal === "references" ? (
+              <>
+                <p className="eyebrow">{t.referencesEyebrow}</p>
+                <h2 id="modal-title">{t.referencesTitle}</h2>
+                <p>{t.referencesBody}</p>
+                <div className="reference-list">
+                  <a href="https://www.folkestonefossils.co.uk/" target="_blank" rel="noreferrer noopener">
+                    <span>01</span>
+                    <strong>Folkestone Fossils</strong>
+                    <small>folkestonefossils.co.uk ↗</small>
+                  </a>
+                  <a href="http://www.gaultammonite.co.uk/" target="_blank" rel="noreferrer noopener">
+                    <span>02</span>
+                    <strong>Gault Ammonite</strong>
+                    <small>gaultammonite.co.uk ↗</small>
+                  </a>
+                </div>
               </>
             ) : (
               <>
