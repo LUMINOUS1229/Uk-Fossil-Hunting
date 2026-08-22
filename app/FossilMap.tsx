@@ -2342,6 +2342,11 @@ export function FossilMap() {
                     <strong>Gault Ammonite</strong>
                     <small>gaultammonite.co.uk ↗</small>
                   </a>
+                  <a href="https://ukfossils.co.uk/" target="_blank" rel="noreferrer noopener">
+                    <span>03</span>
+                    <strong>UK Fossils</strong>
+                    <small>ukfossils.co.uk ↗</small>
+                  </a>
                 </div>
               </>
             ) : (
