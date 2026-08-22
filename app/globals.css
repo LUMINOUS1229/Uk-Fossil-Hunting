@@ -8027,6 +8027,16 @@ body {
   border-color: #6da7cf;
 }
 
+.museum-sync.sync-error {
+  border-color: rgba(47, 128, 192, .3);
+  background: #eef7fd;
+}
+
+.museum-sync.sync-error i {
+  background: var(--rust);
+  box-shadow: 0 0 0 3px rgba(47, 128, 192, .12);
+}
+
 .modal-backdrop {
   background: rgba(23, 63, 103, .28);
 }

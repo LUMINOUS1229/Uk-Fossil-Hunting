@@ -1850,9 +1850,21 @@ function MuseumView({
     if (!context) return;
     context.imageSmoothingEnabled = false;
 
-    context.fillStyle = "#043d55";
+    const cardColors = {
+      canvas: "#f7fbff",
+      paper: "#ffffff",
+      ink: "#173f67",
+      muted: "#69839d",
+      blue: "#2f80c0",
+      pale: "#e8f3fb",
+      paleStrong: "#d8ebf8",
+      line: "#b8d1e4",
+      empty: "#cfdfeb",
+    };
+
+    context.fillStyle = cardColors.canvas;
     context.fillRect(0, 0, canvas.width, canvas.height);
-    context.strokeStyle = "rgba(189,232,242,.08)";
+    context.strokeStyle = "rgba(47,128,192,.07)";
     context.lineWidth = 1;
     for (let x = 0; x <= canvas.width; x += 24) {
       context.beginPath(); context.moveTo(x, 0); context.lineTo(x, canvas.height); context.stroke();
@@ -1860,41 +1872,45 @@ function MuseumView({
     for (let y = 0; y <= canvas.height; y += 24) {
       context.beginPath(); context.moveTo(0, y); context.lineTo(canvas.width, y); context.stroke();
     }
-    context.strokeStyle = "#ffd166";
-    context.lineWidth = 8;
+    context.strokeStyle = cardColors.blue;
+    context.lineWidth = 5;
     context.strokeRect(24, 24, 1152, 627);
+    context.strokeStyle = cardColors.line;
+    context.lineWidth = 1;
+    context.strokeRect(36, 36, 1128, 603);
 
-    context.fillStyle = "#ffd166";
+    context.fillStyle = cardColors.blue;
     context.font = "600 18px monospace";
     context.fillText("FOSSIL HUNTERS IN UK · COLLECTION ARCHIVE", 66, 78);
-    context.fillStyle = "#f2fbff";
+    context.fillStyle = cardColors.ink;
     context.font = language === "zh" ? "700 56px sans-serif" : "700 62px Georgia, serif";
     context.fillText(t.cardTitle, 64, 145, 820);
-    context.fillStyle = "#bde8f2";
+    context.fillStyle = cardColors.muted;
     context.font = language === "zh" ? "400 21px sans-serif" : "400 20px monospace";
     context.fillText(t.cardSubtitle, 68, 178);
-    for (let star = 0; star < 5; star += 1) drawExportStarfish(context, 974 + star * 36, 112 + (star % 2) * 7, 17, "#ffd166");
+    for (let star = 0; star < 5; star += 1) drawExportStarfish(context, 974 + star * 36, 112 + (star % 2) * 7, 17, cardColors.blue);
 
     const drawMetric = (x: number, title: string, current: number, total: number) => {
       const percent = total ? Math.round(current / total * 100) : 0;
-      context.fillStyle = "#096b8b";
+      context.fillStyle = cardColors.paper;
       context.fillRect(x, 215, 500, 118);
-      context.strokeStyle = "rgba(226,248,255,.28)";
+      context.strokeStyle = cardColors.line;
       context.lineWidth = 2;
       context.strokeRect(x, 215, 500, 118);
-      context.fillStyle = "#bde8f2";
+      context.fillStyle = cardColors.muted;
       context.font = language === "zh" ? "600 18px sans-serif" : "600 16px monospace";
       context.fillText(title, x + 22, 246);
-      context.fillStyle = "#ffd166";
+      context.fillStyle = cardColors.ink;
       context.font = "700 43px monospace";
       context.fillText(`${current}/${total}`, x + 20, 295);
       context.textAlign = "right";
+      context.fillStyle = cardColors.blue;
       context.font = "700 24px monospace";
       context.fillText(`${percent}%`, x + 476, 285);
       context.textAlign = "left";
-      context.fillStyle = "#043d55";
+      context.fillStyle = cardColors.paleStrong;
       context.fillRect(x + 170, 298, 306, 10);
-      context.fillStyle = "#ffd166";
+      context.fillStyle = cardColors.blue;
       context.fillRect(x + 170, 298, 306 * percent / 100, 10);
     };
     drawMetric(64, t.regionsProgress, visitedCount, locations.length);
@@ -1909,7 +1925,7 @@ function MuseumView({
       stars: rarityStars(originalFind.rarity),
     }))).filter((entry) => progress.ownedFinds.includes(entry.key));
 
-    context.fillStyle = "#ffd166";
+    context.fillStyle = cardColors.blue;
     context.font = "600 16px monospace";
     context.fillText(t.visitedList, 66, 390);
     context.fillText(t.collectionList, 476, 390);
@@ -1917,14 +1933,14 @@ function MuseumView({
     const shownVisited = visitedNames.length ? visitedNames : [t.noneYet];
     shownVisited.slice(0, 6).forEach((name, index) => {
       const y = 424 + index * 35;
-      context.fillStyle = visitedNames.length ? "#66ddd0" : "rgba(189,232,242,.45)";
+      context.fillStyle = visitedNames.length ? cardColors.blue : cardColors.empty;
       context.fillRect(68, y - 14, 16, 16);
       if (visitedNames.length) {
-        context.fillStyle = "#043d55";
+        context.fillStyle = cardColors.paper;
         context.font = "700 12px monospace";
         context.fillText("✓", 71, y - 2);
       }
-      context.fillStyle = "#f2fbff";
+      context.fillStyle = cardColors.ink;
       context.font = language === "zh" ? "500 18px sans-serif" : "500 17px monospace";
       context.fillText(name, 96, y, 330);
     });
@@ -1935,23 +1951,26 @@ function MuseumView({
       const row = Math.floor(index / 2);
       const x = 476 + column * 340;
       const y = 426 + row * 39;
-      context.fillStyle = entry.stars === 0 ? "#087a9b" : entry.stars >= 5 ? "#6d5418" : entry.stars >= 3 ? "#465864" : "#684231";
+      context.fillStyle = entry.stars === 0 ? cardColors.pale : entry.stars >= 5 ? "#d8ebf8" : entry.stars >= 3 ? "#e4f1fa" : "#edf6fc";
       context.fillRect(x, y - 22, 320, 31);
-      context.fillStyle = "#f2fbff";
+      context.strokeStyle = cardColors.line;
+      context.lineWidth = 1;
+      context.strokeRect(x, y - 22, 320, 31);
+      context.fillStyle = cardColors.ink;
       context.font = language === "zh" ? "500 14px sans-serif" : "500 13px monospace";
       const shortLabel = entry.label.length > 25 ? `${entry.label.slice(0, 24)}…` : entry.label;
       context.fillText(shortLabel, x + 10, y - 2, 190);
       for (let star = 0; star < 5; star += 1) {
-        drawExportStarfish(context, x + 223 + star * 18, y - 7, 7, star < entry.stars ? "#ffd166" : "rgba(189,232,242,.2)");
+        drawExportStarfish(context, x + 223 + star * 18, y - 7, 7, star < entry.stars ? cardColors.blue : cardColors.empty);
       }
     });
     if (collectedEntries.length > shownCollected.length) {
-      context.fillStyle = "#bde8f2";
+      context.fillStyle = cardColors.muted;
       context.font = language === "zh" ? "400 13px sans-serif" : "400 12px monospace";
       context.fillText(`+ ${collectedEntries.length - shownCollected.length} ${t.more}`, 816, 632);
     }
 
-    context.fillStyle = "#bde8f2";
+    context.fillStyle = cardColors.muted;
     context.font = "400 12px monospace";
     context.fillText(`${new Date().toLocaleDateString(language === "zh" ? "zh-CN" : "en-GB")} · ${window.location.host}`, 66, 625);
 
