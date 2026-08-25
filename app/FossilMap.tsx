@@ -2057,6 +2057,7 @@ function IntroScreen({ phase }: { phase: Exclude<IntroPhase, "done"> }) {
         <div className="intro-copy">
           <h1 className="fossil-title"><span>Fossil Hunters</span><small>in UK</small></h1>
           <p>一起去探险吧。</p>
+          <span className="brand-tagline">We collect fossils, and memories too.</span>
         </div>
         <PixelCreatures />
       </div>
@@ -2815,6 +2816,7 @@ export function FossilMap() {
           <p className="eyebrow">{t.heroEyebrow}</p>
           <h1 className="fossil-title"><span>Fossil Hunters</span><small>in UK</small></h1>
           <p className="adventure-subtitle">{t.heroSubtitle}</p>
+          <p className="brand-tagline">We collect fossils, and memories too.</p>
         </div>
 
         <div className="uk-map" aria-label={language === "en" ? "Interactive map of UK fossil locations" : "英国化石地点互动地图"}>

@@ -8599,6 +8599,29 @@ body {
 }
 
 /* Final responsive geometry for the two-row mobile header. */
+.brand-tagline {
+  display: block;
+  margin: 10px 0 0;
+  color: var(--rust);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: .025em;
+  line-height: 1.35;
+}
+
+.intro-copy .brand-tagline {
+  margin-top: 14px;
+  color: var(--ink-soft);
+  font-size: clamp(14px, 2vw, 18px);
+}
+
+.overview-title .brand-tagline {
+  max-width: 300px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .8);
+}
+
 .nautilus-guide { bottom: 24px; }
 .guide-panel { bottom: 78px; }
 
@@ -8624,4 +8647,5 @@ body {
   .community-view { inset: 104px 0 0; }
   .nautilus-guide { right: 10px; bottom: 76px; }
   .guide-panel { bottom: 70px; max-height: calc(100svh - 190px); }
+  .overview-title .brand-tagline { max-width: 240px; font-size: 13px; }
 }
