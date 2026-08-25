@@ -10,6 +10,8 @@ const { d1, r2 } = hostingConfig;
 
 // macOS Seatbelt blocks FSEvents, so Codex previews need polling for HMR.
 const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
+const isDirectCloudflareDeploy =
+  process.env.DIRECT_CLOUDFLARE_DEPLOY === "1";
 
 const localBindingConfig = {
   main: "./worker/index.ts",
@@ -18,7 +20,7 @@ const localBindingConfig = {
     ? [
         {
           binding: d1,
-          database_name: "site-creator-d1",
+          database_name: "uk-fossil-hunting",
           database_id: SITE_CREATOR_PLACEHOLDER_DATABASE_ID,
         },
       ]
@@ -52,7 +54,9 @@ export default defineConfig(async () => {
       sites(),
       cloudflare({
         viteEnvironment: { name: "rsc", childEnvironments: ["ssr"] },
-        config: localBindingConfig,
+        ...(isDirectCloudflareDeploy
+          ? { configPath: "./wrangler.jsonc" }
+          : { config: localBindingConfig }),
       }),
     ],
   };
