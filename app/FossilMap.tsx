@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type Risk = "LOW" | "MODERATE" | "HIGH";
 type Language = "en" | "zh";
@@ -1326,6 +1326,7 @@ const museumCopy = {
     markVisited: "Mark region visited", visited: "Region visited", collected: "Collected", addCollection: "Add to collection",
     categoryIntro: "GROUP NOTE", rarity: "RARITY", size: "TYPICAL SIZE", starScale: "1–5 starfish rarity scale",
     entries: "museum entries", openSite: "Open field guide", empty: "No specimens match these filters.", progress: "COLLECTION PROGRESS",
+    dexIndex: "FIELD DEX", allStatus: "All", ownedStatus: "Collected", missingStatus: "To discover", referencePhoto: "REAL SPECIMEN REFERENCE",
   },
   zh: {
     back: "返回地图", eyebrow: "野外收藏 · 个人档案", title: "化石图鉴博物馆",
@@ -1340,8 +1341,65 @@ const museumCopy = {
     markVisited: "点亮到访地区", visited: "已到访", collected: "已拥有", addCollection: "加入收藏",
     categoryIntro: "门类介绍", rarity: "稀有度", size: "典型尺寸", starScale: "1–5 枚海星稀有度等级",
     entries: "项地区图鉴", openSite: "打开地区攻略", empty: "当前筛选下没有对应标本。", progress: "收集进度",
+    dexIndex: "野外图鉴", allStatus: "全部", ownedStatus: "已收集", missingStatus: "待发现", referencePhoto: "真实标本参考",
   },
 } as const;
+
+const communityCopy = {
+  en: {
+    nav: "Field notes", back: "Back to the map", eyebrow: "COMMUNITY FIELD LOG · PHOTO EXCHANGE", title: "Fossil Finds Forum",
+    intro: "Share a recent find, the beach or quarry context, and what you think it might be. Keep precise locations of rare material private.",
+    compose: "Share your find", name: "Display name", note: "What did you find? Add size, rock type and visible features.",
+    place: "Field region (optional)", unknownPlace: "Another / private location", photos: "Add 1–3 photos", publish: "Publish field note",
+    limits: "Up to 3 photos · originals under 8 MB · automatically resized to 1600 px and about 1.5 MB each · 4 posts per device per day",
+    loading: "Loading field notes…", empty: "No field notes yet. Your find can be the first.", retry: "Try again", compressing: "Preparing photos…",
+    publishing: "Publishing…", success: "Your field note is now in the log.", remove: "Remove photo", photoAlt: "Community fossil find",
+    privacy: "Safety note", privacyBody: "Do not publish exact coordinates for rare vertebrate material. Record it privately and contact a local museum.",
+  },
+  zh: {
+    nav: "收获交流", back: "返回地图", eyebrow: "社区野外日志 · 图片交流", title: "化石收获交流区",
+    intro: "上传最近的发现、岩层或海滩环境，以及你的初步判断。稀有标本的精确坐标请保留在私人记录中。",
+    compose: "分享这次发现", name: "显示昵称", note: "发现了什么？可写尺寸、岩石类型和可见特征。",
+    place: "采集地区（可选）", unknownPlace: "其他 / 不公开地点", photos: "添加 1–3 张照片", publish: "发布野外记录",
+    limits: "每帖最多 3 张 · 原图单张小于 8 MB · 自动缩至最长边 1600 px、约 1.5 MB/张 · 每台设备每天最多 4 帖",
+    loading: "正在加载野外记录……", empty: "还没有人发布记录，你可以成为第一位。", retry: "重试", compressing: "正在整理照片……",
+    publishing: "正在发布……", success: "你的野外记录已经发布。", remove: "移除照片", photoAlt: "社区成员上传的化石发现",
+    privacy: "安全提醒", privacyBody: "稀有脊椎动物材料不要公开精确坐标，请单独记录并联系当地博物馆。",
+  },
+} as const;
+
+type CommunityPost = {
+  id: string;
+  author: string;
+  body: string;
+  locationId: string | null;
+  imageUrls: string[];
+  createdAt: string;
+  appreciations: number;
+};
+
+const referencePhotos: Record<string, { src: string; href: string; credit: string }> = {
+  "Ammonites & Heteromorphs": {
+    src: "/reference-ammonite.jpg",
+    href: "https://commons.wikimedia.org/wiki/File:Ammonite-Fossil.jpg",
+    credit: "FluffyBiscuit · CC BY 3.0",
+  },
+  "Other Cephalopods": {
+    src: "/reference-belemnite.jpg",
+    href: "https://commons.wikimedia.org/wiki/File:MHNT_-_B%C3%A9lemnite_sp.jpg",
+    credit: "PierreSelim / Muséum de Toulouse · CC BY-SA",
+  },
+  Echinoderms: {
+    src: "/reference-crinoid.jpg",
+    href: "https://commons.wikimedia.org/wiki/File:This_rock_is_full_of_crinoid_segments_and_was_collected_near_Temple_Bar_in_Lake_Mead_NRA._The_common_name_for_crinoids_is_the_(0bb7c537-4180-420a-82d2-55dccc22b2f1).jpg",
+    credit: "NPS / Andrew Cattoir · public domain",
+  },
+  "Shark Teeth": {
+    src: "/reference-shark-tooth.jpg",
+    href: "https://commons.wikimedia.org/wiki/File:Fossil_Shark_Tooth.jpg",
+    credit: "The Utahraptor · CC BY-SA 3.0",
+  },
+};
 
 const categoryDescriptions: Record<string, Record<Language, string>> = {
   "Ammonites & Heteromorphs": {
@@ -1409,6 +1467,7 @@ const rarityStars = (rarity: string) => {
 const rarityTier = (stars: number) => stars >= 5 ? "gold" : stars >= 3 ? "silver" : "bronze";
 
 const museumFindKey = (location: Location, find: Find) => `${location.id}:${find.name}`;
+const TOTAL_FOSSILS = locations.reduce((total, location) => total + location.finds.length, 0);
 
 type GuideTurn = {
   id: number;
@@ -1428,11 +1487,13 @@ const guideCopy = {
     source: "Answers use the route and safety notes on this site.",
     welcome: "Hello! I’m Nori, your slightly confused nautilus guide. I know routes, tides, kit and fossils—luo.",
     openSite: "Open site details",
+    feed: "Feed Nori", fed: "Snacks", discoveries: "Seen", full: "Shell-happy!", hungry: "A little peckish…",
+    foods: [["🦐", "Shrimp"], ["🦀", "Crab"], ["🫧", "Bubble snack"]],
     presets: ["How do I get to Folkestone?", "What should I check before fossil collecting?", "Which site is best for beginners?", "Nori, can you swim?"],
     hover: [
       "Need a route? Ask me—luo.",
       "The tide is a deadline. Very rude of it—luo.",
-      "I can search all six guides. That’s almost seven—luo.",
+      "I can search all nine field guides. I still count them on my tentacles—luo.",
       "Loose fossils first. Cliffs are not supermarket shelves—luo.",
       "My shell has no Wi-Fi, but the site notes do—luo.",
       "I’m 90% shell and 10% unsolicited advice—luo.",
@@ -1448,11 +1509,13 @@ const guideCopy = {
     source: "回答来自本站的路线与安全资料。",
     welcome: "你好螺！我是有点呆、很会吐槽的鹦鹉螺诺里。路线、潮汐、装备和化石都可以问我螺。",
     openSite: "打开地点详情",
+    feed: "投喂诺里", fed: "已投喂", discoveries: "已发现", full: "壳光满满！", hungry: "有一点点饿螺……",
+    foods: [["🦐", "小虾"], ["🦀", "小蟹"], ["🫧", "泡泡零食"]],
     presets: ["如何去 Folkestone？", "化石采集前我应该注意什么？", "哪个地点最适合新手？", "诺里，你会游泳吗？"],
     hover: [
       "想查路线？问我螺！",
       "潮水是截止时间，真是一点面子都不给螺。",
-      "我能检索本站全部六份地点指南，差一点就是七份螺。",
+      "我能检索本站全部九份地点指南，数触手都快不够用了螺。",
       "先找松散化石，悬崖可不是超市货架螺！",
       "我的壳里没有 Wi-Fi，但本站资料里有答案螺。",
       "本人百分之九十是壳，百分之十是多管闲事螺。",
@@ -1841,6 +1904,11 @@ function NautilusGuide({ language, siteLocations, onOpenLocation }: { language: 
   const [open, setOpen] = useState(false);
   const [hoverLine, setHoverLine] = useState<string | null>(null);
   const [query, setQuery] = useState("");
+  const [petMenuOpen, setPetMenuOpen] = useState(false);
+  const [feedCount, setFeedCount] = useState(0);
+  const [seenCount, setSeenCount] = useState(0);
+  const [petBurst, setPetBurst] = useState(false);
+  const [petMessage, setPetMessage] = useState("");
   const [turns, setTurns] = useState<GuideTurn[]>([
     { id: 0, role: "guide", text: t.welcome },
   ]);
@@ -1851,6 +1919,26 @@ function NautilusGuide({ language, siteLocations, onOpenLocation }: { language: 
     };
     window.addEventListener("keydown", closeOnEscape);
     return () => window.removeEventListener("keydown", closeOnEscape);
+  }, []);
+
+  useEffect(() => {
+    const loadTimer = window.setTimeout(() => {
+      try {
+        const stored = JSON.parse(window.localStorage.getItem("nori-pet-v1") ?? "{}") as { feedCount?: number };
+        setFeedCount(Math.max(0, Number(stored.feedCount) || 0));
+        const seen = JSON.parse(window.localStorage.getItem("fossil-museum-seen-v1") ?? "[]") as unknown;
+        setSeenCount(Array.isArray(seen) ? seen.length : 0);
+      } catch {
+        setFeedCount(0);
+        setSeenCount(0);
+      }
+    }, 0);
+    const updateSeen = (event: Event) => setSeenCount(Math.min(TOTAL_FOSSILS, Number((event as CustomEvent<number>).detail) || 0));
+    window.addEventListener("fossil-seen", updateSeen);
+    return () => {
+      window.clearTimeout(loadTimer);
+      window.removeEventListener("fossil-seen", updateSeen);
+    };
   }, []);
 
   const askQuestion = (question: string) => {
@@ -1876,9 +1964,32 @@ function NautilusGuide({ language, siteLocations, onOpenLocation }: { language: 
     setHoverLine(choices[Math.floor(Math.random() * choices.length)] ?? t.hover[0]);
   };
 
+  const feedNori = (food: readonly string[]) => {
+    const nextCount = Math.min(999, feedCount + 1);
+    setFeedCount(nextCount);
+    setPetMessage(language === "zh" ? `${food[1]}好吃！谢谢你螺 ✦` : `${food[1]}! Delicious—thank you, luo ✦`);
+    setPetBurst(true);
+    window.localStorage.setItem("nori-pet-v1", JSON.stringify({ feedCount: nextCount }));
+    window.setTimeout(() => setPetBurst(false), 850);
+    window.setTimeout(() => setPetMessage(""), 2200);
+  };
+
+  const isFull = feedCount > 0;
+
   return (
-    <aside className={`nautilus-guide ${open ? "is-open" : ""}`} aria-label={t.name}>
+    <aside className={`nautilus-guide ${open ? "is-open" : ""} ${petBurst ? "is-feeding" : ""}`} aria-label={t.name}>
       {!open && hoverLine && <div className="guide-hover-line" role="status">{hoverLine}</div>}
+      {!open && petMessage && <div className="nori-pet-message" role="status">{petMessage}</div>}
+
+      {!open && <div className={`nori-pet-strip ${petMenuOpen ? "is-open" : ""}`}>
+        <button type="button" className="nori-feed-toggle" onClick={() => setPetMenuOpen((value) => !value)} aria-expanded={petMenuOpen}><span>🦐</span>{t.feed}</button>
+        <span title={t.fed}>♥ {feedCount}</span>
+        <span title={t.discoveries}>◆ {seenCount}/{TOTAL_FOSSILS}</span>
+        {petMenuOpen && <div className="nori-food-menu">
+          <small>{isFull ? t.full : t.hungry}</small>
+          {t.foods.map((food) => <button type="button" key={food[1]} onClick={() => feedNori(food)}><b>{food[0]}</b>{food[1]}</button>)}
+        </div>}
+      </div>}
 
       {open && (
         <section className="guide-panel" role="dialog" aria-label={t.name}>
@@ -1926,7 +2037,7 @@ function NautilusGuide({ language, siteLocations, onOpenLocation }: { language: 
         className="guide-trigger"
         aria-expanded={open}
         aria-label={open ? t.close : t.ask}
-        onClick={() => { setOpen((value) => !value); setHoverLine(null); }}
+        onClick={() => { setOpen((value) => !value); setPetMenuOpen(false); setHoverLine(null); }}
         onMouseEnter={showRandomLine}
         onMouseLeave={() => setHoverLine(null)}
         onFocus={showRandomLine}
@@ -1950,6 +2061,203 @@ function IntroScreen({ phase }: { phase: Exclude<IntroPhase, "done"> }) {
         <PixelCreatures />
       </div>
     </div>
+  );
+}
+
+type PreparedPhoto = { file: File; preview: string };
+
+function anonymousProfileId() {
+  const profileKey = "fossil-museum-profile-v1";
+  let id = window.localStorage.getItem(profileKey);
+  if (!id || !/^[a-zA-Z0-9_-]{12,80}$/.test(id)) {
+    const randomPart = typeof crypto.randomUUID === "function"
+      ? crypto.randomUUID().replaceAll("-", "")
+      : `${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    id = `museum_${randomPart}`;
+    window.localStorage.setItem(profileKey, id);
+  }
+  return id;
+}
+
+async function prepareCommunityPhoto(file: File) {
+  if (!file.type.startsWith("image/")) throw new Error("Only image files can be uploaded.");
+  if (file.size > 8 * 1024 * 1024) throw new Error("Original photos must be under 8 MB.");
+
+  const sourceUrl = URL.createObjectURL(file);
+  const photo = new Image();
+  photo.decoding = "async";
+  await new Promise<void>((resolve, reject) => {
+    photo.onload = () => resolve();
+    photo.onerror = () => reject(new Error("Could not read this photo."));
+    photo.src = sourceUrl;
+  });
+  URL.revokeObjectURL(sourceUrl);
+
+  const maxEdge = 1600;
+  const scale = Math.min(1, maxEdge / Math.max(photo.naturalWidth, photo.naturalHeight));
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.max(1, Math.round(photo.naturalWidth * scale));
+  canvas.height = Math.max(1, Math.round(photo.naturalHeight * scale));
+  const context = canvas.getContext("2d");
+  if (!context) throw new Error("Photo preparation is not supported in this browser.");
+  context.fillStyle = "#f7fbff";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.drawImage(photo, 0, 0, canvas.width, canvas.height);
+
+  let quality = .82;
+  let blob: Blob | null = null;
+  do {
+    blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/jpeg", quality));
+    quality -= .09;
+  } while (blob && blob.size > 1_500_000 && quality >= .46);
+  if (!blob || blob.size > 1_572_864) throw new Error("This photo could not be compressed below 1.5 MB.");
+
+  const baseName = file.name.replace(/\.[^.]+$/, "").replace(/[^a-zA-Z0-9_-]+/g, "-").slice(0, 40) || "fossil-find";
+  return new File([blob], `${baseName}.jpg`, { type: "image/jpeg", lastModified: Date.now() });
+}
+
+function CommunityView({ language, onBack }: { language: Language; onBack: () => void }) {
+  const t = communityCopy[language];
+  const localizedForumLocations = useMemo(() => locations.map((location) => ({
+    original: location,
+    localized: localizeLocation(location, language),
+  })), [language]);
+  const [posts, setPosts] = useState<CommunityPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [posting, setPosting] = useState(false);
+  const [preparing, setPreparing] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [author, setAuthor] = useState("");
+  const [body, setBody] = useState("");
+  const [locationId, setLocationId] = useState("");
+  const [photos, setPhotos] = useState<PreparedPhoto[]>([]);
+
+  const loadPosts = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await fetch("/api/community", { cache: "no-store" });
+      if (!response.ok) throw new Error("load failed");
+      setPosts(await response.json() as CommunityPost[]);
+    } catch {
+      setError(language === "zh" ? "暂时无法加载社区记录。" : "Field notes could not be loaded.");
+    } finally {
+      setLoading(false);
+    }
+  }, [language]);
+
+  useEffect(() => {
+    const loadTimer = window.setTimeout(() => void loadPosts(), 0);
+    return () => window.clearTimeout(loadTimer);
+  }, [loadPosts]);
+
+  const addPhotos = async (files: FileList | null) => {
+    if (!files) return;
+    const available = Math.max(0, 3 - photos.length);
+    const chosen = Array.from(files).slice(0, available);
+    if (!chosen.length) return;
+    setPreparing(true);
+    setError("");
+    try {
+      const prepared = await Promise.all(chosen.map(prepareCommunityPhoto));
+      setPhotos((current) => [...current, ...prepared.map((file) => ({ file, preview: URL.createObjectURL(file) }))].slice(0, 3));
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "Could not prepare these photos.");
+    } finally {
+      setPreparing(false);
+    }
+  };
+
+  const removePhoto = (index: number) => {
+    setPhotos((current) => {
+      const target = current[index];
+      if (target) URL.revokeObjectURL(target.preview);
+      return current.filter((_, photoIndex) => photoIndex !== index);
+    });
+  };
+
+  const publish = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (posting || preparing) return;
+    setPosting(true);
+    setError("");
+    setSuccess("");
+    try {
+      const form = new FormData();
+      form.set("profileId", anonymousProfileId());
+      form.set("author", author);
+      form.set("body", body);
+      form.set("locationId", locationId);
+      photos.forEach(({ file }) => form.append("images", file));
+      const response = await fetch("/api/community", { method: "POST", body: form });
+      const result = await response.json() as { error?: string };
+      if (!response.ok) throw new Error(result.error ?? "Publish failed.");
+      photos.forEach(({ preview }) => URL.revokeObjectURL(preview));
+      setPhotos([]);
+      setBody("");
+      setSuccess(t.success);
+      await loadPosts();
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "Publish failed.");
+    } finally {
+      setPosting(false);
+    }
+  };
+
+  const formatDate = (date: string) => new Intl.DateTimeFormat(language === "zh" ? "zh-CN" : "en-GB", {
+    dateStyle: "medium", timeStyle: "short",
+  }).format(new Date(date));
+
+  return (
+    <section className="community-view" aria-label={t.title}>
+      <div className="community-shell">
+        <button className="community-back" onClick={onBack}><span>←</span> {t.back}</button>
+        <header className="community-hero">
+          <div><p>{t.eyebrow}</p><h1>{t.title}</h1><span>{t.intro}</span></div>
+          <div className="community-stamp" aria-hidden="true"><b>FIELD</b><span>LOG</span><i>✦</i></div>
+        </header>
+
+        <div className="community-layout">
+          <form className="community-compose" onSubmit={publish}>
+            <div className="community-section-title"><span>01</span><h2>{t.compose}</h2></div>
+            <label><span>{t.name}</span><input value={author} onChange={(event) => setAuthor(event.target.value)} maxLength={20} required /></label>
+            <label><span>{t.place}</span><select value={locationId} onChange={(event) => setLocationId(event.target.value)}>
+              <option value="">{t.unknownPlace}</option>
+              {localizedForumLocations.map(({ original, localized }) => <option key={original.id} value={original.id}>{localized.shortName}</option>)}
+            </select></label>
+            <label><span>{t.note}</span><textarea value={body} onChange={(event) => setBody(event.target.value)} minLength={4} maxLength={800} rows={5} required /></label>
+            <div className="community-photo-picker">
+              <span>{t.photos}</span>
+              <div className="community-photo-previews">
+                {photos.map((photo, index) => <figure key={photo.preview}><img src={photo.preview} alt={`${t.photoAlt} ${index + 1}`} /><button type="button" onClick={() => removePhoto(index)} aria-label={t.remove}>×</button></figure>)}
+                {photos.length < 3 && <label className="community-add-photo"><input type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={(event) => { void addPhotos(event.target.files); event.target.value = ""; }} /><b>+</b><small>{preparing ? t.compressing : t.photos}</small></label>}
+              </div>
+              <small>{t.limits}</small>
+            </div>
+            {error && <p className="community-message error" role="alert">{error}</p>}
+            {success && <p className="community-message success" role="status">{success}</p>}
+            <button className="community-publish" type="submit" disabled={posting || preparing || photos.length === 0 || author.trim().length < 2 || body.trim().length < 4}>{posting ? t.publishing : t.publish} <span>↗</span></button>
+            <aside className="community-privacy"><b>{t.privacy}</b><p>{t.privacyBody}</p></aside>
+          </form>
+
+          <section className="community-feed" aria-live="polite">
+            <div className="community-section-title"><span>02</span><h2>{language === "zh" ? "最新野外记录" : "Latest field notes"}</h2></div>
+            {loading && <p className="community-empty">{t.loading}</p>}
+            {!loading && error && posts.length === 0 && <button className="community-retry" onClick={() => void loadPosts()}>{t.retry}</button>}
+            {!loading && !error && posts.length === 0 && <p className="community-empty">{t.empty}</p>}
+            {posts.map((post) => {
+              const place = localizedForumLocations.find(({ original }) => original.id === post.locationId)?.localized.shortName;
+              return <article className="community-post" key={post.id}>
+                <header><span>{post.author.slice(0, 1).toLocaleUpperCase()}</span><div><strong>{post.author}</strong><small>{formatDate(post.createdAt)}{place ? ` · ${place}` : ""}</small></div></header>
+                <p>{post.body}</p>
+                <div className={`community-post-images count-${post.imageUrls.length}`}>{post.imageUrls.map((url, index) => <a href={url} target="_blank" rel="noreferrer" key={url}><img src={url} alt={`${t.photoAlt} ${index + 1}`} loading="lazy" /></a>)}</div>
+              </article>;
+            })}
+          </section>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -2013,6 +2321,7 @@ function MuseumView({
   const t = museumCopy[language];
   const [regionFilter, setRegionFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [collectionFilter, setCollectionFilter] = useState<"all" | "owned" | "missing">("all");
   const [revealedCards, setRevealedCards] = useState<string[]>([]);
   const [profileId, setProfileId] = useState<string | null>(null);
   const [progress, setProgress] = useState<MuseumProgress>({ visitedLocations: [], ownedFinds: [] });
@@ -2044,15 +2353,7 @@ function MuseumView({
 
   useEffect(() => {
     const startTimer = window.setTimeout(() => {
-      const profileKey = "fossil-museum-profile-v1";
-      let id = window.localStorage.getItem(profileKey);
-      if (!id || !/^[a-zA-Z0-9_-]{12,80}$/.test(id)) {
-        const randomPart = typeof crypto.randomUUID === "function"
-          ? crypto.randomUUID().replaceAll("-", "")
-          : `${Date.now()}_${Math.random().toString(36).slice(2)}`;
-        id = `museum_${randomPart}`;
-        window.localStorage.setItem(profileKey, id);
-      }
+      const id = anonymousProfileId();
       setProfileId(id);
       void loadProgress(id);
     }, 0);
@@ -2105,7 +2406,11 @@ function MuseumView({
       original,
       localized,
       entries: original.finds.map((find, index) => ({ original: find, localized: localized.finds[index] }))
-        .filter(({ original: find }) => categoryFilter === "all" || find.category === categoryFilter),
+        .filter(({ original: find }) => categoryFilter === "all" || find.category === categoryFilter)
+        .filter(({ original: find }) => {
+          const owned = progress.ownedFinds.includes(museumFindKey(original, find));
+          return collectionFilter === "all" || (collectionFilter === "owned" ? owned : !owned);
+        }),
     }))
     .filter(({ entries }) => entries.length > 0);
   const categoryDescription = categoryFilter === "all"
@@ -2299,6 +2604,14 @@ function MuseumView({
         </section>
 
         <section className="museum-filters">
+          <div className="museum-dex-filter">
+            <span>{t.dexIndex}</span>
+            <div className="museum-chip-row museum-status-row">
+              <button className={collectionFilter === "all" ? "active" : ""} onClick={() => setCollectionFilter("all")}>{t.allStatus}<i>{totalFinds}</i></button>
+              <button className={collectionFilter === "owned" ? "active" : ""} onClick={() => setCollectionFilter("owned")}>{t.ownedStatus}<i>{ownedCount}</i></button>
+              <button className={collectionFilter === "missing" ? "active" : ""} onClick={() => setCollectionFilter("missing")}>{t.missingStatus}<i>{totalFinds - ownedCount}</i></button>
+            </div>
+          </div>
           <div>
             <span>{t.regionFilter}</span>
             <div className="museum-chip-row">
@@ -2355,12 +2668,25 @@ function MuseumView({
                     const owned = progress.ownedFinds.includes(key);
                     const stars = rarityStars(originalFind.rarity);
                     const revealed = revealedCards.includes(key);
+                    const referencePhoto = referencePhotos[originalFind.category];
+                    const entryNumber = locations.flatMap((site) => site.finds.map((siteFind) => museumFindKey(site, siteFind))).indexOf(key) + 1;
+                    const revealCard = () => {
+                      setRevealedCards((cards) => cards.includes(key) ? cards : [...cards, key]);
+                      const seenKey = "fossil-museum-seen-v1";
+                      let seen: string[] = [];
+                      try { seen = JSON.parse(window.localStorage.getItem(seenKey) ?? "[]") as string[]; } catch { seen = []; }
+                      if (!seen.includes(key)) {
+                        const next = [...seen, key].slice(-160);
+                        window.localStorage.setItem(seenKey, JSON.stringify(next));
+                        window.dispatchEvent(new CustomEvent("fossil-seen", { detail: next.length }));
+                      }
+                    };
                     return (
                       <article
                         className={`museum-specimen rarity-tier-${rarityTier(stars)} ${owned ? "is-owned" : ""} ${revealed ? "is-flipped" : ""}`}
                         key={key}
-                        onMouseEnter={() => setRevealedCards((cards) => cards.includes(key) ? cards : [...cards, key])}
-                        onFocus={() => setRevealedCards((cards) => cards.includes(key) ? cards : [...cards, key])}
+                        onMouseEnter={revealCard}
+                        onFocus={revealCard}
                       >
                         <div className="museum-card-inner">
                           <button
@@ -2369,12 +2695,18 @@ function MuseumView({
                             aria-label={`${language === "zh" ? "翻开卡牌" : "Reveal card"}: ${find.name}`}
                             aria-hidden={revealed}
                             tabIndex={revealed ? -1 : 0}
-                            onClick={() => setRevealedCards((cards) => cards.includes(key) ? cards : [...cards, key])}
+                            onClick={revealCard}
                           >
                             <span className="museum-card-back-logo"><PixelFossilIcon find={find} /></span>
+                            <small>NO. {String(entryNumber).padStart(3, "0")}</small>
                             <strong>{originalFind.zh}</strong>
                           </button>
                           <div className="museum-card-front" aria-hidden={!revealed}>
+                            <span className="museum-entry-number">NO. {String(entryNumber).padStart(3, "0")}</span>
+                            {referencePhoto && <a className="museum-reference-photo" href={referencePhoto.href} target="_blank" rel="noreferrer noopener">
+                              <img src={referencePhoto.src} alt={`${find.name} · ${t.referencePhoto}`} loading="lazy" />
+                              <span>{t.referencePhoto}<small>{referencePhoto.credit}</small></span>
+                            </a>}
                             <div className="museum-specimen-top">
                               <PixelFossilIcon find={find} />
                               <div><span>{find.category}</span><h3>{find.name}</h3><p>{find.zh}</p></div>
@@ -2406,6 +2738,7 @@ export function FossilMap() {
   const [language, setLanguage] = useState<Language>("zh");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [museumOpen, setMuseumOpen] = useState(false);
+  const [communityOpen, setCommunityOpen] = useState(false);
   const [modal, setModal] = useState<"about" | "references" | "safety" | null>(null);
   const [mobileList, setMobileList] = useState(false);
   const localizedLocations = useMemo(() => locations.map((location) => localizeLocation(location, language)), [language]);
@@ -2434,6 +2767,7 @@ export function FossilMap() {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         if (modal) setModal(null);
+        else if (communityOpen) setCommunityOpen(false);
         else if (museumOpen) setMuseumOpen(false);
         else if (selectedId) setSelectedId(null);
         else if (mobileList) setMobileList(false);
@@ -2441,20 +2775,21 @@ export function FossilMap() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [modal, mobileList, museumOpen, selectedId]);
+  }, [communityOpen, modal, mobileList, museumOpen, selectedId]);
 
   const openLocation = (id: string) => {
     setMobileList(false);
     setMuseumOpen(false);
+    setCommunityOpen(false);
     setSelectedId(id);
   };
 
   return (
-    <main className={`site-shell ${selected ? "detail-open" : ""} ${museumOpen ? "museum-open" : ""} lang-${language} intro-${introPhase}`}>
+    <main className={`site-shell ${selected ? "detail-open" : ""} ${museumOpen ? "museum-open" : ""} ${communityOpen ? "community-open" : ""} lang-${language} intro-${introPhase}`}>
       {introPhase !== "done" && <IntroScreen phase={introPhase} />}
       <header className="topbar">
         <div className="header-left">
-          <button className="brand" onClick={() => { setSelectedId(null); setMuseumOpen(false); }} aria-label={t.returnMap}>
+          <button className="brand" onClick={() => { setSelectedId(null); setMuseumOpen(false); setCommunityOpen(false); }} aria-label={t.returnMap}>
             <AmmoniteMark small />
             <span className="brand-title">FOSSIL HUNTERS <small>IN UK</small></span>
           </button>
@@ -2465,7 +2800,8 @@ export function FossilMap() {
           </div>
         </div>
         <div className="top-actions">
-          <button className="museum-link" onClick={() => { setSelectedId(null); setMuseumOpen(true); }}>✦ {t.museum}</button>
+          <button className="community-link" onClick={() => { setSelectedId(null); setMuseumOpen(false); setCommunityOpen(true); }}>◉ {communityCopy[language].nav}</button>
+          <button className="museum-link" onClick={() => { setSelectedId(null); setCommunityOpen(false); setMuseumOpen(true); }}>✦ {t.museum}</button>
           <button className="reference-link" onClick={() => setModal("references")}>{t.references}</button>
           <button className="about-link" onClick={() => setModal("about")}>{t.about}</button>
           <button className="safety-link" onClick={() => setModal("safety")}>
@@ -2474,7 +2810,7 @@ export function FossilMap() {
         </div>
       </header>
 
-      <section className={`overview ${selected || museumOpen ? "is-zoomed" : ""}`} aria-hidden={Boolean(selected || museumOpen)}>
+      <section className={`overview ${selected || museumOpen || communityOpen ? "is-zoomed" : ""}`} aria-hidden={Boolean(selected || museumOpen || communityOpen)}>
         <div className="overview-title">
           <p className="eyebrow">{t.heroEyebrow}</p>
           <h1 className="fossil-title"><span>Fossil Hunters</span><small>in UK</small></h1>
@@ -2572,6 +2908,8 @@ export function FossilMap() {
       {selected && <LocationDetail location={selected} language={language} onBack={() => setSelectedId(null)} />}
 
       {museumOpen && <MuseumView language={language} onBack={() => setMuseumOpen(false)} onOpenLocation={openLocation} />}
+
+      {communityOpen && <CommunityView language={language} onBack={() => setCommunityOpen(false)} />}
 
       <NautilusGuide key={language} language={language} siteLocations={localizedLocations} onOpenLocation={openLocation} />
 

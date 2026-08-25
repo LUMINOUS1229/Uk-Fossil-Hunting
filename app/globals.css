@@ -3311,6 +3311,304 @@ button {
   }
 }
 
+/* Community field log */
+.community-open .nautilus-guide {
+  display: none;
+}
+
+.community-view {
+  position: fixed;
+  inset: 76px 0 0;
+  z-index: 36;
+  overflow-y: auto;
+  background:
+    linear-gradient(rgba(23, 63, 103, .025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 63, 103, .025) 1px, transparent 1px),
+    var(--paper);
+  background-size: 24px 24px;
+  animation: detail-in 420ms ease both;
+}
+
+.community-shell {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 28px 0 80px;
+}
+
+.community-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 20px;
+  padding: 7px 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  color: var(--ink);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.community-back:hover,
+.community-back:focus-visible { border-bottom-color: var(--rust); color: var(--rust); }
+.community-back span { font-size: 18px; }
+
+.community-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 126px;
+  gap: 30px;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: clamp(24px, 4vw, 50px);
+  border: 1px solid var(--line);
+  background: var(--paper-deep);
+  box-shadow: 0 16px 38px rgba(23, 63, 103, .08);
+}
+
+.community-hero p,
+.community-compose label > span,
+.community-photo-picker > span {
+  margin: 0 0 10px;
+  color: var(--rust);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+
+.community-hero h1 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-display), "Songti SC", "STSong", serif;
+  font-size: clamp(42px, 6vw, 76px);
+  font-weight: 600;
+  line-height: .98;
+}
+
+.lang-zh .community-hero h1 { font-size: clamp(38px, 5.4vw, 68px); line-height: 1.1; }
+.community-hero > div > span { display: block; max-width: 720px; margin-top: 16px; color: var(--ink-soft); font-size: 14px; line-height: 1.75; }
+
+.community-stamp {
+  position: relative;
+  display: grid;
+  width: 116px;
+  height: 116px;
+  place-content: center;
+  border: 2px solid var(--rust);
+  border-radius: 50%;
+  color: var(--rust);
+  text-align: center;
+  transform: rotate(6deg);
+}
+
+.community-stamp::before { position: absolute; inset: 7px; border: 1px dashed currentColor; border-radius: 50%; content: ""; }
+.community-stamp b,
+.community-stamp span { font-family: var(--font-mono), monospace; font-size: 14px; letter-spacing: .14em; }
+.community-stamp i { margin-top: 4px; font-style: normal; }
+
+.community-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, .82fr) minmax(0, 1.18fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.community-compose,
+.community-feed {
+  padding: 24px;
+  border: 1px solid var(--line);
+  background: var(--paper-deep);
+}
+
+.community-compose { position: sticky; top: 24px; }
+
+.community-section-title { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+.community-section-title > span { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 50%; background: var(--sea); color: var(--rust); font-family: var(--font-mono), monospace; font-size: 10px; }
+.community-section-title h2 { margin: 0; color: var(--ink); font-family: var(--font-display), "Songti SC", "STSong", serif; font-size: 27px; font-weight: 600; }
+
+.community-compose > label { display: block; margin-bottom: 16px; }
+.community-compose label > span,
+.community-photo-picker > span { display: block; margin-bottom: 7px; color: var(--ink-soft); font-size: 9px; }
+.community-compose input,
+.community-compose select,
+.community-compose textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+}
+.community-compose input,
+.community-compose select { height: 43px; padding: 0 11px; }
+.community-compose textarea { resize: vertical; min-height: 112px; padding: 11px; line-height: 1.6; }
+.community-compose input:focus,
+.community-compose select:focus,
+.community-compose textarea:focus { outline: 2px solid rgba(47, 128, 192, .22); border-color: var(--rust); }
+
+.community-photo-previews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.community-photo-previews figure,
+.community-add-photo { position: relative; display: grid; aspect-ratio: 1; place-items: center; overflow: hidden; margin: 0; border: 1px dashed var(--moss); background: var(--sea); }
+.community-photo-previews figure img { width: 100%; height: 100%; object-fit: cover; }
+.community-photo-previews figure button { position: absolute; top: 5px; right: 5px; display: grid; width: 25px; height: 25px; place-items: center; padding: 0; border: 0; border-radius: 50%; background: rgba(23, 63, 103, .88); color: white; font-size: 18px; cursor: pointer; }
+.community-add-photo { color: var(--rust); cursor: pointer; text-align: center; }
+.community-add-photo input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.community-add-photo b { font-size: 28px; font-weight: 400; line-height: 1; }
+.community-add-photo small { max-width: 82px; color: var(--ink-soft); font-size: 9px; line-height: 1.3; }
+.community-photo-picker > small { display: block; margin-top: 8px; color: var(--ink-soft); font-size: 10px; line-height: 1.5; }
+
+.community-publish {
+  display: flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding: 0 16px;
+  border: 1px solid var(--rust);
+  background: var(--rust);
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.community-publish:disabled { cursor: not-allowed; opacity: .42; }
+.community-message { margin: 12px 0; padding: 10px 12px; font-size: 11px; line-height: 1.5; }
+.community-message.error { background: rgba(189, 95, 97, .09); color: var(--danger); }
+.community-message.success { background: var(--sea); color: var(--ink); }
+.community-privacy { margin-top: 16px; padding: 12px 14px; border-left: 3px solid var(--rust); background: var(--sea); }
+.community-privacy b { font-size: 11px; }
+.community-privacy p { margin: 5px 0 0; color: var(--ink-soft); font-size: 10px; line-height: 1.55; }
+
+.community-feed { display: flex; flex-direction: column; gap: 16px; }
+.community-feed > .community-section-title { margin-bottom: 4px; }
+.community-empty { margin: 0; padding: 30px 18px; border: 1px dashed var(--line); color: var(--ink-soft); text-align: center; font-size: 13px; }
+.community-retry { align-self: center; padding: 9px 14px; border: 1px solid var(--rust); background: transparent; color: var(--rust); cursor: pointer; }
+.community-post { padding: 18px; border: 1px solid var(--line); background: var(--paper); box-shadow: 0 9px 24px rgba(23, 63, 103, .055); }
+.community-post > header { display: flex; align-items: center; gap: 10px; }
+.community-post > header > span { display: grid; flex: 0 0 36px; width: 36px; height: 36px; place-items: center; border-radius: 50%; background: var(--rust); color: white; font-family: var(--font-display), serif; font-size: 17px; }
+.community-post header strong,
+.community-post header small { display: block; }
+.community-post header strong { font-size: 13px; }
+.community-post header small { margin-top: 3px; color: var(--ink-soft); font-size: 9px; }
+.community-post > p { margin: 14px 0; color: var(--ink); font-size: 13px; line-height: 1.75; white-space: pre-wrap; }
+.community-post-images { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.community-post-images.count-1 { grid-template-columns: 1fr; }
+.community-post-images.count-2 { grid-template-columns: repeat(2, 1fr); }
+.community-post-images a { display: block; overflow: hidden; min-height: 150px; background: var(--sea); }
+.community-post-images img { display: block; width: 100%; height: 100%; max-height: 420px; object-fit: cover; transition: transform .25s ease; }
+.community-post-images a:hover img { transform: scale(1.025); }
+
+/* Field Dex: faster collection filtering and real specimen references. */
+.museum-dex-filter { grid-column: 1 / -1; }
+.museum-status-row button { min-width: 120px; justify-content: space-between; }
+.museum-status-row button i { display: grid; min-width: 23px; height: 23px; place-items: center; margin-left: 9px; border-radius: 50%; background: var(--sea); color: var(--ink); font-size: 9px; font-style: normal; }
+.museum-card-back > small { position: absolute; top: 18px; left: 18px; color: var(--ink-soft); font-family: var(--font-mono), monospace; font-size: 9px; letter-spacing: .08em; }
+.museum-entry-number { position: absolute; top: 11px; right: 13px; z-index: 3; color: var(--ink-soft); font-family: var(--font-mono), monospace; font-size: 8px; letter-spacing: .08em; }
+.museum-reference-photo { position: relative; display: block; height: 126px; overflow: hidden; margin: -2px -2px 13px; background: var(--sea); color: white; text-decoration: none; }
+.museum-reference-photo > img { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(.78) contrast(.98); transition: transform .25s ease, filter .25s ease; }
+.museum-reference-photo:hover > img { transform: scale(1.035); filter: saturate(1); }
+.museum-reference-photo > span { position: absolute; right: 0; bottom: 0; left: 0; padding: 22px 10px 8px; background: linear-gradient(transparent, rgba(12, 38, 65, .78)); font-family: var(--font-mono), monospace; font-size: 8px; font-weight: 700; letter-spacing: .08em; }
+.museum-reference-photo small { display: block; margin-top: 3px; color: rgba(255,255,255,.78); font-size: 7px; font-weight: 400; letter-spacing: 0; }
+.museum-specimen:has(.museum-reference-photo),
+.museum-specimen:has(.museum-reference-photo) .museum-card-inner,
+.museum-specimen:has(.museum-reference-photo) .museum-card-back,
+.museum-specimen:has(.museum-reference-photo) .museum-card-front { min-height: 470px; }
+
+/* Nori electronic-pet controls and fossil encounter counter. */
+.nautilus-guide { bottom: 24px; }
+.community-open .nautilus-guide,
+.museum-open .nautilus-guide { display: none; }
+.nori-pet-strip { position: absolute; right: 66px; bottom: 3px; display: flex; align-items: center; gap: 5px; min-width: max-content; pointer-events: auto; }
+.nori-pet-strip > span,
+.nori-feed-toggle { min-height: 31px; padding: 0 9px; border: 1px solid var(--line); background: rgba(255,255,255,.94); color: var(--ink); box-shadow: 0 6px 18px rgba(23,63,103,.09); font-family: var(--font-mono), monospace; font-size: 9px; }
+.nori-pet-strip > span { display: inline-flex; align-items: center; color: var(--ink-soft); }
+.nori-feed-toggle { display: inline-flex; align-items: center; gap: 5px; color: var(--rust); cursor: pointer; }
+.nori-feed-toggle:hover,
+.nori-feed-toggle:focus-visible,
+.nori-pet-strip.is-open .nori-feed-toggle { background: var(--sea); }
+.nori-food-menu { position: absolute; right: 0; bottom: 41px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 260px; padding: 10px; border: 1px solid var(--line); background: var(--paper-deep); box-shadow: 0 14px 32px rgba(23,63,103,.14); }
+.nori-food-menu > small { grid-column: 1 / -1; color: var(--ink-soft); font-size: 9px; }
+.nori-food-menu button { padding: 8px 5px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); font-size: 9px; cursor: pointer; }
+.nori-food-menu button:hover { border-color: var(--rust); background: var(--sea); }
+.nori-food-menu b { display: block; margin-bottom: 4px; font-size: 19px; }
+.nori-pet-message { position: absolute; right: 0; bottom: 78px; width: 220px; padding: 10px 12px; border: 1px solid var(--rust); background: var(--paper-deep); color: var(--ink); box-shadow: 5px 5px 0 var(--sea-deep); font-size: 11px; line-height: 1.45; pointer-events: auto; }
+.guide-panel { bottom: 78px; }
+.nautilus-guide.is-feeding .guide-nautilus-art { animation: nori-snack-dance .8s steps(4, end) both; }
+.nautilus-guide.is-feeding .guide-trigger::after { position: absolute; inset: -8px; color: var(--rust); content: "✦  ·  ✦"; font-size: 15px; animation: nori-snack-stars .8s ease-out both; }
+@keyframes nori-snack-dance { 0%,100% { transform: scale(1.26) scaleX(-1); } 25% { transform: scale(1.32) scaleX(-1) rotate(-7deg) translateY(-4px); } 65% { transform: scale(1.3) scaleX(-1) rotate(6deg) translateY(-2px); } }
+@keyframes nori-snack-stars { from { opacity: 0; transform: scale(.7); } 45% { opacity: 1; } to { opacity: 0; transform: scale(1.25) translateY(-10px); } }
+
+/* Mobile typography and navigation: keep Chinese labels from colliding. */
+@media (max-width: 900px) {
+  .community-layout { grid-template-columns: 1fr; }
+  .community-compose { position: static; }
+}
+
+@media (max-width: 720px) {
+  .topbar {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-content: center;
+    gap: 7px;
+    height: 104px;
+    padding: 8px 12px;
+  }
+  .header-left { width: 100%; justify-content: space-between; }
+  .top-actions { width: 100%; justify-content: flex-start; gap: 16px; overflow-x: auto; padding: 1px 0 3px; scrollbar-width: none; }
+  .top-actions::-webkit-scrollbar { display: none; }
+  .top-actions button,
+  .top-actions .safety-link { flex: 0 0 auto; font-size: 10px; line-height: 1.4; }
+  .overview { padding-top: 104px; }
+  .uk-map { inset: 104px 0 0; }
+  .detail-view,
+  .museum-view,
+  .community-view { inset: 104px 0 0; }
+  .community-shell { width: 100%; padding: 0 0 86px; }
+  .community-back { margin: 12px 16px; }
+  .community-hero { grid-template-columns: 1fr; margin: 0; padding: 28px 20px; border-width: 1px 0; }
+  .community-stamp { display: none; }
+  .community-hero h1,
+  .lang-zh .community-hero h1 { max-width: 100%; font-size: clamp(35px, 11vw, 50px); line-height: 1.14; overflow-wrap: anywhere; }
+  .community-hero > div > span { font-size: 13px; line-height: 1.7; }
+  .community-layout { gap: 12px; }
+  .community-compose,
+  .community-feed { padding: 20px 16px; border-width: 1px 0; }
+  .community-section-title h2 { font-size: 24px; line-height: 1.25; }
+  .community-post-images a { min-height: 110px; }
+  .museum-shell { width: 100%; }
+  .museum-status-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; overflow: visible; }
+  .museum-status-row button { min-width: 0; padding: 8px 7px; font-size: 9px; white-space: normal; }
+  .museum-status-row button i { min-width: 20px; margin-left: 4px; }
+  .museum-reference-photo { height: 145px; }
+  .lang-zh h1,
+  .lang-zh h2,
+  .lang-zh h3,
+  .lang-zh button,
+  .lang-zh a { line-break: strict; }
+  .lang-zh p,
+  .lang-zh small,
+  .lang-zh span { overflow-wrap: anywhere; }
+  .nautilus-guide { right: 10px; bottom: 76px; }
+  .nori-pet-strip { right: 57px; bottom: 2px; gap: 4px; }
+  .nori-pet-strip > span,
+  .nori-feed-toggle { min-height: 29px; padding: 0 7px; font-size: 8px; }
+  .nori-pet-strip > span:first-of-type { display: none; }
+  .nori-food-menu { right: -2px; width: 242px; }
+  .nori-pet-message { right: 0; bottom: 68px; }
+  .guide-panel { bottom: 70px; max-height: calc(100svh - 190px); }
+}
+
+@media (max-width: 420px) {
+  .community-photo-previews { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .community-add-photo small { font-size: 8px; }
+  .community-post { padding: 14px; }
+  .community-post-images { gap: 4px; }
+  .museum-status-row button { display: block; }
+  .museum-status-row button i { display: inline-grid; margin: 5px 0 0; }
+}
+
 /* Peterborough's second, community-verified collecting option. */
 .field-intel-section {
   scroll-margin-top: 92px;
@@ -8298,4 +8596,32 @@ body {
   .inline-star-rating {
     gap: 3px;
   }
+}
+
+/* Final responsive geometry for the two-row mobile header. */
+.nautilus-guide { bottom: 24px; }
+.guide-panel { bottom: 78px; }
+
+@media (max-width: 720px) {
+  .topbar {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-content: center;
+    gap: 7px;
+    height: 104px;
+    padding: 8px 12px;
+  }
+
+  .header-left { width: 100%; justify-content: space-between; }
+  .top-actions { width: 100%; justify-content: flex-start; gap: 16px; overflow-x: auto; padding: 1px 0 3px; scrollbar-width: none; }
+  .top-actions::-webkit-scrollbar { display: none; }
+  .top-actions button,
+  .top-actions .safety-link { flex: 0 0 auto; font-size: 10px; line-height: 1.4; }
+  .overview { padding-top: 104px; }
+  .uk-map { inset: 104px 0 0; }
+  .detail-view,
+  .museum-view,
+  .community-view { inset: 104px 0 0; }
+  .nautilus-guide { right: 10px; bottom: 76px; }
+  .guide-panel { bottom: 70px; max-height: calc(100svh - 190px); }
 }
