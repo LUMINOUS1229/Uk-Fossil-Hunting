@@ -33,6 +33,22 @@ type GeologyProfile = {
   sourceLink: string;
 };
 
+type FieldIntel = {
+  navLabel: string;
+  title: string;
+  intro: string;
+  items: Array<{
+    symbol: string;
+    label: string;
+    text: string;
+  }>;
+  warning: string;
+  links: Array<{
+    label: string;
+    href: string;
+  }>;
+};
+
 type Location = {
   id: string;
   name: string;
@@ -64,6 +80,7 @@ type Location = {
   conditions: string;
   finds: Find[];
   geology?: Record<Language, GeologyProfile>;
+  fieldIntel?: Record<Language, FieldIntel>;
   required: string[];
   useful: string[];
   avoid: string[];
@@ -685,14 +702,14 @@ const locations: Location[] = [
   },
   {
     id: "peterborough",
-    name: "Peterborough / King’s Dyke",
+    name: "Peterborough / King’s Dyke + Yaxley",
     shortName: "Peterborough",
     region: "Cambridgeshire · The Fens",
     period: "Middle Jurassic",
     age: "c. 165–163 million years",
-    type: "Managed fossil area",
+    type: "Managed area + clay-pit lake",
     risk: "MODERATE",
-    level: "Permit required · beginner friendly",
+    level: "Two collecting options · check access",
     findRating: 5,
     accessRating: 2,
     familyRating: 4,
@@ -750,6 +767,84 @@ const locations: Location[] = [
         sourceLink: "https://webapps.bgs.ac.uk/lexicon/lexicon.cfm?pub=PET",
       },
     },
+    fieldIntel: {
+      en: {
+        navLabel: "Yaxley field intel",
+        title: "Yaxley / Hampton Vale · community field intel",
+        intro: "A second Peterborough option, separate from King’s Dyke: the south-eastern bank of a water-filled former clay pit. These community and expert notes are cross-checked against published site and BGS geology guidance.",
+        items: [
+          {
+            symbol: "📍",
+            label: "Route",
+            text: "Meet at Peterborough railway station, take a taxi to the agreed public drop-off near the care-home landmark, then follow the public byway around the lake to the south-eastern bank. Use the group’s shared pin and do not enter care-home grounds or other private land.",
+          },
+          {
+            symbol: "⛏️",
+            label: "Collecting",
+            text: "Low-water periods expose loose clay and a fossil-rich shingle layer. Surface-pick first; a small trowel and sieve or basin can extend the search in loose sediment. Do not hammer or cut into bedrock.",
+          },
+          {
+            symbol: "🎒",
+            label: "Kit",
+            text: "Bring wellington boots, clothes that can get muddy, gloves, a small trowel, sieve or basin, fossil bags and padded specimen boxes. Leeches may occur, so avoid bare-skin contact with the water.",
+          },
+          {
+            symbol: "🥤",
+            label: "Supplies",
+            text: "Carry plenty of drinking water, food and electrolytes. Searching and moving through sticky clay is tiring, and reliable supplies should not be assumed at the collecting bank.",
+          },
+          {
+            symbol: "⚠️",
+            label: "Safety",
+            text: "Banks are slippery and the old quarry water can be extremely deep. Community observations describe some margins as roughly knee-deep, but depth and submerged edges can change abruptly. Stay on firm exposed ground and do not enter the water, even when it looks shallow.",
+          },
+        ],
+        warning: "The Yaxley lake edge is not suitable for children and low-water reports are time-sensitive. This is a wildlife-rich SSSI: protect vegetation, collect only loose material and treat current signs, access conditions and landowner instructions as more authoritative than older field notes.",
+        links: [
+          { label: "Open approximate Yaxley map", href: "https://www.google.com/maps/search/?api=1&query=52.525517,-0.2729255" },
+          { label: "UK Fossils · Yaxley guide", href: "https://ukfossils.co.uk/yaxley/" },
+          { label: "BGS · Peterborough Member", href: "https://webapps.bgs.ac.uk/lexicon/lexicon.cfm?pub=PET" },
+        ],
+      },
+      zh: {
+        navLabel: "Yaxley 实地情报",
+        title: "Yaxley / Hampton Vale · 群友实地情报",
+        intro: "这是与 King’s Dyke 不同的 Peterborough 采集选择：地点位于一处旧黏土坑湖的东南岸。以下内容结合了群友与专家的现场经验、公开地点指南及英国地质调查局资料。",
+        items: [
+          {
+            symbol: "📍",
+            label: "路线",
+            text: "Peterborough 火车总站集合 → 打车到群内约定的养老院附近公共下车点 → 沿公开步道绕湖前往东南岸采集带。请以群内共享定位为准，不进入养老院或其他私人用地。",
+          },
+          {
+            symbol: "⛏️",
+            label: "采集",
+            text: "枯水期会露出松散黏土和富含化石的砾石层，优先直接捡拾；可用小铲和筛子／水盆处理松散表层，扩大寻找小型化石的范围。禁止敲击或开挖基岩。",
+          },
+          {
+            symbol: "🎒",
+            label: "装备",
+            text: "长筒雨靴、耐脏衣裤、手套、小铲、筛子／水盆、装化石的袋子和带缓冲的标本盒。水里可能有水蛭，应避免裸露皮肤接触水体。",
+          },
+          {
+            symbol: "🥤",
+            label: "补给",
+            text: "一定带足饮用水、食物和电解质。黏土地面行走和长时间筛选都很消耗体力，不要假设采集岸边有可靠补给。",
+          },
+          {
+            symbol: "⚠️",
+            label: "注意",
+            text: "湖边湿滑，旧黏土坑水体可能非常深。群友观察到部分浅边约到膝盖，但水深和水下坡坎可能突然变化；即使看起来很浅也不要下水，只在稳固、已露出的岸边采集。",
+          },
+        ],
+        warning: "Yaxley 湖边不适合儿童，“当前枯水”属于时效性现场信息。这里也是生态敏感的 SSSI 区域：避开植被，只采集松散材料；现场最新告示、通行状况和土地管理方要求始终优先于旧的实地记录。",
+        links: [
+          { label: "打开 Yaxley 大致位置", href: "https://www.google.com/maps/search/?api=1&query=52.525517,-0.2729255" },
+          { label: "UK Fossils · Yaxley 指南", href: "https://ukfossils.co.uk/yaxley/" },
+          { label: "英国地质调查局 · Peterborough 段", href: "https://webapps.bgs.ac.uk/lexicon/lexicon.cfm?pub=PET" },
+        ],
+      },
+    },
     finds: [
       { glyph: "◎", category: "Ammonites & Heteromorphs", name: "Ammonite", zh: "菊石", rarity: "Common", size: "1–12 cm", tip: "Ribbed or smooth coils are abundant in the clay." },
       { glyph: "│", category: "Other Cephalopods", name: "Belemnite", zh: "箭石", rarity: "Common", size: "2–12 cm", tip: "Dark bullet-like guards are robust and easy to recognise." },
@@ -761,14 +856,14 @@ const locations: Location[] = [
     ],
     required: ["Confirmed permit and gate code", "Wellington boots", "Gloves", "Sample boxes", "Water"],
     useful: ["Small trowel", "Hand lens", "Kneeling mat"],
-    avoid: ["Bringing dogs", "Selling collected fossils", "Entering the active quarry", "Visiting without a confirmed permit"],
-    hazards: ["Locked access", "Very sticky or deep mud", "Uneven clay surface", "Active quarry boundary"],
-    safetyLead: "Access is for current members only. Apply at least one week ahead, wait for confirmation and remain inside the designated fossil area.",
-    sssi: "King’s Dyke Nature Reserve · members-only access",
-    rules: ["Carry a current permit and use the issued gate code.", "Casual collecting is free, but selling fossils from the reserve is prohibited.", "No dogs; keep out of the active quarry.", "Record and report marine reptile or other significant finds."],
-    source: "King’s Dyke Nature Reserve · Peterborough Museum",
+    avoid: ["Bringing dogs", "Selling collected fossils", "Entering the active quarry", "Entering the water at Yaxley", "Visiting King’s Dyke without a confirmed permit"],
+    hazards: ["Locked access at King’s Dyke", "Very sticky or deep mud", "Deep, steep-edged water at Yaxley", "Active quarry boundary"],
+    safetyLead: "King’s Dyke requires confirmed membership and a gate code. Yaxley is a separate SSSI lake-edge option: stay out of the water, protect vegetation and collect loose material only.",
+    sssi: "King’s Dyke members-only reserve · Yaxley / Orton Pit SSSI",
+    rules: ["Carry a current permit and use the issued gate code at King’s Dyke.", "Casual collecting at King’s Dyke is free, but selling reserve fossils is prohibited.", "No dogs; keep out of the active quarry.", "At Yaxley, do not enter the water or hammer bedrock; avoid plants and take loose finds only.", "Record and report marine reptile or other significant finds."],
+    source: "King’s Dyke Nature Reserve · UK Fossils Yaxley · BGS",
     sourceLink: "https://www.kingsdykenaturereserve.com/fossils/",
-    verified: "11 Aug 2026",
+    verified: "25 Aug 2026",
     accent: "#9fd1a8",
   },
 ];
@@ -1041,8 +1136,8 @@ const locationZh: Record<string, LocationTranslation> = {
   peterborough: {
     region: "剑桥郡 · 芬地区",
     period: "中侏罗世",
-    type: "管理型化石采集区",
-    level: "需要许可 · 新手友好",
+    type: "管理采集区 + 旧黏土坑湖",
+    level: "两种采集选择 · 需核对通行",
     local: "乘火车或出租车往 Whittlesey，再搭出租车前往 King’s Dyke",
     walk: "从上锁的保护区入口步行一小段",
     duration: "1小时35分–2小时10分",
@@ -1068,12 +1163,12 @@ const locationZh: Record<string, LocationTranslation> = {
     ],
     required: ["已确认的许可与门禁密码", "防水长靴", "手套", "标本盒", "饮用水"],
     useful: ["小铲", "手持放大镜", "跪垫"],
-    avoid: ["携带犬只", "出售采集的化石", "进入活动采石场", "未确认许可就前往"],
-    hazards: ["上锁入口", "非常黏或较深的泥地", "不平整黏土表面", "活动采石场边界"],
-    safetyLead: "只允许当前会员进入。至少提前一周申请，等待确认，并始终留在指定化石采集区内。",
-    sssi: "King’s Dyke Nature Reserve · 仅限会员进入",
-    rules: ["携带有效许可并使用发放的门禁密码。", "休闲采集免费，但严禁出售保护区化石。", "不得带狗，不得进入活动采石场。", "海生爬行动物或其他重要发现应记录并报告。"],
-    source: "King’s Dyke Nature Reserve · Peterborough Museum",
+    avoid: ["携带犬只", "出售采集的化石", "进入活动采石场", "进入 Yaxley 湖水", "未确认许可就前往 King’s Dyke"],
+    hazards: ["King’s Dyke 上锁入口", "非常黏或较深的泥地", "Yaxley 深水与陡峭水下坡坎", "活动采石场边界"],
+    safetyLead: "King’s Dyke 需要已确认的会员资格和门禁密码；Yaxley 是另一处 SSSI 湖边采集选择，应远离水体、保护植被并只采集松散材料。",
+    sssi: "King’s Dyke 会员保护区 · Yaxley / Orton Pit SSSI",
+    rules: ["前往 King’s Dyke 时携带有效许可并使用门禁密码。", "King’s Dyke 允许免费休闲采集，但严禁出售保护区化石。", "不得带狗，不得进入活动采石场。", "在 Yaxley 不得下水或敲击基岩，避开植被并只拾取松散化石。", "海生爬行动物或其他重要发现应记录并报告。"],
+    source: "King’s Dyke Nature Reserve · UK Fossils Yaxley · 英国地质调查局",
   },
 };
 
@@ -1375,7 +1470,7 @@ const locationAliases: Record<string, string[]> = {
   bracklesham: ["bracklesham", "bracklesham bay", "布拉克勒舍姆"],
   charmouth: ["charmouth", "lyme regis", "black ven", "查茅斯", "莱姆里吉斯"],
   weymouth: ["weymouth", "bowleaze", "bowleaze cove", "redcliff", "韦茅斯"],
-  peterborough: ["peterborough", "king s dyke", "kings dyke", "king’s dyke", "whittlesey", "彼得伯勒"],
+  peterborough: ["peterborough", "king s dyke", "kings dyke", "king’s dyke", "whittlesey", "yaxley", "hampton vale", "hampton lake", "彼得伯勒", "亚克斯利", "汉普顿湖", "养老院", "湖边"],
 };
 
 const normalizeGuideQuery = (value: string) => value.toLocaleLowerCase().replace(/[？?！!，,。.、:：'’“”"()（）-]/g, " ").replace(/\s+/g, " ").trim();
@@ -1478,6 +1573,7 @@ function answerGuideQuestion(question: string, siteLocations: Location[], langua
   const asksFinds = /(化石|找到|发现|有什么|find|fossil|tooth|ammonite|belemnite|shell|牙|菊石|箭石|贝壳)/i.test(query);
   const asksRules = /(规则|允许|可以带走|能带走|敲|挖|rule|allowed|collecting code|hammer|dig)/i.test(query);
   const asksBeginner = /(新手|第一次|亲子|孩子|家庭|简单|beginner|first time|family|children|easy)/i.test(query);
+  const asksYaxley = /(yaxley|hampton vale|hampton lake|亚克斯利|汉普顿湖|养老院|湖边)/i.test(query);
 
   if (asksSafety && !location) {
     return {
@@ -1494,6 +1590,23 @@ function answerGuideQuestion(question: string, siteLocations: Location[], langua
         ? `本站最适合第一次体验的是 ${beginner.name}：通行与亲子评分都是 ${beginner.accessRating}/5 和 ${beginner.familyRating}/5，现场风险为${riskLabel(beginner.risk, language)}。${beginner.safetyLead}`
         : `${beginner.name} is the strongest first-trip option on this site: access ${beginner.accessRating}/5, family ${beginner.familyRating}/5, with ${riskLabel(beginner.risk, language)} field risk. ${beginner.safetyLead}`,
       locationId: beginner.id,
+    };
+  }
+
+  if (location?.id === "peterborough" && asksYaxley && location.fieldIntel) {
+    const intel = location.fieldIntel[language];
+    const selectedItems = asksRoute
+      ? intel.items.slice(0, 1)
+      : asksKit
+        ? intel.items.slice(2, 4)
+        : asksSafety
+          ? intel.items.slice(4, 5)
+          : asksFinds || asksRules
+            ? intel.items.slice(1, 2)
+            : intel.items;
+    return {
+      text: `${selectedItems.map((item) => `${item.label}：${item.text}`).join(" ")} ${intel.warning}`,
+      locationId: location.id,
     };
   }
 
@@ -2525,6 +2638,7 @@ function LocationDetail({ location, language, onBack }: { location: Location; la
   const t = detailCopy[language];
   const locationNumber = String(locations.findIndex((item) => item.id === location.id) + 1).padStart(2, "0");
   const geology = location.geology?.[language];
+  const fieldIntel = location.fieldIntel?.[language];
 
   return (
     <section className="detail-view detail-text-only">
@@ -2551,6 +2665,7 @@ function LocationDetail({ location, language, onBack }: { location: Location; la
 
         <nav className="section-nav" aria-label={t.locationDetails}>
           <a href="#get-there">{t.navRoute}</a>
+          {fieldIntel && <a href="#field-intel">{fieldIntel.navLabel}</a>}
           {geology && <a href="#geology">{t.navGeology}</a>}
           <a href="#finds">{t.navFinds}</a>
           <a href="#equipment">{t.navKit}</a>
@@ -2582,6 +2697,27 @@ function LocationDetail({ location, language, onBack }: { location: Location; la
               <p><span>{t.exit}</span>{location.exit}</p>
             </div>
           </section>
+
+          {fieldIntel && (
+            <section className="info-section field-intel-section" id="field-intel">
+              <SectionTitle number="02A" title={fieldIntel.title} />
+              <p className="field-intel-intro">{fieldIntel.intro}</p>
+              <div className="field-intel-grid">
+                {fieldIntel.items.map((item) => (
+                  <article className="field-intel-card" key={item.label}>
+                    <span className="field-intel-symbol" aria-hidden="true">{item.symbol}</span>
+                    <div><h3>{item.label}</h3><p>{item.text}</p></div>
+                  </article>
+                ))}
+              </div>
+              <div className="field-intel-warning"><span aria-hidden="true">!</span><p>{fieldIntel.warning}</p></div>
+              <div className="field-intel-links">
+                {fieldIntel.links.map((link) => (
+                  <a href={link.href} key={link.href} target="_blank" rel="noreferrer noopener">{link.label} ↗</a>
+                ))}
+              </div>
+            </section>
+          )}
 
           {geology && (
             <section className="info-section geology-section" id="geology">

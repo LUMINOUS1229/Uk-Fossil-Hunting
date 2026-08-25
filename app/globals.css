@@ -3311,6 +3311,131 @@ button {
   }
 }
 
+/* Peterborough's second, community-verified collecting option. */
+.field-intel-section {
+  scroll-margin-top: 92px;
+}
+
+.field-intel-intro {
+  margin: 0 0 18px;
+  border: 1px solid var(--line);
+  background: var(--sea);
+  padding: 18px 20px;
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.field-intel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.field-intel-card {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 12px;
+  min-height: 150px;
+  border: 1px solid var(--line);
+  background: var(--paper-deep);
+  padding: 18px;
+  box-shadow: 0 10px 24px rgba(23, 63, 103, .055);
+}
+
+.field-intel-card:last-child {
+  grid-column: 1 / -1;
+  min-height: 0;
+  border-color: rgba(185, 105, 102, .28);
+  background: #f8ecea;
+}
+
+.field-intel-symbol {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--sea);
+  font-size: 19px;
+}
+
+.field-intel-card h3 {
+  margin: 2px 0 7px;
+  color: var(--ink);
+  font-family: var(--font-display), "Songti SC", serif;
+  font-size: 20px;
+}
+
+.field-intel-card p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.field-intel-warning {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 11px;
+  align-items: start;
+  margin-top: 12px;
+  border: 1px solid rgba(185, 105, 102, .3);
+  background: #f8ecea;
+  padding: 15px 17px;
+  color: #765e5c;
+}
+
+.field-intel-warning > span {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--danger);
+  color: #fff;
+  font-weight: 800;
+}
+
+.field-intel-warning p {
+  margin: 1px 0 0;
+  line-height: 1.7;
+}
+
+.field-intel-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 14px;
+}
+
+.field-intel-links a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  padding: 10px 14px;
+  color: var(--ink);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.field-intel-links a:hover,
+.field-intel-links a:focus-visible {
+  border-color: var(--rust);
+  color: var(--rust);
+}
+
+@media (max-width: 720px) {
+  .field-intel-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .field-intel-card:last-child {
+    grid-column: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .intro-screen {
     display: none !important;
