@@ -2459,9 +2459,9 @@ export function FossilMap() {
             <span className="brand-title">FOSSIL HUNTERS <small>IN UK</small></span>
           </button>
           <div className="language-toggle" role="group" aria-label={language === "en" ? "Language" : "语言"}>
-            <button className={language === "en" ? "active" : ""} onClick={() => setLanguage("en")} aria-pressed={language === "en"}>EN</button>
-            <span>/</span>
             <button className={language === "zh" ? "active" : ""} onClick={() => setLanguage("zh")} aria-pressed={language === "zh"}>中文</button>
+            <span>/</span>
+            <button className={language === "en" ? "active" : ""} onClick={() => setLanguage("en")} aria-pressed={language === "en"}>EN</button>
           </div>
         </div>
         <div className="top-actions">
