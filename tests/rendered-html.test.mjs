@@ -38,6 +38,8 @@ test("keeps the guide focused and adds the requested discovery play", async () =
   assert.match(component, /handleMapPointerMove/);
   assert.match(component, /handleMapWheel/);
   assert.match(component, /We collect fossils, and memories too\./);
+  assert.match(component, /群主@古谣一直以来的组织以及Mexwell Wang提供的化石采集资料/);
+  assert.match(component, /researchgate\.net\/profile\/Maxwell-Wang\?ev=brs_overview/);
   assert.match(component, /seenCount\}\/\{TOTAL_FOSSILS/);
   assert.match(component, /function IsleOfWightSurprise/);
   assert.match(component, /is-dinosaur-isle/);

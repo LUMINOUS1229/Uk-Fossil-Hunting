@@ -1245,7 +1245,7 @@ const copy = {
     aboutEyebrow: "About this field map", aboutTitle: "A route planner, not a promise.",
     aboutBody: "This map turns scattered fossil guides into a growing set of practical journeys from London. Each field sheet combines the train, last-mile walk, approximate collecting zone, likely finds and the rules that matter on the day.",
     thanksTitle: "Acknowledgements",
-    thanksBody: "Thank you to everyone in the UK Fossil Hunting group—from QMUL, UCL, UAL and friends across many different disciplines. Your shared love of the ocean and fossils inspired me to build and keep updating this site. Special thanks to the group organiser for bringing everyone together.",
+    thanksBody: "Thank you to the UK Fossil Hunting group—friends from all over whose love of the ocean and the natural world inspired me to create and keep updating this site. Special thanks to group leader @古谣 for continually bringing everyone together, and to Mexwell Wang for providing fossil-collecting information that helps us experience the joy of exploring the world 🐚.",
     thanksAdvisor: "", thanksAfter: "",
     referencesEyebrow: "Sources & further reading", referencesTitle: "Reference",
     referencesBody: "Information on this site also draws on the following websites. Friends interested in palaeontology and fossil collecting can visit them to learn more.",
@@ -1273,8 +1273,8 @@ const copy = {
     aboutEyebrow: "关于这张野外地图", aboutTitle: "它是路线计划，不是安全承诺。",
     aboutBody: "这张地图把分散的化石攻略整理成一组持续更新、从伦敦出发的实际行程。每张地点卡都结合了火车、渡轮、最后一段步行、大致采集区、常见化石和当天必须遵守的规则。",
     thanksTitle: "致谢",
-    thanksBody: "感谢 UK Fossil Hunting 的群友们——来自天南地北的朋友们，正是大家对大海与自然生物的热爱，带动我制作并持续更新这个网站。特别感谢群主一直以来的组织以及@",
-    thanksAdvisor: "Dent&Shell", thanksAfter: " 的学术顾问提供的化石采集资料，带领大家体验探索世界的乐趣🐚。",
+    thanksBody: "感谢 UK Fossil Hunting 的群友们——来自天南地北的朋友们，正是大家对大海与自然生物的热爱，带动我制作并持续更新这个网站。特别感谢群主@古谣一直以来的组织以及Mexwell Wang提供的化石采集资料，带领大家体验探索世界的乐趣🐚。",
+    thanksAdvisor: "", thanksAfter: "",
     referencesEyebrow: "资料来源与延伸阅读", referencesTitle: "参考资料",
     referencesBody: "本网站参考了以下网站的信息；对古生物以及化石收藏更有兴趣的朋友可以前往了解。",
     fieldSourcesLabel: "群友一手资料。", fieldSourcesBody: "部分区域（Folkestone、Peterborough、Herne Bay 等）来自群友的一手采集信息。",
@@ -3173,6 +3173,11 @@ export function FossilMap() {
                     <span>03</span>
                     <strong>UK Fossils</strong>
                     <small>ukfossils.co.uk ↗</small>
+                  </a>
+                  <a href="https://www.researchgate.net/profile/Maxwell-Wang?ev=brs_overview" target="_blank" rel="noreferrer noopener">
+                    <span>04</span>
+                    <strong>Maxwell Wang · ResearchGate</strong>
+                    <small>researchgate.net/profile/Maxwell-Wang ↗</small>
                   </a>
                 </div>
               </>
