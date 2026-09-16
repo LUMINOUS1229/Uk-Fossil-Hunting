@@ -11,6 +11,9 @@ const profilePattern = /^[a-zA-Z0-9_-]{12,80}$/;
 const allowedLocations = new Set([
   "folkestone", "herne-bay", "walton", "wootton-bassett", "bracklesham",
   "isle-of-wight", "charmouth", "weymouth", "peterborough",
+  "nacton", "fort-victoria", "barton-on-sea", "warden-point", "abbey-wood",
+  "grange-chine", "hastings", "ardley-quarry", "kirtlington-quarry",
+  "woodeaton-quarry", "whitby", "lyme-regis",
 ]);
 const allowedImageTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 

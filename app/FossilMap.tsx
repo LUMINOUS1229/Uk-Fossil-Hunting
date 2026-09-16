@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { documentLocations } from "./document-locations";
+import { documentLocationZh } from "./document-location-zh";
 
 type Risk = "LOW" | "MODERATE" | "HIGH";
 type Language = "en" | "zh";
@@ -94,7 +96,7 @@ type Location = {
   accent: string;
 };
 
-const locations: Location[] = [
+const baseLocations: Location[] = [
   {
     id: "folkestone",
     name: "Folkestone Warren",
@@ -548,7 +550,7 @@ const locations: Location[] = [
   },
   {
     id: "charmouth",
-    name: "Charmouth / Lyme Regis",
+    name: "Charmouth / Black Ven",
     shortName: "Charmouth",
     region: "Dorset · Jurassic Coast",
     period: "Early Jurassic",
@@ -868,6 +870,8 @@ const locations: Location[] = [
   },
 ];
 
+const locations: Location[] = [...baseLocations, ...documentLocations];
+
 type LocationTranslation = Pick<Location,
   "region" | "period" | "type" | "level" | "local" | "walk" | "duration" |
   "route" | "terrain" | "exit" | "tideWindow" | "season" | "conditions" |
@@ -875,7 +879,7 @@ type LocationTranslation = Pick<Location,
   "rules" | "source"
 > & { findTips: string[] };
 
-const locationZh: Record<string, LocationTranslation> = {
+const baseLocationZh: Record<string, LocationTranslation> = {
   folkestone: {
     region: "肯特郡 · 英格兰东南海岸",
     period: "早白垩世",
@@ -1172,6 +1176,11 @@ const locationZh: Record<string, LocationTranslation> = {
   },
 };
 
+const locationZh: Record<string, LocationTranslation> = {
+  ...baseLocationZh,
+  ...documentLocationZh,
+};
+
 const rarityZh: Record<string, string> = {
   "Very common": "非常常见",
   Common: "常见",
@@ -1225,7 +1234,7 @@ const copy = {
     questLabel: "MAIN QUEST", questTitle: "FOSSIL TRAIL", questHint: "Choose a fossil marker to begin", questSites: "SITES TO EXPLORE",
     mapCredit: "Pixel map · locations approximate", researchLabel: "IN RESEARCH", dismiss: "Dismiss",
     aboutEyebrow: "About this field map", aboutTitle: "A route planner, not a promise.",
-    aboutBody: "This map turns scattered fossil guides into nine practical journeys from London. Each field sheet combines the train, last-mile walk, approximate collecting zone, likely finds and the rules that matter on the day.",
+    aboutBody: "This map turns scattered fossil guides into a growing set of practical journeys from London. Each field sheet combines the train, last-mile walk, approximate collecting zone, likely finds and the rules that matter on the day.",
     thanksTitle: "Acknowledgements",
     thanksBody: "Thank you to everyone in the UK Fossil Hunting group—from QMUL, UCL, UAL and friends across many different disciplines. Your shared love of the ocean and fossils inspired me to build and keep updating this site. Special thanks to the group organiser for bringing everyone together.",
     referencesEyebrow: "Sources & further reading", referencesTitle: "Reference",
@@ -1251,7 +1260,7 @@ const copy = {
     questLabel: "主线任务", questTitle: "寻找英国化石", questHint: "选择一个化石图标开始", questSites: "个探索地点",
     mapCredit: "像素底图 · 地点为近似位置", researchLabel: "调研中", dismiss: "关闭",
     aboutEyebrow: "关于这张野外地图", aboutTitle: "它是路线计划，不是安全承诺。",
-    aboutBody: "这张地图把分散的化石攻略整理成九条从伦敦出发的实际行程。每张地点卡都结合了火车、渡轮、最后一段步行、大致采集区、常见化石和当天必须遵守的规则。",
+    aboutBody: "这张地图把分散的化石攻略整理成一组持续更新、从伦敦出发的实际行程。每张地点卡都结合了火车、渡轮、最后一段步行、大致采集区、常见化石和当天必须遵守的规则。",
     thanksTitle: "致谢",
     thanksBody: "感谢 UK Fossil Hunting 的群友们——来自天南地北的朋友们，正是大家对大海与自然生物的热爱，带动我制作并持续更新这个网站。也特别感谢群主一直以来的组织以及提供的化石资料，让大家相聚并共同探索🐚。",
     referencesEyebrow: "资料来源与延伸阅读", referencesTitle: "参考资料",
@@ -1493,7 +1502,7 @@ const guideCopy = {
     hover: [
       "Need a route? Ask me—luo.",
       "The tide is a deadline. Very rude of it—luo.",
-      "I can search all nine field guides. I still count them on my tentacles—luo.",
+      "I can search every field guide here. My tentacles can no longer count them all—luo.",
       "Loose fossils first. Cliffs are not supermarket shelves—luo.",
       "My shell has no Wi-Fi, but the site notes do—luo.",
       "I’m 90% shell and 10% unsolicited advice—luo.",
@@ -1515,7 +1524,7 @@ const guideCopy = {
     hover: [
       "想查路线？问我螺！",
       "潮水是截止时间，真是一点面子都不给螺。",
-      "我能检索本站全部九份地点指南，数触手都快不够用了螺。",
+      "我能检索本站全部地点指南，触手已经彻底数不过来了螺。",
       "先找松散化石，悬崖可不是超市货架螺！",
       "我的壳里没有 Wi-Fi，但本站资料里有答案螺。",
       "本人百分之九十是壳，百分之十是多管闲事螺。",
@@ -1531,9 +1540,21 @@ const locationAliases: Record<string, string[]> = {
   walton: ["walton", "walton-on-the-naze", "naze", "沃尔顿"],
   "wootton-bassett": ["wootton", "wootton bassett", "royal wootton bassett", "伍顿巴西特"],
   bracklesham: ["bracklesham", "bracklesham bay", "布拉克勒舍姆"],
-  charmouth: ["charmouth", "lyme regis", "black ven", "查茅斯", "莱姆里吉斯"],
+  charmouth: ["charmouth", "black ven", "查茅斯"],
   weymouth: ["weymouth", "bowleaze", "bowleaze cove", "redcliff", "韦茅斯"],
   peterborough: ["peterborough", "king s dyke", "kings dyke", "king’s dyke", "whittlesey", "yaxley", "hampton vale", "hampton lake", "彼得伯勒", "亚克斯利", "汉普顿湖", "养老院", "湖边"],
+  nacton: ["nacton", "river orwell", "suffolk", "纳克顿", "萨福克"],
+  "fort-victoria": ["fort victoria", "yarmouth", "维多利亚堡"],
+  "barton-on-sea": ["barton on sea", "barton-on-sea", "barton clay", "巴顿"],
+  "warden-point": ["warden point", "warden bay", "isle of sheppey", "沃登角", "谢佩岛"],
+  "abbey-wood": ["abbey wood", "lesnes abbey", "blackheath member", "阿比伍德", "莱斯尼斯修道院"],
+  "grange-chine": ["grange chine", "brighstone bay", "格兰奇谷", "布赖斯通湾"],
+  hastings: ["hastings", "rock a nore", "rock-a-nore", "黑斯廷斯"],
+  "ardley-quarry": ["ardley", "ardley quarry", "ardley wood", "阿德利"],
+  "kirtlington-quarry": ["kirtlington", "kirtlington quarry", "柯特灵顿"],
+  "woodeaton-quarry": ["woodeaton", "woodeaton quarry", "伍德伊顿"],
+  whitby: ["whitby", "east cliff", "惠特比"],
+  "lyme-regis": ["lyme regis", "monmouth beach", "莱姆里吉斯", "蒙茅斯海滩"],
 };
 
 const normalizeGuideQuery = (value: string) => value.toLocaleLowerCase().replace(/[？?！!，,。.、:：'’“”"()（）-]/g, " ").replace(/\s+/g, " ").trim();
@@ -1773,6 +1794,18 @@ const markerOffsets: Record<string, { x: number; y: number }> = {
   charmouth: { x: -38, y: 30 },
   weymouth: { x: -10, y: 44 },
   peterborough: { x: -42, y: -28 },
+  nacton: { x: 50, y: -18 },
+  "fort-victoria": { x: -52, y: 40 },
+  "barton-on-sea": { x: -24, y: 70 },
+  "warden-point": { x: 62, y: 17 },
+  "abbey-wood": { x: -48, y: 30 },
+  "grange-chine": { x: 34, y: 75 },
+  hastings: { x: 58, y: 52 },
+  "ardley-quarry": { x: -62, y: -8 },
+  "kirtlington-quarry": { x: -62, y: 22 },
+  "woodeaton-quarry": { x: 46, y: 35 },
+  whitby: { x: 35, y: -35 },
+  "lyme-regis": { x: -55, y: 56 },
 };
 
 const markerStyle = (location: Location, index: number) => {
@@ -1815,9 +1848,25 @@ function AmmoniteMark({ small = false }: { small?: boolean }) {
   );
 }
 
+const siteIconAlias: Record<string, string> = {
+  nacton: "walton",
+  "fort-victoria": "isle-of-wight",
+  "barton-on-sea": "bracklesham",
+  "warden-point": "herne-bay",
+  "abbey-wood": "walton",
+  "grange-chine": "isle-of-wight",
+  hastings: "isle-of-wight",
+  "ardley-quarry": "peterborough",
+  "kirtlington-quarry": "peterborough",
+  "woodeaton-quarry": "peterborough",
+  whitby: "charmouth",
+  "lyme-regis": "charmouth",
+};
+
 function PixelSiteIcon({ id, compact = false }: { id: string; compact?: boolean }) {
+  const iconId = siteIconAlias[id] ?? id;
   return (
-    <span className={`site-pixel-icon icon-${id} ${compact ? "compact" : ""}`} aria-hidden="true">
+    <span className={`site-pixel-icon icon-${iconId} ${compact ? "compact" : ""}`} aria-hidden="true">
       <i />
       <b />
       <em />
