@@ -34,12 +34,16 @@ test("keeps the guide focused and adds the requested discovery play", async () =
   assert.match(component, /feedNori/);
   assert.match(component, /nori-guide-minimized-v1/);
   assert.match(component, /nori-restore/);
+  assert.match(component, /map-viewport-controls/);
+  assert.match(component, /handleMapPointerMove/);
+  assert.match(component, /handleMapWheel/);
   assert.match(component, /We collect fossils, and memories too\./);
   assert.match(component, /seenCount\}\/\{TOTAL_FOSSILS/);
   assert.match(component, /function IsleOfWightSurprise/);
   assert.match(component, /is-dinosaur-isle/);
   assert.match(css, /\.museum-reference-photo/);
   assert.match(css, /\.nori-food-menu/);
+  assert.match(css, /\.map-viewport\.is-dragging/);
   assert.match(css, /\.isle-hatchling/);
   assert.match(css, /height:\s*104px/);
 });

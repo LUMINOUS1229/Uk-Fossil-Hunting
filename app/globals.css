@@ -9792,3 +9792,136 @@ body {
     height: 38px;
   }
 }
+
+/* The field map is a pannable, zoomable canvas. */
+.map-viewport {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  outline: none;
+}
+
+.map-viewport.is-dragging {
+  cursor: grabbing;
+}
+
+.map-viewport:focus-visible {
+  box-shadow: inset 0 0 0 2px rgba(47, 143, 215, .42), inset 1px 0 0 var(--line);
+}
+
+.map-viewport .uk-plot {
+  transform-origin: 50% 50%;
+  will-change: transform;
+  transition: transform 180ms ease-out;
+}
+
+.map-viewport.is-dragging .uk-plot {
+  transition: none;
+}
+
+.map-viewport-controls {
+  position: absolute;
+  z-index: 80;
+  top: 20px;
+  right: 20px;
+  display: grid;
+  grid-template-columns: 38px auto 38px;
+  align-items: stretch;
+  overflow: hidden;
+  border: 1px solid rgba(47, 143, 215, .28);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 0 10px 26px rgba(23, 63, 103, .13);
+  backdrop-filter: blur(12px);
+}
+
+.map-viewport-controls button {
+  min-height: 38px;
+  padding: 0;
+  border: 0;
+  border-right: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--font-mono), monospace;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.map-viewport-controls button:last-of-type {
+  border-right: 0;
+}
+
+.map-viewport-controls .map-fit-button {
+  min-width: 72px;
+  padding-inline: 10px;
+  color: var(--rust);
+  font-family: var(--font-sans), sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.map-viewport-controls button:hover,
+.map-viewport-controls button:focus-visible {
+  background: var(--sea);
+  color: var(--rust);
+  outline: none;
+}
+
+.map-viewport-controls output {
+  grid-column: 1 / -1;
+  padding: 3px 7px 4px;
+  border-top: 1px solid var(--line);
+  background: rgba(239, 248, 255, .68);
+  color: var(--ink-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  text-align: center;
+}
+
+.map-gesture-hint {
+  position: absolute;
+  z-index: 32;
+  right: 20px;
+  top: 72px;
+  margin: 0;
+  padding: 5px 9px;
+  border: 1px solid rgba(47, 143, 215, .18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .84);
+  color: var(--ink-soft);
+  font-family: var(--font-sans), sans-serif;
+  font-size: 10px;
+  letter-spacing: .03em;
+  pointer-events: none;
+}
+
+@media (max-width: 720px) {
+  .map-viewport-controls {
+    top: auto;
+    right: 12px;
+    bottom: calc(76px + env(safe-area-inset-bottom));
+    grid-template-columns: 42px auto 42px;
+  }
+
+  .map-viewport-controls button {
+    min-height: 42px;
+  }
+
+  .map-viewport-controls .map-fit-button {
+    min-width: 76px;
+  }
+
+  .map-gesture-hint {
+    top: auto;
+    right: 14px;
+    bottom: calc(126px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-viewport .uk-plot {
+    transition: none;
+  }
+}

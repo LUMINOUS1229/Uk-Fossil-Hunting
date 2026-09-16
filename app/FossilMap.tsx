@@ -7,6 +7,15 @@ import { documentLocationZh } from "./document-location-zh";
 type Risk = "LOW" | "MODERATE" | "HIGH";
 type Language = "en" | "zh";
 type IntroPhase = "loading" | "reveal" | "done";
+type MapView = { scale: number; x: number; y: number };
+
+const FITTED_MAP_VIEW: MapView = { scale: 0.88, x: 0, y: 0 };
+const MIN_MAP_SCALE = 0.62;
+const MAX_MAP_SCALE = 2.4;
+
+function clampMapScale(scale: number) {
+  return Math.min(MAX_MAP_SCALE, Math.max(MIN_MAP_SCALE, scale));
+}
 
 type Find = {
   glyph: string;
@@ -2854,6 +2863,10 @@ export function FossilMap() {
   const [communityOpen, setCommunityOpen] = useState(false);
   const [modal, setModal] = useState<"about" | "references" | "safety" | null>(null);
   const [mobileList, setMobileList] = useState(false);
+  const [mapView, setMapView] = useState<MapView>(FITTED_MAP_VIEW);
+  const [mapDragging, setMapDragging] = useState(false);
+  const mapViewportRef = useRef<HTMLDivElement>(null);
+  const mapDragRef = useRef<{ pointerId: number; startX: number; startY: number; originX: number; originY: number } | null>(null);
   const localizedLocations = useMemo(() => locations.map((location) => localizeLocation(location, language)), [language]);
   const selected = useMemo(() => localizedLocations.find((location) => location.id === selectedId) ?? null, [localizedLocations, selectedId]);
   const t = copy[language];
@@ -2897,6 +2910,68 @@ export function FossilMap() {
     setSelectedId(id);
   };
 
+  const zoomMapBy = useCallback((factor: number) => {
+    setMapView((view) => ({ ...view, scale: clampMapScale(view.scale * factor) }));
+  }, []);
+
+  const resetMapView = useCallback(() => {
+    setMapView(FITTED_MAP_VIEW);
+  }, []);
+
+  const handleMapPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.button !== 0 || (event.target as HTMLElement).closest("button, a, input, select, textarea")) return;
+    mapDragRef.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      originX: mapView.x,
+      originY: mapView.y,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setMapDragging(true);
+  };
+
+  const handleMapPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    const drag = mapDragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    const bounds = mapViewportRef.current?.getBoundingClientRect();
+    const maxX = Math.max(260, (bounds?.width ?? 800) * 0.85);
+    const maxY = Math.max(220, (bounds?.height ?? 700) * 0.85);
+    setMapView((view) => ({
+      ...view,
+      x: Math.min(maxX, Math.max(-maxX, drag.originX + event.clientX - drag.startX)),
+      y: Math.min(maxY, Math.max(-maxY, drag.originY + event.clientY - drag.startY)),
+    }));
+  };
+
+  const endMapDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (mapDragRef.current?.pointerId !== event.pointerId) return;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+    mapDragRef.current = null;
+    setMapDragging(false);
+  };
+
+  const handleMapWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    zoomMapBy(event.deltaY < 0 ? 1.12 : 1 / 1.12);
+  };
+
+  const handleMapKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if ((event.target as HTMLElement).closest("button")) return;
+    const panStep = 34;
+    if (event.key === "+" || event.key === "=") zoomMapBy(1.12);
+    else if (event.key === "-") zoomMapBy(1 / 1.12);
+    else if (event.key === "0") resetMapView();
+    else if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) {
+      setMapView((view) => ({
+        ...view,
+        x: view.x + (event.key === "ArrowLeft" ? panStep : event.key === "ArrowRight" ? -panStep : 0),
+        y: view.y + (event.key === "ArrowUp" ? panStep : event.key === "ArrowDown" ? -panStep : 0),
+      }));
+    } else return;
+    event.preventDefault();
+  };
+
   return (
     <main className={`site-shell ${selected ? "detail-open" : ""} ${selected?.id === "isle-of-wight" ? "dinosaur-isle-open" : ""} ${museumOpen ? "museum-open" : ""} ${communityOpen ? "community-open" : ""} lang-${language} intro-${introPhase}`}>
       {introPhase !== "done" && <IntroScreen phase={introPhase} />}
@@ -2931,7 +3006,19 @@ export function FossilMap() {
           <p className="brand-tagline">We collect fossils, and memories too.</p>
         </div>
 
-        <div className="uk-map" aria-label={language === "en" ? "Interactive map of UK fossil locations" : "英国化石地点互动地图"}>
+        <div
+          ref={mapViewportRef}
+          className={`uk-map map-viewport ${mapDragging ? "is-dragging" : ""}`}
+          aria-label={language === "en" ? "Interactive map of UK fossil locations. Drag to pan and use the wheel or controls to zoom." : "英国化石地点互动地图。拖动可平移，使用滚轮或按钮缩放。"}
+          aria-describedby="map-gesture-hint"
+          tabIndex={0}
+          onPointerDown={handleMapPointerDown}
+          onPointerMove={handleMapPointerMove}
+          onPointerUp={endMapDrag}
+          onPointerCancel={endMapDrag}
+          onWheel={handleMapWheel}
+          onKeyDown={handleMapKeyDown}
+        >
           <div className="north-sea-label">{t.northSea}</div>
           <div className="channel-label">{t.channel}</div>
           <div className="quest-hud" aria-hidden="true">
@@ -2940,7 +3027,10 @@ export function FossilMap() {
             <small>{t.questHint}</small>
             <div><b>N+</b><i>{t.questSites}</i></div>
           </div>
-          <div className="uk-plot">
+          <div
+            className="uk-plot"
+            style={{ transform: `translate3d(${mapView.x}px, ${mapView.y}px, 0) scale(${mapView.scale})` }}
+          >
             <div className="uk-silhouette" aria-hidden="true">
               <img className="uk-silhouette-image" src="/uk-pixel-map-gb.png" alt="" draggable={false} />
             </div>
@@ -2973,6 +3063,16 @@ export function FossilMap() {
               </button>
             ))}
           </div>
+
+          <div className="map-viewport-controls" role="group" aria-label={language === "en" ? "Map zoom controls" : "地图缩放控制"}>
+            <button type="button" onClick={() => zoomMapBy(1 / 1.16)} aria-label={language === "en" ? "Zoom out" : "缩小地图"}>−</button>
+            <button type="button" className="map-fit-button" onClick={resetMapView}>{language === "en" ? "Fit" : "完整显示"}</button>
+            <button type="button" onClick={() => zoomMapBy(1.16)} aria-label={language === "en" ? "Zoom in" : "放大地图"}>+</button>
+            <output aria-live="polite">{Math.round(mapView.scale * 100)}%</output>
+          </div>
+          <p id="map-gesture-hint" className="map-gesture-hint">
+            {language === "en" ? "Drag the map · Scroll to zoom" : "拖动地图 · 滚轮缩放"}
+          </p>
         </div>
 
         <button
