@@ -4122,6 +4122,27 @@ button {
   }
 }
 
+/* Keep the cover mascot green without changing the rest of the opening palette. */
+.intro-screen .pixel-dino .dino-tail,
+.intro-screen .pixel-dino .dino-body,
+.intro-screen .pixel-dino .dino-neck,
+.intro-screen .pixel-dino .dino-head,
+.intro-screen .pixel-dino .dino-snout,
+.intro-screen .pixel-dino .dino-arm,
+.intro-screen .pixel-dino .dino-leg,
+.intro-screen .pixel-dino .dino-leg span {
+  background: #4fa86a;
+}
+
+.intro-screen .pixel-dino .dino-body {
+  box-shadow: 4px -4px #4fa86a, 12px -4px #4fa86a;
+}
+
+.intro-screen .pixel-dino .dino-eye {
+  background: #f6fff1;
+  box-shadow: 1px 0 #f6fff1, 2px 1px 0 #173d29;
+}
+
 /* Pixel expedition theme */
 body {
   background: var(--paper-deep);
