@@ -3757,6 +3757,371 @@ button {
   }
 }
 
+/* Isle of Wight easter egg: a green field-guide theme and a tiny hatching dinosaur. */
+.detail-view.is-dinosaur-isle {
+  --paper: #eff8eb;
+  --paper-deep: #fbfff8;
+  --ink: #173d29;
+  --ink-soft: #62806a;
+  --moss: #4fa86a;
+  --sea: #dff0dc;
+  --sea-deep: #b9dcb9;
+  --rust: #2f8b55;
+  --line: rgba(23, 61, 41, .17);
+  background:
+    radial-gradient(circle at 82% 16%, rgba(79, 168, 106, .13), transparent 28%),
+    linear-gradient(rgba(23, 61, 41, .035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 61, 41, .035) 1px, transparent 1px),
+    var(--paper);
+  background-size: auto, 18px 18px, 18px 18px, auto;
+}
+
+.dinosaur-isle-open .topbar {
+  border-bottom-color: rgba(23, 61, 41, .2);
+  background: rgba(239, 248, 235, .96);
+  color: #173d29;
+}
+
+.dinosaur-isle-open .topbar .language-toggle,
+.dinosaur-isle-open .topbar .top-actions button {
+  color: #456951;
+}
+
+.dinosaur-isle-open .topbar .language-toggle button.active,
+.dinosaur-isle-open .topbar .top-actions button:hover,
+.dinosaur-isle-open .topbar .top-actions button:focus-visible {
+  border-bottom-color: #2f8b55;
+  color: #173d29;
+}
+
+.dinosaur-isle-open .topbar .alert-dot {
+  background: #2f8b55;
+  box-shadow: 0 0 0 4px rgba(47, 139, 85, .14);
+}
+
+.is-dinosaur-isle .info-panel {
+  background: rgba(251, 255, 248, .97);
+}
+
+.is-dinosaur-isle .detail-safety {
+  border-color: rgba(47, 139, 85, .32);
+  background: rgba(239, 248, 235, .96);
+}
+
+.is-dinosaur-isle .place-heading {
+  --place-accent: #3f985f !important;
+}
+
+.is-dinosaur-isle .section-nav {
+  background: rgba(239, 248, 235, .94);
+}
+
+.is-dinosaur-isle .section-title > span,
+.is-dinosaur-isle .geology-units header > span {
+  background: #d8eed6;
+}
+
+.is-dinosaur-isle .journey-time,
+.is-dinosaur-isle .time-hero,
+.is-dinosaur-isle .sssi-card,
+.is-dinosaur-isle .geology-intro,
+.is-dinosaur-isle .field-intel-warning {
+  background: #e2f2df;
+}
+
+.is-dinosaur-isle .geology-units article,
+.is-dinosaur-isle .geology-notes > div,
+.is-dinosaur-isle .geology-notes aside,
+.is-dinosaur-isle .finds-grid article,
+.is-dinosaur-isle .safety-grid > div {
+  border-color: rgba(47, 139, 85, .2);
+  background: #f8fdf5;
+}
+
+.is-dinosaur-isle .primary-action {
+  background: #1f6540;
+}
+
+.is-dinosaur-isle .primary-action:hover,
+.is-dinosaur-isle .secondary-action:hover,
+.is-dinosaur-isle .tide-action:hover {
+  background: #2f8b55;
+}
+
+.isle-secret-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+  padding: 7px 10px;
+  border: 1px solid rgba(47, 139, 85, .34);
+  border-radius: 999px;
+  background: #e2f2df;
+  color: #277548;
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+.isle-secret-badge > span {
+  animation: isle-secret-sparkle 1.15s steps(2, end) 3;
+}
+
+.isle-surprise {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: rgba(224, 242, 218, .76);
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+  animation: isle-surprise-dismiss 3.8s ease both;
+}
+
+.isle-surprise::before,
+.isle-surprise::after {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  background: #4fa86a;
+  box-shadow:
+    78px 34px #8bcf7f,
+    -92px 82px #2f8b55,
+    120px 126px #b2d98d,
+    -126px 148px #69b676;
+  content: "";
+  opacity: 0;
+  transform: rotate(45deg);
+  animation: isle-confetti 2.35s .62s ease-out both;
+}
+
+.isle-surprise::after {
+  box-shadow:
+    -64px 16px #8bcf7f,
+    102px 71px #2f8b55,
+    -118px 117px #b2d98d,
+    134px 164px #69b676;
+  animation-delay: .82s;
+}
+
+.isle-surprise-stage {
+  position: relative;
+  width: 300px;
+  height: 300px;
+}
+
+.isle-surprise-stage::before {
+  position: absolute;
+  top: 36px;
+  left: 50%;
+  width: 210px;
+  height: 210px;
+  border: 2px dashed rgba(47, 139, 85, .35);
+  border-radius: 50%;
+  content: "";
+  transform: translateX(-50%);
+  animation: isle-hatch-ring 2.35s .45s ease-out both;
+}
+
+.isle-hatchling {
+  position: absolute;
+  bottom: 82px;
+  left: 50%;
+  z-index: 2;
+  width: 78px;
+  height: 53px;
+  filter: drop-shadow(4px 5px 0 rgba(23, 61, 41, .2));
+  image-rendering: pixelated;
+  opacity: 0;
+  transform-origin: 50% 100%;
+  animation: isle-dino-hatch 3.25s .18s cubic-bezier(.2, .82, .2, 1) both;
+}
+
+.isle-hatchling .dino-tail,
+.isle-hatchling .dino-body,
+.isle-hatchling .dino-neck,
+.isle-hatchling .dino-head,
+.isle-hatchling .dino-snout,
+.isle-hatchling .dino-arm,
+.isle-hatchling .dino-leg,
+.isle-hatchling .dino-leg span {
+  background: #4fa86a;
+}
+
+.isle-hatchling .dino-body {
+  box-shadow: 4px -4px #4fa86a, 12px -4px #4fa86a;
+}
+
+.isle-hatchling .dino-eye {
+  background: #f6fff1;
+  box-shadow: 1px 0 #f6fff1, 2px 1px 0 #173d29;
+}
+
+.isle-egg {
+  position: absolute;
+  left: 50%;
+  z-index: 3;
+  width: 88px;
+  border: 4px solid #245a3b;
+  background:
+    radial-gradient(circle at 28% 58%, #78b96e 0 6px, transparent 7px),
+    radial-gradient(circle at 70% 36%, #4fa86a 0 5px, transparent 6px),
+    #fff9d9;
+  image-rendering: pixelated;
+}
+
+.isle-egg i {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #a6d28d;
+}
+
+.isle-egg-top {
+  bottom: 105px;
+  height: 58px;
+  border-radius: 50% 50% 18% 18%;
+  clip-path: polygon(0 0, 100% 0, 100% 67%, 84% 83%, 70% 66%, 54% 88%, 39% 66%, 23% 84%, 0 68%);
+  transform: translateX(-50%);
+  animation: isle-egg-top-pop 3s .05s ease-out both;
+}
+
+.isle-egg-top i {
+  top: 18px;
+  left: 18px;
+  box-shadow: 41px 12px #78b96e;
+}
+
+.isle-egg-bottom {
+  bottom: 58px;
+  height: 66px;
+  border-radius: 16% 16% 50% 50%;
+  clip-path: polygon(0 21%, 16% 3%, 31% 22%, 46% 0, 61% 22%, 76% 4%, 100% 22%, 100% 100%, 0 100%);
+  transform: translateX(-50%);
+  animation: isle-egg-bottom-bounce 2.6s .05s ease-out both;
+}
+
+.isle-egg-bottom i {
+  right: 18px;
+  bottom: 21px;
+  box-shadow: -39px 10px #78b96e;
+}
+
+.isle-surprise-copy {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 5;
+  margin: 0;
+  color: #173d29;
+  text-align: center;
+  opacity: 0;
+  animation: isle-copy-pop 2.55s .72s ease both;
+}
+
+.isle-surprise-copy span,
+.isle-surprise-copy strong {
+  display: block;
+}
+
+.isle-surprise-copy span {
+  color: #2f8b55;
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .18em;
+}
+
+.isle-surprise-copy strong {
+  margin-top: 8px;
+  font-family: var(--font-display), "Songti SC", serif;
+  font-size: 25px;
+  line-height: 1.15;
+}
+
+@keyframes isle-surprise-dismiss {
+  0% { visibility: visible; opacity: 0; }
+  7%, 78% { visibility: visible; opacity: 1; }
+  99% { visibility: visible; opacity: 0; }
+  100% { visibility: hidden; opacity: 0; }
+}
+
+@keyframes isle-dino-hatch {
+  0%, 24% { opacity: 0; transform: translate(-50%, 25px) scale(.4) rotate(-5deg); }
+  34% { opacity: 1; transform: translate(-50%, -72px) scale(1.18) rotate(-8deg); }
+  45% { opacity: 1; transform: translate(-50%, -48px) scale(1) rotate(4deg); }
+  58% { opacity: 1; transform: translate(-62%, -58px) scale(1.04) rotate(-3deg); }
+  76% { opacity: 1; transform: translate(-12%, -54px) scale(1.02) rotate(3deg); }
+  90% { opacity: 1; transform: translate(38%, -57px) scale(1.02); }
+  100% { opacity: 0; transform: translate(88%, -64px) scale(.94); }
+}
+
+@keyframes isle-egg-top-pop {
+  0%, 26% { opacity: 1; transform: translateX(-50%) translateY(0) rotate(0); }
+  39% { opacity: 1; transform: translateX(-95%) translateY(-86px) rotate(-32deg); }
+  62%, 100% { opacity: 0; transform: translateX(-135%) translateY(-122px) rotate(-54deg); }
+}
+
+@keyframes isle-egg-bottom-bounce {
+  0%, 27% { transform: translateX(-50%) scale(1); }
+  36% { transform: translateX(-50%) scale(1.08, .9); }
+  47%, 100% { transform: translateX(-50%) scale(1); }
+}
+
+@keyframes isle-hatch-ring {
+  0%, 20% { opacity: 0; transform: translateX(-50%) scale(.4) rotate(0); }
+  45% { opacity: .75; transform: translateX(-50%) scale(1) rotate(35deg); }
+  100% { opacity: 0; transform: translateX(-50%) scale(1.42) rotate(88deg); }
+}
+
+@keyframes isle-confetti {
+  0%, 18% { opacity: 0; transform: translateY(35px) rotate(0) scale(.5); }
+  38% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-160px) rotate(190deg) scale(1); }
+}
+
+@keyframes isle-copy-pop {
+  0%, 12% { opacity: 0; transform: translateY(10px); }
+  28%, 76% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-5px); }
+}
+
+@keyframes isle-secret-sparkle {
+  0%, 100% { transform: scale(1) rotate(0); }
+  50% { transform: scale(1.3) rotate(45deg); }
+}
+
+@media (max-width: 720px) {
+  .isle-surprise-stage {
+    width: 260px;
+    height: 270px;
+    transform: scale(.92);
+  }
+
+  .isle-surprise-copy strong {
+    font-size: 22px;
+  }
+
+  .isle-secret-badge {
+    font-size: 8px;
+    line-height: 1.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .isle-surprise {
+    display: none;
+  }
+
+  .isle-secret-badge > span {
+    animation: none;
+  }
+}
+
 /* Pixel expedition theme */
 body {
   background: var(--paper-deep);

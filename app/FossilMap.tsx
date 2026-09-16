@@ -546,7 +546,7 @@ const baseLocations: Location[] = [
     source: "Dinosaur Isle Museum fossil walks",
     sourceLink: "https://www.dinosaurisle.com/article/3024/Fossil-walks",
     verified: "22 Aug 2026",
-    accent: "#4e9ed3",
+    accent: "#4d9f63",
   },
   {
     id: "charmouth",
@@ -1952,6 +1952,36 @@ function PixelCreatures() {
   );
 }
 
+function IsleOfWightSurprise({ language }: { language: Language }) {
+  const announcement = language === "zh"
+    ? "彩蛋解锁：怀特岛小恐龙从蛋里蹦出来啦！"
+    : "Easter egg unlocked: a tiny Isle of Wight dinosaur has hatched!";
+
+  return (
+    <div className="isle-surprise" role="status" aria-label={announcement}>
+      <div className="isle-surprise-stage" aria-hidden="true">
+        <div className="isle-hatchling">
+          <div className="dino-tail" />
+          <div className="dino-body" />
+          <div className="dino-neck" />
+          <div className="dino-head" />
+          <div className="dino-snout" />
+          <div className="dino-eye" />
+          <div className="dino-arm" />
+          <div className="dino-leg leg-front"><span /></div>
+          <div className="dino-leg leg-back"><span /></div>
+        </div>
+        <div className="isle-egg isle-egg-top"><i /></div>
+        <div className="isle-egg isle-egg-bottom"><i /></div>
+        <p className="isle-surprise-copy">
+          <span>SECRET HATCHED</span>
+          <strong>{language === "zh" ? "怀特岛小恐龙出壳啦！" : "A tiny island dinosaur hatched!"}</strong>
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function NautilusGuide({ language, siteLocations, onOpenLocation }: { language: Language; siteLocations: Location[]; onOpenLocation: (id: string) => void }) {
   const t = guideCopy[language];
   const [open, setOpen] = useState(false);
@@ -2839,7 +2869,7 @@ export function FossilMap() {
   };
 
   return (
-    <main className={`site-shell ${selected ? "detail-open" : ""} ${museumOpen ? "museum-open" : ""} ${communityOpen ? "community-open" : ""} lang-${language} intro-${introPhase}`}>
+    <main className={`site-shell ${selected ? "detail-open" : ""} ${selected?.id === "isle-of-wight" ? "dinosaur-isle-open" : ""} ${museumOpen ? "museum-open" : ""} ${communityOpen ? "community-open" : ""} lang-${language} intro-${introPhase}`}>
       {introPhase !== "done" && <IntroScreen phase={introPhase} />}
       <header className="topbar">
         <div className="header-left">
@@ -3039,9 +3069,11 @@ function LocationDetail({ location, language, onBack }: { location: Location; la
   const locationNumber = String(locations.findIndex((item) => item.id === location.id) + 1).padStart(2, "0");
   const geology = location.geology?.[language];
   const fieldIntel = location.fieldIntel?.[language];
+  const isDinosaurIsle = location.id === "isle-of-wight";
 
   return (
-    <section className="detail-view detail-text-only">
+    <section className={`detail-view detail-text-only ${isDinosaurIsle ? "is-dinosaur-isle" : ""}`}>
+      {isDinosaurIsle && <IsleOfWightSurprise language={language} />}
       <div className="detail-safety">
         <span className={`risk-pill ${riskClass(location.risk)}`}>{riskLabel(location.risk, language)} {t.risk}</span>
         <p>{location.safetyLead}</p>
@@ -3055,6 +3087,7 @@ function LocationDetail({ location, language, onBack }: { location: Location; la
             <p>{location.region}</p>
             <h2>{location.name}</h2>
             <div className="place-tags"><span>{location.period}</span><span>{location.type}</span><span>{location.level}</span></div>
+            {isDinosaurIsle && <div className="isle-secret-badge"><span>◆</span>{language === "zh" ? "恐龙岛 · 彩蛋已解锁" : "Dinosaur Island · secret hatched"}</div>}
             <div className="field-profile">
               <ProfileRating label={t.findFrequency} rating={location.findRating} />
               <ProfileRating label={t.accessRating} rating={location.accessRating} />
