@@ -32,6 +32,8 @@ test("keeps the guide focused and adds the requested discovery play", async () =
   assert.match(component, /referencePhotos/);
   assert.match(component, /collectionFilter/);
   assert.match(component, /feedNori/);
+  assert.match(component, /nori-guide-minimized-v1/);
+  assert.match(component, /nori-restore/);
   assert.match(component, /We collect fossils, and memories too\./);
   assert.match(component, /seenCount\}\/\{TOTAL_FOSSILS/);
   assert.match(component, /function IsleOfWightSurprise/);

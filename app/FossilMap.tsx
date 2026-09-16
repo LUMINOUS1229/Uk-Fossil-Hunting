@@ -1493,7 +1493,7 @@ const guideCopy = {
   en: {
     name: "Nori · site guide",
     status: "SEARCHING THIS SITE ONLY",
-    ask: "Ask Nori",
+    ask: "Ask Nori", hide: "Hide Nori", show: "Show Nori",
     close: "Close guide",
     placeholder: "Ask about routes, tides, kit or finds…",
     send: "Ask",
@@ -1515,7 +1515,7 @@ const guideCopy = {
   zh: {
     name: "诺里 · 站内向导",
     status: "仅检索本站资料",
-    ask: "问问诺里",
+    ask: "问问诺里", hide: "收起诺里", show: "唤回诺里",
     close: "关闭向导",
     placeholder: "询问路线、潮汐、装备或化石……",
     send: "提问",
@@ -1992,6 +1992,7 @@ function NautilusGuide({ language, siteLocations, onOpenLocation }: { language: 
   const [seenCount, setSeenCount] = useState(0);
   const [petBurst, setPetBurst] = useState(false);
   const [petMessage, setPetMessage] = useState("");
+  const [minimized, setMinimized] = useState(false);
   const [turns, setTurns] = useState<GuideTurn[]>([
     { id: 0, role: "guide", text: t.welcome },
   ]);
@@ -2006,6 +2007,7 @@ function NautilusGuide({ language, siteLocations, onOpenLocation }: { language: 
 
   useEffect(() => {
     const loadTimer = window.setTimeout(() => {
+      setMinimized(window.localStorage.getItem("nori-guide-minimized-v1") === "1");
       try {
         const stored = JSON.parse(window.localStorage.getItem("nori-pet-v1") ?? "{}") as { feedCount?: number };
         setFeedCount(Math.max(0, Number(stored.feedCount) || 0));
@@ -2059,6 +2061,29 @@ function NautilusGuide({ language, siteLocations, onOpenLocation }: { language: 
 
   const isFull = feedCount > 0;
 
+  const minimizeGuide = () => {
+    setOpen(false);
+    setPetMenuOpen(false);
+    setHoverLine(null);
+    setMinimized(true);
+    window.localStorage.setItem("nori-guide-minimized-v1", "1");
+  };
+
+  const restoreGuide = () => {
+    setMinimized(false);
+    window.localStorage.setItem("nori-guide-minimized-v1", "0");
+  };
+
+  if (minimized) {
+    return (
+      <aside className="nautilus-guide is-minimized" aria-label={t.name}>
+        <button type="button" className="nori-restore" onClick={restoreGuide} aria-label={t.show} title={t.show}>
+          <span aria-hidden="true">◉</span><strong>Nori</strong><small>{t.show}</small>
+        </button>
+      </aside>
+    );
+  }
+
   return (
     <aside className={`nautilus-guide ${open ? "is-open" : ""} ${petBurst ? "is-feeding" : ""}`} aria-label={t.name}>
       {!open && hoverLine && <div className="guide-hover-line" role="status">{hoverLine}</div>}
@@ -2068,6 +2093,7 @@ function NautilusGuide({ language, siteLocations, onOpenLocation }: { language: 
         <button type="button" className="nori-feed-toggle" onClick={() => setPetMenuOpen((value) => !value)} aria-expanded={petMenuOpen}><span>🦐</span>{t.feed}</button>
         <span title={t.fed}>♥ {feedCount}</span>
         <span title={t.discoveries}>◆ {seenCount}/{TOTAL_FOSSILS}</span>
+        <button type="button" className="nori-hide-button" onClick={minimizeGuide} aria-label={t.hide} title={t.hide}><span aria-hidden="true">⌄</span><em>{language === "zh" ? "收起" : "Hide"}</em></button>
         {petMenuOpen && <div className="nori-food-menu">
           <small>{isFull ? t.full : t.hungry}</small>
           {t.foods.map((food) => <button type="button" key={food[1]} onClick={() => feedNori(food)}><b>{food[0]}</b>{food[1]}</button>)}
@@ -2081,7 +2107,10 @@ function NautilusGuide({ language, siteLocations, onOpenLocation }: { language: 
               <strong>{t.name}</strong>
               <span><i /> {t.status}</span>
             </div>
-            <button type="button" onClick={() => setOpen(false)} aria-label={t.close}>×</button>
+            <div className="guide-panel-actions">
+              <button type="button" onClick={minimizeGuide} aria-label={t.hide} title={t.hide}>−</button>
+              <button type="button" onClick={() => setOpen(false)} aria-label={t.close}>×</button>
+            </div>
           </header>
 
           <div className="guide-turns" aria-live="polite">

@@ -9658,3 +9658,137 @@ body {
     scroll-behavior: auto;
   }
 }
+
+/* Nori can be tucked away and restored without losing the user's preference. */
+.nori-hide-button,
+.nori-restore,
+.guide-panel-actions button {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.nori-hide-button {
+  display: inline-flex;
+  min-width: 44px;
+  height: 31px;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 0 7px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, .94);
+  color: var(--ink-soft);
+  box-shadow: 0 6px 18px rgba(23, 63, 103, .09);
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.nori-hide-button em {
+  font-style: normal;
+  font-size: 8px;
+}
+
+.nori-hide-button:hover,
+.nori-hide-button:focus-visible {
+  border-color: var(--rust);
+  background: var(--sea);
+  color: var(--rust);
+}
+
+.guide-panel-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 6px;
+}
+
+.guide-panel-actions button {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--paper-deep);
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1;
+}
+
+.guide-panel-actions button:hover,
+.guide-panel-actions button:focus-visible {
+  border-color: var(--rust);
+  color: var(--rust);
+}
+
+.nautilus-guide.is-minimized {
+  right: 12px;
+  bottom: 14px;
+}
+
+.nori-restore {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  column-gap: 6px;
+  align-items: center;
+  min-height: 38px;
+  padding: 6px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .95);
+  color: var(--ink);
+  box-shadow: 0 8px 22px rgba(23, 63, 103, .12);
+}
+
+.nori-restore > span {
+  grid-row: 1 / 3;
+  color: var(--rust);
+  font-size: 14px;
+}
+
+.nori-restore strong {
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  line-height: 1;
+}
+
+.nori-restore small {
+  color: var(--ink-soft);
+  font-size: 7px;
+  line-height: 1;
+}
+
+.nori-restore:hover,
+.nori-restore:focus-visible {
+  border-color: var(--rust);
+  background: var(--sea);
+}
+
+@media (max-width: 720px) {
+  .nori-hide-button {
+    min-width: 42px;
+    height: 29px;
+    padding-inline: 6px;
+  }
+
+  .nautilus-guide.is-minimized {
+    right: 8px;
+    bottom: calc(70px + env(safe-area-inset-bottom));
+  }
+
+  .site-shell.detail-open .nautilus-guide.is-minimized {
+    bottom: calc(8px + env(safe-area-inset-bottom));
+  }
+
+  .nori-restore {
+    min-height: 36px;
+    padding: 5px 8px;
+  }
+
+  .guide-panel-actions button {
+    width: 38px;
+    height: 38px;
+  }
+}
