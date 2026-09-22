@@ -9799,7 +9799,10 @@ body {
   touch-action: none;
   user-select: none;
   outline: none;
-  background: linear-gradient(150deg, #eaf8ff, #93c5dd);
+  background:
+    radial-gradient(ellipse at 66% 34%, rgba(255, 255, 255, .92), transparent 37%),
+    radial-gradient(ellipse at 17% 76%, rgba(139, 206, 234, .46), transparent 42%),
+    linear-gradient(146deg, #e8f6ff 9%, #bfdef1 54%, #94c5df 100%);
 }
 
 .map-viewport.is-dragging {
@@ -9818,16 +9821,6 @@ body {
 
 .map-viewport.is-dragging .uk-plot {
   transition: none;
-}
-
-.ocean-waves {
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
 }
 
 .map-viewport .uk-silhouette {
@@ -10014,4 +10007,71 @@ body {
   .map-viewport .uk-plot {
     transition: none;
   }
+}
+
+/* Translucent location readouts, with a restrained neon edge. */
+.map-viewport .marker-card {
+  width: 270px;
+  max-width: min(270px, 34vw);
+  padding: 17px 18px 16px;
+  border: 1px solid rgba(100, 232, 248, .72);
+  border-radius: 10px 2px 10px 2px;
+  background: linear-gradient(135deg, rgba(6, 27, 51, .78), rgba(14, 36, 67, .7));
+  color: #f5fcff;
+  box-shadow:
+    0 23px 48px rgba(4, 25, 52, .36),
+    0 0 24px rgba(30, 216, 241, .24),
+    inset 0 1px 0 rgba(255, 255, 255, .2);
+  backdrop-filter: blur(18px) saturate(1.35);
+  -webkit-backdrop-filter: blur(18px) saturate(1.35);
+}
+
+.map-viewport .marker-card::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 13px;
+  right: 21px;
+  height: 2px;
+  background: linear-gradient(90deg, #55f0ff, #8cbcff 63%, #f578d7);
+  box-shadow: 0 0 11px rgba(91, 229, 255, .85);
+}
+
+.map-viewport .marker-card::after {
+  content: "";
+  position: absolute;
+  right: 11px;
+  bottom: 10px;
+  width: 12px;
+  height: 12px;
+  border-right: 1px solid rgba(246, 111, 216, .85);
+  border-bottom: 1px solid rgba(246, 111, 216, .85);
+  box-shadow: 3px 3px 9px rgba(246, 111, 216, .22);
+}
+
+.map-viewport .marker-card strong {
+  color: #fff;
+  text-shadow: 0 0 12px rgba(94, 231, 255, .46);
+}
+
+.map-viewport .marker-card small {
+  color: #d8edf8;
+}
+
+.map-viewport .marker-card em,
+.map-viewport .marker-card .inline-star-rating > span:first-child {
+  color: #8debf8;
+}
+
+.map-viewport .marker-card .inline-rating-stars {
+  color: rgba(180, 218, 237, .35);
+}
+
+.map-viewport .marker-card .inline-rating-stars .filled {
+  color: #69dcff;
+  text-shadow: 0 0 7px rgba(60, 215, 255, .5);
+}
+
+.map-viewport .marker-card .rating-divider {
+  color: rgba(187, 224, 239, .58);
 }
