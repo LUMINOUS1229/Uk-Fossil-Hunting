@@ -21,3 +21,8 @@ export const communityPosts = sqliteTable("community_posts", {
   index("idx_community_posts_created_at").on(table.createdAt),
   index("idx_community_posts_profile_created").on(table.profileId, table.createdAt),
 ]);
+
+export const siteVisits = sqliteTable("site_visits", {
+  visitId: text("visit_id").primaryKey(),
+  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+});

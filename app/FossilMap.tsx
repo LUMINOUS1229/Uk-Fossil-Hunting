@@ -1997,6 +1997,52 @@ function IsleOfWightSurprise({ language }: { language: Language }) {
   );
 }
 
+function SiteVisitCounter({ language }: { language: Language }) {
+  const [total, setTotal] = useState<number | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    let visitId: string;
+    try {
+      visitId = window.sessionStorage.getItem("fossil-site-visit-id-v1") ?? "";
+      if (!visitId) {
+        visitId = window.crypto.randomUUID();
+        window.sessionStorage.setItem("fossil-site-visit-id-v1", visitId);
+      }
+    } catch {
+      visitId = window.crypto.randomUUID();
+    }
+
+    fetch("/api/site-visits", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ visitId }),
+      cache: "no-store",
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error("Visit count unavailable");
+        return response.json() as Promise<{ total: number }>;
+      })
+      .then((data) => {
+        if (active && Number.isSafeInteger(data.total) && data.total >= 0) setTotal(data.total);
+      })
+      .catch(() => {
+        if (active) setTotal(null);
+      });
+
+    return () => { active = false; };
+  }, []);
+
+  const label = language === "zh" ? "累计访问" : "Site visits";
+  return (
+    <div className="site-visit-counter" role="status" aria-label={`${label}：${total === null ? "—" : total.toLocaleString()}`}>
+      <span aria-hidden="true">◉</span>
+      <span>{label}</span>
+      <strong>{total === null ? "—" : total.toLocaleString(language === "zh" ? "zh-CN" : "en-GB")}</strong>
+    </div>
+  );
+}
+
 function NautilusGuide({ language, siteLocations, onOpenLocation }: { language: Language; siteLocations: Location[]; onOpenLocation: (id: string) => void }) {
   const t = guideCopy[language];
   const [open, setOpen] = useState(false);
@@ -3208,6 +3254,7 @@ export function FossilMap() {
       {communityOpen && <CommunityView language={language} onBack={() => setCommunityOpen(false)} />}
 
       <NautilusGuide key={language} language={language} siteLocations={localizedLocations} onOpenLocation={openLocation} />
+      <SiteVisitCounter language={language} />
 
       {modal && (
         <div className="modal-backdrop" onMouseDown={(event) => event.target === event.currentTarget && setModal(null)}>

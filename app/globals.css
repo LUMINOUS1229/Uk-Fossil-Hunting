@@ -10362,3 +10362,42 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .topbar .top-actions button { transition: none; }
 }
+
+/* Shared, session-deduplicated visit total beside Nori. */
+.site-visit-counter {
+  position: fixed;
+  right: 22px;
+  bottom: 102px;
+  z-index: 84;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: calc(100vw - 24px);
+  min-height: 36px;
+  padding: 7px 11px;
+  border: 1px solid var(--cyber-line);
+  border-radius: 8px 2px 8px 2px;
+  background: var(--cyber-panel);
+  color: var(--cyber-muted);
+  box-shadow: var(--cyber-shadow);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  font-family: var(--font-sans), sans-serif;
+  font-size: 12px;
+  line-height: 1;
+  pointer-events: none;
+}
+.site-visit-counter > span:first-child { color: var(--cyber-cyan); text-shadow: 0 0 8px rgba(92, 224, 249, .7); }
+.site-visit-counter strong { color: var(--cyber-ink); font-family: var(--font-mono), monospace; font-size: 13px; font-variant-numeric: tabular-nums; }
+.site-shell:has(.nautilus-guide.is-minimized) .site-visit-counter { bottom: 66px; }
+.site-shell.museum-open .site-visit-counter,
+.site-shell.community-open .site-visit-counter { bottom: 20px; }
+
+@media (max-width: 720px) {
+  .site-visit-counter { right: auto; left: 12px; bottom: calc(83px + env(safe-area-inset-bottom)); }
+  .site-shell:has(.nautilus-guide.is-minimized) .site-visit-counter { bottom: calc(83px + env(safe-area-inset-bottom)); }
+  .site-shell.detail-open .site-visit-counter { bottom: calc(12px + env(safe-area-inset-bottom)); }
+  .site-shell.museum-open .site-visit-counter,
+  .site-shell.community-open .site-visit-counter { right: 9px; left: auto; bottom: calc(12px + env(safe-area-inset-bottom)); }
+  .site-shell:has(.location-list.mobile-open) .site-visit-counter { display: none; }
+}

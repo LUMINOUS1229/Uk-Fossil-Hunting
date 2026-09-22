@@ -15,6 +15,13 @@
       "when": 1787701722406,
       "tag": "0001_orange_jack_flag",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1790110926076,
+      "tag": "0002_flat_toad",
+      "breakpoints": true
     }
   ]
 }
