@@ -1510,11 +1510,11 @@ const guideCopy = {
     status: "SEARCHING THIS SITE ONLY",
     ask: "Ask Nori", hide: "Hide Nori", show: "Show Nori",
     close: "Close guide",
-    placeholder: "Ask about routes, tides, kit or finds…",
+    placeholder: "Name a place, or ask about routes and fossils…",
     send: "Ask",
     source: "Answers use the route and safety notes on this site.",
-    welcome: "Hello! I’m Nori, your slightly confused nautilus guide. I know routes, tides, kit and fossils—luo.",
-    openSite: "Open site details",
+    welcome: "Hello! I’m Nori, your slightly confused nautilus guide. Name a place in English or Chinese and I’ll find its guide—luo.",
+    openSite: "Open location page",
     feed: "Feed Nori", fed: "Snacks", discoveries: "Seen", full: "Shell-happy!", hungry: "A little peckish…",
     foods: [["🦐", "Shrimp"], ["🦀", "Crab"], ["🫧", "Bubble snack"]],
     presets: ["How do I get to Folkestone?", "What should I check before fossil collecting?", "Which site is best for beginners?", "Nori, can you swim?"],
@@ -1532,14 +1532,14 @@ const guideCopy = {
     status: "仅检索本站资料",
     ask: "问问诺里", hide: "收起诺里", show: "唤回诺里",
     close: "关闭向导",
-    placeholder: "询问路线、潮汐、装备或化石……",
+    placeholder: "输入中英文地名，或询问路线、化石……",
     send: "提问",
     source: "回答来自本站的路线与安全资料。",
-    welcome: "你好螺！我是有点呆、很会吐槽的鹦鹉螺诺里。路线、潮汐、装备和化石都可以问我螺。",
-    openSite: "打开地点详情",
+    welcome: "你好螺！我是鹦鹉螺诺里。输入中文或英文地名，我会找到地点资料和详情页；路线、潮汐和化石也能问我螺。",
+    openSite: "查看地点详情页",
     feed: "投喂诺里", fed: "已投喂", discoveries: "已发现", full: "壳光满满！", hungry: "有一点点饿螺……",
     foods: [["🦐", "小虾"], ["🦀", "小蟹"], ["🫧", "泡泡零食"]],
-    presets: ["如何去 Folkestone？", "化石采集前我应该注意什么？", "哪个地点最适合新手？", "诺里，你会游泳吗？"],
+    presets: ["怀特岛有哪些化石？", "化石采集前我应该注意什么？", "哪个地点最适合新手？", "诺里，你会游泳吗？"],
     hover: [
       "想查路线？问我螺！",
       "潮水是截止时间，真是一点面子都不给螺。",
@@ -1559,10 +1559,11 @@ const locationAliases: Record<string, string[]> = {
   walton: ["walton", "walton-on-the-naze", "naze", "沃尔顿"],
   "wootton-bassett": ["wootton", "wootton bassett", "royal wootton bassett", "伍顿巴西特"],
   bracklesham: ["bracklesham", "bracklesham bay", "布拉克勒舍姆"],
+  "isle-of-wight": ["isle of wight", "yaverland", "怀特岛", "亚弗兰"],
   charmouth: ["charmouth", "black ven", "查茅斯"],
   weymouth: ["weymouth", "bowleaze", "bowleaze cove", "redcliff", "韦茅斯"],
-  peterborough: ["peterborough", "king s dyke", "kings dyke", "king’s dyke", "whittlesey", "yaxley", "hampton vale", "hampton lake", "彼得伯勒", "亚克斯利", "汉普顿湖", "养老院", "湖边"],
-  nacton: ["nacton", "river orwell", "suffolk", "纳克顿", "萨福克"],
+  peterborough: ["peterborough", "king s dyke", "kings dyke", "king’s dyke", "whittlesey", "yaxley", "hampton vale", "hampton lake", "彼得伯勒", "亚克斯利", "汉普顿湖"],
+  nacton: ["nacton", "nacton shore", "river orwell", "纳克顿"],
   "fort-victoria": ["fort victoria", "yarmouth", "维多利亚堡"],
   "barton-on-sea": ["barton on sea", "barton-on-sea", "barton clay", "巴顿"],
   "warden-point": ["warden point", "warden bay", "isle of sheppey", "沃登角", "谢佩岛"],
@@ -1572,11 +1573,30 @@ const locationAliases: Record<string, string[]> = {
   "ardley-quarry": ["ardley", "ardley quarry", "ardley wood", "阿德利"],
   "kirtlington-quarry": ["kirtlington", "kirtlington quarry", "柯特灵顿"],
   "woodeaton-quarry": ["woodeaton", "woodeaton quarry", "伍德伊顿"],
-  whitby: ["whitby", "east cliff", "惠特比"],
+  whitby: ["whitby", "whitby east cliff", "惠特比"],
   "lyme-regis": ["lyme regis", "monmouth beach", "莱姆里吉斯", "蒙茅斯海滩"],
 };
 
 const normalizeGuideQuery = (value: string) => value.toLocaleLowerCase().replace(/[？?！!，,。.、:：'’“”"()（）-]/g, " ").replace(/\s+/g, " ").trim();
+
+function findGuideLocation(query: string, siteLocations: Location[]) {
+  const matches = siteLocations.flatMap((location) => {
+    const aliases = [location.id, location.name, location.shortName, ...(locationAliases[location.id] ?? [])];
+    return aliases.flatMap((rawAlias) => {
+      const alias = normalizeGuideQuery(rawAlias);
+      if (!alias) return [];
+      const escaped = alias.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const matched = /[a-z]/.test(alias)
+        ? new RegExp(`(^|[^a-z0-9])${escaped}(?=$|[^a-z0-9])`).test(query)
+        : query.includes(alias);
+      if (!matched) return [];
+      const broadIsland = alias === "isle of wight" || alias === "怀特岛";
+      const directName = alias === normalizeGuideQuery(location.name) || alias === normalizeGuideQuery(location.shortName);
+      return [{ location, score: alias.length + (directName ? 20 : 0) - (broadIsland ? 40 : 0) }];
+    });
+  });
+  return matches.sort((a, b) => b.score - a.score)[0]?.location;
+}
 
 const pickGuideReply = (lines: readonly string[]) => lines[Math.floor(Math.random() * lines.length)] ?? lines[0];
 
@@ -1664,10 +1684,7 @@ function answerGuideQuestion(question: string, siteLocations: Location[], langua
   const query = normalizeGuideQuery(question);
   const smallTalk = answerNoriSmallTalk(query, language);
   if (smallTalk) return { text: smallTalk };
-  const location = siteLocations.find((item) =>
-    [item.id, item.name, item.shortName, ...(locationAliases[item.id] ?? [])]
-      .some((alias) => query.includes(normalizeGuideQuery(alias))),
-  );
+  const location = findGuideLocation(query, siteLocations);
   const isZh = language === "zh";
   const asksRoute = /(怎么去|如何去|怎样去|路线|交通|抵达|到达|how.*(get|go)|route|train|travel)/i.test(query);
   const asksSafety = /(注意|安全|危险|风险|准备|采集前|safe|safety|hazard|risk|before.*collect)/i.test(query);
@@ -1782,8 +1799,8 @@ function answerGuideQuestion(question: string, siteLocations: Location[], langua
   if (location) {
     return {
       text: isZh
-        ? `${location.name} 位于${location.region}，地层为${location.period}，从伦敦出发约 ${location.duration}，现场风险为${riskLabel(location.risk, language)}。可继续问我这里的路线、潮汐、装备、化石或采集规则。`
-        : `${location.name} is in ${location.region}, with ${location.period} geology. It is about ${location.duration} from London and has ${riskLabel(location.risk, language)} field risk. Ask me about its route, tide, kit, finds or rules.`,
+        ? `${location.name} 位于${location.region}，地层为${location.period}。从伦敦出发约 ${location.duration}；可寻找${location.finds.slice(0, 3).map((find) => find.name).join("、")}等化石。现场风险为${riskLabel(location.risk, language)}，${location.tideWindow}。点下方按钮可查看完整地点页面与路线、安全和采集规则。`
+        : `${location.name} is in ${location.region}, with ${location.period} geology. It is about ${location.duration} from London; finds include ${location.finds.slice(0, 3).map((find) => find.name).join(", ")}. Field risk is ${riskLabel(location.risk, language)}; ${location.tideWindow}. Use the button below for the full location page, route, safety and collecting rules.`,
       locationId: location.id,
     };
   }

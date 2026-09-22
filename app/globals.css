@@ -10399,5 +10399,15 @@ body {
   .site-shell.detail-open .site-visit-counter { bottom: calc(12px + env(safe-area-inset-bottom)); }
   .site-shell.museum-open .site-visit-counter,
   .site-shell.community-open .site-visit-counter { right: 9px; left: auto; bottom: calc(12px + env(safe-area-inset-bottom)); }
-  .site-shell:has(.location-list.mobile-open) .site-visit-counter { display: none; }
+.site-shell:has(.location-list.mobile-open) .site-visit-counter { display: none; }
+}
+
+.guide-turn div > button {
+  padding: 9px 12px;
+  border-color: var(--cyber-cyan);
+  border-radius: 4px;
+  background: rgba(52, 169, 208, .14);
+  color: var(--cyber-cyan);
+  font-size: 12px;
+  font-weight: 700;
 }
