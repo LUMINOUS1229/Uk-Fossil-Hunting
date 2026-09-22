@@ -7,11 +7,17 @@ import { documentLocationZh } from "./document-location-zh";
 type Risk = "LOW" | "MODERATE" | "HIGH";
 type Language = "en" | "zh";
 type IntroPhase = "loading" | "reveal" | "done";
-type MapView = { scale: number; x: number; y: number };
+type MapView = { scale: number; x: number; y: number; tilt: number; bearing: number };
 
-const FITTED_MAP_VIEW: MapView = { scale: 0.88, x: 0, y: 0 };
+const FITTED_MAP_VIEW: MapView = { scale: 0.91, x: 0, y: 0, tilt: 28, bearing: -7 };
 const MIN_MAP_SCALE = 0.62;
 const MAX_MAP_SCALE = 2.4;
+
+function fittedMapView(): MapView {
+  return typeof window !== "undefined" && window.matchMedia("(max-width: 720px)").matches
+    ? { ...FITTED_MAP_VIEW, scale: 0.82 }
+    : FITTED_MAP_VIEW;
+}
 
 function clampMapScale(scale: number) {
   return Math.min(MAX_MAP_SCALE, Math.max(MIN_MAP_SCALE, scale));
@@ -2866,7 +2872,9 @@ export function FossilMap() {
   const [mapView, setMapView] = useState<MapView>(FITTED_MAP_VIEW);
   const [mapDragging, setMapDragging] = useState(false);
   const mapViewportRef = useRef<HTMLDivElement>(null);
-  const mapDragRef = useRef<{ pointerId: number; startX: number; startY: number; originX: number; originY: number } | null>(null);
+  const mapDragRef = useRef<{ pointerId: number; startX: number; startY: number; origin: MapView; mode: "pan" | "orbit" } | null>(null);
+  const mapTouchPointsRef = useRef(new Map<number, { x: number; y: number }>());
+  const mapPinchRef = useRef<{ distance: number; angle: number; centerX: number; centerY: number; origin: MapView } | null>(null);
   const localizedLocations = useMemo(() => locations.map((location) => localizeLocation(location, language)), [language]);
   const selected = useMemo(() => localizedLocations.find((location) => location.id === selectedId) ?? null, [localizedLocations, selectedId]);
   const t = copy[language];
@@ -2874,6 +2882,14 @@ export function FossilMap() {
   useEffect(() => {
     document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
   }, [language]);
+
+  useEffect(() => {
+    const mobileMedia = window.matchMedia("(max-width: 720px)");
+    const fitForScreen = () => setMapView(fittedMapView());
+    fitForScreen();
+    mobileMedia.addEventListener("change", fitForScreen);
+    return () => mobileMedia.removeEventListener("change", fitForScreen);
+  }, []);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -2915,40 +2931,97 @@ export function FossilMap() {
   }, []);
 
   const resetMapView = useCallback(() => {
-    setMapView(FITTED_MAP_VIEW);
+    setMapView(fittedMapView());
   }, []);
 
   const handleMapPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (event.button !== 0 || (event.target as HTMLElement).closest("button, a, input, select, textarea")) return;
+    if ((event.button !== 0 && event.button !== 2) || (event.target as HTMLElement).closest("button, a, input, select, textarea")) return;
+    if (event.pointerType === "touch") {
+      mapTouchPointsRef.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
+      if (mapTouchPointsRef.current.size === 2) {
+        const [first, second] = [...mapTouchPointsRef.current.values()];
+        mapPinchRef.current = {
+          distance: Math.hypot(second.x - first.x, second.y - first.y),
+          angle: Math.atan2(second.y - first.y, second.x - first.x),
+          centerX: (first.x + second.x) / 2,
+          centerY: (first.y + second.y) / 2,
+          origin: mapView,
+        };
+        mapDragRef.current = null;
+      }
+    }
+    if (mapPinchRef.current) {
+      event.currentTarget.setPointerCapture(event.pointerId);
+      setMapDragging(true);
+      return;
+    }
     mapDragRef.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
       startY: event.clientY,
-      originX: mapView.x,
-      originY: mapView.y,
+      origin: mapView,
+      mode: event.shiftKey || event.button === 2 ? "orbit" : "pan",
     };
     event.currentTarget.setPointerCapture(event.pointerId);
     setMapDragging(true);
   };
 
   const handleMapPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (mapTouchPointsRef.current.has(event.pointerId)) {
+      mapTouchPointsRef.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
+      const pinch = mapPinchRef.current;
+      if (pinch && mapTouchPointsRef.current.size >= 2) {
+        const [first, second] = [...mapTouchPointsRef.current.values()];
+        const distance = Math.hypot(second.x - first.x, second.y - first.y);
+        const angle = Math.atan2(second.y - first.y, second.x - first.x);
+        setMapView((view) => ({
+          ...view,
+          scale: clampMapScale(pinch.origin.scale * distance / Math.max(1, pinch.distance)),
+          bearing: Math.min(24, Math.max(-30, pinch.origin.bearing + (angle - pinch.angle) * 180 / Math.PI)),
+          x: pinch.origin.x + (first.x + second.x) / 2 - pinch.centerX,
+          y: pinch.origin.y + (first.y + second.y) / 2 - pinch.centerY,
+        }));
+        return;
+      }
+    }
     const drag = mapDragRef.current;
     if (!drag || drag.pointerId !== event.pointerId) return;
+    if (drag.mode === "orbit") {
+      setMapView((view) => ({
+        ...view,
+        bearing: Math.min(24, Math.max(-30, drag.origin.bearing + (event.clientX - drag.startX) * 0.12)),
+        tilt: Math.min(48, Math.max(0, drag.origin.tilt - (event.clientY - drag.startY) * 0.12)),
+      }));
+      return;
+    }
     const bounds = mapViewportRef.current?.getBoundingClientRect();
     const maxX = Math.max(260, (bounds?.width ?? 800) * 0.85);
     const maxY = Math.max(220, (bounds?.height ?? 700) * 0.85);
     setMapView((view) => ({
       ...view,
-      x: Math.min(maxX, Math.max(-maxX, drag.originX + event.clientX - drag.startX)),
-      y: Math.min(maxY, Math.max(-maxY, drag.originY + event.clientY - drag.startY)),
+      x: Math.min(maxX, Math.max(-maxX, drag.origin.x + event.clientX - drag.startX)),
+      y: Math.min(maxY, Math.max(-maxY, drag.origin.y + event.clientY - drag.startY)),
     }));
   };
 
   const endMapDrag = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (mapDragRef.current?.pointerId !== event.pointerId) return;
+    if (event.pointerType === "touch") {
+      mapTouchPointsRef.current.delete(event.pointerId);
+      if (mapPinchRef.current) {
+        mapPinchRef.current = null;
+        const remaining = [...mapTouchPointsRef.current.entries()][0];
+        mapDragRef.current = remaining ? {
+          pointerId: remaining[0], startX: remaining[1].x, startY: remaining[1].y,
+          origin: mapView, mode: "pan",
+        } : null;
+      }
+    }
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-    mapDragRef.current = null;
-    setMapDragging(false);
+    if (mapDragRef.current?.pointerId !== event.pointerId && mapTouchPointsRef.current.size > 0) return;
+    if (mapTouchPointsRef.current.size === 0) {
+      mapDragRef.current = null;
+      setMapDragging(false);
+    }
   };
 
   const handleMapWheel = (event: React.WheelEvent<HTMLDivElement>) => {
@@ -2962,6 +3035,7 @@ export function FossilMap() {
     if (event.key === "+" || event.key === "=") zoomMapBy(1.12);
     else if (event.key === "-") zoomMapBy(1 / 1.12);
     else if (event.key === "0") resetMapView();
+    else if (event.key.toLowerCase() === "v") setMapView((view) => ({ ...view, tilt: view.tilt ? 0 : FITTED_MAP_VIEW.tilt, bearing: view.tilt ? 0 : FITTED_MAP_VIEW.bearing }));
     else if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) {
       setMapView((view) => ({
         ...view,
@@ -3009,7 +3083,7 @@ export function FossilMap() {
         <div
           ref={mapViewportRef}
           className={`uk-map map-viewport ${mapDragging ? "is-dragging" : ""}`}
-          aria-label={language === "en" ? "Interactive map of UK fossil locations. Drag to pan and use the wheel or controls to zoom." : "英国化石地点互动地图。拖动可平移，使用滚轮或按钮缩放。"}
+          aria-label={language === "en" ? "Interactive 3D map of UK fossil locations. Drag to pan, shift-drag to orbit, and zoom with the wheel or controls." : "英国化石地点 3D 互动地图。拖动平移，Shift 拖动旋转，滚轮或按钮缩放。"}
           aria-describedby="map-gesture-hint"
           tabIndex={0}
           onPointerDown={handleMapPointerDown}
@@ -3018,7 +3092,9 @@ export function FossilMap() {
           onPointerCancel={endMapDrag}
           onWheel={handleMapWheel}
           onKeyDown={handleMapKeyDown}
+          onContextMenu={(event) => event.preventDefault()}
         >
+          <div className="map-depth-grid" aria-hidden="true" />
           <div className="north-sea-label">{t.northSea}</div>
           <div className="channel-label">{t.channel}</div>
           <div className="quest-hud" aria-hidden="true">
@@ -3029,9 +3105,12 @@ export function FossilMap() {
           </div>
           <div
             className="uk-plot"
-            style={{ transform: `translate3d(${mapView.x}px, ${mapView.y}px, 0) scale(${mapView.scale})` }}
+            style={{ transform: `translate3d(${mapView.x}px, ${mapView.y}px, 0) perspective(1100px) rotateX(${mapView.tilt}deg) rotateZ(${mapView.bearing}deg) scale(${mapView.scale})` }}
           >
             <div className="uk-silhouette" aria-hidden="true">
+              <img className="uk-silhouette-image map-land-depth depth-far" src="/uk-pixel-map-gb.png" alt="" draggable={false} />
+              <img className="uk-silhouette-image map-land-depth depth-mid" src="/uk-pixel-map-gb.png" alt="" draggable={false} />
+              <img className="uk-silhouette-image map-land-depth depth-near" src="/uk-pixel-map-gb.png" alt="" draggable={false} />
               <img className="uk-silhouette-image" src="/uk-pixel-map-gb.png" alt="" draggable={false} />
             </div>
 
@@ -3068,10 +3147,14 @@ export function FossilMap() {
             <button type="button" onClick={() => zoomMapBy(1 / 1.16)} aria-label={language === "en" ? "Zoom out" : "缩小地图"}>−</button>
             <button type="button" className="map-fit-button" onClick={resetMapView}>{language === "en" ? "Fit" : "完整显示"}</button>
             <button type="button" onClick={() => zoomMapBy(1.16)} aria-label={language === "en" ? "Zoom in" : "放大地图"}>+</button>
+            <button type="button" className="map-view-button" onClick={() => setMapView((view) => ({ ...view, tilt: view.tilt ? 0 : FITTED_MAP_VIEW.tilt, bearing: view.tilt ? 0 : FITTED_MAP_VIEW.bearing }))} aria-pressed={mapView.tilt > 0}>
+              {mapView.tilt ? (language === "en" ? "Top view" : "俯视") : (language === "en" ? "3D view" : "3D 视角")}
+            </button>
             <output aria-live="polite">{Math.round(mapView.scale * 100)}%</output>
           </div>
           <p id="map-gesture-hint" className="map-gesture-hint">
-            {language === "en" ? "Drag the map · Scroll to zoom" : "拖动地图 · 滚轮缩放"}
+            <span className="map-hint-desktop">{language === "en" ? "Drag to move · Shift-drag to orbit · Scroll to zoom" : "拖动平移 · Shift 拖动旋转 · 滚轮缩放"}</span>
+            <span className="map-hint-mobile">{language === "en" ? "Drag to move · Pinch to zoom and rotate" : "拖动平移 · 双指缩放旋转"}</span>
           </p>
         </div>
 
