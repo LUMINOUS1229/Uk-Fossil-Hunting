@@ -1637,6 +1637,24 @@ function answerNoriSmallTalk(query: string, language: Language): string | null {
       : ["Pretty good. Shell shine is eight out of ten today—luo.", "Not swept away by the tide, so I call that a good day—luo."]);
   }
 
+  if (/(爱情故事|恋爱故事|感情故事|恋爱经历|love story|romance|romantic story)/.test(query)) {
+    return isZh
+      ? "我的爱情故事？有次退潮，我和一只小海螺在同一块石头下躲浪。我们聊了一整个潮间带，最后发现谁都没问对方名字。下次遇见，我一定先问名字，再查潮汐螺。"
+      : "My love story? At low tide, a little sea snail and I sheltered under the same rock. We talked through a whole tide pool and forgot to ask each other's names. Next time: names first, tide times second—luo.";
+  }
+
+  if (/(喜欢的螺|喜欢哪只螺|有喜欢的螺|暗恋.*螺|crush.*(snail|shell)|like.*(snail|shell))/.test(query)) {
+    return isZh
+      ? "有螺……是一只在潮池边遇见的小海螺。它说我的壳像一张慢慢卷起来的地图，我就记到现在。别告诉它，我还没想好怎么开口螺。"
+      : "Maybe… a little sea snail I met by a tide pool. It said my shell looked like a map curling into a spiral. I still remember that. Don't tell it; I haven't worked out what to say—luo.";
+  }
+
+  if (/(你喜欢谁|喜欢谁|最喜欢谁|你爱谁|who do you like|who.*your crush|who do you love)/.test(query)) {
+    return isZh
+      ? "我喜欢认真看海、会把垃圾带走的人。至于心动的那只螺嘛……是潮池边的一只小海螺，先替我保密螺。"
+      : "I like people who look closely at the sea and take their litter home. As for the snail I fancy… there's a little one by the tide pool. Keep it between us—luo.";
+  }
+
   if (/(可爱|好萌|喜欢你|爱你|想你|cute|adorable|love you|miss you)/.test(query)) {
     return pickGuideReply(isZh
       ? ["知道螺，但你再说一遍我也不会拦着螺。", "别夸了螺，壳都要红了——虽然它本来是黄色的螺。", "眼光不错螺，本站最稀有的发现可能就是我螺。"]
