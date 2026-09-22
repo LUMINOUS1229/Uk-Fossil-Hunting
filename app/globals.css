@@ -9799,10 +9799,7 @@ body {
   touch-action: none;
   user-select: none;
   outline: none;
-  background:
-    radial-gradient(ellipse at 66% 34%, rgba(255, 255, 255, .92), transparent 37%),
-    radial-gradient(ellipse at 17% 76%, rgba(139, 206, 234, .46), transparent 42%),
-    linear-gradient(146deg, #e8f6ff 9%, #bfdef1 54%, #94c5df 100%);
+  background: linear-gradient(150deg, #eaf8ff, #93c5dd);
 }
 
 .map-viewport.is-dragging {
@@ -9823,16 +9820,13 @@ body {
   transition: none;
 }
 
-.map-depth-grid {
+.ocean-waves {
   position: absolute;
   z-index: 0;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(28, 104, 152, .075) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(28, 104, 152, .075) 1px, transparent 1px);
-  background-size: 76px 76px;
-  mask-image: linear-gradient(to bottom, transparent 8%, #000 45%, transparent 96%);
-  opacity: .7;
+  display: block;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
 

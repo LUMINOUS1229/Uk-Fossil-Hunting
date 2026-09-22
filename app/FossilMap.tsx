@@ -2861,6 +2861,119 @@ function MuseumView({
   );
 }
 
+function OceanWaves({ active }: { active: boolean }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext("2d", { alpha: false });
+    if (!canvas || !context) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    let width = 0;
+    let height = 0;
+    let lastFrame = 0;
+
+    const draw = (time: number) => {
+      if (!width || !height) return;
+      const seconds = time * 0.001;
+      const sea = context.createLinearGradient(0, 0, width, height);
+      sea.addColorStop(0, "#eaf8ff");
+      sea.addColorStop(0.48, "#cce9f5");
+      sea.addColorStop(1, "#93c5dd");
+      context.fillStyle = sea;
+      context.fillRect(0, 0, width, height);
+
+      for (let row = 0; row < 11; row += 1) {
+        const baseY = height * (0.08 + row * 0.095);
+        const phase = seconds * (0.34 + row * 0.012) + row * 0.84;
+        const amplitude = 7 + row * 0.9;
+        const waveY = (x: number) => baseY
+          + Math.sin(x * 0.009 + phase) * amplitude
+          + Math.sin(x * 0.021 - phase * 0.72) * 3.8;
+
+        context.beginPath();
+        for (let x = -24; x <= width + 24; x += 12) {
+          if (x === -24) context.moveTo(x, waveY(x));
+          else context.lineTo(x, waveY(x));
+        }
+        for (let x = width + 24; x >= -24; x -= 12) {
+          context.lineTo(x, waveY(x) + 30 + row * 1.6);
+        }
+        context.closePath();
+        context.fillStyle = row % 2 ? "rgba(42, 128, 171, 0.07)" : "rgba(255, 255, 255, 0.11)";
+        context.fill();
+
+        context.beginPath();
+        for (let x = -24; x <= width + 24; x += 12) {
+          if (x === -24) context.moveTo(x, waveY(x));
+          else context.lineTo(x, waveY(x));
+        }
+        context.lineWidth = row % 3 === 0 ? 2.4 : 1.3;
+        context.strokeStyle = row % 3 === 0 ? "rgba(255, 255, 255, 0.45)" : "rgba(255, 255, 255, 0.24)";
+        context.stroke();
+      }
+
+      for (let glint = 0; glint < 25; glint += 1) {
+        const x = (glint * 127 + seconds * (12 + glint % 4 * 4)) % (width + 90) - 45;
+        const y = height * (0.14 + ((glint * 37) % 78) / 100)
+          + Math.sin(seconds * 0.75 + glint * 1.4) * 8;
+        context.beginPath();
+        context.moveTo(x, y);
+        context.quadraticCurveTo(x + 9, y - 3, x + 19, y);
+        context.lineWidth = 1.2;
+        context.strokeStyle = "rgba(255, 255, 255, 0.28)";
+        context.stroke();
+      }
+    };
+
+    const resize = () => {
+      const bounds = canvas.getBoundingClientRect();
+      width = bounds.width;
+      height = bounds.height;
+      const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = Math.max(1, Math.round(width * ratio));
+      canvas.height = Math.max(1, Math.round(height * ratio));
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      draw(reducedMotion.matches ? 0 : performance.now());
+    };
+
+    const animate = (time: number) => {
+      if (time - lastFrame >= 33) {
+        draw(time);
+        lastFrame = time;
+      }
+      frame = window.requestAnimationFrame(animate);
+    };
+
+    const updateAnimation = () => {
+      window.cancelAnimationFrame(frame);
+      if (active && !reducedMotion.matches && !document.hidden) {
+        lastFrame = 0;
+        frame = window.requestAnimationFrame(animate);
+      } else {
+        draw(0);
+      }
+    };
+
+    const observer = new ResizeObserver(resize);
+    observer.observe(canvas);
+    reducedMotion.addEventListener("change", updateAnimation);
+    document.addEventListener("visibilitychange", updateAnimation);
+    resize();
+    updateAnimation();
+    return () => {
+      window.cancelAnimationFrame(frame);
+      observer.disconnect();
+      reducedMotion.removeEventListener("change", updateAnimation);
+      document.removeEventListener("visibilitychange", updateAnimation);
+    };
+  }, [active]);
+
+  return <canvas ref={canvasRef} className="ocean-waves" aria-hidden="true" />;
+}
+
 export function FossilMap() {
   const [introPhase, setIntroPhase] = useState<IntroPhase>("loading");
   const [language, setLanguage] = useState<Language>("zh");
@@ -3094,7 +3207,7 @@ export function FossilMap() {
           onKeyDown={handleMapKeyDown}
           onContextMenu={(event) => event.preventDefault()}
         >
-          <div className="map-depth-grid" aria-hidden="true" />
+          <OceanWaves active={introPhase === "done" && !selected && !museumOpen && !communityOpen && !modal} />
           <div className="north-sea-label">{t.northSea}</div>
           <div className="channel-label">{t.channel}</div>
           <div className="quest-hud" aria-hidden="true">
