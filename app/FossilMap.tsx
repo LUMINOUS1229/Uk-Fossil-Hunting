@@ -3321,7 +3321,12 @@ export function FossilMap() {
                 <p className="eyebrow">{t.referencesEyebrow}</p>
                 <h2 id="modal-title">{t.referencesTitle}</h2>
                 <p>{t.referencesBody}</p>
-                <p className="reference-field-note"><strong>{t.fieldSourcesLabel}</strong> {t.fieldSourcesBody}</p>
+                <div className="reference-field-note">
+                  <p><strong>{t.fieldSourcesLabel}</strong> {t.fieldSourcesBody}</p>
+                  <a href="https://www.researchgate.net/profile/Maxwell-Wang?ev=brs_overview" target="_blank" rel="noreferrer noopener">
+                    Maxwell Wang · ResearchGate <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
                 <div className="reference-list">
                   <a href="https://www.folkestonefossils.co.uk/" target="_blank" rel="noreferrer noopener">
                     <span>01</span>
@@ -3337,11 +3342,6 @@ export function FossilMap() {
                     <span>03</span>
                     <strong>UK Fossils</strong>
                     <small>ukfossils.co.uk ↗</small>
-                  </a>
-                  <a href="https://www.researchgate.net/profile/Maxwell-Wang?ev=brs_overview" target="_blank" rel="noreferrer noopener">
-                    <span>04</span>
-                    <strong>Maxwell Wang · ResearchGate</strong>
-                    <small>researchgate.net/profile/Maxwell-Wang ↗</small>
                   </a>
                 </div>
               </>

@@ -9050,6 +9050,20 @@ body {
   color: var(--ink) !important;
 }
 
+.reference-field-note p { margin: 0; }
+.reference-field-note a {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+  color: var(--rust);
+  font-weight: 700;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.reference-field-note a:hover,
+.reference-field-note a:focus-visible { color: var(--ink); }
+
 @media (max-width: 720px) {
   :root {
     --mobile-header-height: calc(108px + env(safe-area-inset-top));
