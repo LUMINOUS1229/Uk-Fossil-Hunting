@@ -10516,25 +10516,40 @@ body {
   font-size: 12px;
   font-weight: 700;
 }
-.sunset-beach { position:fixed; inset:0; width:100vw; height:100dvh; max-width:none; max-height:none; margin:0; padding:0; border:0; overflow:hidden; background:#402d48; color:#fff0da; }
-.sunset-beach[open] { display:block; }
-.sunset-beach::backdrop { background:#281b31; }
-.sunset-background { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; image-rendering:pixelated; }
-.sunset-controls { position:absolute; z-index:3; top:0; left:0; right:0; display:flex; justify-content:space-between; gap:12px; padding:max(20px, env(safe-area-inset-top)) 24px 12px; }
-.sunset-controls button { min-height:44px; padding:10px 18px; border:1px solid #ffe4bf80; border-radius:24px; background:#39263bcb; color:#fff2db; font:inherit; font-size:14px; cursor:pointer; backdrop-filter:blur(12px); }
-.sunset-controls button:hover { background:#57394e; }
-.sunset-controls button:focus-visible { outline:3px solid #fff0c9; outline-offset:5px; }
-.sunset-heading { position:absolute; top:16%; left:20px; right:20px; text-align:center; color:#583244; text-shadow:0 1px 12px #ffe2b7; }
-.sunset-heading p { font-size:13px; letter-spacing:.15em; }
-.sunset-heading h2 { margin:12px 0; font-size:clamp(25px, 4vw, 52px); line-height:1.4; }
-.sunset-nori { position:absolute; left:50%; top:65%; width:54px; height:36px; margin-left:-27px; animation:sunset-float 6s ease-in-out infinite; }
-.sunset-nori-art { position:relative; width:54px; height:36px; transform:scale(2.2); filter:drop-shadow(0 8px 10px #38253d70); }
-.sunset-footer { position:absolute; bottom:0; left:0; right:0; padding:65px 24px max(35px, env(safe-area-inset-bottom)); text-align:center; background:linear-gradient(transparent,#2a1d35cc); color:#fff0db; }
-.sunset-footer p { margin:10px 0; font-size:14px; }
-.sunset-footer .sunset-tagline { font-family:Georgia,serif; font-size:clamp(17px,2.3vw,27px); font-style:italic; line-height:1.5; }
-.sunset-glimmer { position:absolute; top:48%; left:36%; width:28%; height:22%; background:radial-gradient(ellipse,#ffe4ae40,transparent 68%); animation:sunset-glow 7s ease-in-out infinite alternate; pointer-events:none; }
-.sunset-beach.is-paused *, .sunset-beach.is-paused *::before, .sunset-beach.is-paused *::after { animation-play-state:paused !important; }
-@keyframes sunset-float { 0%,100% { transform:translateY(0) rotate(-3deg); } 50% { transform:translateY(-9px) rotate(3deg); } }
-@keyframes sunset-glow { from { opacity:.3; } to { opacity:.8; } }
-@media (max-width:700px) { .sunset-controls { padding-left:14px; padding-right:14px; } .sunset-controls button { font-size:12px; padding:10px 14px; } .sunset-heading { top:19%; } .sunset-heading p { font-size:11px; } .sunset-footer { padding-left:18px; padding-right:18px; } }
-@media (prefers-reduced-motion:reduce) { .sunset-beach *, .sunset-beach *::before, .sunset-beach *::after { animation:none !important; transition:none !important; } }
+.site-shell.sunset-theme {
+  --paper:#fff0cf; --paper-deep:#fff5df; --ink:#573047; --ink-soft:#775065;
+  --sea:#f7c0b4; --sea-deep:#eda7ac; --rust:#a13e66; --moss:#ba6577; --line:#9a536c40;
+  --cyber-panel:linear-gradient(145deg,rgba(255,239,211,.96),rgba(255,209,195,.94));
+  --cyber-ink:#573047; --cyber-muted:#775065; --cyber-cyan:#9a365e; --cyber-line:#ac5a7759;
+  --cyber-shadow:0 18px 42px #8d415d24, inset 0 1px 0 #fff5dc;
+  background:#f8c1b7;
+}
+.sunset-theme .uk-map { background:radial-gradient(ellipse at 73% 70%,#ffeab0 0,transparent 55%),linear-gradient(155deg,#ecabc2 0%,#fac5b3 50%,#ffe6ae 100%); }
+.sunset-theme .uk-map::before,.sunset-theme .uk-map::after { border-color:#a4537120; }
+.sunset-theme .topbar { background:rgba(255,230,207,.94); border-color:var(--line); box-shadow:0 8px 28px #91435f20; }
+.sunset-theme .overview-title :is(h1,.adventure-subtitle,.brand-tagline,.eyebrow) { color:#64324d; text-shadow:none; }
+.sunset-theme .uk-silhouette-image:not(.map-land-depth) { filter:sepia(.65) saturate(1.5) brightness(1.04); }
+.sunset-theme .map-land-depth { filter:brightness(.65) sepia(.7) saturate(1.8) hue-rotate(300deg); }
+.sunset-theme .uk-silhouette { filter:drop-shadow(0 22px 24px #a8496b40); }
+.sunset-theme :is(.north-sea-label,.channel-label,.map-credit-note) { color:#80556d; }
+.sunset-theme :is(.location-list,.quest-hud)::before { background:linear-gradient(90deg,#d56d98,#ffcf7c); box-shadow:0 0 12px #e3a16a66; }
+.sunset-theme :is(.location-list-hint,.mobile-sites-button,.map-viewport-controls output,.list-icon-wrap > i) { background:#ffe4c6; color:#67364c; }
+.sunset-theme .location-list > button { border-color:var(--line); }
+.sunset-theme .location-list > button:hover,.sunset-theme .location-list > button:focus-visible { background:#ffcdbb; }
+.sunset-theme .location-list .risk-low { color:#36644b !important; }
+.sunset-theme .location-list .risk-moderate { color:#885014 !important; }
+.sunset-theme .location-list .risk-high { color:#a12d4a !important; }
+.sunset-theme .map-marker .site-pixel-icon { background:#fff0cc; color:#9a365e; border-color:#b76781; box-shadow:0 7px 18px #a54b6a30; }
+.sunset-theme .marker-anchor { background:#a6476b; border-color:#fff1cd; }
+.sunset-theme .marker-leader { background:repeating-linear-gradient(90deg,#a6476b 0 4px,transparent 4px 8px); }
+.sunset-theme .map-viewport .marker-card { background:linear-gradient(145deg,#603249ee,#8c4a60eb); border-color:#ffe0a8; box-shadow:0 16px 40px #7b354950,0 0 18px #ffc58760; }
+.sunset-theme .map-viewport .marker-card :is(strong,small,em,.filled) { color:#fff0cc; text-shadow:none; }
+.sunset-theme .guide-panel-header,.sunset-theme .guide-turn p,.sunset-theme .guide-turn.user p { background:#ffe7ce; color:#573047; }
+.sunset-theme .guide-form input { background:#fff4e2; color:#573047; }
+.sunset-theme .guide-form input::placeholder { color:#775065; }
+.sunset-theme .nori-feed-toggle { background:#ffe5c9; color:#8e3558; }
+.sunset-theme-reset { position:fixed; z-index:90; top:100px; right:20px; min-height:44px; padding:10px 16px; border:1px solid #a95a75; border-radius:22px; background:#fff0d9; color:#66354e; font-size:14px; box-shadow:0 5px 18px #93435d25; cursor:pointer; }
+.sunset-theme-reset:focus-visible { outline:3px solid #8e3558; outline-offset:3px; }
+.sunset-theme .topbar .top-actions button { background:#ffe8cd; color:#66354e; border-color:#aa617a55; }
+.sunset-theme .topbar .top-actions .museum-link { color:#8c355a; }
+@media(max-width:720px) { .sunset-theme-reset { top:auto; bottom:150px; left:14px; right:auto; font-size:12px; padding:8px 12px; } }

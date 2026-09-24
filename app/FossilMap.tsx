@@ -1702,7 +1702,7 @@ function answerNoriSmallTalk(query: string, language: Language): string | null {
 function answerGuideQuestion(question: string, siteLocations: Location[], language: Language): Omit<GuideTurn, "id" | "role"> {
   const query = normalizeGuideQuery(question);
   if (/(日落|夕阳|晚霞|带我去看海|想看海|\bsunset\b|take me to (the )?(sea|beach))/i.test(query)) {
-    return { text: language === "zh" ? "今天的石头捡够了，一起等日落吧螺。点下面的邀请，我带你去秘密海滩。" : "Enough stones for today. Let's watch the sunset—luo. Accept my invitation to a secret beach.", sunsetInvite: true };
+    return { text: language === "zh" ? "一起给地图披上粉黄的夕阳吧螺。点下面的按钮就能切换配色，地图仍然可以照常探索。" : "Let's bathe the map in a pink and golden sunset. Change the palette below and keep exploring—luo.", sunsetInvite: true };
   }
   const smallTalk = answerNoriSmallTalk(query, language);
   if (smallTalk) return { text: smallTalk };
@@ -2219,7 +2219,7 @@ function NautilusGuide({ language, siteLocations, onOpenLocation, onOpenSunset }
                 <span>{turn.role === "guide" ? "N" : language === "zh" ? "你" : "YOU"}</span>
                 <div>
                   <p>{turn.text}</p>
-                  {turn.sunsetInvite && <button type="button" onClick={() => { setOpen(false); onOpenSunset(); }}>{language === "zh" ? "一起看日落" : "Watch the sunset together"} <b>↗</b></button>}
+                  {turn.sunsetInvite && <button type="button" onClick={() => { setOpen(false); onOpenSunset(); }}>{language === "zh" ? "开启夕阳配色" : "Turn on sunset colours"}</button>}
                   {turn.locationId && (
                     <button type="button" onClick={() => { onOpenLocation(turn.locationId!); setOpen(false); }}>
                       {t.openSite} <b>→</b>
@@ -2947,42 +2947,14 @@ function MuseumView({
   );
 }
 
-function SunsetBeach({ language, onExit }: { language: Language; onExit: () => void }) {
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const [paused, setPaused] = useState(false);
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    const previous = document.activeElement as HTMLElement | null;
-    dialog?.showModal();
-    return () => {
-      dialog?.close();
-      if (previous?.isConnected) previous.focus();
-      else document.querySelector<HTMLButtonElement>(".guide-trigger, .nori-restore")?.focus();
-    };
-  }, []);
-  return (
-    <dialog ref={dialogRef} className={`sunset-beach ${paused ? "is-paused" : ""}`} aria-labelledby="sunset-title" onCancel={(event) => { event.preventDefault(); onExit(); }}>
-      <img className="sunset-background" src="/secret-sunset-beach.png" alt="" />
-      <div className="sunset-glimmer" aria-hidden="true" />
-      <header className="sunset-controls">
-        <button type="button" onClick={() => setPaused(!paused)} aria-pressed={paused}>{language === "zh" ? (paused ? "继续微光" : "暂停动态") : (paused ? "Resume motion" : "Pause motion")}</button>
-        <button type="button" autoFocus onClick={onExit}>{language === "zh" ? "返回地图" : "Back to map"} <span aria-hidden="true">↗</span></button>
-      </header>
-      <div className="sunset-heading"><p>{language === "zh" ? "你发现了一片秘密海滩" : "You found a secret beach"}</p><h2 id="sunset-title">{language === "zh" ? "今天，也收集一场日落。" : "A sunset for the collection."}</h2></div>
-      <div className="sunset-nori" aria-hidden="true"><NautilusSprite className="sunset-nori-art" /></div>
-      <footer className="sunset-footer"><p>{language === "zh" ? "慢一点，陪诺里看一会儿海。" : "Stay a little. Watch the sea with Nori."}</p><p className="sunset-tagline">We collect fossils, and memories too.</p></footer>
-    </dialog>
-  );
-}
-
 export function FossilMap() {
   const [introPhase, setIntroPhase] = useState<IntroPhase>("loading");
   const [language, setLanguage] = useState<Language>("zh");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [museumOpen, setMuseumOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
-  const [sunsetOpen, setSunsetOpen] = useState(false);
-  const openSunset = () => { setSelectedId(null); setMuseumOpen(false); setCommunityOpen(false); setModal(null); setMobileList(false); setSunsetOpen(true); };
+  const [sunsetTheme, setSunsetTheme] = useState(false);
+  const openSunset = () => setSunsetTheme(true);
   const [modal, setModal] = useState<"about" | "references" | "safety" | null>(null);
   const [mobileList, setMobileList] = useState(false);
   const [mapView, setMapView] = useState<MapView>(FITTED_MAP_VIEW);
@@ -3163,7 +3135,7 @@ export function FossilMap() {
   };
 
   return (
-    <main className={`site-shell ${selected ? "detail-open" : ""} ${selected?.id === "isle-of-wight" ? "dinosaur-isle-open" : ""} ${museumOpen ? "museum-open" : ""} ${communityOpen ? "community-open" : ""} lang-${language} intro-${introPhase}`}>
+    <main className={`site-shell ${sunsetTheme ? "sunset-theme" : ""} ${selected ? "detail-open" : ""} ${selected?.id === "isle-of-wight" ? "dinosaur-isle-open" : ""} ${museumOpen ? "museum-open" : ""} ${communityOpen ? "community-open" : ""} lang-${language} intro-${introPhase}`}>
       {introPhase !== "done" && <IntroScreen phase={introPhase} />}
       <header className="topbar">
         <div className="header-left">
@@ -3325,7 +3297,7 @@ export function FossilMap() {
 
       <NautilusGuide key={language} language={language} siteLocations={localizedLocations} onOpenLocation={openLocation} onOpenSunset={openSunset} />
       <SiteVisitCounter language={language} />
-      {sunsetOpen && <SunsetBeach language={language} onExit={() => setSunsetOpen(false)} />}
+      {sunsetTheme && <button type="button" className="sunset-theme-reset" onClick={() => setSunsetTheme(false)}>{language === "zh" ? "恢复原配色" : "Restore original colours"}</button>}
 
       {modal && (
         <div className="modal-backdrop" onMouseDown={(event) => event.target === event.currentTarget && setModal(null)}>
