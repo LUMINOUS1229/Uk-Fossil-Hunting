@@ -1657,7 +1657,7 @@ function answerNoriSmallTalk(query: string, language: Language): string | null {
 
   if (/(可爱|好萌|喜欢你|爱你|想你|cute|adorable|love you|miss you)/.test(query)) {
     return pickGuideReply(isZh
-      ? ["知道螺，但你再说一遍我也不会拦着螺。", "别夸了螺，壳都要红了——虽然它本来是黄色的螺。", "眼光不错螺，本站最稀有的发现可能就是我螺。"]
+      ? ["知道螺，但你再说一遍我也不会拦着螺。", "别夸了螺，壳上的红色花纹都要更红了螺。", "眼光不错螺，本站最稀有的发现可能就是我螺。"]
       : ["I know, but I won’t stop you saying it again—luo.", "Excellent taste. I may be the rarest find on this site—luo."]);
   }
 
@@ -1958,7 +1958,7 @@ function PixelFossilIcon({ find }: { find: Find }) {
 
 function NautilusSprite({ className }: { className: string }) {
   return (
-    <div className={className} aria-hidden="true">
+    <div className={`nori-sprite ${className}`} aria-hidden="true">
       <div className="nautilus-shell"><i /></div>
       <div className="nautilus-hood" />
       <div className="nautilus-eye" />

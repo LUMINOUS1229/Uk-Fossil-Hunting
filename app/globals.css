@@ -385,6 +385,13 @@ button {
   position: absolute;
 }
 
+.nori-sprite {
+  --ink: #fff1df;
+  --rust: #b82e36;
+  --moss: #d74a43;
+  --paper-deep: #211416;
+}
+
 .nautilus-shell {
   top: 0;
   left: 2px;
@@ -9040,6 +9047,90 @@ body {
 .thanks-advisor {
   color: var(--rust);
   font-weight: 700;
+}
+
+/* One dark-green palette for the island, including nested cyber panels. */
+.site-shell.dinosaur-isle-open,
+.detail-view.is-dinosaur-isle,
+.detail-view.is-dinosaur-isle .info-panel {
+  --paper: #071f18;
+  --paper-deep: #103b2c;
+  --ink: #ffffff;
+  --ink-soft: #d7ebe1;
+  --rust: #a0edbd;
+  --moss: #79d9a1;
+  --sea: #164632;
+  --sea-deep: #245c43;
+  --line: rgba(171, 226, 193, .3);
+  --cyber-ink: #ffffff;
+  --cyber-muted: #d7ebe1;
+  --cyber-cyan: #a0edbd;
+  --cyber-line: rgba(171, 226, 193, .3);
+  color: #ffffff;
+}
+.site-shell.dinosaur-isle-open .detail-view.is-dinosaur-isle {
+  background: radial-gradient(ellipse at top right, #164632, transparent 65%), #071f18;
+}
+.detail-view.is-dinosaur-isle .info-panel {
+  background: #0c2e22;
+  border-color: var(--line);
+  box-shadow: 0 20px 60px rgba(0, 12, 7, .3);
+}
+.site-shell.dinosaur-isle-open .topbar,
+.detail-view.is-dinosaur-isle .info-panel .section-nav {
+  background: #09281e;
+  border-color: rgba(171, 226, 193, .3);
+  color: #ffffff;
+}
+.site-shell.dinosaur-isle-open .topbar :is(button, a, .language-toggle),
+.detail-view.is-dinosaur-isle .info-panel :is(h2, h3, p, small, strong, li, a, span),
+.detail-view.is-dinosaur-isle .back-button {
+  color: #ffffff;
+}
+.detail-view.is-dinosaur-isle .place-heading { --place-accent: #a0edbd !important; }
+.detail-view.is-dinosaur-isle :is(.journey-time, .time-hero, .sssi-card, .geology-intro, .field-intel-warning, .route-facts p, .time-grid p, .field-intel-card, .not-applicable),
+.detail-view.is-dinosaur-isle .geology-notes :is(div, aside),
+.detail-view.is-dinosaur-isle :is(.geology-units, .finds-grid) article {
+  background: #164632;
+  border-color: var(--line);
+}
+.detail-view.is-dinosaur-isle .info-panel :is(.section-title > span, .geology-units header > span, .place-tags span, .kit-group > div > span, .rarity, .isle-secret-badge) {
+  background: #24563e;
+  border-color: rgba(171, 226, 193, .35);
+  color: #ffffff;
+}
+.detail-view.is-dinosaur-isle .info-panel :is(.primary-action, .secondary-action, .tide-action) {
+  background: #245c43;
+  border: 1px solid #76bd92;
+  color: #ffffff;
+}
+.detail-view.is-dinosaur-isle .info-panel :is(.primary-action, .secondary-action, .tide-action):is(:hover, :focus-visible) {
+  background: #306e51;
+  color: #ffffff;
+}
+.detail-view.is-dinosaur-isle .detail-safety,
+.detail-view.is-dinosaur-isle .info-panel :is(.hazard-list li, .coastguard-note, .large-risk) {
+  background: #3d3020;
+  border-color: #b9a478;
+  color: #ffffff;
+}
+.detail-view.is-dinosaur-isle .detail-safety :is(p, span, strong),
+.detail-view.is-dinosaur-isle .risk-pill { color: #ffffff; }
+.detail-view.is-dinosaur-isle .risk-pill { background: #685021; border-color: #d9bd7a; }
+.detail-view.is-dinosaur-isle .info-panel :is(.info-section, .place-heading, .route-list li, .source-block) { border-color: var(--line); }
+.detail-view.is-dinosaur-isle .profile-rating i { background: #416452; }
+.detail-view.is-dinosaur-isle .profile-rating i.filled { background: #c0f4d4; }
+.detail-view.is-dinosaur-isle a:focus-visible,
+.site-shell.dinosaur-isle-open button:focus-visible { outline: 2px solid #c0f4d4; outline-offset: 3px; }
+.site-shell.dinosaur-isle-open .topbar .language-toggle button.active,
+.site-shell.dinosaur-isle-open .topbar .top-actions button:is(:hover, :focus-visible) {
+  color: #ffffff;
+  border-bottom-color: #a0edbd;
+}
+.site-shell.dinosaur-isle-open .nori-hide-button {
+  background: #164632;
+  border-color: #76bd92;
+  color: #ffffff;
 }
 
 .reference-field-note {
