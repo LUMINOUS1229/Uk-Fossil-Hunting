@@ -1251,11 +1251,11 @@ const copy = {
     aboutEyebrow: "About this field map", aboutTitle: "A route planner, not a promise.",
     aboutBody: "This map turns scattered fossil guides into a growing set of practical journeys from London. Each field sheet combines the train, last-mile walk, approximate collecting zone, likely finds and the rules that matter on the day.",
     thanksTitle: "Acknowledgements",
-    thanksBody: "Thank you to the UK Fossil Hunting group—friends from all over whose love of the ocean and the natural world inspired me to create and keep updating this site. Special thanks to group leader @古谣 for continually bringing everyone together, and to Mexwell Wang for providing fossil-collecting information that helps us experience the joy of exploring the world 🐚.",
+    thanksBody: "Thank you to the UK Fossil Hunting group—friends from all over whose love of the ocean and the natural world inspired me to create and keep updating this site. Special thanks to group leader @古谣 for continually bringing everyone together, and to Maxwell Wang, a Chinese eurypterid researcher and scientific advisor to Dentshell, for exploring and marking most of the fossil localities, helping us experience the joy of exploring the world 🐚.",
     thanksAdvisor: "", thanksAfter: "",
     referencesEyebrow: "Sources & further reading", referencesTitle: "Reference",
-    referencesBody: "Information on this site also draws on the following websites. Friends interested in palaeontology and fossil collecting can visit them to learn more.",
-    fieldSourcesLabel: "Community field notes.", fieldSourcesBody: "Some location guidance—including Folkestone, Peterborough and Herne Bay—also comes from first-hand collecting information shared by group members.",
+    referencesBody: "This site draws on the following information. Friends interested in palaeontology and fossil collecting can visit these sources to learn more.",
+    fieldSourcesLabel: "First-hand sources:", fieldSourcesBody: "Exploration and marking of most fossil localities by Maxwell Wang, a Chinese eurypterid researcher and scientific advisor to Dentshell.",
     approxStrong: "Coordinates stay approximate.", approxBody: "The goal is to guide safe access—not publish sensitive or rare specimen locations.",
     changing: "Travel, tide and access conditions change. Re-check the linked operator, tide table and local guidance before every trip.",
     beforeTrip: "Before every trip", tideDeadline: "The tide is a deadline.",
@@ -1279,11 +1279,11 @@ const copy = {
     aboutEyebrow: "关于这张野外地图", aboutTitle: "它是路线计划，不是安全承诺。",
     aboutBody: "这张地图把分散的化石攻略整理成一组持续更新、从伦敦出发的实际行程。每张地点卡都结合了火车、渡轮、最后一段步行、大致采集区、常见化石和当天必须遵守的规则。",
     thanksTitle: "致谢",
-    thanksBody: "感谢 UK Fossil Hunting 的群友们——来自天南地北的朋友们，正是大家对大海与自然生物的热爱，带动我制作并持续更新这个网站。特别感谢群主@古谣一直以来的组织以及Mexwell Wang提供的化石采集资料，带领大家体验探索世界的乐趣🐚。",
+    thanksBody: "感谢 UK Fossil Hunting 的群友们——来自天南地北的朋友们，正是大家对大海与自然生物的热爱，带动我制作并持续更新这个网站。特别感谢群主@古谣一直以来的组织，以及中国广翅鲎类研究者、Dentshell科学顾问Maxwell Wang对大部分产地的探索和标记，带领大家体验探索世界的乐趣🐚。",
     thanksAdvisor: "", thanksAfter: "",
     referencesEyebrow: "资料来源与延伸阅读", referencesTitle: "参考资料",
-    referencesBody: "本网站参考了以下网站的信息；对古生物以及化石收藏更有兴趣的朋友可以前往了解。",
-    fieldSourcesLabel: "群友一手资料。", fieldSourcesBody: "部分区域（Folkestone、Peterborough、Herne Bay 等）来自群友的一手采集信息。",
+    referencesBody: "本网站综合参考了以下信息；对古生物以及化石收藏更有兴趣的朋友可以前往了解。",
+    fieldSourcesLabel: "一手资料来源：", fieldSourcesBody: "中国广翅鲎类研究者，Dentshell科学顾问Maxwell Wang对大部分产地的探索和标记。",
     approxStrong: "坐标始终保持近似。", approxBody: "目标是引导安全抵达，而不是公开敏感地点或稀有标本的精确位置。",
     changing: "交通、潮汐和通行条件都会变化。每次出发前请重新查看交通运营方、潮汐表和当地指南。",
     beforeTrip: "每次出发前", tideDeadline: "潮水就是截止时间。",
@@ -1657,7 +1657,7 @@ function answerNoriSmallTalk(query: string, language: Language): string | null {
 
   if (/(可爱|好萌|喜欢你|爱你|想你|cute|adorable|love you|miss you)/.test(query)) {
     return pickGuideReply(isZh
-      ? ["知道螺，但你再说一遍我也不会拦着螺。", "别夸了螺，壳都要红了——虽然它本来是黄色的螺。", "眼光不错螺，本站最稀有的发现可能就是我螺。"]
+      ? ["知道螺，但你再说一遍我也不会拦着螺。", "别夸了螺，壳上的红色花纹都要更红了螺。", "眼光不错螺，本站最稀有的发现可能就是我螺。"]
       : ["I know, but I won’t stop you saying it again—luo.", "Excellent taste. I may be the rarest find on this site—luo."]);
   }
 
@@ -1958,7 +1958,7 @@ function PixelFossilIcon({ find }: { find: Find }) {
 
 function NautilusSprite({ className }: { className: string }) {
   return (
-    <div className={className} aria-hidden="true">
+    <div className={`nori-sprite ${className}`} aria-hidden="true">
       <div className="nautilus-shell"><i /></div>
       <div className="nautilus-hood" />
       <div className="nautilus-eye" />
