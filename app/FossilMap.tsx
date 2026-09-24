@@ -2982,7 +2982,6 @@ export function FossilMap() {
   const [museumOpen, setMuseumOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
   const [sunsetOpen, setSunsetOpen] = useState(false);
-  const [shellFound, setShellFound] = useState(false);
   const openSunset = () => { setSelectedId(null); setMuseumOpen(false); setCommunityOpen(false); setModal(null); setMobileList(false); setSunsetOpen(true); };
   const [modal, setModal] = useState<"about" | "references" | "safety" | null>(null);
   const [mobileList, setMobileList] = useState(false);
@@ -3316,9 +3315,6 @@ export function FossilMap() {
         </button>
 
         <small className="map-credit-note">{t.mapCredit}</small>
-        <button type="button" className={`sunset-shell ${shellFound ? "is-found" : ""}`} aria-label={language === "zh" ? (shellFound ? "跟着贝壳去看日落" : "查看海边的贝壳") : (shellFound ? "Follow the shell to the sunset" : "Inspect the seaside shell")} onClick={() => shellFound ? openSunset() : setShellFound(true)}>
-          <span aria-hidden="true">🐚</span><small>{language === "zh" ? (shellFound ? "再点一下，去看日落" : "一枚发光的贝壳…") : (shellFound ? "Tap again for the sunset" : "A glowing shell…")}</small>
-        </button>
       </section>
 
       {selected && <LocationDetail location={selected} language={language} onBack={() => setSelectedId(null)} />}
