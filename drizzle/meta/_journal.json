@@ -22,6 +22,13 @@
       "when": 1790110926076,
       "tag": "0002_flat_toad",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1790464678435,
+      "tag": "0003_curious_shape",
+      "breakpoints": true
     }
   ]
 }

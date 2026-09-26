@@ -26,3 +26,16 @@ export const siteVisits = sqliteTable("site_visits", {
   visitId: text("visit_id").primaryKey(),
   createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });
+
+export const communityComments = sqliteTable("community_comments", {
+  id: text("id").primaryKey(),
+  postId: text("post_id").notNull().references(() => communityPosts.id),
+  parentId: text("parent_id"),
+  author: text("author").notNull(),
+  body: text("body").notNull(),
+  clientHash: text("client_hash").notNull(),
+  createdAt: text("created_at").notNull(),
+}, (table) => [
+  index("idx_comments_post_time").on(table.postId, table.createdAt, table.id),
+  index("idx_comments_client_time").on(table.clientHash, table.createdAt),
+]);

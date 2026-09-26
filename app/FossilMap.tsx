@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { documentLocations } from "./document-locations";
 import { documentLocationZh } from "./document-location-zh";
 import { locationPhotos } from "./location-photos";
+import FieldComments from "./FieldComments";
 
 type Risk = "LOW" | "MODERATE" | "HIGH";
 type Language = "en" | "zh";
@@ -2467,6 +2468,7 @@ function CommunityView({ language, onBack }: { language: Language; onBack: () =>
                 <header><span>{post.author.slice(0, 1).toLocaleUpperCase()}</span><div><strong>{post.author}</strong><small>{formatDate(post.createdAt)}{place ? ` · ${place}` : ""}</small></div></header>
                 <p>{post.body}</p>
                 <div className={`community-post-images count-${post.imageUrls.length}`}>{post.imageUrls.map((url, index) => <a href={url} target="_blank" rel="noreferrer" key={url}><img src={url} alt={`${t.photoAlt} ${index + 1}`} loading="lazy" /></a>)}</div>
+                <FieldComments postId={post.id} language={language} />
               </article>;
             })}
           </section>
