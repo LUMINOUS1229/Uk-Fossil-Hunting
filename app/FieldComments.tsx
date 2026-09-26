@@ -61,11 +61,11 @@ export default function FieldComments({ postId, language }: { postId: string; la
       {!loading && (!loaded || more) && <button type="button" onClick={() => void load(loaded ? comments.length : 0)}>{loaded ? (zh ? "加载更多" : "Load more") : (zh ? "重新加载" : "Retry")}</button>}
       <form onSubmit={submit}>
         {reply && <div>{zh ? "回复 " : "Reply to "}{reply.author} <button type="button" disabled={saving} onClick={() => { setReply(null); pendingId.current = null; }}>{zh ? "取消回复" : "Cancel reply"}</button></div>}
-        <label>{zh ? "昵称" : "Name"}<input value={author} minLength={2} maxLength={20} required disabled={saving} onChange={e => { setAuthor(e.target.value); pendingId.current = null; }} /></label>
-        <label>{zh ? "评论内容" : "Comment"}<textarea ref={input} rows={3} value={body} maxLength={500} required disabled={saving} onChange={e => { setBody(e.target.value); pendingId.current = null; }} /></label>
+        <label>{zh ? "你的昵称（2–20 字）" : "Your name (2–20 characters)"}<input placeholder={zh ? "输入评论时显示的昵称" : "Name shown beside your comment"} value={author} minLength={2} maxLength={20} required disabled={saving} onChange={e => { setAuthor(e.target.value); pendingId.current = null; }} /></label>
+        <label>{reply ? (zh ? "回复内容" : "Your reply") : (zh ? "评论内容" : "Your comment")}<textarea placeholder={reply ? (zh ? `写下你对 ${reply.author} 的回复…` : `Write a reply to ${reply.author}…`) : (zh ? "分享你的看法，或询问这次化石发现…" : "Share your thoughts or ask about this fossil find…")} ref={input} rows={3} value={body} maxLength={500} required disabled={saving} onChange={e => { setBody(e.target.value); pendingId.current = null; }} /></label>
         <small>{body.length}/500 · {zh ? "评论公开可见，昵称未经身份认证，请勿发布隐私信息。" : "Public comments; names are unverified. Do not share private information."}</small>
         {error && <p role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}
-        <button type="submit" disabled={saving || author.trim().length < 2 || !body.trim()}>{saving ? (zh ? "发送中…" : "Sending…") : (zh ? "发布" : "Post")}</button>
+        <button type="submit" disabled={saving || author.trim().length < 2 || !body.trim()}>{saving ? (zh ? "发送中…" : "Sending…") : reply ? (zh ? "发布回复" : "Post reply") : (zh ? "发布评论" : "Post comment")}</button>
       </form>
     </div>}
   </section>;

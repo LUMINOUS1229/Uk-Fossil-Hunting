@@ -10569,7 +10569,12 @@ body {
 @media(max-width:720px) { .place-photo-header { border-radius:0; } .place-photo-credit { padding:10px 16px 14px; text-align:left; } .place-photo-header::before { background:rgba(5,20,35,.73); } }
 .about-contact a { color:var(--cyber-cyan); text-decoration:underline; text-underline-offset:4px; overflow-wrap:anywhere; }
 .about-contact a:focus-visible { outline:2px solid currentColor; outline-offset:4px; }
-.field-comments { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid #396078; color: #eaf6ff; font-size: 1rem; }
+.field-comments { margin-top: 1.25rem; padding: clamp(.875rem, 3vw, 1.25rem); border: 1px solid #396078; border-radius: 8px; background: #0d2438; color: #eaf6ff; font-size: 1rem; line-height: 1.6; color-scheme: dark; }
+.field-comments p, .field-comments label, .field-comments strong { color: #eaf6ff; }
+.field-comments label { font-weight: 600; }
+.field-comments input::placeholder, .field-comments textarea::placeholder { color: #adc5d6; opacity: 1; }
+.field-comments form > button:disabled { opacity: 1; background: #233e52; color: #b9cedd; border-color: #4d6c81; }
+.field-comments [role="alert"] { color: #ffb6aa; }
 .field-comments button { min-height: 44px; padding: .5rem .85rem; border: 1px solid #46748a; background: #102e45; color: #7fe6f3; cursor: pointer; border-radius: 6px; }
 .field-comments button:disabled { opacity: .5; cursor: default; }
 .field-comments button:focus-visible, .field-comments input:focus-visible, .field-comments textarea:focus-visible { outline: 2px solid #7fe6f3; outline-offset: 3px; }
