@@ -720,7 +720,7 @@ const baseLocations: Location[] = [
   },
   {
     id: "peterborough",
-    name: "Peterborough / King’s Dyke + Yaxley",
+    name: "Peterborough / King’s Dyke + Haddon Lake",
     shortName: "Peterborough",
     region: "Cambridgeshire · The Fens",
     period: "Middle Jurassic",
@@ -787,8 +787,8 @@ const baseLocations: Location[] = [
     },
     fieldIntel: {
       en: {
-        navLabel: "Yaxley field intel",
-        title: "Yaxley / Hampton Vale · community field intel",
+        navLabel: "Haddon Lake field intel",
+        title: "Haddon Lake · community field intel",
         intro: "A second Peterborough option, separate from King’s Dyke: the south-eastern bank of a water-filled former clay pit. These community and expert notes are cross-checked against published site and BGS geology guidance.",
         items: [
           {
@@ -817,16 +817,16 @@ const baseLocations: Location[] = [
             text: "Banks are slippery and the old quarry water can be extremely deep. Community observations describe some margins as roughly knee-deep, but depth and submerged edges can change abruptly. Stay on firm exposed ground and do not enter the water, even when it looks shallow.",
           },
         ],
-        warning: "The Yaxley lake edge is not suitable for children and low-water reports are time-sensitive. This is a wildlife-rich SSSI: protect vegetation, collect only loose material and treat current signs, access conditions and landowner instructions as more authoritative than older field notes.",
+        warning: "The Haddon Lake lake edge is not suitable for children and low-water reports are time-sensitive. This is a wildlife-rich SSSI: protect vegetation, collect only loose material and treat current signs, access conditions and landowner instructions as more authoritative than older field notes.",
         links: [
-          { label: "Open approximate Yaxley map", href: "https://www.google.com/maps/search/?api=1&query=52.525517,-0.2729255" },
+          { label: "Open approximate Haddon Lake map", href: "https://www.google.com/maps/search/?api=1&query=52.525517,-0.2729255" },
           { label: "UK Fossils · Yaxley guide", href: "https://ukfossils.co.uk/yaxley/" },
           { label: "BGS · Peterborough Member", href: "https://webapps.bgs.ac.uk/lexicon/lexicon.cfm?pub=PET" },
         ],
       },
       zh: {
-        navLabel: "Yaxley 实地情报",
-        title: "Yaxley / Hampton Vale · 群友实地情报",
+        navLabel: "Haddon Lake 实地情报",
+        title: "Haddon Lake · 群友实地情报",
         intro: "这是与 King’s Dyke 不同的 Peterborough 采集选择：地点位于一处旧黏土坑湖的东南岸。以下内容结合了群友与专家的现场经验、公开地点指南及英国地质调查局资料。",
         items: [
           {
@@ -855,9 +855,9 @@ const baseLocations: Location[] = [
             text: "湖边湿滑，旧黏土坑水体可能非常深。群友观察到部分浅边约到膝盖，但水深和水下坡坎可能突然变化；即使看起来很浅也不要下水，只在稳固、已露出的岸边采集。",
           },
         ],
-        warning: "Yaxley 湖边不适合儿童，“当前枯水”属于时效性现场信息。这里也是生态敏感的 SSSI 区域：避开植被，只采集松散材料；现场最新告示、通行状况和土地管理方要求始终优先于旧的实地记录。",
+        warning: "Haddon Lake 湖边不适合儿童，“当前枯水”属于时效性现场信息。这里也是生态敏感的 SSSI 区域：避开植被，只采集松散材料；现场最新告示、通行状况和土地管理方要求始终优先于旧的实地记录。",
         links: [
-          { label: "打开 Yaxley 大致位置", href: "https://www.google.com/maps/search/?api=1&query=52.525517,-0.2729255" },
+          { label: "打开 Haddon Lake 大致位置", href: "https://www.google.com/maps/search/?api=1&query=52.525517,-0.2729255" },
           { label: "UK Fossils · Yaxley 指南", href: "https://ukfossils.co.uk/yaxley/" },
           { label: "英国地质调查局 · Peterborough 段", href: "https://webapps.bgs.ac.uk/lexicon/lexicon.cfm?pub=PET" },
         ],
@@ -874,11 +874,11 @@ const baseLocations: Location[] = [
     ],
     required: ["Confirmed permit and gate code", "Wellington boots", "Gloves", "Sample boxes", "Water"],
     useful: ["Small trowel", "Hand lens", "Kneeling mat"],
-    avoid: ["Bringing dogs", "Selling collected fossils", "Entering the active quarry", "Entering the water at Yaxley", "Visiting King’s Dyke without a confirmed permit"],
-    hazards: ["Locked access at King’s Dyke", "Very sticky or deep mud", "Deep, steep-edged water at Yaxley", "Active quarry boundary"],
-    safetyLead: "King’s Dyke requires confirmed membership and a gate code. Yaxley is a separate SSSI lake-edge option: stay out of the water, protect vegetation and collect loose material only.",
-    sssi: "King’s Dyke members-only reserve · Yaxley / Orton Pit SSSI",
-    rules: ["Carry a current permit and use the issued gate code at King’s Dyke.", "Casual collecting at King’s Dyke is free, but selling reserve fossils is prohibited.", "No dogs; keep out of the active quarry.", "At Yaxley, do not enter the water or hammer bedrock; avoid plants and take loose finds only.", "Record and report marine reptile or other significant finds."],
+    avoid: ["Bringing dogs", "Selling collected fossils", "Entering the active quarry", "Entering the water at Haddon Lake", "Visiting King’s Dyke without a confirmed permit"],
+    hazards: ["Locked access at King’s Dyke", "Very sticky or deep mud", "Deep, steep-edged water at Haddon Lake", "Active quarry boundary"],
+    safetyLead: "King’s Dyke requires confirmed membership and a gate code. Haddon Lake is a separate SSSI lake-edge option: stay out of the water, protect vegetation and collect loose material only.",
+    sssi: "King’s Dyke members-only reserve · Haddon Lake / Orton Pit SSSI",
+    rules: ["Carry a current permit and use the issued gate code at King’s Dyke.", "Casual collecting at King’s Dyke is free, but selling reserve fossils is prohibited.", "No dogs; keep out of the active quarry.", "At Haddon Lake, do not enter the water or hammer bedrock; avoid plants and take loose finds only.", "Record and report marine reptile or other significant finds."],
     source: "King’s Dyke Nature Reserve · UK Fossils Yaxley · BGS",
     sourceLink: "https://www.kingsdykenaturereserve.com/fossils/",
     verified: "25 Aug 2026",
@@ -1183,11 +1183,11 @@ const baseLocationZh: Record<string, LocationTranslation> = {
     ],
     required: ["已确认的许可与门禁密码", "防水长靴", "手套", "标本盒", "饮用水"],
     useful: ["小铲", "手持放大镜", "跪垫"],
-    avoid: ["携带犬只", "出售采集的化石", "进入活动采石场", "进入 Yaxley 湖水", "未确认许可就前往 King’s Dyke"],
-    hazards: ["King’s Dyke 上锁入口", "非常黏或较深的泥地", "Yaxley 深水与陡峭水下坡坎", "活动采石场边界"],
-    safetyLead: "King’s Dyke 需要已确认的会员资格和门禁密码；Yaxley 是另一处 SSSI 湖边采集选择，应远离水体、保护植被并只采集松散材料。",
-    sssi: "King’s Dyke 会员保护区 · Yaxley / Orton Pit SSSI",
-    rules: ["前往 King’s Dyke 时携带有效许可并使用门禁密码。", "King’s Dyke 允许免费休闲采集，但严禁出售保护区化石。", "不得带狗，不得进入活动采石场。", "在 Yaxley 不得下水或敲击基岩，避开植被并只拾取松散化石。", "海生爬行动物或其他重要发现应记录并报告。"],
+    avoid: ["携带犬只", "出售采集的化石", "进入活动采石场", "进入 Haddon Lake 湖水", "未确认许可就前往 King’s Dyke"],
+    hazards: ["King’s Dyke 上锁入口", "非常黏或较深的泥地", "Haddon Lake 深水与陡峭水下坡坎", "活动采石场边界"],
+    safetyLead: "King’s Dyke 需要已确认的会员资格和门禁密码；Haddon Lake 是另一处 SSSI 湖边采集选择，应远离水体、保护植被并只采集松散材料。",
+    sssi: "King’s Dyke 会员保护区 · Haddon Lake / Orton Pit SSSI",
+    rules: ["前往 King’s Dyke 时携带有效许可并使用门禁密码。", "King’s Dyke 允许免费休闲采集，但严禁出售保护区化石。", "不得带狗，不得进入活动采石场。", "在 Haddon Lake 不得下水或敲击基岩，避开植被并只拾取松散化石。", "海生爬行动物或其他重要发现应记录并报告。"],
     source: "King’s Dyke Nature Reserve · UK Fossils Yaxley · 英国地质调查局",
   },
 };
@@ -1564,7 +1564,7 @@ const locationAliases: Record<string, string[]> = {
   "isle-of-wight": ["isle of wight", "yaverland", "怀特岛", "亚弗兰"],
   charmouth: ["charmouth", "black ven", "查茅斯"],
   weymouth: ["weymouth", "bowleaze", "bowleaze cove", "redcliff", "韦茅斯"],
-  peterborough: ["peterborough", "king s dyke", "kings dyke", "king’s dyke", "whittlesey", "yaxley", "hampton vale", "hampton lake", "彼得伯勒", "亚克斯利", "汉普顿湖"],
+  peterborough: ["peterborough", "king s dyke", "kings dyke", "king’s dyke", "whittlesey", "haddon lake", "哈登湖", "yaxley", "hampton vale", "hampton lake", "彼得伯勒", "亚克斯利", "汉普顿湖"],
   nacton: ["nacton", "nacton shore", "river orwell", "纳克顿"],
   "fort-victoria": ["fort victoria", "yarmouth", "维多利亚堡"],
   "barton-on-sea": ["barton on sea", "barton-on-sea", "barton clay", "巴顿"],
@@ -1716,7 +1716,7 @@ function answerGuideQuestion(question: string, siteLocations: Location[], langua
   const asksFinds = /(化石|找到|发现|有什么|find|fossil|tooth|ammonite|belemnite|shell|牙|菊石|箭石|贝壳)/i.test(query);
   const asksRules = /(规则|允许|可以带走|能带走|敲|挖|rule|allowed|collecting code|hammer|dig)/i.test(query);
   const asksBeginner = /(新手|第一次|亲子|孩子|家庭|简单|beginner|first time|family|children|easy)/i.test(query);
-  const asksYaxley = /(yaxley|hampton vale|hampton lake|亚克斯利|汉普顿湖|养老院|湖边)/i.test(query);
+  const asksYaxley = /(haddon lake|哈登湖|yaxley|hampton vale|hampton lake|亚克斯利|汉普顿湖|养老院|湖边)/i.test(query);
 
   if (asksSafety && !location) {
     return {
