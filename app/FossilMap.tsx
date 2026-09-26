@@ -3324,6 +3324,7 @@ export function FossilMap() {
                   </div>
                 </div>
                 <p className="fine-print">{t.changing}</p>
+                <p className="about-contact">{language === "zh" ? "联系方式：" : "Contact: "}<a href="mailto:xli072@gold.ac.uk"><strong>xli072@gold.ac.uk</strong></a></p>
               </>
             ) : modal === "references" ? (
               <>
