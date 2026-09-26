@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { documentLocations } from "./document-locations";
 import { documentLocationZh } from "./document-location-zh";
+import { locationPhotos } from "./location-photos";
 
 type Risk = "LOW" | "MODERATE" | "HIGH";
 type Language = "en" | "zh";
@@ -3376,6 +3377,9 @@ function LocationDetail({ location, language, onBack }: { location: Location; la
   const geology = location.geology?.[language];
   const fieldIntel = location.fieldIntel?.[language];
   const isDinosaurIsle = location.id === "isle-of-wight";
+  const photo = locationPhotos[location.id];
+  const [photoFailed, setPhotoFailed] = useState(false);
+  useEffect(() => setPhotoFailed(false), [location.id]);
 
   return (
     <section className={`detail-view detail-text-only ${isDinosaurIsle ? "is-dinosaur-isle" : ""}`}>
@@ -3386,6 +3390,8 @@ function LocationDetail({ location, language, onBack }: { location: Location; la
       </div>
 
       <aside className="info-panel">
+        <header className={`place-photo-header ${photo && !photoFailed ? "has-photo" : ""}`}>
+          {photo && !photoFailed && <img key={photo.src} className="place-background-photo" src={photo.src} alt="" style={{ objectPosition: photo.position ?? "center" }} decoding="async" onError={() => setPhotoFailed(true)} />}
         <button className="back-button" onClick={onBack}><span>←</span> {t.allSites}</button>
         <div className="place-heading" style={{ "--place-accent": location.accent } as React.CSSProperties}>
           <div className="place-symbol"><PixelSiteIcon id={location.id} /><span>{locationNumber}</span></div>
@@ -3401,7 +3407,8 @@ function LocationDetail({ location, language, onBack }: { location: Location; la
             </div>
           </div>
         </div>
-
+        {photo && !photoFailed && <p className="place-photo-credit"><a href={photo.source} target="_blank" rel="noreferrer noopener">{photo.caption} · © {photo.author}</a><span> · </span><a href={photo.licenseUrl} target="_blank" rel="noreferrer noopener">{photo.license}</a><span> · {language === "zh" ? "裁切 / 低饱和度" : "Cropped / desaturated"}</span></p>}
+        </header>
         <nav className="section-nav" aria-label={t.locationDetails}>
           <a href="#get-there">{t.navRoute}</a>
           {fieldIntel && <a href="#field-intel">{fieldIntel.navLabel}</a>}

@@ -10553,3 +10553,17 @@ body {
 .sunset-theme .topbar .top-actions button { background:#ffe8cd; color:#66354e; border-color:#aa617a55; }
 .sunset-theme .topbar .top-actions .museum-link { color:#8c355a; }
 @media(max-width:720px) { .sunset-theme-reset { top:auto; bottom:150px; left:14px; right:auto; font-size:12px; padding:8px 12px; } }
+.place-photo-header { position:relative; isolation:isolate; overflow:hidden; background:#10273d; border-radius:9px 2px 0 0; }
+.place-photo-header .place-background-photo { position:absolute; z-index:-2; inset:0; width:100%; height:100%; object-fit:cover; filter:saturate(.28); pointer-events:none; }
+.place-photo-header::before { content:""; position:absolute; z-index:-1; inset:0; background:linear-gradient(90deg,rgba(5,20,35,.87),rgba(5,20,35,.52)),linear-gradient(0deg,rgba(5,20,35,.6),transparent 70%); pointer-events:none; }
+.detail-text-only .info-panel .place-photo-header { --ink:#f5fbff; --ink-soft:#e1e9ed; --rust:#b7edf1; --line:#d5edf23b; color:#f5fbff; }
+.detail-text-only .info-panel .place-photo-header .back-button { color:#f5fbff; border-color:#c6e7ed; }
+.detail-text-only .info-panel .place-photo-header .place-heading { border-color:#d5edf23b; margin-bottom:0; }
+.detail-text-only .info-panel .place-photo-header h2 { color:#fff; text-shadow:0 2px 16px #00111c66; }
+.detail-text-only .info-panel .place-photo-header .place-tags span { background:rgba(7,28,43,.66); color:#f5fbff; border-color:#c4dce75c; }
+.detail-text-only .info-panel .place-photo-header .profile-rating { color:#e0f5f6; }
+.place-photo-credit { position:relative; margin:0; padding:12px 22px 16px; color:#e2e8ec; text-align:right; font-size:12px; line-height:1.6; overflow-wrap:anywhere; }
+.place-photo-credit a { color:inherit; text-decoration:underline; text-underline-offset:3px; }
+.place-photo-credit a:focus-visible { outline:2px solid #fff; outline-offset:3px; }
+.is-dinosaur-isle .place-photo-header::before { background:linear-gradient(90deg,rgba(5,34,25,.88),rgba(5,34,25,.55)),linear-gradient(0deg,rgba(5,34,25,.65),transparent 70%); }
+@media(max-width:720px) { .place-photo-header { border-radius:0; } .place-photo-credit { padding:10px 16px 14px; text-align:left; } .place-photo-header::before { background:rgba(5,20,35,.73); } }
