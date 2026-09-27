@@ -3401,14 +3401,16 @@ button {
   width: 116px;
   height: 116px;
   place-content: center;
-  border: 2px solid var(--rust);
-  border-radius: 50%;
+  border: 0;
+  border-radius: 0;
   color: var(--rust);
   text-align: center;
   transform: rotate(6deg);
 }
 
-.community-stamp::before { position: absolute; inset: 7px; border: 1px dashed currentColor; border-radius: 50%; content: ""; }
+.community-stamp::before { content: none; }
+.community-stamp img { position: absolute; inset: -12%; width: 124%; height: 124%; object-fit: contain; pointer-events: none; }
+.community-stamp b, .community-stamp span, .community-stamp i { position: relative; z-index: 1; }
 .community-stamp b,
 .community-stamp span { font-family: var(--font-mono), monospace; font-size: 14px; letter-spacing: .14em; }
 .community-stamp i { margin-top: 4px; font-style: normal; }

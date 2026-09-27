@@ -2431,7 +2431,7 @@ function CommunityView({ language, onBack }: { language: Language; onBack: () =>
         <button className="community-back" onClick={onBack}><span>←</span> {t.back}</button>
         <header className="community-hero">
           <div><p>{t.eyebrow}</p><h1>{t.title}</h1><span>{t.intro}</span></div>
-          <div className="community-stamp" aria-hidden="true"><b>FIELD</b><span>LOG</span><i>✦</i></div>
+          <div className="community-stamp" aria-hidden="true"><img src="/shell-field-badge.png" alt="" /><b>FIELD</b><span>LOG</span><i>✦</i></div>
         </header>
 
         <div className="community-layout">
