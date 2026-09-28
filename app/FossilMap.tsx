@@ -2279,6 +2279,8 @@ function IntroScreen({ phase }: { phase: Exclude<IntroPhase, "done"> }) {
   const filled = phase === "reveal" ? 100 : progress;
   return (
     <div className={`intro-screen ${phase}`} role="status" aria-label="正在加载英国化石地图">
+      <img className="intro-galaxy" src="/intro-milky-way.jpg" alt="" fetchPriority="high" />
+      <div className="intro-photo-credit"><a href="https://www.eso.org/public/images/eso0932a/" target="_blank" rel="noreferrer">ESO/S. Brunier</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a> · 调色与裁切</div>
       <div className="intro-stage">
         <div className="intro-copy">
           <h1 className="fossil-title"><span>Fossil Hunters</span><small>in UK</small></h1>
