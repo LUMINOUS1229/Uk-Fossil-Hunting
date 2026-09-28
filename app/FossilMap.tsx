@@ -2267,6 +2267,16 @@ function NautilusGuide({ language, siteLocations, onOpenLocation, onOpenSunset }
 }
 
 function IntroScreen({ phase }: { phase: Exclude<IntroPhase, "done"> }) {
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    if (phase !== "loading") return;
+    const start = performance.now();
+    const timer = window.setInterval(() => {
+      setProgress(Math.min(99, Math.floor((performance.now() - start) / 2200 * 100)));
+    }, 50);
+    return () => window.clearInterval(timer);
+  }, [phase]);
+  const filled = phase === "reveal" ? 100 : progress;
   return (
     <div className={`intro-screen ${phase}`} role="status" aria-label="正在加载英国化石地图">
       <div className="intro-stage">
@@ -2275,7 +2285,14 @@ function IntroScreen({ phase }: { phase: Exclude<IntroPhase, "done"> }) {
           <p>一起去探险吧。</p>
           <span className="brand-tagline">We collect fossils, and memories too.</span>
         </div>
-        <PixelCreatures />
+        <div className="intro-pool-scene">
+          <div className="intro-pool-basin" role="progressbar" aria-label="开屏动画进度" aria-valuemin={0} aria-valuemax={100} aria-valuenow={filled}>
+            <div className="intro-pool-water" style={{ height: `${filled}%` }} />
+            <div className="intro-pool-ticks" aria-hidden="true" />
+          </div>
+          <PixelCreatures />
+          <div className="intro-pool-caption" aria-hidden="true"><span>{filled === 100 ? "一起出发" : "蓄水中"}</span><span>{filled}%</span></div>
+        </div>
         <IntroGlobe />
       </div>
     </div>
