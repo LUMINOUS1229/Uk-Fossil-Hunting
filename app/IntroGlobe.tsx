@@ -2,6 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import land from "./earth-land.json";
+import airports from "./earth-airports.json";
+
+// Representative airport coordinates: datasets/airport-codes (OurAirports),
+// https://github.com/datasets/airport-codes — static geographic markers, not live traffic.
 
 // Geographic outlines: Natural Earth, 1:110m land (public domain).
 // Orthographic projection keeps the far hemisphere hidden as Earth rotates.
@@ -72,21 +76,21 @@ export default function IntroGlobe() {
       ctx.stroke();
       // Bright signals stay separate from the subdued globe palette.
       const beacon = (x: number, y: number, pulse: number) => {
-        const halo = ctx.createRadialGradient(x, y, 0, x, y, 9);
+        const halo = ctx.createRadialGradient(x, y, 0, x, y, 5);
         halo.addColorStop(0, `rgba(69,184,255,${.8 * pulse})`);
         halo.addColorStop(1, "rgba(40,151,255,0)");
         ctx.fillStyle = halo;
-        ctx.fillRect(x - 9, y - 9, 18, 18);
+        ctx.fillRect(x - 5, y - 5, 10, 10);
         ctx.beginPath();
-        ctx.arc(x, y, 1.5 + pulse * .5, 0, Math.PI * 2);
+        ctx.arc(x, y, .7 + pulse * .5, 0, Math.PI * 2);
         ctx.fillStyle = "#bceeff";
         ctx.shadowColor = "#239dff";
         ctx.shadowBlur = 8;
         ctx.fill();
         ctx.shadowBlur = 0;
       };
-      [[0, 51], [31, 30], [-74, 41], [103, 1], [18, -34], [-43, -23]].forEach(([lon, lat], i) => {
-        const [x, y, z] = project(lon, lat);
+      airports.forEach(({ longitude, latitude }, i) => {
+        const [x, y, z] = project(longitude, latitude);
         if (z > .08) beacon(x, y, reduced ? .8 : .65 + .35 * Math.sin((now - start) / 420 + i));
       });
       ctx.save();
@@ -96,8 +100,6 @@ export default function IntroGlobe() {
       ctx.ellipse(0, 0, 128, 38, 0, 0, Math.PI * 2);
       ctx.strokeStyle = "rgba(148,170,191,.2)";
       ctx.stroke();
-      const orbit = turn * 4;
-      beacon(Math.cos(orbit) * 128, Math.sin(orbit) * 38, 1);
       ctx.restore();
       if (!reduced) frame = requestAnimationFrame(draw);
     };
