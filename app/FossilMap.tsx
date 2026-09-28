@@ -5,6 +5,7 @@ import { documentLocations } from "./document-locations";
 import { documentLocationZh } from "./document-location-zh";
 import { locationPhotos } from "./location-photos";
 import FieldComments from "./FieldComments";
+import IntroGlobe from "./IntroGlobe";
 
 type Risk = "LOW" | "MODERATE" | "HIGH";
 type Language = "en" | "zh";
@@ -2275,6 +2276,7 @@ function IntroScreen({ phase }: { phase: Exclude<IntroPhase, "done"> }) {
           <span className="brand-tagline">We collect fossils, and memories too.</span>
         </div>
         <PixelCreatures />
+        <IntroGlobe />
       </div>
     </div>
   );
