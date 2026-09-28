@@ -3,6 +3,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { documentLocations } from "./document-locations";
 import { documentLocationZh } from "./document-location-zh";
+import { locationPhotos } from "./location-photos";
+import FieldComments from "./FieldComments";
+import IntroGlobe from "./IntroGlobe";
 
 type Risk = "LOW" | "MODERATE" | "HIGH";
 type Language = "en" | "zh";
@@ -719,7 +722,7 @@ const baseLocations: Location[] = [
   },
   {
     id: "peterborough",
-    name: "Peterborough / King’s Dyke + Yaxley",
+    name: "Peterborough / King’s Dyke + Haddon Lake",
     shortName: "Peterborough",
     region: "Cambridgeshire · The Fens",
     period: "Middle Jurassic",
@@ -786,8 +789,8 @@ const baseLocations: Location[] = [
     },
     fieldIntel: {
       en: {
-        navLabel: "Yaxley field intel",
-        title: "Yaxley / Hampton Vale · community field intel",
+        navLabel: "Haddon Lake field intel",
+        title: "Haddon Lake · community field intel",
         intro: "A second Peterborough option, separate from King’s Dyke: the south-eastern bank of a water-filled former clay pit. These community and expert notes are cross-checked against published site and BGS geology guidance.",
         items: [
           {
@@ -816,16 +819,16 @@ const baseLocations: Location[] = [
             text: "Banks are slippery and the old quarry water can be extremely deep. Community observations describe some margins as roughly knee-deep, but depth and submerged edges can change abruptly. Stay on firm exposed ground and do not enter the water, even when it looks shallow.",
           },
         ],
-        warning: "The Yaxley lake edge is not suitable for children and low-water reports are time-sensitive. This is a wildlife-rich SSSI: protect vegetation, collect only loose material and treat current signs, access conditions and landowner instructions as more authoritative than older field notes.",
+        warning: "The Haddon Lake lake edge is not suitable for children and low-water reports are time-sensitive. This is a wildlife-rich SSSI: protect vegetation, collect only loose material and treat current signs, access conditions and landowner instructions as more authoritative than older field notes.",
         links: [
-          { label: "Open approximate Yaxley map", href: "https://www.google.com/maps/search/?api=1&query=52.525517,-0.2729255" },
+          { label: "Open approximate Haddon Lake map", href: "https://www.google.com/maps/search/?api=1&query=52.525517,-0.2729255" },
           { label: "UK Fossils · Yaxley guide", href: "https://ukfossils.co.uk/yaxley/" },
           { label: "BGS · Peterborough Member", href: "https://webapps.bgs.ac.uk/lexicon/lexicon.cfm?pub=PET" },
         ],
       },
       zh: {
-        navLabel: "Yaxley 实地情报",
-        title: "Yaxley / Hampton Vale · 群友实地情报",
+        navLabel: "Haddon Lake 实地情报",
+        title: "Haddon Lake · 群友实地情报",
         intro: "这是与 King’s Dyke 不同的 Peterborough 采集选择：地点位于一处旧黏土坑湖的东南岸。以下内容结合了群友与专家的现场经验、公开地点指南及英国地质调查局资料。",
         items: [
           {
@@ -854,9 +857,9 @@ const baseLocations: Location[] = [
             text: "湖边湿滑，旧黏土坑水体可能非常深。群友观察到部分浅边约到膝盖，但水深和水下坡坎可能突然变化；即使看起来很浅也不要下水，只在稳固、已露出的岸边采集。",
           },
         ],
-        warning: "Yaxley 湖边不适合儿童，“当前枯水”属于时效性现场信息。这里也是生态敏感的 SSSI 区域：避开植被，只采集松散材料；现场最新告示、通行状况和土地管理方要求始终优先于旧的实地记录。",
+        warning: "Haddon Lake 湖边不适合儿童，“当前枯水”属于时效性现场信息。这里也是生态敏感的 SSSI 区域：避开植被，只采集松散材料；现场最新告示、通行状况和土地管理方要求始终优先于旧的实地记录。",
         links: [
-          { label: "打开 Yaxley 大致位置", href: "https://www.google.com/maps/search/?api=1&query=52.525517,-0.2729255" },
+          { label: "打开 Haddon Lake 大致位置", href: "https://www.google.com/maps/search/?api=1&query=52.525517,-0.2729255" },
           { label: "UK Fossils · Yaxley 指南", href: "https://ukfossils.co.uk/yaxley/" },
           { label: "英国地质调查局 · Peterborough 段", href: "https://webapps.bgs.ac.uk/lexicon/lexicon.cfm?pub=PET" },
         ],
@@ -873,11 +876,11 @@ const baseLocations: Location[] = [
     ],
     required: ["Confirmed permit and gate code", "Wellington boots", "Gloves", "Sample boxes", "Water"],
     useful: ["Small trowel", "Hand lens", "Kneeling mat"],
-    avoid: ["Bringing dogs", "Selling collected fossils", "Entering the active quarry", "Entering the water at Yaxley", "Visiting King’s Dyke without a confirmed permit"],
-    hazards: ["Locked access at King’s Dyke", "Very sticky or deep mud", "Deep, steep-edged water at Yaxley", "Active quarry boundary"],
-    safetyLead: "King’s Dyke requires confirmed membership and a gate code. Yaxley is a separate SSSI lake-edge option: stay out of the water, protect vegetation and collect loose material only.",
-    sssi: "King’s Dyke members-only reserve · Yaxley / Orton Pit SSSI",
-    rules: ["Carry a current permit and use the issued gate code at King’s Dyke.", "Casual collecting at King’s Dyke is free, but selling reserve fossils is prohibited.", "No dogs; keep out of the active quarry.", "At Yaxley, do not enter the water or hammer bedrock; avoid plants and take loose finds only.", "Record and report marine reptile or other significant finds."],
+    avoid: ["Bringing dogs", "Selling collected fossils", "Entering the active quarry", "Entering the water at Haddon Lake", "Visiting King’s Dyke without a confirmed permit"],
+    hazards: ["Locked access at King’s Dyke", "Very sticky or deep mud", "Deep, steep-edged water at Haddon Lake", "Active quarry boundary"],
+    safetyLead: "King’s Dyke requires confirmed membership and a gate code. Haddon Lake is a separate SSSI lake-edge option: stay out of the water, protect vegetation and collect loose material only.",
+    sssi: "King’s Dyke members-only reserve · Haddon Lake / Orton Pit SSSI",
+    rules: ["Carry a current permit and use the issued gate code at King’s Dyke.", "Casual collecting at King’s Dyke is free, but selling reserve fossils is prohibited.", "No dogs; keep out of the active quarry.", "At Haddon Lake, do not enter the water or hammer bedrock; avoid plants and take loose finds only.", "Record and report marine reptile or other significant finds."],
     source: "King’s Dyke Nature Reserve · UK Fossils Yaxley · BGS",
     sourceLink: "https://www.kingsdykenaturereserve.com/fossils/",
     verified: "25 Aug 2026",
@@ -1182,11 +1185,11 @@ const baseLocationZh: Record<string, LocationTranslation> = {
     ],
     required: ["已确认的许可与门禁密码", "防水长靴", "手套", "标本盒", "饮用水"],
     useful: ["小铲", "手持放大镜", "跪垫"],
-    avoid: ["携带犬只", "出售采集的化石", "进入活动采石场", "进入 Yaxley 湖水", "未确认许可就前往 King’s Dyke"],
-    hazards: ["King’s Dyke 上锁入口", "非常黏或较深的泥地", "Yaxley 深水与陡峭水下坡坎", "活动采石场边界"],
-    safetyLead: "King’s Dyke 需要已确认的会员资格和门禁密码；Yaxley 是另一处 SSSI 湖边采集选择，应远离水体、保护植被并只采集松散材料。",
-    sssi: "King’s Dyke 会员保护区 · Yaxley / Orton Pit SSSI",
-    rules: ["前往 King’s Dyke 时携带有效许可并使用门禁密码。", "King’s Dyke 允许免费休闲采集，但严禁出售保护区化石。", "不得带狗，不得进入活动采石场。", "在 Yaxley 不得下水或敲击基岩，避开植被并只拾取松散化石。", "海生爬行动物或其他重要发现应记录并报告。"],
+    avoid: ["携带犬只", "出售采集的化石", "进入活动采石场", "进入 Haddon Lake 湖水", "未确认许可就前往 King’s Dyke"],
+    hazards: ["King’s Dyke 上锁入口", "非常黏或较深的泥地", "Haddon Lake 深水与陡峭水下坡坎", "活动采石场边界"],
+    safetyLead: "King’s Dyke 需要已确认的会员资格和门禁密码；Haddon Lake 是另一处 SSSI 湖边采集选择，应远离水体、保护植被并只采集松散材料。",
+    sssi: "King’s Dyke 会员保护区 · Haddon Lake / Orton Pit SSSI",
+    rules: ["前往 King’s Dyke 时携带有效许可并使用门禁密码。", "King’s Dyke 允许免费休闲采集，但严禁出售保护区化石。", "不得带狗，不得进入活动采石场。", "在 Haddon Lake 不得下水或敲击基岩，避开植被并只拾取松散化石。", "海生爬行动物或其他重要发现应记录并报告。"],
     source: "King’s Dyke Nature Reserve · UK Fossils Yaxley · 英国地质调查局",
   },
 };
@@ -1502,6 +1505,7 @@ type GuideTurn = {
   role: "guide" | "user";
   text: string;
   locationId?: string;
+  sunsetInvite?: boolean;
 };
 
 const guideCopy = {
@@ -1562,7 +1566,7 @@ const locationAliases: Record<string, string[]> = {
   "isle-of-wight": ["isle of wight", "yaverland", "怀特岛", "亚弗兰"],
   charmouth: ["charmouth", "black ven", "查茅斯"],
   weymouth: ["weymouth", "bowleaze", "bowleaze cove", "redcliff", "韦茅斯"],
-  peterborough: ["peterborough", "king s dyke", "kings dyke", "king’s dyke", "whittlesey", "yaxley", "hampton vale", "hampton lake", "彼得伯勒", "亚克斯利", "汉普顿湖"],
+  peterborough: ["peterborough", "king s dyke", "kings dyke", "king’s dyke", "whittlesey", "haddon lake", "哈登湖", "yaxley", "hampton vale", "hampton lake", "彼得伯勒", "亚克斯利", "汉普顿湖"],
   nacton: ["nacton", "nacton shore", "river orwell", "纳克顿"],
   "fort-victoria": ["fort victoria", "yarmouth", "维多利亚堡"],
   "barton-on-sea": ["barton on sea", "barton-on-sea", "barton clay", "巴顿"],
@@ -1700,6 +1704,9 @@ function answerNoriSmallTalk(query: string, language: Language): string | null {
 
 function answerGuideQuestion(question: string, siteLocations: Location[], language: Language): Omit<GuideTurn, "id" | "role"> {
   const query = normalizeGuideQuery(question);
+  if (/(日落|夕阳|晚霞|带我去看海|想看海|\bsunset\b|take me to (the )?(sea|beach))/i.test(query)) {
+    return { text: language === "zh" ? "一起给地图披上粉黄的夕阳吧螺。点下面的按钮就能切换配色，地图仍然可以照常探索。" : "Let's bathe the map in a pink and golden sunset. Change the palette below and keep exploring—luo.", sunsetInvite: true };
+  }
   const smallTalk = answerNoriSmallTalk(query, language);
   if (smallTalk) return { text: smallTalk };
   const location = findGuideLocation(query, siteLocations);
@@ -1711,7 +1718,7 @@ function answerGuideQuestion(question: string, siteLocations: Location[], langua
   const asksFinds = /(化石|找到|发现|有什么|find|fossil|tooth|ammonite|belemnite|shell|牙|菊石|箭石|贝壳)/i.test(query);
   const asksRules = /(规则|允许|可以带走|能带走|敲|挖|rule|allowed|collecting code|hammer|dig)/i.test(query);
   const asksBeginner = /(新手|第一次|亲子|孩子|家庭|简单|beginner|first time|family|children|easy)/i.test(query);
-  const asksYaxley = /(yaxley|hampton vale|hampton lake|亚克斯利|汉普顿湖|养老院|湖边)/i.test(query);
+  const asksYaxley = /(haddon lake|哈登湖|yaxley|hampton vale|hampton lake|亚克斯利|汉普顿湖|养老院|湖边)/i.test(query);
 
   if (asksSafety && !location) {
     return {
@@ -1972,9 +1979,9 @@ function NautilusSprite({ className }: { className: string }) {
   );
 }
 
-function PixelCreatures() {
+function PixelCreatures({ only }: { only?: "dino" | "ichthyosaur" | "nautilus" } = {}) {
   return (
-    <div className="dino-track" aria-hidden="true">
+    <div className={`dino-track ${only ? `orbit-sprite orbit-sprite-${only}` : ""}`} aria-hidden="true">
       <div className="pixel-dino">
         <div className="dino-tail" />
         <div className="dino-body" />
@@ -2078,7 +2085,7 @@ function SiteVisitCounter({ language }: { language: Language }) {
   );
 }
 
-function NautilusGuide({ language, siteLocations, onOpenLocation }: { language: Language; siteLocations: Location[]; onOpenLocation: (id: string) => void }) {
+function NautilusGuide({ language, siteLocations, onOpenLocation, onOpenSunset }: { language: Language; siteLocations: Location[]; onOpenLocation: (id: string) => void; onOpenSunset: () => void }) {
   const t = guideCopy[language];
   const [open, setOpen] = useState(false);
   const [hoverLine, setHoverLine] = useState<string | null>(null);
@@ -2215,6 +2222,7 @@ function NautilusGuide({ language, siteLocations, onOpenLocation }: { language: 
                 <span>{turn.role === "guide" ? "N" : language === "zh" ? "你" : "YOU"}</span>
                 <div>
                   <p>{turn.text}</p>
+                  {turn.sunsetInvite && <button type="button" onClick={() => { setOpen(false); onOpenSunset(); }}>{language === "zh" ? "开启夕阳配色" : "Turn on sunset colours"}</button>}
                   {turn.locationId && (
                     <button type="button" onClick={() => { onOpenLocation(turn.locationId!); setOpen(false); }}>
                       {t.openSite} <b>→</b>
@@ -2259,15 +2267,43 @@ function NautilusGuide({ language, siteLocations, onOpenLocation }: { language: 
 }
 
 function IntroScreen({ phase }: { phase: Exclude<IntroPhase, "done"> }) {
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    if (phase !== "loading") return;
+    const start = performance.now();
+    const timer = window.setInterval(() => {
+      setProgress(Math.min(99, Math.floor((performance.now() - start) / 2200 * 100)));
+    }, 50);
+    return () => window.clearInterval(timer);
+  }, [phase]);
+  const filled = phase === "reveal" ? 100 : progress;
   return (
     <div className={`intro-screen ${phase}`} role="status" aria-label="正在加载英国化石地图">
+      <img className="intro-galaxy" src="/intro-milky-way.jpg" alt="" fetchPriority="high" />
+      <div className="intro-photo-credit"><a href="https://www.eso.org/public/images/eso0932a/" target="_blank" rel="noreferrer">ESO/S. Brunier</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a> · 调色与裁切</div>
       <div className="intro-stage">
         <div className="intro-copy">
           <h1 className="fossil-title"><span>Fossil Hunters</span><small>in UK</small></h1>
           <p>一起去探险吧。</p>
           <span className="brand-tagline">We collect fossils, and memories too.</span>
         </div>
-        <PixelCreatures />
+        <div className="intro-orbit">
+          <IntroGlobe />
+          <div className="intro-orbit-progress" role="progressbar" aria-label="开屏动画进度" aria-valuemin={0} aria-valuemax={100} aria-valuenow={filled}>
+            <svg viewBox="0 0 280 280" aria-hidden="true">
+              <circle className="orbit-glass" cx="140" cy="140" r="116" />
+              <circle className="orbit-rim" cx="140" cy="140" r="121" />
+              <circle className="orbit-rim" cx="140" cy="140" r="111" />
+              <circle className="orbit-fill" cx="140" cy="140" r="116" pathLength="100" strokeDasharray="100" strokeDashoffset={100 - filled} transform="rotate(-90 140 140)" />
+            </svg>
+          </div>
+          {(["dino", "ichthyosaur", "nautilus"] as const).map((animal, i) => (
+            <div className="intro-orbit-lane" key={animal} style={{ animationDelay: `${-i * 4}s` }}>
+              <div className="intro-orbit-swimmer"><PixelCreatures only={animal} /></div>
+            </div>
+          ))}
+          <span className="intro-orbit-percent" aria-hidden="true">{filled}%</span>
+        </div>
       </div>
     </div>
   );
@@ -2424,7 +2460,7 @@ function CommunityView({ language, onBack }: { language: Language; onBack: () =>
         <button className="community-back" onClick={onBack}><span>←</span> {t.back}</button>
         <header className="community-hero">
           <div><p>{t.eyebrow}</p><h1>{t.title}</h1><span>{t.intro}</span></div>
-          <div className="community-stamp" aria-hidden="true"><b>FIELD</b><span>LOG</span><i>✦</i></div>
+          <div className="community-stamp" aria-hidden="true"><img src="/shell-field-badge.png" alt="" /><b>FIELD</b><span>LOG</span><i>✦</i></div>
         </header>
 
         <div className="community-layout">
@@ -2461,6 +2497,7 @@ function CommunityView({ language, onBack }: { language: Language; onBack: () =>
                 <header><span>{post.author.slice(0, 1).toLocaleUpperCase()}</span><div><strong>{post.author}</strong><small>{formatDate(post.createdAt)}{place ? ` · ${place}` : ""}</small></div></header>
                 <p>{post.body}</p>
                 <div className={`community-post-images count-${post.imageUrls.length}`}>{post.imageUrls.map((url, index) => <a href={url} target="_blank" rel="noreferrer" key={url}><img src={url} alt={`${t.photoAlt} ${index + 1}`} loading="lazy" /></a>)}</div>
+                <FieldComments postId={post.id} language={language} />
               </article>;
             })}
           </section>
@@ -2496,7 +2533,7 @@ function InlineStarRating({ value, label }: { value: number; label: string }) {
   );
 }
 
-function drawExportStarfish(context: CanvasRenderingContext2D, x: number, y: number, radius: number, fill: string) {
+function drawExportStarfish(context: CanvasRenderingContext2D, x: number, y: number, radius: number, filled: boolean) {
   context.save();
   context.translate(x, y);
   context.beginPath();
@@ -2509,11 +2546,22 @@ function drawExportStarfish(context: CanvasRenderingContext2D, x: number, y: num
     else context.lineTo(px, py);
   }
   context.closePath();
-  context.fillStyle = fill;
+  const metal = context.createLinearGradient(-radius, -radius, radius, radius);
+  metal.addColorStop(0, "#596570");
+  metal.addColorStop(.27, "#c5ced5");
+  metal.addColorStop(.43, "#ffffff");
+  metal.addColorStop(.5, "#a4afb9");
+  metal.addColorStop(.7, "#66737f");
+  metal.addColorStop(.88, "#dce3e9");
+  metal.addColorStop(1, "#8b98a3");
+  context.fillStyle = filled ? metal : "#e0e5ea";
   context.fill();
+  context.strokeStyle = filled ? "#687580" : "#b5bec7";
+  context.lineWidth = Math.max(.6, radius * .045);
+  context.stroke();
   context.beginPath();
   context.arc(0, 0, Math.max(1.5, radius * .13), 0, Math.PI * 2);
-  context.fillStyle = "#043d55";
+  context.fillStyle = filled ? "#586672" : "#bdc6ce";
   context.fill();
   context.restore();
 }
@@ -2674,7 +2722,7 @@ function MuseumView({
     context.fillStyle = cardColors.muted;
     context.font = language === "zh" ? "400 21px sans-serif" : "400 20px monospace";
     context.fillText(t.cardSubtitle, 68, 178);
-    for (let star = 0; star < 5; star += 1) drawExportStarfish(context, 974 + star * 36, 112 + (star % 2) * 7, 17, cardColors.blue);
+    for (let star = 0; star < 5; star += 1) drawExportStarfish(context, 974 + star * 36, 112 + (star % 2) * 7, 17, true);
 
     const drawMetric = (x: number, title: string, current: number, total: number) => {
       const percent = total ? Math.round(current / total * 100) : 0;
@@ -2747,7 +2795,7 @@ function MuseumView({
       const shortLabel = entry.label.length > 25 ? `${entry.label.slice(0, 24)}…` : entry.label;
       context.fillText(shortLabel, x + 10, y - 2, 190);
       for (let star = 0; star < 5; star += 1) {
-        drawExportStarfish(context, x + 223 + star * 18, y - 7, 7, star < entry.stars ? cardColors.blue : cardColors.empty);
+        drawExportStarfish(context, x + 223 + star * 18, y - 7, 7, star < entry.stars);
       }
     });
     if (collectedEntries.length > shownCollected.length) {
@@ -2948,6 +2996,8 @@ export function FossilMap() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [museumOpen, setMuseumOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
+  const [sunsetTheme, setSunsetTheme] = useState(false);
+  const openSunset = () => setSunsetTheme(true);
   const [modal, setModal] = useState<"about" | "references" | "safety" | null>(null);
   const [mobileList, setMobileList] = useState(false);
   const [mapView, setMapView] = useState<MapView>(FITTED_MAP_VIEW);
@@ -3128,7 +3178,7 @@ export function FossilMap() {
   };
 
   return (
-    <main className={`site-shell ${selected ? "detail-open" : ""} ${selected?.id === "isle-of-wight" ? "dinosaur-isle-open" : ""} ${museumOpen ? "museum-open" : ""} ${communityOpen ? "community-open" : ""} lang-${language} intro-${introPhase}`}>
+    <main className={`site-shell ${sunsetTheme ? "sunset-theme" : ""} ${selected ? "detail-open" : ""} ${selected?.id === "isle-of-wight" ? "dinosaur-isle-open" : ""} ${museumOpen ? "museum-open" : ""} ${communityOpen ? "community-open" : ""} lang-${language} intro-${introPhase}`}>
       {introPhase !== "done" && <IntroScreen phase={introPhase} />}
       <header className="topbar">
         <div className="header-left">
@@ -3288,8 +3338,9 @@ export function FossilMap() {
 
       {communityOpen && <CommunityView language={language} onBack={() => setCommunityOpen(false)} />}
 
-      <NautilusGuide key={language} language={language} siteLocations={localizedLocations} onOpenLocation={openLocation} />
+      <NautilusGuide key={language} language={language} siteLocations={localizedLocations} onOpenLocation={openLocation} onOpenSunset={openSunset} />
       <SiteVisitCounter language={language} />
+      {sunsetTheme && <button type="button" className="sunset-theme-reset" onClick={() => setSunsetTheme(false)}>{language === "zh" ? "恢复原配色" : "Restore original colours"}</button>}
 
       {modal && (
         <div className="modal-backdrop" onMouseDown={(event) => event.target === event.currentTarget && setModal(null)}>
@@ -3315,6 +3366,7 @@ export function FossilMap() {
                   </div>
                 </div>
                 <p className="fine-print">{t.changing}</p>
+                <p className="about-contact">{language === "zh" ? "联系方式：" : "Contact: "}<a href="mailto:xli072@gold.ac.uk"><strong>xli072@gold.ac.uk</strong></a></p>
               </>
             ) : modal === "references" ? (
               <>
@@ -3368,6 +3420,9 @@ function LocationDetail({ location, language, onBack }: { location: Location; la
   const geology = location.geology?.[language];
   const fieldIntel = location.fieldIntel?.[language];
   const isDinosaurIsle = location.id === "isle-of-wight";
+  const photo = locationPhotos[location.id];
+  const [photoFailed, setPhotoFailed] = useState(false);
+  useEffect(() => setPhotoFailed(false), [location.id]);
 
   return (
     <section className={`detail-view detail-text-only ${isDinosaurIsle ? "is-dinosaur-isle" : ""}`}>
@@ -3378,6 +3433,8 @@ function LocationDetail({ location, language, onBack }: { location: Location; la
       </div>
 
       <aside className="info-panel">
+        <header className={`place-photo-header ${photo && !photoFailed ? "has-photo" : ""}`}>
+          {photo && !photoFailed && <img key={photo.src} className="place-background-photo" src={photo.src} alt="" style={{ objectPosition: photo.position ?? "center" }} decoding="async" onError={() => setPhotoFailed(true)} />}
         <button className="back-button" onClick={onBack}><span>←</span> {t.allSites}</button>
         <div className="place-heading" style={{ "--place-accent": location.accent } as React.CSSProperties}>
           <div className="place-symbol"><PixelSiteIcon id={location.id} /><span>{locationNumber}</span></div>
@@ -3393,7 +3450,8 @@ function LocationDetail({ location, language, onBack }: { location: Location; la
             </div>
           </div>
         </div>
-
+        {photo && !photoFailed && <p className="place-photo-credit"><a href={photo.source} target="_blank" rel="noreferrer noopener">{photo.caption} · © {photo.author}</a><span> · </span><a href={photo.licenseUrl} target="_blank" rel="noreferrer noopener">{photo.license}</a><span> · {language === "zh" ? "裁切 / 低饱和度" : "Cropped / desaturated"}</span></p>}
+        </header>
         <nav className="section-nav" aria-label={t.locationDetails}>
           <a href="#get-there">{t.navRoute}</a>
           {fieldIntel && <a href="#field-intel">{fieldIntel.navLabel}</a>}
