@@ -2286,11 +2286,11 @@ function IntroScreen({ phase }: { phase: Exclude<IntroPhase, "done"> }) {
           <span className="brand-tagline">We collect fossils, and memories too.</span>
         </div>
         <div className="intro-pool-scene">
+          <div className="intro-pool-creatures"><PixelCreatures /></div>
           <div className="intro-pool-basin" role="progressbar" aria-label="开屏动画进度" aria-valuemin={0} aria-valuemax={100} aria-valuenow={filled}>
-            <div className="intro-pool-water" style={{ height: `${filled}%` }} />
+            <div className="intro-pool-water" style={{ width: `${Math.floor(filled / 5) * 5}%` }} />
             <div className="intro-pool-ticks" aria-hidden="true" />
           </div>
-          <PixelCreatures />
           <div className="intro-pool-caption" aria-hidden="true"><span>{filled === 100 ? "一起出发" : "蓄水中"}</span><span>{filled}%</span></div>
         </div>
         <IntroGlobe />
