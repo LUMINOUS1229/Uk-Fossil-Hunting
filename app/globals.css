@@ -10592,6 +10592,42 @@ body {
 .field-comment p { white-space: pre-wrap; line-height: 1.6; }
 
 /* One shared coordinate system for globe, progress ring and swimming creatures. */
+/* User-supplied water texture, confined to the map's sea background. */
+.site-shell:not(.sunset-theme) .uk-map {
+  background: #bad6df;
+  isolation: isolate;
+}
+.site-shell:not(.sunset-theme) .uk-map::before {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: -3px;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: url("/map-water-reference.jpg") center / cover no-repeat;
+  filter: grayscale(1) contrast(1.5) blur(.7px);
+  mix-blend-mode: soft-light;
+  opacity: .9;
+  pointer-events: none;
+  z-index: -2;
+}
+.site-shell:not(.sunset-theme) .uk-map::after {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: linear-gradient(130deg, rgba(230,242,247,.68), rgba(184,217,227,.12) 55%, rgba(191,224,228,.22));
+  pointer-events: none;
+  z-index: -1;
+}
 .intro-stage { position: relative; isolation: isolate; }
 .intro-orbit { position: relative; width: min(420px, 82vw, 51svh); aspect-ratio: 1; margin: 20px auto 0; isolation: isolate; }
 .intro-globe, .intro-orbit-progress { position: absolute; inset: 0; pointer-events: none; }
