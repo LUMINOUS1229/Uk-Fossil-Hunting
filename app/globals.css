@@ -10591,44 +10591,29 @@ body {
 .field-comment small { display: block; margin-top: .5rem; }
 .field-comment p { white-space: pre-wrap; line-height: 1.6; }
 
-/* The globe shares the creatures' reveal clock and scale curve. */
-.intro-pool-scene { position: relative; width: min(400px, 80vw); margin: 24px auto 0; isolation: isolate; }
-.intro-pool-creatures { height: 70px; overflow: hidden; }
-.intro-screen .intro-pool-scene .dino-track { width: 300px; margin: 0 auto; background: none; transform: scale(.55); transform-origin: center top; }
-.intro-screen .intro-pool-scene .dino-track::before,
-.intro-screen .intro-pool-scene .dino-track::after { display: none; }
-.intro-pool-basin { position: relative; height: 34px; overflow: hidden; border: 4px solid #0a2138; outline: 2px solid #7faecb; border-radius: 0; background: #102a43; box-shadow: 4px 4px 0 #06182b; }
-.intro-pool-water { position: absolute; top: 0; bottom: 0; left: 0; background: linear-gradient(to bottom, #a2def3 0 4px, #55b5da 4px 70%, #337da9 70%); }
-.intro-pool-ticks { position: absolute; inset: 0; background: repeating-linear-gradient(to right, transparent 0 calc(5% - 3px), #102a43 calc(5% - 3px) 5%); }
-.intro-pool-caption { display: flex; justify-content: space-between; padding: 8px 8px 0; color: #b5dcec; font-size: 14px; font-variant-numeric: tabular-nums; letter-spacing: .08em; }
-.intro-screen.reveal .intro-pool-scene { animation: intro-dino-zoom 1s .08s cubic-bezier(.2,.75,.2,1) both; }
-.intro-screen.reveal .intro-pool-scene .dino-track { animation: none; }
+/* One shared coordinate system for globe, progress ring and swimming creatures. */
+.intro-stage { position: relative; isolation: isolate; }
+.intro-orbit { position: relative; width: min(420px, 82vw, 51svh); aspect-ratio: 1; margin: 20px auto 0; isolation: isolate; }
+.intro-globe, .intro-orbit-progress { position: absolute; inset: 0; pointer-events: none; }
+.intro-globe canvas, .intro-orbit-progress svg { display: block; width: 100%; height: 100%; }
+.intro-orbit-progress svg { overflow: visible; fill: none; }
+.orbit-glass { stroke: rgba(120,203,255,.12); stroke-width: 10; }
+.orbit-rim { stroke: rgba(153,224,255,.35); stroke-width: .65; }
+.orbit-fill { stroke: rgba(100,205,255,.72); stroke-width: 7; stroke-linecap: round; filter: drop-shadow(0 0 4px #349fe5); transition: stroke-dashoffset .05s linear; }
+.intro-orbit-lane { position: absolute; inset: 8.57143%; animation: intro-orbit-swim 12s linear infinite; pointer-events: none; }
+.intro-orbit-swimmer { position: absolute; left: 50%; top: 0; width: 48px; height: 36px; transform: translate(-50%, -50%); }
+.intro-screen .intro-orbit .dino-track { position: absolute; inset: 0; width: 88px; height: 64px; margin: 0; background: none; overflow: visible; transform: scale(.52); transform-origin: top left; animation: none; }
+.intro-screen .intro-orbit .dino-track::before,
+.intro-screen .intro-orbit .dino-track::after { display: none; }
+.intro-screen .intro-orbit .orbit-sprite > * { display: none; animation: none; top: 0; left: 0; margin: 0; transform: none; }
+.intro-screen .intro-orbit .orbit-sprite-dino > .pixel-dino,
+.intro-screen .intro-orbit .orbit-sprite-ichthyosaur > .pixel-ichthyosaur,
+.intro-screen .intro-orbit .orbit-sprite-nautilus > .pixel-nautilus { display: block; }
+.intro-orbit-percent { position: absolute; bottom: 22%; left: 0; right: 0; color: #b6e4f8; font: 14px/1.4 var(--font-mono), monospace; font-variant-numeric: tabular-nums; text-shadow: 0 0 8px #248fd2; }
+.intro-screen.reveal .intro-orbit { animation: intro-dino-zoom 1s .08s cubic-bezier(.2,.75,.2,1) both; }
+@keyframes intro-orbit-swim { to { transform: rotate(360deg); } }
+@media (max-height: 620px) { .intro-orbit { width: min(280px, 70vw, 46svh); margin-top: 8px; } }
 @media (prefers-reduced-motion: reduce) {
-  .intro-pool-water { transition: none; }
-  .intro-screen.reveal .intro-pool-scene { animation: none; }
-}
-.intro-stage { position: relative; isolation: isolate; padding-bottom: 150px; }
-.intro-globe {
-  position: absolute;
-  z-index: -1;
-  bottom: -85px;
-  left: 0;
-  right: 0;
-  width: min(440px, 86vw, 60svh);
-  aspect-ratio: 1;
-  margin: 0 auto;
-  pointer-events: none;
-  transform-origin: center;
-}
-.intro-globe canvas { display: block; width: 100%; height: 100%; }
-.intro-screen.reveal .intro-globe {
-  animation: intro-dino-zoom 1s .08s cubic-bezier(.2, .75, .2, 1) both;
-}
-@media (max-height: 620px) {
-  .intro-stage { padding-bottom: 80px; }
-  .intro-globe { width: min(300px, 68vw, 58svh); bottom: -60px; }
-  .intro-screen .dino-track { margin-top: 12px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .intro-screen.reveal .intro-globe { animation: none; }
+  .intro-orbit-lane, .intro-screen.reveal .intro-orbit { animation: none; }
+  .orbit-fill { transition: none; }
 }

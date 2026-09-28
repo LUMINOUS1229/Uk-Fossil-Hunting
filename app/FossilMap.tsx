@@ -1979,9 +1979,9 @@ function NautilusSprite({ className }: { className: string }) {
   );
 }
 
-function PixelCreatures() {
+function PixelCreatures({ only }: { only?: "dino" | "ichthyosaur" | "nautilus" } = {}) {
   return (
-    <div className="dino-track" aria-hidden="true">
+    <div className={`dino-track ${only ? `orbit-sprite orbit-sprite-${only}` : ""}`} aria-hidden="true">
       <div className="pixel-dino">
         <div className="dino-tail" />
         <div className="dino-body" />
@@ -2285,15 +2285,23 @@ function IntroScreen({ phase }: { phase: Exclude<IntroPhase, "done"> }) {
           <p>一起去探险吧。</p>
           <span className="brand-tagline">We collect fossils, and memories too.</span>
         </div>
-        <div className="intro-pool-scene">
-          <div className="intro-pool-creatures"><PixelCreatures /></div>
-          <div className="intro-pool-basin" role="progressbar" aria-label="开屏动画进度" aria-valuemin={0} aria-valuemax={100} aria-valuenow={filled}>
-            <div className="intro-pool-water" style={{ width: `${Math.floor(filled / 5) * 5}%` }} />
-            <div className="intro-pool-ticks" aria-hidden="true" />
+        <div className="intro-orbit">
+          <IntroGlobe />
+          <div className="intro-orbit-progress" role="progressbar" aria-label="开屏动画进度" aria-valuemin={0} aria-valuemax={100} aria-valuenow={filled}>
+            <svg viewBox="0 0 280 280" aria-hidden="true">
+              <circle className="orbit-glass" cx="140" cy="140" r="116" />
+              <circle className="orbit-rim" cx="140" cy="140" r="121" />
+              <circle className="orbit-rim" cx="140" cy="140" r="111" />
+              <circle className="orbit-fill" cx="140" cy="140" r="116" pathLength="100" strokeDasharray="100" strokeDashoffset={100 - filled} transform="rotate(-90 140 140)" />
+            </svg>
           </div>
-          <div className="intro-pool-caption" aria-hidden="true"><span>{filled === 100 ? "一起出发" : "蓄水中"}</span><span>{filled}%</span></div>
+          {(["dino", "ichthyosaur", "nautilus"] as const).map((animal, i) => (
+            <div className="intro-orbit-lane" key={animal} style={{ animationDelay: `${-i * 4}s` }}>
+              <div className="intro-orbit-swimmer"><PixelCreatures only={animal} /></div>
+            </div>
+          ))}
+          <span className="intro-orbit-percent" aria-hidden="true">{filled}%</span>
         </div>
-        <IntroGlobe />
       </div>
     </div>
   );

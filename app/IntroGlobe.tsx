@@ -93,14 +93,6 @@ export default function IntroGlobe() {
         const [x, y, z] = project(longitude, latitude);
         if (z > .08) beacon(x, y, reduced ? .8 : .65 + .35 * Math.sin((now - start) / 420 + i));
       });
-      ctx.save();
-      ctx.translate(140, 140);
-      ctx.rotate(-.22);
-      ctx.beginPath();
-      ctx.ellipse(0, 0, 128, 38, 0, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(148,170,191,.2)";
-      ctx.stroke();
-      ctx.restore();
       if (!reduced) frame = requestAnimationFrame(draw);
     };
     frame = requestAnimationFrame(draw);
