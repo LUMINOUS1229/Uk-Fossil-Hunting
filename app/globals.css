@@ -10592,10 +10592,16 @@ body {
 .field-comment p { white-space: pre-wrap; line-height: 1.6; }
 
 /* The globe shares the creatures' reveal clock and scale curve. */
+.intro-stage { position: relative; isolation: isolate; padding-bottom: 150px; }
 .intro-globe {
-  width: clamp(150px, 25vh, 230px);
+  position: absolute;
+  z-index: -1;
+  bottom: -85px;
+  left: 0;
+  right: 0;
+  width: min(440px, 86vw, 60svh);
   aspect-ratio: 1;
-  margin: -16px auto 0;
+  margin: 0 auto;
   pointer-events: none;
   transform-origin: center;
 }
@@ -10604,7 +10610,8 @@ body {
   animation: intro-dino-zoom 1s .08s cubic-bezier(.2, .75, .2, 1) both;
 }
 @media (max-height: 620px) {
-  .intro-globe { width: 140px; margin-top: -28px; }
+  .intro-stage { padding-bottom: 80px; }
+  .intro-globe { width: min(300px, 68vw, 58svh); bottom: -60px; }
   .intro-screen .dino-track { margin-top: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
