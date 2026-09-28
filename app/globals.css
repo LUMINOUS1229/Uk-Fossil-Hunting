@@ -8581,6 +8581,17 @@ input:focus-visible {
 
 .starfish-rating > span i { background: var(--paper-deep); }
 
+.museum-view .starfish-rating > span {
+  background: #697583;
+  opacity: .32;
+}
+.museum-view .starfish-rating > span.filled {
+  background: linear-gradient(135deg, #596570 0%, #c5ced5 27%, #fff 43%, #a4afb9 50%, #66737f 70%, #dce3e9 88%, #8b98a3 100%);
+  opacity: 1;
+  filter: drop-shadow(0 1px 1px rgba(15,25,35,.35));
+}
+.museum-view .starfish-rating > span i { background: #586672; }
+
 .museum-collect {
   border: 1px solid var(--rust);
   border-radius: 999px;

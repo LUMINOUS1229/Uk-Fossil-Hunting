@@ -2531,7 +2531,7 @@ function InlineStarRating({ value, label }: { value: number; label: string }) {
   );
 }
 
-function drawExportStarfish(context: CanvasRenderingContext2D, x: number, y: number, radius: number, fill: string) {
+function drawExportStarfish(context: CanvasRenderingContext2D, x: number, y: number, radius: number, filled: boolean) {
   context.save();
   context.translate(x, y);
   context.beginPath();
@@ -2544,11 +2544,22 @@ function drawExportStarfish(context: CanvasRenderingContext2D, x: number, y: num
     else context.lineTo(px, py);
   }
   context.closePath();
-  context.fillStyle = fill;
+  const metal = context.createLinearGradient(-radius, -radius, radius, radius);
+  metal.addColorStop(0, "#596570");
+  metal.addColorStop(.27, "#c5ced5");
+  metal.addColorStop(.43, "#ffffff");
+  metal.addColorStop(.5, "#a4afb9");
+  metal.addColorStop(.7, "#66737f");
+  metal.addColorStop(.88, "#dce3e9");
+  metal.addColorStop(1, "#8b98a3");
+  context.fillStyle = filled ? metal : "#e0e5ea";
   context.fill();
+  context.strokeStyle = filled ? "#687580" : "#b5bec7";
+  context.lineWidth = Math.max(.6, radius * .045);
+  context.stroke();
   context.beginPath();
   context.arc(0, 0, Math.max(1.5, radius * .13), 0, Math.PI * 2);
-  context.fillStyle = "#043d55";
+  context.fillStyle = filled ? "#586672" : "#bdc6ce";
   context.fill();
   context.restore();
 }
@@ -2709,7 +2720,7 @@ function MuseumView({
     context.fillStyle = cardColors.muted;
     context.font = language === "zh" ? "400 21px sans-serif" : "400 20px monospace";
     context.fillText(t.cardSubtitle, 68, 178);
-    for (let star = 0; star < 5; star += 1) drawExportStarfish(context, 974 + star * 36, 112 + (star % 2) * 7, 17, cardColors.blue);
+    for (let star = 0; star < 5; star += 1) drawExportStarfish(context, 974 + star * 36, 112 + (star % 2) * 7, 17, true);
 
     const drawMetric = (x: number, title: string, current: number, total: number) => {
       const percent = total ? Math.round(current / total * 100) : 0;
@@ -2782,7 +2793,7 @@ function MuseumView({
       const shortLabel = entry.label.length > 25 ? `${entry.label.slice(0, 24)}…` : entry.label;
       context.fillText(shortLabel, x + 10, y - 2, 190);
       for (let star = 0; star < 5; star += 1) {
-        drawExportStarfish(context, x + 223 + star * 18, y - 7, 7, star < entry.stars ? cardColors.blue : cardColors.empty);
+        drawExportStarfish(context, x + 223 + star * 18, y - 7, 7, star < entry.stars);
       }
     });
     if (collectedEntries.length > shownCollected.length) {
