@@ -9,6 +9,12 @@ import airports from "./earth-airports.json";
 
 // Geographic outlines: Natural Earth, 1:110m land (public domain).
 // Orthographic projection keeps the far hemisphere hidden as Earth rotates.
+export const INTRO_SPIN_DURATION_MS = 2700;
+export const INTRO_REVEAL_DURATION_MS = 1300;
+const UK_LONGITUDE = -2.5;
+const UK_LATITUDE = 54.5;
+const START_VIEW_LONGITUDE = 160;
+
 export default function IntroGlobe() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
@@ -24,14 +30,18 @@ export default function IntroGlobe() {
     let frame = 0;
     const start = performance.now();
     const draw = (now: number) => {
-      const turn = reduced ? 0 : (now - start) / 9000;
+      const progress = reduced ? 1 : Math.min(1, (now - start) / INTRO_SPIN_DURATION_MS);
+      const easedProgress = progress * progress * (3 - 2 * progress);
+      const startTurn = -START_VIEW_LONGITUDE * Math.PI / 180;
+      const endTurn = -UK_LONGITUDE * Math.PI / 180;
+      const turn = startTurn + (endTurn - startTurn) * easedProgress;
+      const tilt = (.25 + (UK_LATITUDE * Math.PI / 180 - .25) * easedProgress);
       const project = (lon: number, lat: number) => {
         const a = lon * Math.PI / 180 + turn;
         const b = lat * Math.PI / 180;
         const x = Math.cos(b) * Math.sin(a);
         const y = Math.sin(b);
         const z = Math.cos(b) * Math.cos(a);
-        const tilt = .25;
         return [140 + x * 99, 140 - (y * Math.cos(tilt) - z * Math.sin(tilt)) * 99,
           y * Math.sin(tilt) + z * Math.cos(tilt)];
       };
@@ -93,7 +103,7 @@ export default function IntroGlobe() {
         const [x, y, z] = project(longitude, latitude);
         if (z > .08) beacon(x, y, reduced ? .8 : .65 + .35 * Math.sin((now - start) / 420 + i));
       });
-      if (!reduced) frame = requestAnimationFrame(draw);
+      if (!reduced && progress < 1) frame = requestAnimationFrame(draw);
     };
     frame = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(frame);
