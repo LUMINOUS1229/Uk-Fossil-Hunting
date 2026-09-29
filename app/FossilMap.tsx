@@ -5,7 +5,7 @@ import { documentLocations } from "./document-locations";
 import { documentLocationZh } from "./document-location-zh";
 import { locationPhotos } from "./location-photos";
 import FieldComments from "./FieldComments";
-import IntroGlobe from "./IntroGlobe";
+import IntroGlobe, { INTRO_REVEAL_DURATION_MS, INTRO_SPIN_DURATION_MS } from "./IntroGlobe";
 
 type Risk = "LOW" | "MODERATE" | "HIGH";
 type Language = "en" | "zh";
@@ -2272,7 +2272,7 @@ function IntroScreen({ phase }: { phase: Exclude<IntroPhase, "done"> }) {
     if (phase !== "loading") return;
     const start = performance.now();
     const timer = window.setInterval(() => {
-      setProgress(Math.min(99, Math.floor((performance.now() - start) / 2200 * 100)));
+      setProgress(Math.min(99, Math.floor((performance.now() - start) / INTRO_SPIN_DURATION_MS * 100)));
     }, 50);
     return () => window.clearInterval(timer);
   }, [phase]);
@@ -2288,6 +2288,11 @@ function IntroScreen({ phase }: { phase: Exclude<IntroPhase, "done"> }) {
           <span className="brand-tagline">We collect fossils, and memories too.</span>
         </div>
         <div className="intro-orbit">
+          <div className="intro-planet-system" aria-hidden="true">
+            <span className="intro-planet-orbit planet-orbit-one" />
+            <span className="intro-planet-orbit planet-orbit-two" />
+            <span className="intro-planet-orbit planet-orbit-three" />
+          </div>
           <IntroGlobe />
           <div className="intro-orbit-progress" role="progressbar" aria-label="开屏动画进度" aria-valuemin={0} aria-valuemax={100} aria-valuenow={filled}>
             <svg viewBox="0 0 280 280" aria-hidden="true">
@@ -3028,8 +3033,8 @@ export function FossilMap() {
       return () => window.clearTimeout(reducedMotionTimer);
     }
 
-    const revealTimer = window.setTimeout(() => setIntroPhase("reveal"), 2200);
-    const doneTimer = window.setTimeout(() => setIntroPhase("done"), 3550);
+    const revealTimer = window.setTimeout(() => setIntroPhase("reveal"), INTRO_SPIN_DURATION_MS);
+    const doneTimer = window.setTimeout(() => setIntroPhase("done"), INTRO_SPIN_DURATION_MS + INTRO_REVEAL_DURATION_MS);
     return () => {
       window.clearTimeout(revealTimer);
       window.clearTimeout(doneTimer);
@@ -3332,7 +3337,7 @@ export function FossilMap() {
         <small className="map-credit-note">{t.mapCredit}</small>
       </section>
 
-      {selected && <LocationDetail location={selected} language={language} onBack={() => setSelectedId(null)} />}
+      {selected && <LocationDetail key={selected.id} location={selected} language={language} onBack={() => setSelectedId(null)} />}
 
       {museumOpen && <MuseumView language={language} onBack={() => setMuseumOpen(false)} onOpenLocation={openLocation} />}
 
@@ -3422,7 +3427,6 @@ function LocationDetail({ location, language, onBack }: { location: Location; la
   const isDinosaurIsle = location.id === "isle-of-wight";
   const photo = locationPhotos[location.id];
   const [photoFailed, setPhotoFailed] = useState(false);
-  useEffect(() => setPhotoFailed(false), [location.id]);
 
   return (
     <section className={`detail-view detail-text-only ${isDinosaurIsle ? "is-dinosaur-isle" : ""}`}>
