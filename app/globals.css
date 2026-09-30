@@ -10643,6 +10643,28 @@ body {
   z-index: -1;
 }
 .intro-stage { position: relative; isolation: isolate; }
+.intro-screen { font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", var(--font-sans), sans-serif; }
+.intro-screen .intro-copy :is(h1, h1 small, p) {
+  font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", var(--font-sans), sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: .025em;
+  color: rgba(230, 246, 255, .82);
+  background: linear-gradient(165deg, rgba(255, 255, 255, .96), rgba(188, 225, 247, .56) 58%, rgba(230, 248, 255, .86));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, .12), 0 0 22px rgba(140, 206, 245, .2);
+}
+.intro-screen .intro-copy .brand-tagline {
+  font-family: var(--font-handwriting), "Segoe Print", "Bradley Hand", cursive;
+  font-size: clamp(20px, 2.8vw, 27px);
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: .015em;
+  color: rgba(207, 237, 249, .88);
+  text-shadow: 0 0 14px rgba(126, 209, 245, .2);
+}
 .intro-orbit { position: relative; width: min(420px, 82vw, 51svh); aspect-ratio: 1; margin: 20px auto 0; isolation: isolate; }
 .intro-globe, .intro-orbit-progress { position: absolute; inset: 0; pointer-events: none; }
 .intro-globe { z-index: 2; }
