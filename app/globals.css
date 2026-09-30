@@ -10643,22 +10643,14 @@ body {
   z-index: -1;
 }
 .intro-stage { position: relative; isolation: isolate; }
-.intro-screen { --intro-text-blue: #bceeff; font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", var(--font-sans), sans-serif; }
+.intro-screen { --intro-text-blue: #bceeff; }
 .intro-screen .intro-copy :is(h1, h1 small, p, .brand-tagline),
 .intro-screen .intro-photo-credit,
 .intro-screen .intro-orbit-percent {
-  font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", var(--font-sans), sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  letter-spacing: .025em;
   color: var(--intro-text-blue);
   background: none;
   -webkit-text-fill-color: currentColor;
   text-shadow: 0 0 5px rgba(35, 157, 255, .65), 0 0 18px rgba(35, 157, 255, .3);
-}
-.intro-screen .intro-copy .brand-tagline {
-  font-size: clamp(14px, 2vw, 18px);
-  letter-spacing: .015em;
 }
 .intro-orbit { position: relative; width: min(420px, 82vw, 51svh); aspect-ratio: 1; margin: 20px auto 0; isolation: isolate; }
 .intro-globe, .intro-orbit-progress { position: absolute; inset: 0; pointer-events: none; }
