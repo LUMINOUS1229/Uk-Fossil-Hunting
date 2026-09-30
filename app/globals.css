@@ -10652,6 +10652,39 @@ body {
   -webkit-text-fill-color: currentColor;
   text-shadow: 0 0 5px rgba(35, 157, 255, .65), 0 0 18px rgba(35, 157, 255, .3);
 }
+/* Reference-inspired hierarchy, lifted for the dark star field. */
+.intro-screen .intro-copy h1 {
+  color: #80b4e4;
+  font-size: clamp(36px, 6.2vw, 78px);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -.025em;
+  text-shadow: 0 0 22px rgba(71, 141, 210, .18);
+}
+.intro-screen .intro-copy h1 small {
+  color: #51a8ed;
+  font-size: .26em;
+  font-weight: 600;
+  letter-spacing: .10em;
+  text-shadow: 0 0 12px rgba(51, 147, 225, .2);
+}
+.intro-screen .intro-copy p {
+  margin-top: clamp(18px, 2.6vw, 28px);
+  color: #95a7be;
+  font-size: clamp(18px, 2.2vw, 27px);
+  line-height: 1.5;
+  letter-spacing: .10em;
+  text-shadow: none;
+}
+.intro-screen .intro-copy .brand-tagline {
+  margin-top: 12px;
+  color: #51a8ed;
+  font-size: clamp(14px, 1.7vw, 20px);
+  line-height: 1.4;
+  font-style: italic;
+  letter-spacing: .025em;
+  text-shadow: 0 0 12px rgba(51, 147, 225, .15);
+}
 .intro-orbit { position: relative; width: min(420px, 82vw, 51svh); aspect-ratio: 1; margin: 20px auto 0; isolation: isolate; }
 .intro-globe, .intro-orbit-progress { position: absolute; inset: 0; pointer-events: none; }
 .intro-globe { z-index: 2; }
