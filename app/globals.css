@@ -8586,11 +8586,12 @@ input:focus-visible {
   opacity: .32;
 }
 .museum-view .starfish-rating > span.filled {
-  background: linear-gradient(135deg, #596570 0%, #c5ced5 27%, #fff 43%, #a4afb9 50%, #66737f 70%, #dce3e9 88%, #8b98a3 100%);
+  background: linear-gradient(135deg, #a86b10 0%, #f5ce61 27%, #fff3bd 43%, #e9b535 50%, #b77d16 70%, #ffe29a 88%, #d29b25 100%);
   opacity: 1;
   filter: drop-shadow(0 1px 1px rgba(15,25,35,.35));
 }
 .museum-view .starfish-rating > span i { background: #586672; }
+.museum-view .starfish-rating > span.filled i { background: #99600c; }
 
 .museum-collect {
   border: 1px solid var(--rust);

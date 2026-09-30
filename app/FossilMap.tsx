@@ -2552,21 +2552,21 @@ function drawExportStarfish(context: CanvasRenderingContext2D, x: number, y: num
   }
   context.closePath();
   const metal = context.createLinearGradient(-radius, -radius, radius, radius);
-  metal.addColorStop(0, "#596570");
-  metal.addColorStop(.27, "#c5ced5");
-  metal.addColorStop(.43, "#ffffff");
-  metal.addColorStop(.5, "#a4afb9");
-  metal.addColorStop(.7, "#66737f");
-  metal.addColorStop(.88, "#dce3e9");
-  metal.addColorStop(1, "#8b98a3");
+  metal.addColorStop(0, "#a86b10");
+  metal.addColorStop(.27, "#f5ce61");
+  metal.addColorStop(.43, "#fff3bd");
+  metal.addColorStop(.5, "#e9b535");
+  metal.addColorStop(.7, "#b77d16");
+  metal.addColorStop(.88, "#ffe29a");
+  metal.addColorStop(1, "#d29b25");
   context.fillStyle = filled ? metal : "#e0e5ea";
   context.fill();
-  context.strokeStyle = filled ? "#687580" : "#b5bec7";
+  context.strokeStyle = filled ? "#a86b10" : "#b5bec7";
   context.lineWidth = Math.max(.6, radius * .045);
   context.stroke();
   context.beginPath();
   context.arc(0, 0, Math.max(1.5, radius * .13), 0, Math.PI * 2);
-  context.fillStyle = filled ? "#586672" : "#bdc6ce";
+  context.fillStyle = filled ? "#99600c" : "#bdc6ce";
   context.fill();
   context.restore();
 }
