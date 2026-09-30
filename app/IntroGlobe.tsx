@@ -46,15 +46,19 @@ export default function IntroGlobe() {
           y * Math.sin(tilt) + z * Math.cos(tilt)];
       };
       ctx.clearRect(0, 0, size, size);
-      const glow = ctx.createRadialGradient(140, 140, 87, 140, 140, 132);
-      glow.addColorStop(0, "rgba(121,156,184,.12)");
-      glow.addColorStop(1, "rgba(69,183,255,0)");
+      // A warm atmospheric rim fades into a soft rose-violet halo.
+      const glow = ctx.createRadialGradient(140, 140, 97, 140, 140, 138);
+      glow.addColorStop(0, "rgba(255,252,235,.82)");
+      glow.addColorStop(.10, "rgba(255,229,163,.65)");
+      glow.addColorStop(.30, "rgba(247,188,202,.33)");
+      glow.addColorStop(.62, "rgba(163,135,230,.14)");
+      glow.addColorStop(1, "rgba(139,119,215,0)");
       ctx.fillStyle = glow;
       ctx.fillRect(0, 0, size, size);
       const ocean = ctx.createRadialGradient(110, 102, 8, 140, 140, 102);
-      ocean.addColorStop(0, "rgba(65,86,108,.42)");
-      ocean.addColorStop(.75, "rgba(37,57,79,.30)");
-      ocean.addColorStop(1, "rgba(26,44,66,.15)");
+      ocean.addColorStop(0, "#325c84");
+      ocean.addColorStop(.75, "#1b3657");
+      ocean.addColorStop(1, "#13283f");
       ctx.beginPath();
       ctx.arc(140, 140, 99, 0, Math.PI * 2);
       ctx.fillStyle = ocean;
@@ -81,8 +85,8 @@ export default function IntroGlobe() {
       ctx.shadowBlur = 0;
       ctx.beginPath();
       ctx.arc(140, 140, 100, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(161,184,204,.28)";
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = "rgba(249,252,255,.94)";
+      ctx.lineWidth = 1.6;
       ctx.stroke();
       // Bright signals stay separate from the subdued globe palette.
       const beacon = (x: number, y: number, pulse: number) => {

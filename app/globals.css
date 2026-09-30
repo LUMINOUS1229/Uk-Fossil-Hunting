@@ -10657,9 +10657,9 @@ body {
 .planet-orbit-two::after { top: -5px; right: 44%; width: 9px; height: 9px; background: #d9c9ff; box-shadow: 0 0 8px #957ee9, 0 0 19px rgba(140, 112, 223, .6); }
 .planet-orbit-three { width: 68%; height: 112%; margin: -56% 0 0 -34%; border-color: rgba(116, 199, 222, .14); transform: rotate(62deg); animation: intro-planet-three 34s linear infinite; }
 .planet-orbit-three::after { top: auto; right: 12%; bottom: 5%; width: 5px; height: 5px; background: #ffe5a8; box-shadow: 0 0 7px #ffc866, 0 0 16px rgba(255, 194, 90, .6); }
-.orbit-glass { stroke: rgba(75, 190, 255, .24); stroke-width: 12; filter: drop-shadow(0 0 8px rgba(25, 160, 255, .42)); }
-.orbit-rim { stroke: rgba(171, 232, 255, .58); stroke-width: .8; filter: drop-shadow(0 0 3px rgba(63, 190, 255, .6)); }
-.orbit-fill { stroke: #64d7ff; stroke-width: 7.5; stroke-linecap: round; filter: drop-shadow(0 0 3px #d6f7ff) drop-shadow(0 0 8px #1ba9ff) drop-shadow(0 0 16px rgba(0, 132, 255, .9)); transition: stroke-dashoffset .05s linear; }
+.orbit-glass { stroke: rgba(139, 205, 255, .16); stroke-width: 3; }
+.orbit-rim { stroke: rgba(171, 232, 255, .18); stroke-width: .45; }
+.orbit-fill { stroke: #a8eaff; stroke-width: 2.2; stroke-linecap: round; filter: drop-shadow(0 0 2px #d6f7ff) drop-shadow(0 0 5px rgba(27, 169, 255, .7)); transition: stroke-dashoffset .05s linear; }
 .intro-orbit-lane { position: absolute; z-index: 5; inset: 8.57143%; animation: intro-orbit-swim 16s linear infinite; pointer-events: none; }
 .intro-orbit-swimmer { position: absolute; left: 50%; top: 0; width: 48px; height: 36px; transform: translate(-50%, -50%); }
 .intro-screen .intro-orbit .dino-track { position: absolute; inset: 0; width: 88px; height: 64px; margin: 0; background: none; overflow: visible; transform: scale(.52); transform-origin: top left; animation: none; }
