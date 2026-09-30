@@ -10236,9 +10236,24 @@ body {
 .intro-screen {
   background: #07111e;
 }
-.intro-galaxy { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: saturate(.22) brightness(.62); pointer-events: none; }
-.intro-screen::before { display: none; }
-.intro-screen::after { inset: 0; width: 100%; height: 100%; border-radius: 0; transform: none; z-index: 0; opacity: 1; background: radial-gradient(ellipse at center, rgba(8, 22, 40, .12), rgba(3, 12, 25, .68)), linear-gradient(rgba(9, 28, 49, .25), rgba(5, 17, 32, .35)); pointer-events: none; }
+.intro-galaxy { position: absolute; z-index: -1; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: saturate(.35) brightness(.82); pointer-events: none; }
+/* Nacre colours tint the existing Milky Way texture, retaining its stars and dust. */
+.intro-screen::before {
+  display: block;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  transform: none;
+  z-index: 0;
+  opacity: .82;
+  background: linear-gradient(118deg,
+    #6988bc 0%, #8caed1 15%, #63d6c5 29%, #84bded 42%,
+    #b09ad7 54%, #6cd5be 66%, #e2cb93 79%, #cb9ebc 90%, #789cc7 100%);
+  mix-blend-mode: color;
+  pointer-events: none;
+}
+.intro-screen::after { inset: 0; width: 100%; height: 100%; border-radius: 0; transform: none; z-index: 0; opacity: 1; background: radial-gradient(ellipse at 24% 58%, rgba(100, 225, 202, .10), transparent 42%), radial-gradient(ellipse at 74% 48%, rgba(176, 151, 224, .09), transparent 38%), radial-gradient(ellipse at 85% 68%, rgba(226, 196, 145, .06), transparent 30%), radial-gradient(ellipse at center, rgba(8, 22, 40, .08), rgba(3, 12, 25, .65)), linear-gradient(rgba(9, 28, 49, .18), rgba(5, 17, 32, .24)); pointer-events: none; }
 .intro-photo-credit { position: absolute; z-index: 2; bottom: max(14px, env(safe-area-inset-bottom)); left: 16px; right: 16px; text-align: center; font-size: 12px; line-height: 1.6; color: #bdc9d7; text-shadow: 0 1px 3px #000; }
 .intro-photo-credit a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .intro-copy h1 { color: var(--cyber-ink); text-shadow: 0 0 30px rgba(105, 226, 246, .3); }
@@ -10733,8 +10748,8 @@ body {
   100% { opacity: 0; transform: scale(9); filter: blur(2px); }
 }
 @keyframes intro-space-drift {
-  from { transform: scale(1); filter: saturate(.22) brightness(.62) blur(0); }
-  to { transform: scale(1.16); filter: saturate(.34) brightness(.74) blur(1.5px); }
+  from { transform: scale(1); filter: saturate(.35) brightness(.82) blur(0); }
+  to { transform: scale(1.16); filter: saturate(.42) brightness(.9) blur(1.5px); }
 }
 @keyframes intro-galaxy-curtain {
   0%, 45% { opacity: 1; }
