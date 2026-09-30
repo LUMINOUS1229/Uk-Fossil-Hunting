@@ -1979,7 +1979,7 @@ function NautilusSprite({ className }: { className: string }) {
   );
 }
 
-function PixelCreatures({ only }: { only?: "dino" | "ichthyosaur" | "nautilus" } = {}) {
+function PixelCreatures({ only }: { only?: "dino" | "ichthyosaur" | "nautilus" | "crocodile" } = {}) {
   return (
     <div className={`dino-track ${only ? `orbit-sprite orbit-sprite-${only}` : ""}`} aria-hidden="true">
       <div className="pixel-dino">
@@ -2005,6 +2005,13 @@ function PixelCreatures({ only }: { only?: "dino" | "ichthyosaur" | "nautilus" }
         <div className="ichthy-bubbles" />
       </div>
       <NautilusSprite className="pixel-nautilus" />
+      {only === "crocodile" && <div className="pixel-crocodile">
+        <i className="croc-tail" /><i className="croc-body" />
+        <i className="croc-back" /><i className="croc-head" />
+        <i className="croc-snout" /><i className="croc-jaw" />
+        <i className="croc-teeth" /><i className="croc-eye" />
+        <i className="croc-leg croc-leg-front" /><i className="croc-leg croc-leg-back" />
+      </div>}
     </div>
   );
 }
@@ -2302,7 +2309,7 @@ function IntroScreen({ phase }: { phase: Exclude<IntroPhase, "done"> }) {
               <circle className="orbit-fill" cx="140" cy="140" r="116" pathLength="100" strokeDasharray="100" strokeDashoffset={100 - filled} transform="rotate(-90 140 140)" />
             </svg>
           </div>
-          {(["dino", "ichthyosaur", "nautilus"] as const).map((animal, i) => (
+          {(["dino", "ichthyosaur", "nautilus", "crocodile"] as const).map((animal, i) => (
             <div className="intro-orbit-lane" key={animal} style={{ animationDelay: `${-i * 4}s` }}>
               <div className="intro-orbit-swimmer"><PixelCreatures only={animal} /></div>
             </div>

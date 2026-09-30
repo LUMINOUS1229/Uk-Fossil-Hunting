@@ -10726,7 +10726,21 @@ body {
 .intro-screen .intro-orbit .orbit-sprite > * { display: none; animation: none; top: 0; left: 0; margin: 0; transform: none; }
 .intro-screen .intro-orbit .orbit-sprite-dino > .pixel-dino,
 .intro-screen .intro-orbit .orbit-sprite-ichthyosaur > .pixel-ichthyosaur,
-.intro-screen .intro-orbit .orbit-sprite-nautilus > .pixel-nautilus { display: block; }
+.intro-screen .intro-orbit .orbit-sprite-nautilus > .pixel-nautilus,
+.intro-screen .intro-orbit .orbit-sprite-crocodile > .pixel-crocodile { display: block; }
+.pixel-crocodile { position: absolute; width: 88px; height: 54px; image-rendering: pixelated; }
+.pixel-crocodile i { position: absolute; display: block; background: #579b64; }
+.pixel-crocodile .croc-tail { left: 0; top: 23px; width: 30px; height: 16px; background: #38764b; clip-path: polygon(0 0, 8% 0, 8% 25%, 28% 25%, 28% 50%, 55% 50%, 55% 38%, 100% 38%, 100% 100%, 48% 100%, 48% 75%, 20% 75%, 20% 50%, 0 50%); }
+.pixel-crocodile .croc-body { left: 25px; top: 22px; width: 34px; height: 17px; box-shadow: 0 4px #a9c87c; }
+.pixel-crocodile .croc-back { left: 29px; top: 18px; width: 5px; height: 6px; background: #2c6242; box-shadow: 9px 0 #2c6242, 18px 0 #2c6242; }
+.pixel-crocodile .croc-head { left: 55px; top: 18px; width: 14px; height: 19px; }
+.pixel-crocodile .croc-snout { left: 66px; top: 23px; width: 21px; height: 8px; box-shadow: 0 -2px #84bd75; }
+.pixel-crocodile .croc-jaw { left: 62px; top: 34px; width: 25px; height: 5px; background: #b4cf88; }
+.pixel-crocodile .croc-teeth { left: 69px; top: 30px; width: 3px; height: 3px; background: #fff3d1; box-shadow: 7px 0 #fff3d1, 14px 0 #fff3d1; }
+.pixel-crocodile .croc-eye { left: 61px; top: 19px; width: 4px; height: 4px; background: #102f2a; box-shadow: -1px -2px #e8e8a4; }
+.pixel-crocodile .croc-leg { top: 38px; width: 7px; height: 8px; background: #38764b; box-shadow: 3px 5px #579b64; }
+.pixel-crocodile .croc-leg-front { left: 51px; }
+.pixel-crocodile .croc-leg-back { left: 28px; }
 .intro-orbit-percent { position: absolute; z-index: 6; bottom: 22%; left: 0; right: 0; color: #b6e4f8; font: 14px/1.4 var(--font-mono), monospace; font-variant-numeric: tabular-nums; text-shadow: 0 0 8px #248fd2; }
 .intro-screen.reveal { animation: intro-galaxy-curtain 1.28s .02s cubic-bezier(.25,.7,.18,1) both; }
 .intro-screen.reveal .intro-copy { animation: intro-galaxy-title-away .92s .08s cubic-bezier(.3,.65,.2,1) both; }
