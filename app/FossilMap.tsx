@@ -2292,6 +2292,11 @@ function IntroScreen({ phase }: { phase: Exclude<IntroPhase, "done"> }) {
         <div className="intro-copy">
           <h1 className="fossil-title"><span>Fossil Hunters</span><small>in UK</small></h1>
           <p>一起去探险吧。</p>
+          <ul className="intro-keywords" aria-label="Explore, Discover, Learn, Record, Remember">
+            {(["Explore", "Discover", "Learn", "Record", "Remember"] as const).map((word) => (
+              <li key={word}>{word}</li>
+            ))}
+          </ul>
           <span className="brand-tagline">We collect fossils, and memories too.</span>
         </div>
         <div className="intro-orbit">

@@ -10714,8 +10714,43 @@ body {
   letter-spacing: .10em;
   text-shadow: none;
 }
+.intro-screen .intro-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 7px clamp(13px, 2.1vw, 27px);
+  margin: clamp(12px, 1.8vw, 18px) auto 0;
+  padding: 0;
+  color: #d7f5ff;
+  font: 600 clamp(13px, 1.5vw, 18px)/1.35 var(--font-sans), Arial, sans-serif;
+  letter-spacing: .11em;
+  list-style: none;
+  text-shadow: 0 0 10px rgba(81, 168, 237, .38);
+}
+.intro-screen .intro-keywords li {
+  position: relative;
+  animation: intro-keyword-rise .82s cubic-bezier(.2, .78, .22, 1) both;
+  will-change: transform, opacity, filter;
+}
+.intro-screen .intro-keywords li:not(:last-child)::after {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + clamp(6px, 1vw, 13px));
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #51a8ed;
+  box-shadow: 0 0 8px rgba(81, 168, 237, .8);
+  content: "";
+  transform: translate(-50%, -50%);
+}
+.intro-screen .intro-keywords li:nth-child(1) { animation-delay: .12s; }
+.intro-screen .intro-keywords li:nth-child(2) { animation-delay: .31s; }
+.intro-screen .intro-keywords li:nth-child(3) { animation-delay: .50s; }
+.intro-screen .intro-keywords li:nth-child(4) { animation-delay: .69s; }
+.intro-screen .intro-keywords li:nth-child(5) { animation-delay: .88s; }
 .intro-screen .intro-copy .brand-tagline {
-  margin-top: 12px;
+  margin-top: 10px;
   color: #51a8ed;
   font-size: clamp(14px, 1.7vw, 20px);
   line-height: 1.4;
@@ -10774,6 +10809,11 @@ body {
 @keyframes intro-planet-one { to { transform: rotate(344deg); } }
 @keyframes intro-planet-two { to { transform: rotate(-332deg); } }
 @keyframes intro-planet-three { to { transform: rotate(422deg); } }
+@keyframes intro-keyword-rise {
+  from { opacity: 0; transform: translateY(1.25em); filter: blur(6px); }
+  68% { opacity: 1; }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
 @keyframes intro-galaxy-title-away {
   0%, 22% { opacity: 1; transform: scale(1); filter: blur(0); }
   100% { opacity: 0; transform: scale(1.1); filter: blur(5px); }
@@ -10792,7 +10832,21 @@ body {
   100% { opacity: 0; visibility: hidden; }
 }
 @media (max-height: 620px) { .intro-orbit { width: min(280px, 70vw, 46svh); margin-top: 8px; } }
+@media (max-width: 480px) {
+  .intro-screen .intro-keywords {
+    display: grid;
+    width: min(100%, 295px);
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px 0;
+    letter-spacing: .08em;
+  }
+  .intro-screen .intro-keywords li { grid-column: span 2; }
+  .intro-screen .intro-keywords li:nth-child(4) { grid-column: 2 / 4; }
+  .intro-screen .intro-keywords li:nth-child(5) { grid-column: 4 / 6; }
+  .intro-screen .intro-keywords li::after { display: none; }
+}
 @media (prefers-reduced-motion: reduce) {
   .intro-orbit-lane, .intro-planet-orbit, .intro-screen.reveal .intro-orbit, .intro-screen.reveal .intro-galaxy { animation: none; }
+  .intro-screen .intro-keywords li { animation: none; }
   .orbit-fill { transition: none; }
 }
