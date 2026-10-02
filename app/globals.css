@@ -10757,6 +10757,8 @@ body {
   font-style: italic;
   letter-spacing: .025em;
   text-shadow: 0 0 12px rgba(51, 147, 225, .15);
+  animation: intro-tagline-rise 1.06s 1.5s cubic-bezier(.18, .75, .22, 1) both;
+  will-change: transform, opacity, filter;
 }
 .intro-orbit { position: relative; width: min(420px, 82vw, 51svh); aspect-ratio: 1; margin: 20px auto 0; isolation: isolate; }
 .intro-globe, .intro-orbit-progress { position: absolute; inset: 0; pointer-events: none; }
@@ -10814,6 +10816,10 @@ body {
   68% { opacity: 1; }
   to { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
+@keyframes intro-tagline-rise {
+  from { opacity: 0; transform: translateY(1.1em); filter: blur(4px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
 @keyframes intro-galaxy-title-away {
   0%, 22% { opacity: 1; transform: scale(1); filter: blur(0); }
   100% { opacity: 0; transform: scale(1.1); filter: blur(5px); }
@@ -10847,6 +10853,6 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   .intro-orbit-lane, .intro-planet-orbit, .intro-screen.reveal .intro-orbit, .intro-screen.reveal .intro-galaxy { animation: none; }
-  .intro-screen .intro-keywords li { animation: none; }
+  .intro-screen .intro-keywords li, .intro-screen .intro-copy .brand-tagline { animation: none; }
   .orbit-fill { transition: none; }
 }
