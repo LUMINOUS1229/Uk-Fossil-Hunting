@@ -5219,6 +5219,41 @@ body {
   pointer-events: none;
 }
 
+.map-stone-count {
+  position: absolute;
+  top: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2px 5px;
+  border: 1px solid #5a9dc0;
+  background: #102c43;
+  color: #a0eafa;
+  font: 700 11px/1.25 var(--font-mono), monospace;
+  white-space: nowrap;
+  box-shadow: 2px 2px 0 #071e3080;
+}
+.stone-record-hint, .stone-list-legend {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.65;
+}
+.stone-list-legend { margin: 10px 14px; }
+.stone-list-legend button { display: block; color: var(--rust); text-decoration: underline; }
+.list-stone-count { color: var(--rust); font-weight: 700; }
+.location-record-link {
+  display: block;
+  margin: 12px 0;
+  padding: 10px 14px;
+  border: 1px solid #65a2c2;
+  background: #102c43;
+  color: #a0eafa;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+.record-filter { display: grid; gap: 8px; margin: 18px 0; color: var(--ink); font-size: 13px; }
+.record-filter select { width: 100%; min-height: 42px; padding: 8px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); }
+
 .marker-visual {
   position: absolute;
   top: 50%;

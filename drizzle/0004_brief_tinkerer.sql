@@ -1,0 +1,1 @@
+CREATE INDEX `idx_community_posts_location_page` ON `community_posts` (`location_id`,`created_at`,`id`);

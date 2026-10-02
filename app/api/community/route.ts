@@ -1,6 +1,7 @@
-import { and, count, desc, eq, gte } from "drizzle-orm";
+import { and, count, eq, gte } from "drizzle-orm";
 import { env } from "cloudflare:workers";
-import { getDb } from "../../../db";
+import { getDb, getD1 } from "../../../db";
+import { allowedLocations, listRecords, type RecordCursor } from "../../../db/community-records";
 import { communityPosts } from "../../../db/schema";
 
 const MAX_IMAGES = 3;
@@ -8,13 +9,6 @@ const MAX_IMAGE_BYTES = 1_572_864;
 const MAX_REQUEST_BYTES = 5_250_000;
 const MAX_POSTS_PER_DAY = 4;
 const profilePattern = /^[a-zA-Z0-9_-]{12,80}$/;
-const allowedLocations = new Set([
-  "folkestone", "herne-bay", "walton", "wootton-bassett", "bracklesham",
-  "isle-of-wight", "charmouth", "weymouth", "peterborough",
-  "nacton", "fort-victoria", "barton-on-sea", "warden-point", "abbey-wood",
-  "grange-chine", "hastings", "ardley-quarry", "kirtlington-quarry",
-  "woodeaton-quarry", "whitby", "lyme-regis",
-]);
 const allowedImageTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 
 type UploadBucket = {
@@ -39,9 +33,21 @@ function parseImageKeys(value: string) {
   }
 }
 
-export async function GET() {
-  const rows = await getDb().select().from(communityPosts).orderBy(desc(communityPosts.createdAt)).limit(24);
-  return Response.json(rows.map((row) => ({
+export async function GET(request: Request) {
+  const params = new URL(request.url).searchParams;
+  const locationId = params.get("locationId") ?? "";
+  let cursor: RecordCursor | null = null;
+  if (locationId && !allowedLocations.has(locationId)) return Response.json({ error: "Unknown field region." }, { status: 400 });
+  if (params.has("cursor")) {
+    try {
+      const value = JSON.parse(params.get("cursor")!);
+      if (!value || typeof value.createdAt !== "string" || typeof value.id !== "string" || value.createdAt.length > 40 || value.id.length > 80) throw new Error();
+      cursor = { createdAt: value.createdAt, id: value.id };
+    } catch { return Response.json({ error: "Invalid page cursor." }, { status: 400 }); }
+  }
+  try {
+  const { rows, nextCursor } = await listRecords(getD1(), locationId, cursor);
+  return Response.json({ posts: rows.map((row) => ({
     id: row.id,
     author: row.author,
     body: row.body,
@@ -49,9 +55,10 @@ export async function GET() {
     imageUrls: parseImageKeys(row.imageKeys).map((key) => `/api/community-images/${encodeURIComponent(key)}`),
     createdAt: row.createdAt,
     appreciations: row.appreciations,
-  })), {
-    headers: { "cache-control": "public, max-age=15, stale-while-revalidate=45" },
+  })), nextCursor }, {
+    headers: { "cache-control": "no-store" },
   });
+  } catch { return Response.json({ error: "Field notes are temporarily unavailable." }, { status: 503 }); }
 }
 
 export async function POST(request: Request) {
@@ -66,6 +73,7 @@ export async function POST(request: Request) {
   const body = cleanText(form.get("body"), 800);
   const requestedLocation = cleanText(form.get("locationId"), 40);
   const locationId = allowedLocations.has(requestedLocation) ? requestedLocation : null;
+  if (requestedLocation && !locationId) return Response.json({ error: "Unknown field region." }, { status: 400 });
   const images = form.getAll("images").filter((entry): entry is File => entry instanceof File && entry.size > 0);
 
   if (!profilePattern.test(profileId)) {

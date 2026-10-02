@@ -2373,7 +2373,7 @@ async function prepareCommunityPhoto(file: File) {
   return new File([blob], `${baseName}.jpg`, { type: "image/jpeg", lastModified: Date.now() });
 }
 
-function CommunityView({ language, onBack }: { language: Language; onBack: () => void }) {
+function CommunityView({ language, onBack, initialLocationId, onPublished }: { language: Language; onBack: () => void; initialLocationId: string; onPublished: () => void }) {
   const t = communityCopy[language];
   const localizedForumLocations = useMemo(() => locations.map((location) => ({
     original: location,
@@ -2387,26 +2387,36 @@ function CommunityView({ language, onBack }: { language: Language; onBack: () =>
   const [success, setSuccess] = useState("");
   const [author, setAuthor] = useState("");
   const [body, setBody] = useState("");
-  const [locationId, setLocationId] = useState("");
+  const [locationId, setLocationId] = useState(initialLocationId);
+  const [filterId, setFilterId] = useState(initialLocationId);
+  const [nextCursor, setNextCursor] = useState<{ createdAt: string; id: string } | null>(null);
+  const requestSequence = useRef(0);
   const [photos, setPhotos] = useState<PreparedPhoto[]>([]);
 
-  const loadPosts = useCallback(async () => {
+  const loadPosts = useCallback(async (cursor: { createdAt: string; id: string } | null = null) => {
+    const sequence = ++requestSequence.current;
     setLoading(true);
     setError("");
     try {
-      const response = await fetch("/api/community", { cache: "no-store" });
+      const params = new URLSearchParams({ locationId: filterId });
+      if (cursor) params.set("cursor", JSON.stringify(cursor));
+      const response = await fetch(`/api/community?${params}`, { cache: "no-store" });
       if (!response.ok) throw new Error("load failed");
-      setPosts(await response.json() as CommunityPost[]);
+      const result = await response.json() as { posts: CommunityPost[]; nextCursor: { createdAt: string; id: string } | null };
+      if (sequence !== requestSequence.current) return;
+      setPosts(current => cursor ? [...current, ...result.posts.filter(post => !current.some(item => item.id === post.id))] : result.posts);
+      setNextCursor(result.nextCursor);
     } catch {
-      setError(language === "zh" ? "暂时无法加载社区记录。" : "Field notes could not be loaded.");
+      if (sequence === requestSequence.current) setError(language === "zh" ? "暂时无法加载社区记录。" : "Field notes could not be loaded.");
     } finally {
-      setLoading(false);
+      if (sequence === requestSequence.current) setLoading(false);
     }
-  }, [language]);
+  }, [language, filterId]);
 
   useEffect(() => {
     const loadTimer = window.setTimeout(() => void loadPosts(), 0);
-    return () => window.clearTimeout(loadTimer);
+    const invalidateRequests = () => { requestSequence.current++; };
+    return () => { window.clearTimeout(loadTimer); invalidateRequests(); };
   }, [loadPosts]);
 
   const addPhotos = async (files: FileList | null) => {
@@ -2454,6 +2464,7 @@ function CommunityView({ language, onBack }: { language: Language; onBack: () =>
       setPhotos([]);
       setBody("");
       setSuccess(t.success);
+      onPublished();
       await loadPosts();
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Publish failed.");
@@ -2483,6 +2494,7 @@ function CommunityView({ language, onBack }: { language: Language; onBack: () =>
               <option value="">{t.unknownPlace}</option>
               {localizedForumLocations.map(({ original, localized }) => <option key={original.id} value={original.id}>{localized.shortName}</option>)}
             </select></label>
+            <p className="stone-record-hint">{language === "zh" ? "🪨 选择产地后，每条成功发布的记录为该地增加一颗石头（同帖多张照片仍算一颗）。不公开地点的分享不计入地图。" : "🪨 Each published note with a field region adds one stone to the map, even with multiple photos. Private locations are not mapped."}</p>
             <label><span>{t.note}</span><textarea value={body} onChange={(event) => setBody(event.target.value)} minLength={4} maxLength={800} rows={5} required /></label>
             <div className="community-photo-picker">
               <span>{t.photos}</span>
@@ -2500,6 +2512,12 @@ function CommunityView({ language, onBack }: { language: Language; onBack: () =>
 
           <section className="community-feed" aria-live="polite">
             <div className="community-section-title"><span>02</span><h2>{language === "zh" ? "最新野外记录" : "Latest field notes"}</h2></div>
+            <label className="record-filter">{language === "zh" ? "按产地查看石头记录" : "Browse stones by region"}
+              <select value={filterId} disabled={posting} onChange={event => { setPosts([]); setNextCursor(null); setFilterId(event.target.value); }}>
+                <option value="">{language === "zh" ? "全部地区" : "All regions"}</option>
+                {localizedForumLocations.map(({ original, localized }) => <option key={original.id} value={original.id}>{localized.shortName}</option>)}
+              </select>
+            </label>
             {loading && <p className="community-empty">{t.loading}</p>}
             {!loading && error && posts.length === 0 && <button className="community-retry" onClick={() => void loadPosts()}>{t.retry}</button>}
             {!loading && !error && posts.length === 0 && <p className="community-empty">{t.empty}</p>}
@@ -2512,6 +2530,7 @@ function CommunityView({ language, onBack }: { language: Language; onBack: () =>
                 <FieldComments postId={post.id} language={language} />
               </article>;
             })}
+            {nextCursor && <button className="community-retry" disabled={loading} onClick={() => void loadPosts(nextCursor)}>{loading ? t.loading : language === "zh" ? "查看更多记录" : "Load more records"}</button>}
           </section>
         </div>
       </div>
@@ -3008,6 +3027,31 @@ export function FossilMap() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [museumOpen, setMuseumOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
+  const [communityLocationId, setCommunityLocationId] = useState("");
+  const [recordCounts, setRecordCounts] = useState<Record<string, number> | null>(null);
+  const [recordCountsError, setRecordCountsError] = useState(false);
+  const refreshRecordCounts = useCallback(async () => {
+    try {
+      const response = await fetch("/api/community/locations", { cache: "no-store" });
+      if (!response.ok) throw new Error("Counts unavailable");
+      const result = await response.json() as { counts: Record<string, number> };
+      setRecordCounts(result.counts);
+      setRecordCountsError(false);
+    } catch { setRecordCountsError(true); }
+  }, []);
+  useEffect(() => {
+    const timer = window.setTimeout(() => void refreshRecordCounts(), 0);
+    window.addEventListener("focus", refreshRecordCounts);
+    return () => { window.clearTimeout(timer); window.removeEventListener("focus", refreshRecordCounts); };
+  }, [refreshRecordCounts]);
+  const stoneCount = (id: string) => recordCountsError ? "—" : recordCounts ? String(recordCounts[id] ?? 0) : "…";
+  const openCommunity = (id = "") => {
+    setCommunityLocationId(id);
+    setSelectedId(null);
+    setMuseumOpen(false);
+    setMobileList(false);
+    setCommunityOpen(true);
+  };
   const [sunsetTheme, setSunsetTheme] = useState(false);
   const openSunset = () => setSunsetTheme(true);
   const [modal, setModal] = useState<"about" | "references" | "safety" | null>(null);
@@ -3205,7 +3249,7 @@ export function FossilMap() {
           </div>
         </div>
         <div className="top-actions">
-          <button className="community-link" onClick={() => { setSelectedId(null); setMuseumOpen(false); setCommunityOpen(true); }}>◉ {communityCopy[language].nav}</button>
+          <button className="community-link" onClick={() => openCommunity()}>◉ {communityCopy[language].nav}</button>
           <button className="museum-link" onClick={() => { setSelectedId(null); setCommunityOpen(false); setMuseumOpen(true); }}>✦ {t.museum}</button>
           <button className="reference-link" onClick={() => setModal("references")}>{t.references}</button>
           <button className="about-link" onClick={() => setModal("about")}>{t.about}</button>
@@ -3239,11 +3283,13 @@ export function FossilMap() {
         >
           <div className="north-sea-label">{t.northSea}</div>
           <div className="channel-label">{t.channel}</div>
-          <div className="quest-hud" aria-hidden="true">
+          <div className="quest-hud">
             <span>{t.questLabel}</span>
             <strong>{t.questTitle}</strong>
             <small>{t.questHint}</small>
             <div><b>N+</b><i>{t.questSites}</i></div>
+            <small>{language === "zh" ? "🪨 地图数字 = 该产地的分享记录数" : "🪨 Map numbers = field notes per region"}</small>
+            {recordCountsError && <button onClick={() => void refreshRecordCounts()}>{language === "zh" ? "数量加载失败 · 重试" : "Counts unavailable · Retry"}</button>}
           </div>
           <div
             className="uk-plot"
@@ -3262,13 +3308,14 @@ export function FossilMap() {
                 className={`map-marker ${location.risk === "HIGH" ? "high-risk" : ""} ${location.mapX > 75 ? "popup-left" : "popup-right"}`}
                 style={markerStyle(location, index)}
                 onClick={() => openLocation(location.id)}
-                aria-label={`${t.open} ${location.name}`}
+                aria-label={`${t.open} ${location.name} · ${stoneCount(location.id)} ${language === "zh" ? "颗石头记录" : "stone records"}`}
               >
                 <span className="marker-pulse" />
                 <span className="marker-anchor" />
                 <span className="marker-leader" />
                 <span className="marker-visual">
                   <PixelSiteIcon id={location.id} />
+                  <span className="map-stone-count">🪨 {stoneCount(location.id)}</span>
                   <span className="marker-card">
                     <strong>{location.shortName}</strong>
                     <small>{location.region}</small>
@@ -3317,6 +3364,9 @@ export function FossilMap() {
             <span>{t.fieldSites}</span>
             <button className="list-close" onClick={() => setMobileList(false)}>{t.close}</button>
           </div>
+          <p className="stone-list-legend">{language === "zh" ? "🪨 一颗石头 = 一条产地分享" : "🪨 One stone = one field note"}
+            {recordCountsError && <button onClick={() => void refreshRecordCounts()}>{language === "zh" ? "数量加载失败 · 重试" : "Counts unavailable · Retry"}</button>}
+          </p>
           {localizedLocations.map((location) => (
             <button key={location.id} onClick={() => openLocation(location.id)}>
               <span className="list-icon-wrap">
@@ -3326,6 +3376,7 @@ export function FossilMap() {
               <span>
                 <strong>{location.shortName}</strong>
                 <small>{location.period} · {location.level}</small>
+                <small className="list-stone-count">🪨 {stoneCount(location.id)} {language === "zh" ? "条点位记录" : "field records"}</small>
                 <small className="list-profile">
                   <InlineStarRating label={t.findShort} value={location.findRating} />
                   <span className="rating-divider" aria-hidden="true">·</span>
@@ -3344,11 +3395,11 @@ export function FossilMap() {
         <small className="map-credit-note">{t.mapCredit}</small>
       </section>
 
-      {selected && <LocationDetail key={selected.id} location={selected} language={language} onBack={() => setSelectedId(null)} />}
+      {selected && <LocationDetail key={selected.id} location={selected} language={language} onBack={() => setSelectedId(null)} recordCount={stoneCount(selected.id)} onViewRecords={() => openCommunity(selected.id)} />}
 
       {museumOpen && <MuseumView language={language} onBack={() => setMuseumOpen(false)} onOpenLocation={openLocation} />}
 
-      {communityOpen && <CommunityView language={language} onBack={() => setCommunityOpen(false)} />}
+      {communityOpen && <CommunityView language={language} initialLocationId={communityLocationId} onPublished={refreshRecordCounts} onBack={() => setCommunityOpen(false)} />}
 
       <NautilusGuide key={language} language={language} siteLocations={localizedLocations} onOpenLocation={openLocation} onOpenSunset={openSunset} />
       <SiteVisitCounter language={language} />
@@ -3426,7 +3477,7 @@ export function FossilMap() {
   );
 }
 
-function LocationDetail({ location, language, onBack }: { location: Location; language: Language; onBack: () => void }) {
+function LocationDetail({ location, language, onBack, recordCount, onViewRecords }: { location: Location; language: Language; onBack: () => void; recordCount: string; onViewRecords: () => void }) {
   const t = detailCopy[language];
   const locationNumber = String(locations.findIndex((item) => item.id === location.id) + 1).padStart(2, "0");
   const geology = location.geology?.[language];
@@ -3447,6 +3498,7 @@ function LocationDetail({ location, language, onBack }: { location: Location; la
         <header className={`place-photo-header ${photo && !photoFailed ? "has-photo" : ""}`}>
           {photo && !photoFailed && <img key={photo.src} className="place-background-photo" src={photo.src} alt="" style={{ objectPosition: photo.position ?? "center" }} decoding="async" onError={() => setPhotoFailed(true)} />}
         <button className="back-button" onClick={onBack}><span>←</span> {t.allSites}</button>
+        <button className="location-record-link" onClick={onViewRecords}>🪨 {recordCount} {language === "zh" ? "条点位记录 · 查看 / 添加分享 ↗" : "field records · View / share a find ↗"}</button>
         <div className="place-heading" style={{ "--place-accent": location.accent } as React.CSSProperties}>
           <div className="place-symbol"><PixelSiteIcon id={location.id} /><span>{locationNumber}</span></div>
           <div>

@@ -19,6 +19,7 @@ export const communityPosts = sqliteTable("community_posts", {
   appreciations: integer("appreciations").notNull().default(0),
 }, (table) => [
   index("idx_community_posts_created_at").on(table.createdAt),
+  index("idx_community_posts_location_page").on(table.locationId, table.createdAt, table.id),
   index("idx_community_posts_profile_created").on(table.profileId, table.createdAt),
 ]);
 
