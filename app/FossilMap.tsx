@@ -3288,7 +3288,6 @@ export function FossilMap() {
             <strong>{t.questTitle}</strong>
             <small>{t.questHint}</small>
             <div><b>N+</b><i>{t.questSites}</i></div>
-            <small>{language === "zh" ? "🪨 地图数字 = 该产地的分享记录数" : "🪨 Map numbers = field notes per region"}</small>
             {recordCountsError && <button onClick={() => void refreshRecordCounts()}>{language === "zh" ? "数量加载失败 · 重试" : "Counts unavailable · Retry"}</button>}
           </div>
           <div
@@ -3315,7 +3314,6 @@ export function FossilMap() {
                 <span className="marker-leader" />
                 <span className="marker-visual">
                   <PixelSiteIcon id={location.id} />
-                  <span className="map-stone-count">🪨 {stoneCount(location.id)}</span>
                   <span className="marker-card">
                     <strong>{location.shortName}</strong>
                     <small>{location.region}</small>
@@ -3325,6 +3323,7 @@ export function FossilMap() {
                       <span className="rating-divider" aria-hidden="true">·</span>
                       <InlineStarRating label={t.accessShort} value={location.accessRating} />
                     </small>
+                    <small className="marker-stone-count">🪨 {stoneCount(location.id)} {language === "zh" ? "颗石头 · 产地分享记录" : "stones · field notes"}</small>
                     <em>{location.duration} {t.fromLondon}</em>
                   </span>
                 </span>

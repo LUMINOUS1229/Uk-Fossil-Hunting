@@ -5219,19 +5219,6 @@ body {
   pointer-events: none;
 }
 
-.map-stone-count {
-  position: absolute;
-  top: 34px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 2px 5px;
-  border: 1px solid #5a9dc0;
-  background: #102c43;
-  color: #a0eafa;
-  font: 700 11px/1.25 var(--font-mono), monospace;
-  white-space: nowrap;
-  box-shadow: 2px 2px 0 #071e3080;
-}
 .stone-record-hint, .stone-list-legend {
   color: var(--ink-soft);
   font-size: 12px;
