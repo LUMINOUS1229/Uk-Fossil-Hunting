@@ -1557,6 +1557,93 @@ const guideCopy = {
   },
 } as const;
 
+const locationRoasts: Record<string, Record<Language, string>> = {
+  folkestone: {
+    en: "The fossils make beginners feel gifted; the boulders and tide provide the reality check—luo.",
+    zh: "化石多到让新手误以为自己很会，巨石和涨潮会负责让你清醒螺。",
+  },
+  "herne-bay": {
+    en: "The shark teeth are tiny, and somehow the useful tide window is tinier—luo.",
+    zh: "鲨鱼牙已经够小了，等它们露面的潮汐窗口居然更小螺。",
+  },
+  walton: {
+    en: "You came to collect shark teeth; the soft mud came to collect your boots—luo.",
+    zh: "你来捡鲨鱼牙，软泥专程来捡你的靴子螺。",
+  },
+  "wootton-bassett": {
+    en: "First unlock the access, then unlock your boots from the mud—luo.",
+    zh: "先解锁通行权限，再解锁陷在泥里的靴子螺。",
+  },
+  bracklesham: {
+    en: "Very friendly to beginners; much less friendly to beginners who ignore the tide—luo.",
+    zh: "对新手很友好，对不看潮汐的新手可一点也不友好螺。",
+  },
+  "isle-of-wight": {
+    en: "Everyone comes for a dinosaur; many leave first with a shoe full of wet sand—luo.",
+    zh: "大家都冲着恐龙来，通常先收获一鞋湿沙螺。",
+  },
+  charmouth: {
+    en: "Ammonites are timeless; standing below cliffs is one classic not worth repeating—luo.",
+    zh: "菊石很经典，站在崖下这件事可别经典复刻螺。",
+  },
+  weymouth: {
+    en: "Devil's Toenails are easy to spot; so is the returning tide, if you actually turn around—luo.",
+    zh: "魔鬼趾很好认，回涨的潮水也一样——前提是你肯回头螺。",
+  },
+  peterborough: {
+    en: "The fossils are generous; the gate code and Oxford Clay are not—luo.",
+    zh: "化石很慷慨，门禁和牛津黏土可一点都不螺。",
+  },
+  nacton: {
+    en: "The mudflat looks flat until it develops strong opinions about your boots—luo.",
+    zh: "泥滩看着挺平，咬住靴子时才显出它很有层次螺。",
+  },
+  "fort-victoria": {
+    en: "It feels like an open-book family trip until the current writes the bonus question—luo.",
+    zh: "亲子友好得像开卷考试，水流会负责出附加题螺。",
+  },
+  "barton-on-sea": {
+    en: "The shells arrive wholesale; getting one home intact is the retail challenge—luo.",
+    zh: "贝壳多得像批发，完整带回家才是零售级难度螺。",
+  },
+  "warden-point": {
+    en: "You're hunting shark teeth while the tide is hunting your exit—luo.",
+    zh: "你在找鲨鱼牙，潮水在找你的退路螺。",
+  },
+  "abbey-wood": {
+    en: "Yes, London has shark teeth; no, the booking step is not optional—luo.",
+    zh: "伦敦真有鲨鱼牙，只是预约这一关比化石先出土螺。",
+  },
+  "grange-chine": {
+    en: "The dinosaurs stopped visiting; the tide and parking rules still clock in daily—luo.",
+    zh: "恐龙早就不来了，潮汐和停车规则倒是天天打卡螺。",
+  },
+  hastings: {
+    en: "Photograph the footprints; the cliff does not need to join your group selfie—luo.",
+    zh: "脚印适合拍照，悬崖可不必加入你的合影螺。",
+  },
+  "ardley-quarry": {
+    en: "The dinosaur tracks are huge; your permission to touch them is tiny—luo.",
+    zh: "恐龙足迹很大，你能动手的权限很小螺。",
+  },
+  "kirtlington-quarry": {
+    en: "The fossils need a fine sieve; the visit needs very clear permission—luo.",
+    zh: "微化石小到要细筛，许可重要到不能漏螺。",
+  },
+  "woodeaton-quarry": {
+    en: "The geology is accessible in textbooks; the quarry is not accessible on a whim—luo.",
+    zh: "地质在书里很开放，采石场可不接受说来就来螺。",
+  },
+  whitby: {
+    en: "Ammonites are plentiful; safe exits are not a collectible series—luo.",
+    zh: "菊石像纪念品一样多，安全出口可没多到能集齐螺。",
+  },
+  "lyme-regis": {
+    en: "You may feel like Mary Anning until the beach reminds you to check the tide—luo.",
+    zh: "你刚觉得自己像玛丽·安宁，海滩就提醒你先看潮汐螺。",
+  },
+};
+
 const locationAliases: Record<string, string[]> = {
   folkestone: ["folkestone", "folkestone warren", "福克斯通"],
   "herne-bay": ["herne bay", "beltinge", "赫恩湾"],
@@ -1729,11 +1816,12 @@ function answerGuideQuestion(question: string, siteLocations: Location[], langua
   }
 
   if (asksBeginner && !location) {
-    const beginner = [...siteLocations].sort((a, b) => (b.familyRating + b.accessRating) - (a.familyRating + a.accessRating))[0];
+    const beginner = siteLocations.find((item) => item.id === "folkestone");
+    if (!beginner) return { text: isZh ? "暂时找不到 Folkestone 的地点资料螺。" : "I can't find the Folkestone guide right now—luo." };
     return {
       text: isZh
-        ? `本站最适合第一次体验的是 ${beginner.name}：通行与亲子评分都是 ${beginner.accessRating}/5 和 ${beginner.familyRating}/5，现场风险为${riskLabel(beginner.risk, language)}。${beginner.safetyLead}`
-        : `${beginner.name} is the strongest first-trip option on this site: access ${beginner.accessRating}/5, family ${beginner.familyRating}/5, with ${riskLabel(beginner.risk, language)} field risk. ${beginner.safetyLead}`,
+        ? `本站给新手的首选推荐是 ${beginner.name}：常见化石丰富、类型好辨认，很适合建立第一次采集的成就感。不过现场风险仍为${riskLabel(beginner.risk, language)}，第一次建议跟随导览、选择退潮时段，并严格远离崖脚。${beginner.safetyLead}`
+        : `${beginner.name} is this site's top beginner recommendation: common fossils are plentiful and recognisable, making a first successful find more likely. Field risk is still ${riskLabel(beginner.risk, language)}, so join a guide for your first visit, go on a falling tide and stay well clear of the cliff base. ${beginner.safetyLead}`,
       locationId: beginner.id,
     };
   }
@@ -3509,6 +3597,10 @@ function LocationDetail({ location, language, onBack, recordCount, onViewRecords
             <p>{location.region}</p>
             <h2>{location.name}</h2>
             <div className="place-tags"><span>{location.period}</span><span>{location.type}</span><span>{location.level}</span></div>
+            <blockquote className="location-roast">
+              <span aria-hidden="true">✦</span>
+              <p><strong>{language === "zh" ? "诺里锐评" : "Nori's verdict"}</strong>{locationRoasts[location.id]?.[language]}</p>
+            </blockquote>
             {isDinosaurIsle && <div className="isle-secret-badge"><span>◆</span>{language === "zh" ? "恐龙岛 · 彩蛋已解锁" : "Dinosaur Island · secret hatched"}</div>}
             <div className="field-profile">
               <ProfileRating label={t.findFrequency} rating={location.findRating} />

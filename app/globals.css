@@ -10621,6 +10621,48 @@ body {
 .place-photo-credit a:focus-visible { outline:2px solid #fff; outline-offset:3px; }
 .is-dinosaur-isle .place-photo-header::before { background:linear-gradient(90deg,rgba(5,34,25,.88),rgba(5,34,25,.55)),linear-gradient(0deg,rgba(5,34,25,.65),transparent 70%); }
 @media(max-width:720px) { .place-photo-header { border-radius:0; } .place-photo-credit { padding:10px 16px 14px; text-align:left; } .place-photo-header::before { background:rgba(5,20,35,.73); } }
+
+.location-roast {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 720px;
+  margin: 15px 0 2px;
+  padding: 11px 14px;
+  border: 1px solid color-mix(in srgb, var(--place-accent) 58%, transparent);
+  border-left: 3px solid var(--place-accent);
+  background: rgba(5, 20, 35, .64);
+  color: #f5fbff;
+  font-style: normal;
+  box-shadow: 0 9px 24px rgba(0, 8, 18, .18);
+}
+
+.location-roast > span {
+  flex: 0 0 auto;
+  color: var(--place-accent);
+  line-height: 1.55;
+}
+
+.place-heading .location-roast p {
+  margin: 0;
+  color: #f5fbff;
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: .01em;
+}
+
+.location-roast strong {
+  margin-right: .7em;
+  color: var(--place-accent);
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 720px) {
+  .location-roast { margin-top: 12px; padding: 10px 12px; }
+  .place-heading .location-roast p { font-size: 14px; }
+}
 .about-contact a { color:var(--cyber-cyan); text-decoration:underline; text-underline-offset:4px; overflow-wrap:anywhere; }
 .about-contact a:focus-visible { outline:2px solid currentColor; outline-offset:4px; }
 .field-comments { margin-top: 1.25rem; padding: 1rem 0 0; border: 0; border-top: 1px solid #c6d7e5; border-radius: 0; background: #f7fbff; color: #173f67; font-size: 1rem; line-height: 1.6; color-scheme: light; }
