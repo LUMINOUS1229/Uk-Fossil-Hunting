@@ -2690,6 +2690,14 @@ function drawExportStarfish(context: CanvasRenderingContext2D, x: number, y: num
   context.restore();
 }
 
+function MuseumCardFrame() {
+  return (
+    <span className="museum-card-frame" aria-hidden="true">
+      <i>✦</i><i>✦</i><i>✦</i><i>✦</i>
+    </span>
+  );
+}
+
 function MuseumView({
   language,
   onBack,
@@ -3078,25 +3086,43 @@ function MuseumView({
                             tabIndex={revealed ? -1 : 0}
                             onClick={revealCard}
                           >
-                            <span className="museum-card-back-logo"><PixelFossilIcon find={find} /></span>
-                            <small>NO. {String(entryNumber).padStart(3, "0")}</small>
-                            <strong>{originalFind.zh}</strong>
+                            <MuseumCardFrame />
+                            <span className="museum-card-catalog">FOSSIL HUNTERS <span>✦</span> NO. {String(entryNumber).padStart(3, "0")}</span>
+                            <span className="museum-card-crown" aria-hidden="true">☼</span>
+                            <span className="museum-card-seal" aria-hidden="true">
+                              <span className="museum-card-orbit" />
+                              <span className="museum-card-back-logo"><PixelFossilIcon find={find} /></span>
+                              <span className="museum-card-moon">☾</span>
+                            </span>
+                            <span className="museum-card-nameplate">
+                              <strong>{find.name}</strong>
+                              <span>{find.zh}</span>
+                            </span>
+                            <span className="museum-card-back-rarity"><StarfishRating value={stars} label={t.rarity} /></span>
+                            <span className="museum-card-reveal-hint">{language === "zh" ? "轻触 · 翻开图鉴" : "Tap to reveal"}</span>
                           </button>
-                          <div className="museum-card-front" aria-hidden={!revealed}>
-                            <span className="museum-entry-number">NO. {String(entryNumber).padStart(3, "0")}</span>
-                            {referencePhoto && <a className="museum-reference-photo" href={referencePhoto.href} target="_blank" rel="noreferrer noopener">
-                              <img src={referencePhoto.src} alt={`${find.name} · ${t.referencePhoto}`} loading="lazy" />
-                              <span>{t.referencePhoto}<small>{referencePhoto.credit}</small></span>
-                            </a>}
+                          <div className="museum-card-front" aria-hidden={!revealed} inert={!revealed}>
+                            <MuseumCardFrame />
+                            <div className="museum-card-heading">
+                              <span className="museum-entry-number">NO. {String(entryNumber).padStart(3, "0")}</span>
+                              <span className="museum-card-state">{owned ? `✓ ${t.collected}` : find.rarity}</span>
+                            </div>
+                            <div className={`museum-card-portrait ${referencePhoto ? "has-reference" : ""}`}>
+                              <span className="museum-portrait-crown" aria-hidden="true">✦</span>
+                              {referencePhoto ? <a className="museum-reference-photo" href={referencePhoto.href} target="_blank" rel="noreferrer noopener" tabIndex={revealed ? 0 : -1}>
+                                <img src={referencePhoto.src} alt={`${find.name} · ${t.referencePhoto}`} loading="lazy" />
+                                <span>{t.referencePhoto}<small>{referencePhoto.credit}</small></span>
+                              </a> : <span className="museum-portrait-specimen"><PixelFossilIcon find={find} /></span>}
+                              {referencePhoto && <span className="museum-portrait-emblem"><PixelFossilIcon find={find} /></span>}
+                            </div>
                             <div className="museum-specimen-top">
-                              <PixelFossilIcon find={find} />
-                              <div><span>{find.category}</span><h3>{find.name}</h3><p>{find.zh}</p></div>
+                              <div><h3>{find.name}</h3><p>{find.zh}</p><span>{find.category}</span></div>
                             </div>
                             <div className="museum-rarity"><span>{t.rarity}</span><StarfishRating value={stars} label={t.rarity} /><b>{stars}/5</b></div>
                             <p className="museum-specimen-tip">{find.tip}</p>
                             <small>{t.size} · {find.size}</small>
                             <button className="museum-collect" tabIndex={revealed ? 0 : -1} aria-pressed={owned} onClick={() => toggleOwned(key)}>
-                              <i>{owned ? "✓" : "+"}</i>{owned ? t.collected : t.addCollection}
+                              <i>{owned ? "✓" : "✦"}</i>{owned ? t.collected : t.addCollection}
                             </button>
                           </div>
                         </div>
