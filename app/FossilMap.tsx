@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { documentLocations } from "./document-locations";
 import { documentLocationZh } from "./document-location-zh";
 import { locationPhotos } from "./location-photos";
+import { COAST_CLUSTER_WIDTH, coastGroups, mapLabelFor } from "./map-layout";
 import { COLLECTION_CARD_HEIGHT, COLLECTION_CARD_WIDTH, drawCollectionCard } from "./collection-card";
 import FieldComments from "./FieldComments";
 import IntroGlobe, { INTRO_REVEAL_DURATION_MS, INTRO_SPIN_DURATION_MS } from "./IntroGlobe";
@@ -1934,44 +1935,6 @@ function answerGuideQuestion(question: string, siteLocations: Location[], langua
   };
 }
 
-const markerOffsets: Record<string, { x: number; y: number }> = {
-  folkestone: { x: 38, y: 22 },
-  "herne-bay": { x: 46, y: -8 },
-  walton: { x: 28, y: -40 },
-  "wootton-bassett": { x: -30, y: -32 },
-  bracklesham: { x: 22, y: 40 },
-  "isle-of-wight": { x: -14, y: 58 },
-  charmouth: { x: -38, y: 30 },
-  weymouth: { x: -10, y: 44 },
-  peterborough: { x: -42, y: -28 },
-  nacton: { x: 50, y: -18 },
-  "fort-victoria": { x: -52, y: 40 },
-  "barton-on-sea": { x: -24, y: 70 },
-  "warden-point": { x: 62, y: 17 },
-  "abbey-wood": { x: -48, y: 30 },
-  "grange-chine": { x: 34, y: 75 },
-  hastings: { x: 58, y: 52 },
-  "ardley-quarry": { x: -62, y: -8 },
-  "kirtlington-quarry": { x: -62, y: 22 },
-  "woodeaton-quarry": { x: 46, y: 35 },
-  whitby: { x: 35, y: -35 },
-  "lyme-regis": { x: -55, y: 56 },
-};
-
-const markerStyle = (location: Location, index: number) => {
-  const offset = markerOffsets[location.id] ?? { x: 0, y: 0 };
-  const length = Math.hypot(offset.x, offset.y).toFixed(2);
-  const angle = (Math.atan2(offset.y, offset.x) * 180 / Math.PI).toFixed(2);
-  return {
-    left: `${location.mapX}%`,
-    top: `${location.mapY}%`,
-    "--delay": `${index * 80}ms`,
-    "--marker-x": `${offset.x}px`,
-    "--marker-y": `${offset.y}px`,
-    "--leader-length": `${length}px`,
-    "--leader-angle": `${angle}deg`,
-  } as React.CSSProperties;
-};
 
 const riskClass = (risk: Risk) => `risk-${risk.toLowerCase()}`;
 const riskLabel = (risk: Risk, language: Language) => language === "en" ? risk : ({ LOW: "低", MODERATE: "中", HIGH: "高" }[risk]);
@@ -3048,6 +3011,11 @@ export function FossilMap() {
   const [mobileList, setMobileList] = useState(false);
   const [mapView, setMapView] = useState<MapView>(FITTED_MAP_VIEW);
   const [mapDragging, setMapDragging] = useState(false);
+  const [mapActiveId, setMapActiveId] = useState<string | null>(null);
+  const [mapHoverId, setMapHoverId] = useState<string | null>(null);
+  const [expandedCoast, setExpandedCoast] = useState<string | null>(null);
+  const [plotWidth, setPlotWidth] = useState(700);
+  const mapPlotRef = useRef<HTMLDivElement>(null);
   const mapViewportRef = useRef<HTMLDivElement>(null);
   const mapDragRef = useRef<{ pointerId: number; startX: number; startY: number; origin: MapView; mode: "pan" | "orbit" } | null>(null);
   const mapTouchPointsRef = useRef(new Map<number, { x: number; y: number }>());
@@ -3055,6 +3023,44 @@ export function FossilMap() {
   const localizedLocations = useMemo(() => locations.map((location) => localizeLocation(location, language)), [language]);
   const selected = useMemo(() => localizedLocations.find((location) => location.id === selectedId) ?? null, [localizedLocations, selectedId]);
   const t = copy[language];
+
+  const mapActive = localizedLocations.find((location) => location.id === mapActiveId);
+  const compactCoast = plotWidth * mapView.scale < COAST_CLUSTER_WIDTH;
+  const collapsedGroups = compactCoast ? coastGroups.filter((group) => group.id !== expandedCoast) : [];
+  const clusteredIds = new Set<string>(collapsedGroups.flatMap((group) => [...group.members]));
+  const highlightId = mapHoverId ?? mapActiveId;
+
+  useEffect(() => {
+    const plot = mapPlotRef.current;
+    if (!plot) return;
+    let previousWidth = plot.clientWidth;
+    const observer = new ResizeObserver(() => {
+      const width = plot.clientWidth;
+      setPlotWidth(width);
+      if (Math.abs(width - previousWidth) > 1) {
+        setMapView(fittedMapView());
+        setExpandedCoast(null);
+      }
+      previousWidth = width;
+    });
+    setPlotWidth(plot.clientWidth);
+    observer.observe(plot);
+    return () => observer.disconnect();
+  }, []);
+
+  const expandCoast = (group: typeof coastGroups[number]) => {
+    const plot = mapPlotRef.current, viewport = mapViewportRef.current;
+    if (!plot || !viewport) return;
+    const scale = Math.min(MAX_MAP_SCALE, Math.max(1.55, 620 / plot.clientWidth));
+    const points = group.members.map((id) => mapLabelFor(locations.find((location) => location.id === id)!));
+    const centerX = (Math.min(...points.map((p) => p.x)) + Math.max(...points.map((p) => p.x))) / 200;
+    const centerY = (Math.min(...points.map((p) => p.y)) + Math.max(...points.map((p) => p.y))) / 200;
+    setExpandedCoast(group.id);
+    setMapView({ scale, tilt: 0, bearing: 0,
+      x: viewport.clientWidth * .48 - plot.offsetLeft - plot.clientWidth * (.5 + (centerX - .5) * scale),
+      y: viewport.clientHeight * .62 - plot.offsetTop - plot.clientHeight * (.5 + (centerY - .5) * scale),
+    });
+  };
 
   useEffect(() => {
     document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
@@ -3089,12 +3095,13 @@ export function FossilMap() {
         else if (communityOpen) setCommunityOpen(false);
         else if (museumOpen) setMuseumOpen(false);
         else if (selectedId) setSelectedId(null);
+        else if (mapActiveId) setMapActiveId(null);
         else if (mobileList) setMobileList(false);
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [communityOpen, modal, mobileList, museumOpen, selectedId]);
+  }, [communityOpen, modal, mobileList, museumOpen, selectedId, mapActiveId]);
 
   const openLocation = (id: string) => {
     setMobileList(false);
@@ -3104,10 +3111,12 @@ export function FossilMap() {
   };
 
   const zoomMapBy = useCallback((factor: number) => {
+    setExpandedCoast(null);
     setMapView((view) => ({ ...view, scale: clampMapScale(view.scale * factor) }));
   }, []);
 
   const resetMapView = useCallback(() => {
+    setExpandedCoast(null);
     setMapView(fittedMapView());
   }, []);
 
@@ -3281,8 +3290,9 @@ export function FossilMap() {
             {recordCountsError && <button onClick={() => void refreshRecordCounts()}>{language === "zh" ? "数量加载失败 · 重试" : "Counts unavailable · Retry"}</button>}
           </div>
           <div
+            ref={mapPlotRef}
             className="uk-plot"
-            style={{ transform: `translate3d(${mapView.x}px, ${mapView.y}px, 0) perspective(1100px) rotateX(${mapView.tilt}deg) rotateZ(${mapView.bearing}deg) scale(${mapView.scale})` }}
+            style={{ "--map-scale": mapView.scale, transform: `translate3d(${mapView.x}px, ${mapView.y}px, 0) perspective(1100px) rotateX(${mapView.tilt}deg) rotateZ(${mapView.bearing}deg) scale(${mapView.scale})` } as React.CSSProperties}
           >
             <div className="uk-silhouette" aria-hidden="true">
               <img className="uk-silhouette-image map-land-depth depth-far" src="/uk-pixel-map-gb.png" alt="" draggable={false} />
@@ -3291,34 +3301,43 @@ export function FossilMap() {
               <img className="uk-silhouette-image" src="/uk-pixel-map-gb.png" alt="" draggable={false} />
             </div>
 
-            {localizedLocations.map((location, index) => (
-              <button
-                key={location.id}
-                className={`map-marker ${location.risk === "HIGH" ? "high-risk" : ""} ${location.mapX > 75 ? "popup-left" : "popup-right"}`}
-                style={markerStyle(location, index)}
-                onClick={() => openLocation(location.id)}
-                aria-label={`${t.open} ${location.name} · ${stoneCount(location.id)} ${language === "zh" ? "颗石头记录" : "stone records"}`}
-              >
-                <span className="marker-pulse" />
-                <span className="marker-anchor" />
-                <span className="marker-leader" />
-                <span className="marker-visual">
+            <svg className="coast-connections" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              {localizedLocations.map((location) => {
+                const label = mapLabelFor(location);
+                const grouped = clusteredIds.has(location.id);
+                return <g key={location.id} className={`coast-connection ${highlightId === location.id ? "is-active" : ""} ${grouped ? "is-grouped" : ""}`}>
+                  {!grouped && <line x1={location.mapX} y1={location.mapY} x2={label.x} y2={label.y} vectorEffect="non-scaling-stroke" />}
+                  <circle cx={location.mapX} cy={location.mapY} r={.46} vectorEffect="non-scaling-stroke" />
+                </g>;
+              })}
+            </svg>
+            {localizedLocations.filter((location) => !clusteredIds.has(location.id)).map((location) => {
+              const label = mapLabelFor(location);
+              return (
+                <button key={location.id} type="button"
+                  className={`coast-marker ${mapActiveId === location.id ? "is-active" : ""}`}
+                  style={{ left: `${label.x}%`, top: `${label.y}%` }}
+                  onMouseEnter={() => setMapHoverId(location.id)} onMouseLeave={() => setMapHoverId(null)}
+                  onFocus={() => setMapHoverId(location.id)} onBlur={() => setMapHoverId(null)}
+                  onClick={() => setMapActiveId(location.id)}
+                  aria-label={`${language === "zh" ? "选择" : "Select"} ${location.name}`}
+                  aria-pressed={mapActiveId === location.id} aria-controls="map-location-summary"
+                  data-location-id={location.id}
+                >
                   <PixelSiteIcon id={location.id} />
-                  <span className="marker-card">
-                    <strong>{location.shortName}</strong>
-                    <small>{location.region}</small>
-                    <small>{location.period} · {location.finds[0].name}</small>
-                    <small className="marker-profile">
-                      <InlineStarRating label={t.findShort} value={location.findRating} />
-                      <span className="rating-divider" aria-hidden="true">·</span>
-                      <InlineStarRating label={t.accessShort} value={location.accessRating} />
-                    </small>
-                    <small className="marker-stone-count">🪨 {stoneCount(location.id)} {language === "zh" ? "颗石头 · 产地分享记录" : "stones · field notes"}</small>
-                    <em>{location.duration} {t.fromLondon}</em>
-                  </span>
-                </span>
-              </button>
-            ))}
+                  <span className="coast-marker-name">{location.shortName}</span>
+                </button>
+              );
+            })}
+            {collapsedGroups.map((group) => {
+              const count = group.members.filter((id) => localizedLocations.some((location) => location.id === id)).length;
+              return <button key={group.id} type="button" className="coast-cluster"
+                style={{ left: `${group.x}%`, top: `${group.y}%` }} onClick={() => expandCoast(group)}
+                aria-label={language === "zh" ? `放大${group.zh}，查看 ${count} 个地点` : `Zoom into ${group.en}, ${count} locations`}>
+                {language === "zh" ? group.zh : group.en} · {count}
+                <span>{language === "zh" ? "个地点 · 展开" : "sites · explore"}</span>
+              </button>;
+            })}
           </div>
 
           <div className="map-viewport-controls" role="group" aria-label={language === "en" ? "Map zoom controls" : "地图缩放控制"}>
@@ -3335,6 +3354,23 @@ export function FossilMap() {
             <span className="map-hint-mobile">{language === "en" ? "Drag to move · Pinch to zoom and rotate" : "拖动平移 · 双指缩放旋转"}</span>
           </p>
         </div>
+
+        <aside id="map-location-summary" className={`map-location-dock ${mapActive ? "has-location" : ""}`} aria-label={language === "zh" ? "地点摘要" : "Location summary"} aria-live="polite">
+          <span>{language === "zh" ? "FIELD NOTES · 探险地点" : "FIELD NOTES · YOUR NEXT STOP"}</span>
+          {mapActive ? <>
+            <button className="map-dock-close" aria-label={language === "zh" ? "关闭地点摘要" : "Close location summary"} onClick={() => setMapActiveId(null)}>×</button>
+            <h2>{mapActive.shortName}</h2>
+            <p>{mapActive.region} · {mapActive.period}</p>
+            <p>{mapActive.finds.slice(0, 3).map((find) => find.name).join(" · ")}</p>
+            <div className="map-dock-ratings"><InlineStarRating label={t.findShort} value={mapActive.findRating} /><InlineStarRating label={t.accessShort} value={mapActive.accessRating} /></div>
+            <p>{mapActive.duration} {t.fromLondon} · {language === "zh" ? "风险" : "Risk"} {riskLabel(mapActive.risk, language)}</p>
+            <button className="map-dock-open" onClick={() => openLocation(mapActive.id)}>{language === "zh" ? "打开完整地点攻略" : "Open the field guide"}</button>
+          </> : <>
+            <h2>{language === "zh" ? "沿着海岸，选一站。" : "Follow the coast. Find your next stop."}</h2>
+            <p>{language === "zh" ? "点选化石图标，在这里查看地点；缩小时可点开分组继续探索。" : "Select a fossil for its field notes. Zoom into a coastal group to explore its locations."}</p>
+          </>}
+          <small className="map-dock-legend"><i />{language === "zh" ? "蓝点为采集地概略位置，细线连接图标" : "Blue dots mark approximate sites; lines lead to icons"}</small>
+        </aside>
 
         <button
           className={`location-list-hint ${mobileList ? "is-open" : ""}`}

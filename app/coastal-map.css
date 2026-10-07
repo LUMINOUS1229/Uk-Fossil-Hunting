@@ -1,0 +1,87 @@
+/* Offshore labels share the map's transform; the information dock does not. */
+.map-viewport .uk-plot { top: 2%; left: 6%; height: 78%; width: auto; transform-origin: 50% 50%; }
+.map-viewport .quest-hud { display: none; }
+.coast-connections { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.coast-connection line { stroke: #397ba3; stroke-width: 1; opacity: .44; }
+.coast-connection circle { fill: #238ec7; stroke: #e8f9ff; stroke-width: 1.3; }
+.coast-connection.is-active line { stroke: #007bbf; stroke-width: 2; opacity: 1; }
+.coast-connection.is-active circle { fill: #006da8; stroke-width: 2; }
+.coast-connection.is-grouped circle { opacity: .7; }
+.map-viewport .coast-marker {
+  position: absolute; z-index: 10; display: grid; place-items: center;
+  width: calc(44px / var(--map-scale)); height: calc(44px / var(--map-scale));
+  padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer;
+  transform: translate(-50%, -50%); -webkit-tap-highlight-color: transparent;
+}
+.coast-marker .site-pixel-icon {
+  position: relative; inset: auto; width: 28px; height: 28px; flex: none;
+  transform: scale(calc(1 / var(--map-scale))); scale: 1;
+  opacity: .72; border: 1px solid #83afc5; background: #e9f5f8;
+  color: #397ba3; box-shadow: 0 3px 10px #214c6d14;
+  transition: background 180ms, opacity 180ms, box-shadow 180ms;
+}
+.coast-marker .site-pixel-icon::before { color: #397ba3; font-size: 19px; }
+.coast-marker:hover, .coast-marker:focus-visible, .coast-marker.is-active { z-index: 30; outline: none; }
+.coast-marker:is(:hover, :focus-visible, .is-active) .site-pixel-icon {
+  transform: scale(calc(1.24 / var(--map-scale))); opacity: 1;
+  border-color: #0b8ac0; background: #f5fcff; box-shadow: 0 0 0 3px #63d9f950, 0 5px 18px #095c8a33;
+}
+.coast-marker-name {
+  position: absolute; left: 50%; top: 100%; width: max-content; max-width: 210px;
+  margin-top: calc(6px / var(--map-scale)); padding: 5px 9px;
+  transform: translateX(-50%) scale(calc(1 / var(--map-scale))); transform-origin: top center;
+  border: 1px solid #8ddcef; border-radius: 4px; background: #102e49; color: #edfbff;
+  font: 500 13px / 1.4 var(--font-sans), sans-serif; text-align: center;
+  opacity: 0; visibility: hidden; pointer-events: none;
+}
+.coast-marker:is(:hover, :focus-visible, .is-active) .coast-marker-name { opacity: 1; visibility: visible; }
+.coast-cluster {
+  position: absolute; z-index: 20; width: 104px; min-height: 44px; padding: 8px 7px;
+  transform: translate(-50%, -50%) scale(calc(1 / var(--map-scale)));
+  border: 1px solid #448bab; border-radius: 8px; background: #eefaff; color: #174a6a;
+  box-shadow: 0 4px 14px #16466a24; font: 600 12px / 1.4 var(--font-sans), sans-serif; cursor: pointer;
+}
+.coast-cluster span { display: block; font-size: 11px; font-weight: 400; color: #557c92; }
+.coast-cluster:hover, .coast-cluster:focus-visible { outline: 2px solid #2e9ed1; outline-offset: 3px; background: white; }
+.map-location-dock {
+  position: absolute; z-index: 21; top: 390px; left: 3%; width: 26%; max-width: 330px;
+  padding: 22px; border: 1px solid #64c6e35c; border-radius: 10px 2px 10px 2px;
+  background: linear-gradient(135deg, #102a43f5, #153956ef); color: #e7f8ff; box-shadow: 0 12px 30px #09223f1f;
+}
+.map-location-dock > span { color: #93dce9; font: 500 11px / 1.5 var(--font-mono), monospace; letter-spacing: .13em; }
+.map-location-dock h2 { margin: 10px 20px 9px 0; font: 600 26px / 1.1 var(--font-display), "Songti SC", serif; }
+.map-location-dock p { margin: 8px 0; color: #bbd9e7; font-size: 14px; line-height: 1.65; }
+.map-location-dock .map-dock-ratings { display: flex; flex-wrap: wrap; gap: 12px; margin: 15px 0; }
+.map-dock-ratings .inline-rating-label { color: #bbd9e7; }
+.map-dock-ratings .inline-rating-stars { color: #617d91; }
+.map-dock-ratings .inline-rating-stars .filled { color: #8ddcf0; }
+.map-dock-close { position: absolute; right: 7px; top: 7px; width: 36px; height: 36px; border: 0; background: transparent; color: #b9eaf4; font-size: 24px; cursor: pointer; }
+.map-dock-open { width: 100%; margin-top: 10px; padding: 11px; border: 1px solid #8bdcf0; border-radius: 4px; background: #2a6f92; color: white; font-size: 14px; cursor: pointer; }
+.map-dock-open:hover, .map-dock-open:focus-visible { background: #3785a7; outline: 2px solid #a9efff; outline-offset: 2px; }
+.map-dock-legend { display: inline-flex; gap: 8px; align-items: center; margin-top: 14px; font-size: 12px; color: #a6cbdc; }
+.map-dock-legend i { width: 7px; height: 7px; border: 1px solid #c8f6ff; border-radius: 50%; background: #238ec7; }
+.sunset-theme .map-location-dock { background: linear-gradient(135deg, #603249f5, #8c4a60ef); border-color: #ffe0a8; }
+.sunset-theme .coast-marker .site-pixel-icon { background: #fff0cc; border-color: #b76781; }
+@media (max-width: 980px) and (min-width: 721px) {
+  .map-location-dock { left: 2%; width: 27%; padding: 16px; }
+  .map-location-dock h2 { font-size: 23px; }
+  .map-viewport .uk-plot { height: min(73%, 76vw); left: 0; }
+}
+@media (max-width: 720px) {
+  .overview { min-height: calc(100svh + 225px); }
+  .overview .map-viewport { bottom: 225px; }
+  .map-viewport .uk-plot { top: 168px; left: 8%; width: min(76%, calc((100svh - 350px) * .72)); height: auto; transform-origin: 50% 50%; }
+  .map-viewport-controls { top: 165px; right: 12px; bottom: auto; grid-template-columns: 34px auto 34px; }
+  .map-viewport-controls button { min-height: 34px; }
+  .map-viewport-controls .map-fit-button { min-width: 58px; padding-inline: 5px; font-size: 11px; }
+  .map-gesture-hint { top: auto; bottom: 65px; right: 14px; font-size: 10px; }
+  .map-location-dock { top: calc(100svh - 6px); left: 14px; width: calc(100% - 28px); max-width: none; padding: 17px; }
+  .map-location-dock h2 { font-size: 24px; }
+  .map-location-dock .map-dock-ratings { margin: 9px 0; }
+  .map-location-dock p { font-size: 13px; margin: 5px 0; }
+  .map-dock-legend { margin-top: 7px; }
+  .map-location-dock.has-location { padding-bottom: 75px; }
+  .overview:has(.map-location-dock.has-location) { min-height: calc(100svh + 370px); }
+  .overview:has(.map-location-dock.has-location) .map-viewport { bottom: 370px; }
+}
+@media (prefers-reduced-motion: reduce) { .coast-marker .site-pixel-icon { transition: none; } }
