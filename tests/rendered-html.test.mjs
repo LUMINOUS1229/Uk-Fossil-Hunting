@@ -52,3 +52,19 @@ test("keeps the guide focused and adds the requested discovery play", async () =
   assert.match(css, /\.isle-hatchling/);
   assert.match(css, /height:\s*104px/);
 });
+
+test("aligns the glass field notes and gates the one-time water reveal after the intro", async () => {
+  const [component, css] = await Promise.all([
+    read("../app/FossilMap.tsx"),
+    read("../app/coastal-map.css"),
+  ]);
+  assert.match(component, /introPhase === "done" \? "hero-ripple-ready"/);
+  assert.match(component, /className="hero-ripples" aria-hidden="true"/);
+  assert.match(css, /\.overview-title \{ left: var\(--overview-copy-left\); \}/);
+  assert.match(css, /\.map-location-dock \{[^}]*left: var\(--overview-copy-left\)/);
+  assert.match(css, /backdrop-filter: blur\(20px\) saturate\(125%\)/);
+  assert.match(css, /@keyframes hero-water-reveal/);
+  assert.match(css, /@keyframes hero-water-ring/);
+  assert.doesNotMatch(css, /hero-water-[^;]+infinite/);
+  assert.match(css, /prefers-reduced-motion: reduce[\s\S]*\.overview-title \.hero-copy \{ animation: none; opacity: 1;/);
+});

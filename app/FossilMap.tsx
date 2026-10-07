@@ -3259,11 +3259,14 @@ export function FossilMap() {
       </header>
 
       <section className={`overview ${selected || museumOpen || communityOpen ? "is-zoomed" : ""}`} aria-hidden={Boolean(selected || museumOpen || communityOpen)}>
-        <div className="overview-title">
-          <p className="eyebrow">{t.heroEyebrow}</p>
-          <h1 className="fossil-title"><span>Fossil Hunters</span><small>in UK</small></h1>
-          <p className="adventure-subtitle">{t.heroSubtitle}</p>
-          <p className="brand-tagline">We collect fossils, and memories too.</p>
+        <div className={`overview-title ${introPhase === "done" ? "hero-ripple-ready" : ""}`}>
+          <span className="hero-ripples" aria-hidden="true" />
+          <div className="hero-copy">
+            <p className="eyebrow">{t.heroEyebrow}</p>
+            <h1 className="fossil-title"><span>Fossil Hunters</span><small>in UK</small></h1>
+            <p className="adventure-subtitle">{t.heroSubtitle}</p>
+            <p className="brand-tagline">We collect fossils, and memories too.</p>
+          </div>
         </div>
 
         <div
