@@ -68,3 +68,14 @@ test("aligns the glass field notes and gates the one-time water reveal after the
   assert.doesNotMatch(css, /hero-water-[^;]+infinite/);
   assert.match(css, /prefers-reduced-motion: reduce[\s\S]*\.overview-title \.hero-copy \{ animation: none; opacity: 1;/);
 });
+
+test("reveals field notes immediately after the title without replaying on location changes", async () => {
+  const css = await read("../app/coastal-map.css");
+  assert.match(css, /--hero-water-duration: 3\.4s/);
+  assert.match(css, /hero-water-reveal var\(--hero-water-duration\)/);
+  assert.match(css, /\.intro-done \.map-location-dock \{\s*animation: field-notes-water-reveal 2\.6s var\(--hero-water-duration\)[^;]*backwards;/);
+  assert.match(css, /\.intro-loading \.map-location-dock, \.intro-reveal \.map-location-dock \{ opacity: 0; visibility: hidden; \}/);
+  assert.match(css, /@keyframes field-notes-water-reveal[\s\S]*0% \{[^}]*visibility: hidden/);
+  assert.doesNotMatch(css, /has-location[^}]*animation:/);
+  assert.match(css, /prefers-reduced-motion: reduce[\s\S]*\.site-shell \.map-location-dock \{ animation: none; opacity: 1; visibility: visible;/);
+});

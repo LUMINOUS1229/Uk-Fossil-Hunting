@@ -1,11 +1,11 @@
 /* Offshore labels share the map's transform; the information dock does not. */
-.overview { --overview-copy-left: clamp(34px, 7vw, 112px); }
+.overview { --overview-copy-left: clamp(34px, 7vw, 112px); --hero-water-duration: 3.4s; }
 .overview-title { left: var(--overview-copy-left); }
 
 /* A single, gentle water reveal starts after the opening scene has cleared. */
 .hero-copy { position: relative; width: max-content; max-width: 100%; }
 .intro-loading .hero-copy, .intro-reveal .hero-copy { opacity: 0; }
-.hero-ripple-ready .hero-copy { animation: hero-water-reveal 3.4s cubic-bezier(.16, .6, .24, 1) both; }
+.hero-ripple-ready .hero-copy { animation: hero-water-reveal var(--hero-water-duration) cubic-bezier(.16, .6, .24, 1) both; }
 .hero-ripples { position: absolute; inset: -45% -35%; pointer-events: none; }
 .hero-ripples::before, .hero-ripples::after {
   content: ""; position: absolute; inset: 0; border-radius: 50%; opacity: 0;
@@ -79,6 +79,28 @@
   color: var(--dock-ink); box-shadow: 0 12px 36px rgba(66, 128, 162, .09), inset 0 0 0 1px rgba(120, 189, 216, .16), inset 0 1px 0 rgba(255, 255, 255, .95);
   -webkit-backdrop-filter: blur(20px) saturate(125%); backdrop-filter: blur(20px) saturate(125%);
 }
+/* The same clock hands the reveal from the title to the glass field notes. */
+.intro-loading .map-location-dock, .intro-reveal .map-location-dock { opacity: 0; visibility: hidden; }
+.intro-done .map-location-dock {
+  animation: field-notes-water-reveal 2.6s var(--hero-water-duration) cubic-bezier(.16, .6, .24, 1) backwards;
+}
+.map-location-dock::before, .map-location-dock::after {
+  content: ""; position: absolute; inset: -14% -10%; border-radius: 50%; opacity: 0; pointer-events: none;
+  border: 1px solid rgba(99, 181, 216, .3);
+  box-shadow: 0 0 18px rgba(132, 212, 234, .12), inset 0 0 15px rgba(255, 255, 255, .6);
+}
+.intro-done .map-location-dock::before {
+  animation: hero-water-ring 2.6s var(--hero-water-duration) cubic-bezier(.16, .5, .25, 1) both;
+}
+.intro-done .map-location-dock::after {
+  animation: hero-water-ring 2.6s calc(var(--hero-water-duration) + .3s) cubic-bezier(.16, .5, .25, 1) both;
+}
+@keyframes field-notes-water-reveal {
+  0% { clip-path: circle(0% at 0% 12%); opacity: 0; visibility: hidden; }
+  1% { visibility: visible; }
+  40% { opacity: .85; }
+  100% { clip-path: circle(180% at 0% 12%); opacity: 1; visibility: visible; }
+}
 .map-location-dock > span { color: var(--dock-accent); font: 500 11px / 1.5 var(--font-mono), monospace; letter-spacing: .13em; }
 .map-location-dock h2 { margin: 10px 20px 9px 0; font: 600 26px / 1.1 var(--font-display), "Songti SC", serif; }
 .map-location-dock p { margin: 8px 0; color: var(--dock-soft); font-size: 14px; line-height: 1.65; }
@@ -126,4 +148,6 @@
   .coast-marker .site-pixel-icon { transition: none; }
   .overview-title .hero-copy { animation: none; opacity: 1; clip-path: none; filter: none; }
   .hero-ripples { display: none; }
+  .site-shell .map-location-dock { animation: none; opacity: 1; visibility: visible; clip-path: none; }
+  .map-location-dock::before, .map-location-dock::after { display: none; }
 }
