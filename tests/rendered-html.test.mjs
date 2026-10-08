@@ -54,6 +54,12 @@ test("keeps the guide focused and adds the requested discovery play", async () =
   assert.match(css, /height:\s*104px/);
 });
 
+test("uses bright cyan map connectors while retaining the selected line emphasis", async () => {
+  const css = await read("../app/coastal-map.css");
+  assert.match(css, /\.coast-connection line \{ stroke: #78e9f8; stroke-width: 1; opacity: \.8;/);
+  assert.match(css, /\.coast-connection\.is-active line \{ stroke: #78e9f8; stroke-width: 2; opacity: 1;/);
+});
+
 test("aligns the glass field notes and gates the one-time water reveal after the intro", async () => {
   const [component, css] = await Promise.all([
     read("../app/FossilMap.tsx"),

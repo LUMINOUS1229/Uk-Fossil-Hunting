@@ -30,9 +30,9 @@
 .map-viewport .uk-plot { top: 2%; left: 6%; height: 78%; width: auto; transform-origin: 50% 50%; }
 .map-viewport .quest-hud { display: none; }
 .coast-connections { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-.coast-connection line { stroke: #397ba3; stroke-width: 1; opacity: .44; }
+.coast-connection line { stroke: #78e9f8; stroke-width: 1; opacity: .8; }
 .coast-connection circle { fill: #238ec7; stroke: #e8f9ff; stroke-width: 1.3; }
-.coast-connection.is-active line { stroke: #007bbf; stroke-width: 2; opacity: 1; }
+.coast-connection.is-active line { stroke: #78e9f8; stroke-width: 2; opacity: 1; }
 .coast-connection.is-active circle { fill: #006da8; stroke-width: 2; }
 .coast-connection.is-grouped circle { opacity: .7; }
 .map-viewport .coast-marker {
