@@ -1246,7 +1246,7 @@ const localizeLocation = (location: Location, language: Language): Location => {
 const copy = {
   en: {
     returnMap: "Return to UK map", museum: "Fossil museum", references: "Reference", about: "About", safetyFirst: "Safety first",
-    heroEyebrow: "N+ FIELD SITES · ROUTES FROM LONDON", heroTitle: "Fossil Hunters", heroSubtitle: "Let’s go exploring.",
+    heroEyebrow: "N+ FIELD SITES · ROUTES FROM LONDON", heroTitle: "Fossil Hunters",
     scopeSites: "FIELD SITES", scopeStart: "STARTING FROM", scopeStartValue: "LONDON", scopeCheck: "CHECK BEFORE", scopeCheckValue: "TIDE & ACCESS",
     northSea: "NORTH SEA", channel: "ENGLISH CHANNEL", london: "London", open: "Open",
     fromLondon: "from London", fieldSites: "FIELD SITES · N+", sitesHint: "Click or hover for field sites", close: "Close", explore: "Explore N+ field sites", findShort: "Finds", accessShort: "Access",
@@ -1274,7 +1274,7 @@ const copy = {
   },
   zh: {
     returnMap: "返回英国总览地图", museum: "化石图鉴博物馆", references: "参考资料", about: "关于", safetyFirst: "安全须知",
-    heroEyebrow: "N+ 个重点地点 · 从伦敦出发", heroTitle: "Fossil Hunters", heroSubtitle: "一起去探险吧。",
+    heroEyebrow: "N+ 个重点地点 · 从伦敦出发", heroTitle: "Fossil Hunters",
     scopeSites: "收录地点", scopeStart: "默认出发地", scopeStartValue: "伦敦", scopeCheck: "出发前确认", scopeCheckValue: "潮汐与通行",
     northSea: "北海", channel: "英吉利海峡", london: "伦敦", open: "打开",
     fromLondon: "从伦敦出发", fieldSites: "重点地点 · N+", sitesHint: "点击悬停查看地点", close: "关闭", explore: "探索 N+ 个重点地点", findShort: "发现", accessShort: "通行",
@@ -2343,7 +2343,6 @@ function IntroScreen({ phase }: { phase: Exclude<IntroPhase, "done"> }) {
       <div className="intro-stage">
         <div className="intro-copy">
           <h1 className="fossil-title"><span>Fossil Hunters</span><small>in UK</small></h1>
-          <p>一起去探险吧。</p>
           <ul className="intro-keywords" aria-label="Explore, Discover, Learn, Record, Remember">
             {(["Explore", "Discover", "Learn", "Record", "Remember"] as const).map((word) => (
               <li key={word}>{word}</li>
@@ -3282,7 +3281,6 @@ export function FossilMap() {
           <div className="hero-copy">
             <p className="eyebrow">{t.heroEyebrow}</p>
             <h1 className="fossil-title"><span>Fossil Hunters</span><small>in UK</small></h1>
-            <p className="adventure-subtitle">{t.heroSubtitle}</p>
             <p className="brand-tagline">We collect fossils, and memories too.</p>
           </div>
         </div>

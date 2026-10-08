@@ -38,6 +38,7 @@ test("keeps the guide focused and adds the requested discovery play", async () =
   assert.match(component, /handleMapPointerMove/);
   assert.match(component, /handleMapWheel/);
   assert.match(component, /We collect fossils, and memories too\./);
+  assert.doesNotMatch(component, /一起去探险吧|heroSubtitle|className="adventure-subtitle"/);
   assert.match(component, /\["Explore", "Discover", "Learn", "Record", "Remember"\]/);
   assert.match(css, /@keyframes intro-keyword-rise/);
   assert.match(css, /@keyframes intro-tagline-rise/);
