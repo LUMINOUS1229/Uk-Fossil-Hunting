@@ -69,6 +69,7 @@ test("aligns the glass field notes and gates the one-time water reveal after the
   assert.match(component, /className="hero-ripples" aria-hidden="true"/);
   assert.match(css, /\.overview-title \{ left: var\(--overview-copy-left\); \}/);
   assert.match(css, /\.map-location-dock \{[^}]*left: var\(--overview-copy-left\)/);
+  assert.match(css, /\.map-location-dock \{[^}]*top: max\(300px, calc\(50svh - 170px\)\)/);
   assert.match(css, /backdrop-filter: blur\(20px\) saturate\(125%\)/);
   assert.match(css, /@keyframes hero-water-reveal/);
   assert.match(css, /@keyframes hero-water-ring/);

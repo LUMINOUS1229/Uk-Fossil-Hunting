@@ -73,7 +73,7 @@
 .coast-cluster:hover, .coast-cluster:focus-visible { outline: 2px solid #2e9ed1; outline-offset: 3px; background: white; }
 .map-location-dock {
   --dock-ink: #234e6c; --dock-soft: #466b83; --dock-accent: #207aa0; --dock-muted: #8eb2c3;
-  position: absolute; z-index: 21; top: 390px; left: var(--overview-copy-left); width: 26%; max-width: 330px;
+  position: absolute; z-index: 21; top: max(300px, calc(50svh - 170px)); left: var(--overview-copy-left); width: 26%; max-width: 330px;
   padding: 22px; border: 1px solid rgba(255, 255, 255, .88); border-radius: 10px 2px 10px 2px;
   background: linear-gradient(135deg, rgba(255, 255, 255, .66), rgba(212, 239, 249, .32));
   color: var(--dock-ink); box-shadow: 0 12px 36px rgba(66, 128, 162, .09), inset 0 0 0 1px rgba(120, 189, 216, .16), inset 0 1px 0 rgba(255, 255, 255, .95);
