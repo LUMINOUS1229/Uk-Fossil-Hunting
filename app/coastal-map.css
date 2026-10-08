@@ -114,6 +114,10 @@
 .map-dock-close:focus-visible { outline: 2px solid var(--dock-accent); outline-offset: 1px; border-radius: 4px; }
 .map-dock-legend { display: inline-flex; gap: 8px; align-items: center; margin-top: 14px; font-size: 12px; color: var(--dock-soft); }
 .map-dock-legend i { flex-shrink: 0; width: 7px; height: 7px; border: 1px solid white; border-radius: 50%; background: #238ec7; box-shadow: 0 0 0 1px #80c3e2; }
+.map-touch-toggle, .map-dock-intro-mobile, .map-dock-sites, .map-dock-expand { display: none; }
+.intro-done .map-location-dock.is-interacted { animation: none; opacity: 1; visibility: visible; }
+.intro-done .map-location-dock.is-interacted::before,
+.intro-done .map-location-dock.is-interacted::after { animation: none; }
 .sunset-theme .map-location-dock {
   --dock-ink: #64324d; --dock-soft: #795369; --dock-accent: #963f64; --dock-muted: #bd8fa0;
   background: linear-gradient(135deg, rgba(255, 246, 239, .7), rgba(255, 218, 225, .32)); border-color: rgba(255, 245, 229, .88);
@@ -125,23 +129,74 @@
   .map-viewport .uk-plot { height: min(73%, 76vw); left: 0; }
 }
 @media (max-width: 720px) {
-  .overview { --overview-copy-left: 18px; min-height: calc(100svh + 225px); }
+  /* Reading first: title, notes, then a bounded map. No full-screen spacer. */
+  .overview {
+    --overview-copy-left: 18px;
+    display: flex; flex-direction: column; gap: 14px; min-height: 100svh;
+    padding-top: calc(var(--mobile-header-height) + 16px); padding-bottom: 14px;
+  }
+  .overview-title { position: relative; top: auto; order: 0; width: calc(100% - var(--overview-copy-left) * 2); }
+  .intro-done .overview:not(.is-zoomed) { transform: none; }
   .hero-copy { width: 100%; }
   .hero-ripples { inset: -25% 0; }
-  .overview .map-viewport { bottom: 225px; }
-  .map-viewport .uk-plot { top: 168px; left: 8%; width: min(76%, calc((100svh - 350px) * .72)); height: auto; transform-origin: 50% 50%; }
-  .map-viewport-controls { top: 165px; right: 12px; bottom: auto; grid-template-columns: 34px auto 34px; }
-  .map-viewport-controls button { min-height: 34px; }
-  .map-viewport-controls .map-fit-button { min-width: 58px; padding-inline: 5px; font-size: 11px; }
-  .map-gesture-hint { top: auto; bottom: 65px; right: 14px; font-size: 10px; }
-  .map-location-dock { top: calc(100svh - 6px); width: calc(100% - var(--overview-copy-left) * 2); max-width: none; padding: 17px; }
-  .map-location-dock h2 { font-size: 24px; }
+  .overview .map-viewport {
+    position: relative; inset: auto; order: 2; width: 100%; height: clamp(360px, 56svh, 480px);
+    flex: none; touch-action: pan-y pinch-zoom; cursor: auto;
+  }
+  .overview .map-viewport.is-touch-active { touch-action: none; cursor: grab; }
+  .map-viewport .uk-plot {
+    top: 66px; left: 12%; height: calc((100% - 110px) / 1.35); width: auto;
+    transform-origin: 50% 50%;
+  }
+  .map-viewport-controls { top: 12px; right: 12px; bottom: auto; grid-template-columns: 44px auto 44px; }
+  .map-viewport-controls button { min-height: 44px; }
+  .map-viewport-controls .map-fit-button { min-width: 64px; padding-inline: 5px; font-size: 11px; }
+  .map-viewport-controls .map-view-button { min-height: 28px; }
+  .map-viewport-controls output { display: none; }
+  .map-touch-toggle {
+    display: block; position: absolute; z-index: 80; top: 12px; left: 14px; min-height: 44px; padding: 8px 12px;
+    border: 1px solid #9cc7d9; border-radius: 8px; background: #f2fbffdf; color: #235c7c; font-size: 12px;
+  }
+  .map-touch-toggle[aria-pressed="true"] { background: #1d668b; color: white; border-color: #7fdae9; }
+  .map-touch-toggle:focus-visible { outline: 2px solid #1688b8; outline-offset: 2px; }
+  .map-gesture-hint { top: auto; bottom: 10px; right: 14px; max-width: none; font-size: 10px; }
+  .map-location-dock {
+    position: relative; top: auto; order: 1; width: calc(100% - var(--overview-copy-left) * 2);
+    max-width: none; padding: 14px; scroll-margin-top: calc(var(--mobile-header-height) + 12px);
+  }
+  .map-location-dock > span { font-size: 10px; }
+  .map-location-dock h2 { font-size: 22px; line-height: 1.15; margin: 6px 26px 6px 0; }
   .map-location-dock .map-dock-ratings { margin: 9px 0; }
-  .map-location-dock p { font-size: 13px; margin: 5px 0; }
-  .map-dock-legend { margin-top: 7px; }
-  .map-location-dock.has-location { padding-bottom: 75px; }
-  .overview:has(.map-location-dock.has-location) { min-height: calc(100svh + 370px); }
-  .overview:has(.map-location-dock.has-location) .map-viewport { bottom: 370px; }
+  .map-location-dock p { font-size: 12px; line-height: 1.5; margin: 5px 0; }
+  .map-dock-intro-desktop, .map-dock-legend, .map-dock-details { display: none; }
+  .map-location-dock .map-dock-intro-mobile, .map-location-dock.is-expanded .map-dock-details { display: block; }
+  .map-dock-sites, .map-dock-expand {
+    display: block; min-height: 44px; padding: 9px 12px; border: 1px solid #90bdd366;
+    border-radius: 4px; background: #ffffff80; color: var(--dock-accent); font-size: 12px;
+  }
+  .map-dock-sites { width: 100%; margin-top: 8px; text-align: left; }
+  .map-dock-actions { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-top: 10px; }
+  .map-dock-actions .map-dock-open { margin: 0; min-height: 44px; font-size: 12px; }
+  .map-dock-close { top: 4px; right: 4px; width: 44px; height: 44px; }
+  .overview .mobile-sites-button { display: none; }
+  .overview .map-credit-note { position: relative; inset: auto; order: 3; margin: 0 18px; align-self: flex-end; }
+
+  /* Overview utilities live after the map, never over the notes or controls. */
+  .site-shell:not(:is(.detail-open, .museum-open, .community-open)) > .nautilus-guide {
+    position: relative; inset: auto; display: flex; align-items: center; justify-content: flex-end;
+    width: calc(100% - 32px); min-height: 56px; margin: 0 16px 10px; gap: 8px;
+  }
+  .site-shell:not(:is(.detail-open, .museum-open, .community-open)) .nori-pet-strip {
+    position: relative; inset: auto; min-width: 0; flex-wrap: wrap;
+  }
+  .site-shell:not(:is(.detail-open, .museum-open, .community-open)) .guide-panel {
+    position: fixed; right: 12px; bottom: 20px; max-height: calc(100svh - var(--mobile-header-height) - 40px);
+  }
+  .site-shell:not(:is(.detail-open, .museum-open, .community-open)) > .site-visit-counter {
+    position: relative; inset: auto; margin: 0 16px calc(16px + env(safe-area-inset-bottom));
+    min-height: 30px; background: #eaf5f9; color: #4b7087; border-color: #b3d2e1; box-shadow: none;
+  }
+  .site-shell:not(:is(.detail-open, .museum-open, .community-open)) > .site-visit-counter strong { color: #235c7c; }
 }
 @media (max-width: 420px) { .overview { --overview-copy-left: 16px; } }
 @media (prefers-reduced-motion: reduce) {

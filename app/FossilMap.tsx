@@ -3012,6 +3012,10 @@ export function FossilMap() {
   const [mapView, setMapView] = useState<MapView>(FITTED_MAP_VIEW);
   const [mapDragging, setMapDragging] = useState(false);
   const [mapActiveId, setMapActiveId] = useState<string | null>(null);
+  const [mapTouchMode, setMapTouchMode] = useState(false);
+  const [mapNotesExpanded, setMapNotesExpanded] = useState(false);
+  const [mapNotesInteracted, setMapNotesInteracted] = useState(false);
+  const mapNotesRef = useRef<HTMLElement>(null);
   const [mapHoverId, setMapHoverId] = useState<string | null>(null);
   const [expandedCoast, setExpandedCoast] = useState<string | null>(null);
   const [plotWidth, setPlotWidth] = useState(700);
@@ -3120,8 +3124,21 @@ export function FossilMap() {
     setMapView(fittedMapView());
   }, []);
 
+  const selectMapLocation = (id: string) => {
+    setMapActiveId(id);
+    setMapNotesExpanded(false);
+    setMapNotesInteracted(true);
+    setMapTouchMode(false);
+    if (window.matchMedia("(max-width: 720px)").matches) {
+      window.requestAnimationFrame(() => mapNotesRef.current?.scrollIntoView({
+        block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+      }));
+    }
+  };
+
   const handleMapPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if ((event.button !== 0 && event.button !== 2) || (event.target as HTMLElement).closest("button, a, input, select, textarea")) return;
+    if (event.pointerType === "touch" && window.matchMedia("(max-width: 720px)").matches && !mapTouchMode) return;
     if (event.pointerType === "touch") {
       mapTouchPointsRef.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
       if (mapTouchPointsRef.current.size === 2) {
@@ -3211,6 +3228,7 @@ export function FossilMap() {
   };
 
   const handleMapWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    if (window.matchMedia("(max-width: 720px)").matches && !mapTouchMode) return;
     event.preventDefault();
     zoomMapBy(event.deltaY < 0 ? 1.12 : 1 / 1.12);
   };
@@ -3271,7 +3289,7 @@ export function FossilMap() {
 
         <div
           ref={mapViewportRef}
-          className={`uk-map map-viewport ${mapDragging ? "is-dragging" : ""}`}
+          className={`uk-map map-viewport ${mapDragging ? "is-dragging" : ""} ${mapTouchMode ? "is-touch-active" : ""}`}
           aria-label={language === "en" ? "Interactive 3D map of UK fossil locations. Drag to pan, shift-drag to orbit, and zoom with the wheel or controls." : "英国化石地点 3D 互动地图。拖动平移，Shift 拖动旋转，滚轮或按钮缩放。"}
           aria-describedby="map-gesture-hint"
           tabIndex={0}
@@ -3322,7 +3340,7 @@ export function FossilMap() {
                   style={{ left: `${label.x}%`, top: `${label.y}%` }}
                   onMouseEnter={() => setMapHoverId(location.id)} onMouseLeave={() => setMapHoverId(null)}
                   onFocus={() => setMapHoverId(location.id)} onBlur={() => setMapHoverId(null)}
-                  onClick={() => setMapActiveId(location.id)}
+                  onClick={() => selectMapLocation(location.id)}
                   aria-label={`${language === "zh" ? "选择" : "Select"} ${location.name}`}
                   aria-pressed={mapActiveId === location.id} aria-controls="map-location-summary"
                   data-location-id={location.id}
@@ -3352,25 +3370,35 @@ export function FossilMap() {
             </button>
             <output aria-live="polite">{Math.round(mapView.scale * 100)}%</output>
           </div>
+          <button type="button" className="map-touch-toggle" aria-pressed={mapTouchMode} onClick={() => setMapTouchMode((active) => !active)}>
+            {mapTouchMode ? (language === "zh" ? "✓ 完成 · 滑动页面" : "✓ Done · scroll page") : (language === "zh" ? "✥ 操作地图" : "✥ Move map")}
+          </button>
           <p id="map-gesture-hint" className="map-gesture-hint">
             <span className="map-hint-desktop">{language === "en" ? "Drag to move · Shift-drag to orbit · Scroll to zoom" : "拖动平移 · Shift 拖动旋转 · 滚轮缩放"}</span>
-            <span className="map-hint-mobile">{language === "en" ? "Drag to move · Pinch to zoom and rotate" : "拖动平移 · 双指缩放旋转"}</span>
+            <span className="map-hint-mobile">{mapTouchMode ? (language === "en" ? "Drag to move · Pinch to zoom" : "拖动平移 · 双指缩放") : (language === "en" ? "Swipe to scroll · Tap a fossil to select" : "单指滑动页面 · 点图标选地点")}</span>
           </p>
         </div>
 
-        <aside id="map-location-summary" className={`map-location-dock ${mapActive ? "has-location" : ""}`} aria-label={language === "zh" ? "地点摘要" : "Location summary"} aria-live="polite">
+        <aside ref={mapNotesRef} id="map-location-summary" className={`map-location-dock ${mapActive ? "has-location" : ""} ${mapNotesExpanded ? "is-expanded" : ""} ${mapNotesInteracted ? "is-interacted" : ""}`} aria-label={language === "zh" ? "地点摘要" : "Location summary"} aria-live="polite">
           <span>{language === "zh" ? "FIELD NOTES · 探险地点" : "FIELD NOTES · YOUR NEXT STOP"}</span>
           {mapActive ? <>
             <button className="map-dock-close" aria-label={language === "zh" ? "关闭地点摘要" : "Close location summary"} onClick={() => setMapActiveId(null)}>×</button>
             <h2>{mapActive.shortName}</h2>
             <p>{mapActive.region} · {mapActive.period}</p>
-            <p>{mapActive.finds.slice(0, 3).map((find) => find.name).join(" · ")}</p>
-            <div className="map-dock-ratings"><InlineStarRating label={t.findShort} value={mapActive.findRating} /><InlineStarRating label={t.accessShort} value={mapActive.accessRating} /></div>
-            <p>{mapActive.duration} {t.fromLondon} · {language === "zh" ? "风险" : "Risk"} {riskLabel(mapActive.risk, language)}</p>
-            <button className="map-dock-open" onClick={() => openLocation(mapActive.id)}>{language === "zh" ? "打开完整地点攻略" : "Open the field guide"}</button>
+            <div id="map-dock-details" className="map-dock-details">
+              <p>{mapActive.finds.slice(0, 3).map((find) => find.name).join(" · ")}</p>
+              <div className="map-dock-ratings"><InlineStarRating label={t.findShort} value={mapActive.findRating} /><InlineStarRating label={t.accessShort} value={mapActive.accessRating} /></div>
+              <p>{mapActive.duration} {t.fromLondon} · {language === "zh" ? "风险" : "Risk"} {riskLabel(mapActive.risk, language)}</p>
+            </div>
+            <div className="map-dock-actions">
+              <button className="map-dock-open" onClick={() => openLocation(mapActive.id)}>{language === "zh" ? "打开完整地点攻略" : "Open the field guide"}</button>
+              <button className="map-dock-expand" aria-expanded={mapNotesExpanded} aria-controls="map-dock-details" onClick={() => setMapNotesExpanded((expanded) => !expanded)}>{mapNotesExpanded ? (language === "zh" ? "收起摘要" : "Less") : (language === "zh" ? "展开摘要" : "More")}</button>
+            </div>
           </> : <>
             <h2>{language === "zh" ? "沿着海岸，选一站。" : "Follow the coast. Find your next stop."}</h2>
-            <p>{language === "zh" ? "点选化石图标，在这里查看地点；缩小时可点开分组继续探索。" : "Select a fossil for its field notes. Zoom into a coastal group to explore its locations."}</p>
+            <p className="map-dock-intro-desktop">{language === "zh" ? "点选化石图标，在这里查看地点；缩小时可点开分组继续探索。" : "Select a fossil for its field notes. Zoom into a coastal group to explore its locations."}</p>
+            <p className="map-dock-intro-mobile">{language === "zh" ? "点地图图标选一站，攻略就在这里。" : "Tap a fossil on the map. Your field notes appear here."}</p>
+            <button className="map-dock-sites" onClick={() => setMobileList(true)} aria-controls="field-site-list" aria-expanded={mobileList}>{language === "zh" ? "浏览全部地点 ↗" : "Browse all sites ↗"}</button>
           </>}
           <small className="map-dock-legend"><i />{language === "zh" ? "蓝点为采集地概略位置，细线连接图标" : "Blue dots mark approximate sites; lines lead to icons"}</small>
         </aside>

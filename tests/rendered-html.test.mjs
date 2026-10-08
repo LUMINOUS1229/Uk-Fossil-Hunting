@@ -79,3 +79,19 @@ test("reveals field notes immediately after the title without replaying on locat
   assert.doesNotMatch(css, /has-location[^}]*animation:/);
   assert.match(css, /prefers-reduced-motion: reduce[\s\S]*\.site-shell \.map-location-dock \{ animation: none; opacity: 1; visibility: visible;/);
 });
+
+test("keeps mobile notes before the map and page scrolling enabled by default", async () => {
+  const [component, css] = await Promise.all([
+    read("../app/FossilMap.tsx"), read("../app/coastal-map.css"),
+  ]);
+  assert.match(css, /\.map-location-dock \{\s*position: relative; top: auto; order: 1;/);
+  assert.match(css, /\.overview \.map-viewport \{[^}]*order: 2;[^}]*touch-action: pan-y pinch-zoom/);
+  assert.match(css, /\.overview \.map-viewport\.is-touch-active \{ touch-action: none;/);
+  assert.doesNotMatch(css, /100svh \+ (225|370)px/);
+  assert.match(component, /event\.pointerType === "touch"[^\n]+!mapTouchMode\) return/);
+  assert.match(component, /className="map-touch-toggle" aria-pressed=\{mapTouchMode\}/);
+  assert.match(component, /onClick=\{\(\) => selectMapLocation\(location\.id\)\}/);
+  assert.match(component, /mapNotesRef\.current\?\.scrollIntoView/);
+  assert.match(component, /aria-expanded=\{mapNotesExpanded\} aria-controls="map-dock-details"/);
+  assert.match(css, /\.intro-done \.overview:not\(\.is-zoomed\) \{ transform: none; \}/);
+});
