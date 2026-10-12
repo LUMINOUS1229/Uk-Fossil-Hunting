@@ -10898,3 +10898,343 @@ body {
   .intro-screen .intro-keywords li, .intro-screen .intro-copy .brand-tagline { animation: none; }
   .orbit-fill { transition: none; }
 }
+
+/* Equipment locker — a dedicated field-kit card library. */
+.equipment-open .nautilus-guide,
+.equipment-open .site-visit-counter,
+.equipment-open .nori-pet-strip { display: none; }
+
+.top-actions { gap: clamp(9px, 1.55vw, 24px); }
+.topbar .top-actions .equipment-link { color: var(--cyber-cyan); }
+
+.equipment-view {
+  position: fixed;
+  inset: 76px 0 0;
+  z-index: 36;
+  overflow-y: auto;
+  background:
+    linear-gradient(rgba(86, 180, 214, .055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(86, 180, 214, .055) 1px, transparent 1px),
+    linear-gradient(155deg, #eaf5fb, #cee5f3);
+  background-size: 28px 28px, 28px 28px, auto;
+  color: #173f67;
+  animation: detail-in 420ms ease both;
+}
+
+.equipment-shell {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 28px 0 86px;
+}
+
+.equipment-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 20px;
+  padding: 7px 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  color: #173f67;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.equipment-back:hover,
+.equipment-back:focus-visible { border-bottom-color: #2f80c0; color: #2f80c0; }
+.equipment-back span { font-size: 18px; }
+
+.equipment-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 180px;
+  gap: 36px;
+  align-items: center;
+  overflow: hidden;
+  margin-bottom: 24px;
+  padding: clamp(28px, 5vw, 58px);
+  border: 1px solid var(--cyber-line);
+  border-radius: 10px 2px 10px 2px;
+  background: var(--cyber-panel);
+  color: var(--cyber-ink);
+  box-shadow: var(--cyber-shadow);
+}
+
+.equipment-hero::before {
+  position: absolute;
+  top: -1px;
+  left: 15px;
+  width: min(64%, 240px);
+  height: 2px;
+  background: linear-gradient(90deg, #62efff, #91b9ff 66%, #f578d7);
+  box-shadow: 0 0 12px rgba(90, 228, 255, .7);
+  content: "";
+}
+
+.equipment-hero p {
+  margin: 0 0 13px;
+  color: var(--cyber-cyan);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .14em;
+}
+
+.equipment-hero h1 {
+  margin: 0;
+  color: var(--cyber-ink);
+  font-family: var(--font-display), "Songti SC", "STSong", serif;
+  font-size: clamp(44px, 6vw, 76px);
+  font-weight: 600;
+  letter-spacing: -.035em;
+  line-height: 1;
+}
+
+.lang-zh .equipment-hero h1 {
+  font-family: var(--font-sans), "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: clamp(39px, 5.2vw, 66px);
+  letter-spacing: -.055em;
+  line-height: 1.12;
+}
+
+.equipment-hero > div:first-child > span {
+  display: block;
+  max-width: 720px;
+  margin-top: 18px;
+  color: var(--cyber-muted);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.equipment-hero-kit {
+  position: relative;
+  display: grid;
+  width: 170px;
+  height: 170px;
+  place-items: center;
+  border: 1px solid rgba(120, 233, 248, .55);
+  border-radius: 50%;
+  background: rgba(29, 100, 136, .28);
+  box-shadow: inset 0 0 0 10px rgba(9, 31, 58, .48), 0 0 24px rgba(120, 233, 248, .16);
+}
+
+.equipment-hero-kit::before,
+.equipment-hero-kit::after {
+  position: absolute;
+  inset: 16px;
+  border: 1px dashed rgba(120, 233, 248, .35);
+  border-radius: 50%;
+  content: "";
+}
+
+.equipment-hero-kit::after { inset: 35px; border-style: solid; opacity: .45; }
+.equipment-pack { color: var(--cyber-cyan); font-size: 54px; text-shadow: 0 0 15px rgba(120, 233, 248, .55); }
+.equipment-hero-kit i { position: absolute; color: #f7b4dc; font-family: var(--font-mono), monospace; font-size: 17px; font-style: normal; }
+.equipment-hero-kit i:nth-of-type(1) { top: 16px; left: 76px; }
+.equipment-hero-kit i:nth-of-type(2) { right: 22px; bottom: 38px; }
+.equipment-hero-kit i:nth-of-type(3) { bottom: 37px; left: 22px; }
+.equipment-hero-kit b { position: absolute; bottom: 15px; color: var(--cyber-muted); font: 8px/1 var(--font-mono), monospace; letter-spacing: .16em; }
+
+.equipment-plan,
+.equipment-catalog {
+  margin-top: 24px;
+  padding: 28px;
+  border: 1px solid rgba(23, 63, 103, .14);
+  background: rgba(247, 251, 255, .78);
+  box-shadow: 0 14px 34px rgba(3, 30, 59, .08);
+}
+
+.equipment-section-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.equipment-section-heading > span {
+  color: #2f80c0;
+  font: 700 9px/1 var(--font-mono), monospace;
+  letter-spacing: .12em;
+}
+
+.equipment-section-heading h2 {
+  margin: 0;
+  color: #173f67;
+  font-family: var(--font-display), "Songti SC", "STSong", serif;
+  font-size: 29px;
+  font-weight: 600;
+}
+
+.lang-zh .equipment-section-heading h2 { font-family: var(--font-sans), "PingFang SC", "Microsoft YaHei", sans-serif; }
+
+.equipment-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.equipment-plan-grid article {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 12px;
+  min-height: 126px;
+  padding: 19px;
+  border: 1px solid rgba(108, 200, 226, .38);
+  border-radius: 8px 2px 8px 2px;
+  background: #f7fbff;
+}
+
+.equipment-plan-grid article > span {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid #87cde0;
+  border-radius: 50%;
+  color: #2f80c0;
+  font: 700 10px/1 var(--font-mono), monospace;
+}
+
+.equipment-plan-grid h3 { margin: 2px 0 7px; color: #173f67; font-size: 16px; }
+.equipment-plan-grid p { margin: 0; color: #5d7690; font-size: 12px; line-height: 1.65; }
+
+.equipment-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.equipment-card {
+  --gear-accent: #2f80c0;
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 510px;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(61, 116, 157, .24);
+  border-top: 4px solid var(--gear-accent);
+  border-radius: 7px 2px 7px 2px;
+  background: #f9fcff;
+  color: #173f67;
+  box-shadow: 0 12px 28px rgba(2, 20, 44, .1);
+}
+
+.equipment-card.tone-essential { --gear-accent: #2b9aa4; }
+.equipment-card.tone-conditional { --gear-accent: #d78c38; }
+.equipment-card.tone-field { --gear-accent: #4f7ec7; }
+.equipment-card.tone-care { --gear-accent: #9a68ac; }
+
+.equipment-card > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 17px 0;
+}
+
+.equipment-card-number { color: #8198aa; font: 9px/1 var(--font-mono), monospace; letter-spacing: .1em; }
+.equipment-card-badge {
+  padding: 5px 7px;
+  border: 1px solid color-mix(in srgb, var(--gear-accent) 45%, white);
+  background: color-mix(in srgb, var(--gear-accent) 10%, white);
+  color: var(--gear-accent);
+  font: 700 8px/1 var(--font-mono), monospace;
+  letter-spacing: .08em;
+}
+
+.equipment-card-icon {
+  display: grid;
+  width: 76px;
+  height: 76px;
+  place-items: center;
+  margin: 22px 17px 17px;
+  border: 1px solid color-mix(in srgb, var(--gear-accent) 45%, white);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--gear-accent) 8%, white);
+  color: var(--gear-accent);
+  font: 34px/1 var(--font-mono), monospace;
+}
+
+.equipment-card-category {
+  margin: 0 18px 7px;
+  color: var(--gear-accent);
+  font: 700 9px/1.3 var(--font-mono), monospace;
+  letter-spacing: .11em;
+}
+
+.equipment-card h3 {
+  min-height: 58px;
+  margin: 0;
+  padding: 0 18px 16px;
+  border-bottom: 1px solid rgba(61, 116, 157, .14);
+  color: #173f67;
+  font-family: var(--font-display), "Songti SC", "STSong", serif;
+  font-size: 27px;
+  font-weight: 600;
+  line-height: 1.08;
+}
+
+.lang-zh .equipment-card h3 { font-family: var(--font-sans), "PingFang SC", "Microsoft YaHei", sans-serif; font-size: 24px; line-height: 1.25; }
+
+.equipment-card dl { display: grid; gap: 15px; margin: 0; padding: 17px 18px; }
+.equipment-card dl > div { display: grid; gap: 6px; }
+.equipment-card dt { color: #2f80c0; font: 700 8px/1 var(--font-mono), monospace; letter-spacing: .1em; text-transform: uppercase; }
+.equipment-card dd { margin: 0; color: #496985; font-size: 12px; line-height: 1.68; }
+
+.equipment-card footer {
+  margin-top: auto;
+  padding: 14px 18px 16px;
+  border-top: 1px dashed rgba(61, 116, 157, .22);
+  background: #edf6fb;
+}
+
+.equipment-card footer > span { display: block; margin-bottom: 5px; color: var(--gear-accent); font: 700 8px/1 var(--font-mono), monospace; letter-spacing: .1em; }
+.equipment-card footer p { margin: 0; color: #58748e; font-size: 11px; line-height: 1.6; }
+
+.equipment-safety {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  margin-top: 24px;
+  padding: 24px 28px;
+  border: 1px solid #e7a0aa;
+  border-radius: 8px 2px 8px 2px;
+  background: #fff4f5;
+  box-shadow: 0 14px 32px rgba(77, 32, 43, .08);
+}
+
+.equipment-safety > span { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 50%; background: #b65366; color: white; font: 700 18px/1 var(--font-mono), monospace; }
+.equipment-safety h2 { margin: 0 0 7px; color: #853748; font-family: var(--font-display), "Songti SC", "STSong", serif; font-size: 23px; font-weight: 600; }
+.lang-zh .equipment-safety h2 { font-family: var(--font-sans), "PingFang SC", "Microsoft YaHei", sans-serif; }
+.equipment-safety p { margin: 0; color: #704c57; font-size: 13px; line-height: 1.75; }
+
+@media (max-width: 980px) {
+  .equipment-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .equipment-hero { grid-template-columns: minmax(0, 1fr) 140px; }
+  .equipment-hero-kit { width: 138px; height: 138px; }
+  .equipment-hero-kit i:nth-of-type(1) { left: 60px; }
+}
+
+@media (max-width: 720px) {
+  .equipment-view { inset: 104px 0 0; }
+  .equipment-shell { width: 100%; padding: 12px 0 74px; }
+  .equipment-back { margin: 0 16px 12px; }
+  .equipment-hero { grid-template-columns: 1fr; margin: 0; padding: 30px 20px; border-width: 1px 0; border-radius: 0; }
+  .equipment-hero-kit { display: none; }
+  .equipment-plan,
+  .equipment-catalog { margin-top: 12px; padding: 22px 16px; border-width: 1px 0; }
+  .equipment-plan-grid { grid-template-columns: 1fr; }
+  .equipment-grid { gap: 12px; }
+  .equipment-card { min-height: 500px; }
+  .equipment-safety { margin: 12px 16px 0; padding: 20px; }
+}
+
+@media (max-width: 560px) {
+  .equipment-grid { grid-template-columns: minmax(0, 1fr); }
+  .equipment-card { min-height: 0; }
+  .equipment-card h3 { min-height: 0; }
+  .equipment-safety { grid-template-columns: 38px minmax(0, 1fr); gap: 12px; }
+  .equipment-safety > span { width: 34px; height: 34px; }
+}

@@ -1401,6 +1401,108 @@ const communityCopy = {
   },
 } as const;
 
+const equipmentCopy = {
+  en: {
+    nav: "Equipment",
+    back: "Back to the map",
+    eyebrow: "FIELD KIT · CHOOSE FOR THE SITE",
+    title: "Equipment Locker",
+    intro: "Build a light, safe kit around the ground, weather and local collecting rules. More tools do not make a better field day—bringing the right few does.",
+    planTitle: "Three checks before you pack",
+    plan: [
+      ["01", "Ground", "Sand, mud, shingle or hard rock decides your footwear and tools."],
+      ["02", "Permission", "Check the site guide before packing a hammer, chisel, sieve or trowel."],
+      ["03", "Carry home", "Leave room for water, layers and safely wrapped specimens."],
+    ],
+    use: "WHAT IT DOES",
+    choose: "HOW TO CHOOSE",
+    note: "FIELD NOTE",
+    safetyTitle: "The non-negotiable kit",
+    safetyBody: "A tide plan, charged phone, water and weatherproof layer come before collecting tools. Never work beneath cliffs or use a hammer without eye protection; do not strike one hammer with another.",
+  },
+  zh: {
+    nav: "装备栏",
+    back: "返回地图",
+    eyebrow: "野外装备 · 按地点选择",
+    title: "化石猎人装备栏",
+    intro: "根据地面、天气与当地采集规则，组成一套轻量而安全的装备。工具并非越多越好，带对几件才重要。",
+    planTitle: "装包前先确认三件事",
+    plan: [
+      ["01", "看地面", "沙滩、泥地、砾石或硬岩，决定鞋具与工具。"],
+      ["02", "看规则", "装入地质锤、凿子、筛网或小铲前，先查看地点攻略。"],
+      ["03", "看负重", "为饮水、保暖层和妥善包好的标本留出空间。"],
+    ],
+    use: "有什么用",
+    choose: "如何选择",
+    note: "现场提示",
+    safetyTitle: "不能省略的基础装备",
+    safetyBody: "潮汐计划、满电手机、饮水与防风雨外层，优先级高于任何采集工具。不要在崖壁下作业；使用锤具时必须佩戴护目镜，也不要用锤子互相敲击。",
+  },
+} as const;
+
+const equipmentItems = [
+  {
+    icon: "▰", tone: "essential",
+    en: { category: "FOUNDATION", badge: "ESSENTIAL", name: "Sturdy boots", use: "Grip on wet shingle, clay and uneven rock while protecting toes and ankles.", choose: "Use a deep, firm tread and secure heel. Pick wellies for deep mud; choose ankle-supporting walking boots for long rocky approaches.", tip: "Test them on wet ground before the trip—new footwear is not field-tested footwear." },
+    zh: { category: "基础防护", badge: "必带", name: "防滑靴 / 高筒雨靴", use: "在湿滑砾石、黏土与不平岩面上增加抓地力，同时保护脚趾和脚踝。", choose: "鞋底要有深而结实的纹路，后跟不打滑。深泥地选高筒雨靴；长距离岩石路面选能支撑脚踝的徒步靴。", tip: "出发前先在湿地试穿；刚拆盒的新鞋不算经过野外测试。" },
+  },
+  {
+    icon: "◉", tone: "essential",
+    en: { category: "EYE PROTECTION", badge: "ESSENTIAL", name: "Safety glasses", use: "Protect eyes from stone chips, grit and fragments when permitted hammering is taking place nearby.", choose: "Choose impact-rated wraparound lenses that fit closely without fogging. Clear lenses are best for dull coastal light.", tip: "Everyone inside the striking area needs protection, not only the person holding the hammer." },
+    zh: { category: "眼部防护", badge: "必带", name: "护目镜", use: "在允许敲击的地点，防止石屑、砂粒与碎片进入眼睛。", choose: "选择有抗冲击等级、贴合面部的包覆式镜片，并确认不易起雾；阴暗海岸以透明镜片最实用。", tip: "敲击范围内的每个人都要佩戴，不只是拿锤子的人。" },
+  },
+  {
+    icon: "◇", tone: "essential",
+    en: { category: "HAND PROTECTION", badge: "ESSENTIAL", name: "Work gloves", use: "Shield hands from sharp shell edges, rough rock and cold wet surfaces.", choose: "Look for a close fit, grippy palm and abrasion resistance. Keep dexterity for wrapping small finds; waterproof lining is useful in winter.", tip: "Replace gloves once the palm or fingertips wear through." },
+    zh: { category: "手部防护", badge: "必带", name: "耐磨手套", use: "隔开锋利贝壳边缘、粗糙岩石，以及寒冷潮湿的表面。", choose: "选择贴手、防滑且耐磨的款式，同时要能灵活包裹小标本；冬季可选防水内衬。", tip: "掌心或指尖磨穿后应立即更换。" },
+  },
+  {
+    icon: "⚒", tone: "conditional",
+    en: { category: "ROCK TOOL", badge: "SITE-DEPENDENT", name: "Geological hammer", use: "Splits suitable loose rock and trims matrix only where hammering is explicitly permitted.", choose: "A forged one-piece head and handle around 600–900 g suits most beginners. Balance and a secure grip matter more than maximum weight.", tip: "Leave it packed on surface-collecting beaches, protected sites and anywhere the local guide says no hammering." },
+    zh: { category: "岩石工具", badge: "按地点", name: "地质锤", use: "只在明确允许敲击的地点，用于劈开合适的松散岩块或修整围岩。", choose: "新手通常可选约 600–900 克、锤头与锤柄一体锻造的款式；平衡与握持牢固比追求重量更重要。", tip: "在仅允许捡拾松散化石的海滩、保护地或攻略注明禁锤的地点，请把它留在包里。" },
+  },
+  {
+    icon: "╱", tone: "conditional",
+    en: { category: "ROCK TOOL", badge: "SITE-DEPENDENT", name: "Cold chisel", use: "Directs a hammer blow into a controlled line when opening permitted loose blocks.", choose: "Choose a tempered masonry or geological chisel with an intact striking end; a hand guard adds useful protection.", tip: "Discard mushroomed or cracked chisels. Never strike hardened tools against each other." },
+    zh: { category: "岩石工具", badge: "按地点", name: "冷凿 / 岩石凿", use: "在允许处理的松散岩块上，将锤击力量集中到更可控的线条。", choose: "选择经过热处理、敲击端完好的石工凿或地质凿；带护手盘的款式更安全。", tip: "凿头出现蘑菇状卷边或裂纹就要停用；不要让淬硬工具彼此敲击。" },
+  },
+  {
+    icon: "⌕", tone: "field",
+    en: { category: "IDENTIFICATION", badge: "LIGHTWEIGHT", name: "10× hand lens", use: "Reveals shell texture, crystal faces, pores and other clues that separate fossils from ordinary rock.", choose: "A 10× triplet-style lens gives a useful balance of field of view and detail. Add a neck cord or bright case.", tip: "Inspect the broken surface as well as the outside shape." },
+    zh: { category: "现场识别", badge: "轻量", name: "10× 手持放大镜", use: "观察壳体纹理、晶面、孔隙等细节，帮助判断它是化石还是普通岩石。", choose: "10 倍三片式放大镜兼顾视野与细节；配颈绳或醒目的收纳套，更不容易遗失。", tip: "除了外形，也要观察标本的新鲜断面。" },
+  },
+  {
+    icon: "≋", tone: "field",
+    en: { category: "GENTLE CLEANING", badge: "USEFUL", name: "Soft brush", use: "Moves loose sand and clay without scratching fragile shell or bone surfaces.", choose: "Pick soft nylon or natural bristles and a small head. Carry it in a sleeve so grit cannot load the bristles.", tip: "Do not scrub or wash a fragile find in the field; let it dry and stabilise it later." },
+    zh: { category: "轻柔清理", badge: "建议", name: "软毛刷", use: "扫走松散砂土与黏土，减少对脆弱壳体或骨骼表面的刮擦。", choose: "选择小刷头、柔软尼龙毛或天然毛，并装入刷套，避免刷毛夹带砂粒。", tip: "脆弱标本不要在现场用力刷洗或泡水；先让它稳定，回去后再处理。" },
+  },
+  {
+    icon: "▦", tone: "conditional",
+    en: { category: "SOFT SEDIMENT", badge: "SITE-DEPENDENT", name: "Fine sieve & trowel", use: "Recovers tiny teeth and shells from permitted loose sand, gravel or spoil.", choose: "Use a compact sieve with a comfortable rim and mesh matched to the expected finds; pair it with a small rounded trowel.", tip: "Never undermine a cliff or bank. Refill shallow holes and follow local restrictions." },
+    zh: { category: "松散沉积物", badge: "按地点", name: "细筛与小铲", use: "从允许处理的松散砂砾或弃土中筛出微小牙齿与贝壳。", choose: "选择便携、边框不割手的筛网，网目大小要与目标化石匹配；搭配圆头小铲即可。", tip: "不要掏挖崖脚或岸壁；浅坑要回填，并遵守当地限制。" },
+  },
+  {
+    icon: "▤", tone: "care",
+    en: { category: "SPECIMEN CARE", badge: "ESSENTIAL", name: "Boxes, tissue & labels", use: "Keeps finds separated, cushioned and connected to their field information.", choose: "Use rigid lidded boxes, plain tissue and pencil-written labels. Bring several small containers rather than one large loose bucket.", tip: "Record site, date and a non-sensitive location note before specimens are mixed together." },
+    zh: { category: "标本保护", badge: "必带", name: "标本盒、纸巾与标签", use: "让不同标本彼此分隔、得到缓冲，并始终对应自己的野外信息。", choose: "选择有盖硬盒、无香纸巾与铅笔书写的标签；多个小盒比一个装满散件的大桶更稳妥。", tip: "标本混在一起之前，就写下地点、日期和不涉及敏感坐标的位置说明。" },
+  },
+  {
+    icon: "⌖", tone: "care",
+    en: { category: "NAVIGATION", badge: "ESSENTIAL", name: "Phone, offline map & dry bag", use: "Carries the route, tide plan, emergency contact and geotagged field photographs.", choose: "Download the map before travel, charge fully and add a power bank. Use a proper waterproof pouch without blocking essential controls.", tip: "A phone is not a substitute for watching the sea, cliffs and your return route." },
+    zh: { category: "导航记录", badge: "必带", name: "手机、离线地图与防水袋", use: "保存路线、潮汐计划、紧急联系人，以及带位置记录的现场照片。", choose: "出发前下载离线地图并充满电，另带移动电源；使用不会妨碍关键操作的可靠防水袋。", tip: "手机不能替代对海况、崖壁和返程路线的持续观察。" },
+  },
+  {
+    icon: "◫", tone: "care",
+    en: { category: "FIELD RECORD", badge: "USEFUL", name: "Notebook & scale card", use: "Captures bed, context and size—the information that gives a specimen scientific meaning.", choose: "Use a pocket weather-resistant notebook, pencil and a high-contrast metric scale card for photographs.", tip: "Photograph the find in place before lifting it, when it is safe and permitted to do so." },
+    zh: { category: "野外记录", badge: "建议", name: "记录本与比例尺卡", use: "记录岩层、产状与尺寸；这些信息赋予标本更完整的科学意义。", choose: "选择口袋大小的耐候记录本、铅笔，以及拍照时清晰可见的公制比例尺卡。", tip: "在安全且允许的情况下，拿起标本前先拍摄原位照片。" },
+  },
+  {
+    icon: "✦", tone: "essential",
+    en: { category: "PERSONAL SAFETY", badge: "ESSENTIAL", name: "Water & weather layers", use: "Maintains warmth, hydration and concentration when exposed coastal weather changes quickly.", choose: "Carry enough drinking water plus a windproof waterproof shell; add warm layers, sun protection and food for the route length.", tip: "Pack for the walk back as well as the collecting window." },
+    zh: { category: "个人安全", badge: "必带", name: "饮水与防风雨衣物", use: "海岸天气快速变化时，维持体温、水分与判断力。", choose: "携带足量饮水和防风防水外层，并按路线长度加入保暖层、防晒用品与食物。", tip: "装备不仅要覆盖采集时段，也要覆盖完整返程。" },
+  },
+] as const;
+
 type CommunityPost = {
   id: string;
   author: string;
@@ -2973,12 +3075,91 @@ function MuseumView({
   );
 }
 
+function EquipmentView({ language, onBack }: { language: Language; onBack: () => void }) {
+  const t = equipmentCopy[language];
+  const viewRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    viewRef.current?.scrollTo({ top: 0 });
+  }, []);
+
+  return (
+    <section ref={viewRef} className="equipment-view" aria-label={t.title}>
+      <div className="equipment-shell">
+        <button className="equipment-back" onClick={onBack}><span>←</span> {t.back}</button>
+
+        <header className="equipment-hero">
+          <div>
+            <p>{t.eyebrow}</p>
+            <h1>{t.title}</h1>
+            <span>{t.intro}</span>
+          </div>
+          <div className="equipment-hero-kit" aria-hidden="true">
+            <span className="equipment-pack">▦</span>
+            <i>⌖</i><i>⌕</i><i>⚒</i>
+            <b>FIELD KIT</b>
+          </div>
+        </header>
+
+        <section className="equipment-plan" aria-labelledby="equipment-plan-title">
+          <div className="equipment-section-heading">
+            <span>PACK / 01</span>
+            <h2 id="equipment-plan-title">{t.planTitle}</h2>
+          </div>
+          <div className="equipment-plan-grid">
+            {t.plan.map(([number, title, body]) => (
+              <article key={number}>
+                <span>{number}</span>
+                <div><h3>{title}</h3><p>{body}</p></div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="equipment-catalog" aria-label={language === "zh" ? "装备卡片" : "Equipment cards"}>
+          <div className="equipment-section-heading">
+            <span>GEAR / 12</span>
+            <h2>{language === "zh" ? "逐件选择装备" : "Choose each piece"}</h2>
+          </div>
+          <div className="equipment-grid">
+            {equipmentItems.map((item, index) => {
+              const card = item[language];
+              return (
+                <article className={`equipment-card tone-${item.tone}`} key={card.name}>
+                  <header>
+                    <span className="equipment-card-number">{String(index + 1).padStart(2, "0")}</span>
+                    <span className="equipment-card-badge">{card.badge}</span>
+                  </header>
+                  <div className="equipment-card-icon" aria-hidden="true">{item.icon}</div>
+                  <p className="equipment-card-category">{card.category}</p>
+                  <h3>{card.name}</h3>
+                  <dl>
+                    <div><dt>{t.use}</dt><dd>{card.use}</dd></div>
+                    <div><dt>{t.choose}</dt><dd>{card.choose}</dd></div>
+                  </dl>
+                  <footer><span>{t.note}</span><p>{card.tip}</p></footer>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        <aside className="equipment-safety">
+          <span aria-hidden="true">!</span>
+          <div><h2>{t.safetyTitle}</h2><p>{t.safetyBody}</p></div>
+        </aside>
+      </div>
+    </section>
+  );
+}
+
 export function FossilMap() {
   const [introPhase, setIntroPhase] = useState<IntroPhase>("loading");
   const [language, setLanguage] = useState<Language>("zh");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [museumOpen, setMuseumOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
+  const [equipmentOpen, setEquipmentOpen] = useState(false);
   const [communityLocationId, setCommunityLocationId] = useState("");
   const [recordCounts, setRecordCounts] = useState<Record<string, number> | null>(null);
   const [recordCountsError, setRecordCountsError] = useState(false);
@@ -3001,6 +3182,7 @@ export function FossilMap() {
     setCommunityLocationId(id);
     setSelectedId(null);
     setMuseumOpen(false);
+    setEquipmentOpen(false);
     setMobileList(false);
     setCommunityOpen(true);
   };
@@ -3095,6 +3277,7 @@ export function FossilMap() {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         if (modal) setModal(null);
+        else if (equipmentOpen) setEquipmentOpen(false);
         else if (communityOpen) setCommunityOpen(false);
         else if (museumOpen) setMuseumOpen(false);
         else if (selectedId) setSelectedId(null);
@@ -3104,12 +3287,13 @@ export function FossilMap() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [communityOpen, modal, mobileList, museumOpen, selectedId, mapActiveId]);
+  }, [communityOpen, equipmentOpen, modal, mobileList, museumOpen, selectedId, mapActiveId]);
 
   const openLocation = (id: string) => {
     setMobileList(false);
     setMuseumOpen(false);
     setCommunityOpen(false);
+    setEquipmentOpen(false);
     setSelectedId(id);
   };
 
@@ -3250,11 +3434,11 @@ export function FossilMap() {
   };
 
   return (
-    <main className={`site-shell ${sunsetTheme ? "sunset-theme" : ""} ${selected ? "detail-open" : ""} ${selected?.id === "isle-of-wight" ? "dinosaur-isle-open" : ""} ${museumOpen ? "museum-open" : ""} ${communityOpen ? "community-open" : ""} lang-${language} intro-${introPhase}`}>
+    <main className={`site-shell ${sunsetTheme ? "sunset-theme" : ""} ${selected ? "detail-open" : ""} ${selected?.id === "isle-of-wight" ? "dinosaur-isle-open" : ""} ${museumOpen ? "museum-open" : ""} ${communityOpen ? "community-open" : ""} ${equipmentOpen ? "equipment-open" : ""} lang-${language} intro-${introPhase}`}>
       {introPhase !== "done" && <IntroScreen phase={introPhase} />}
       <header className="topbar">
         <div className="header-left">
-          <button className="brand" onClick={() => { setSelectedId(null); setMuseumOpen(false); setCommunityOpen(false); }} aria-label={t.returnMap}>
+          <button className="brand" onClick={() => { setSelectedId(null); setMuseumOpen(false); setCommunityOpen(false); setEquipmentOpen(false); }} aria-label={t.returnMap}>
             <AmmoniteMark small />
             <span className="brand-title">FOSSIL HUNTERS <small>IN UK</small></span>
           </button>
@@ -3265,8 +3449,9 @@ export function FossilMap() {
           </div>
         </div>
         <div className="top-actions">
+          <button className="equipment-link" onClick={() => { setSelectedId(null); setMuseumOpen(false); setCommunityOpen(false); setEquipmentOpen(true); }}>▣ {equipmentCopy[language].nav}</button>
           <button className="community-link" onClick={() => openCommunity()}>◉ {communityCopy[language].nav}</button>
-          <button className="museum-link" onClick={() => { setSelectedId(null); setCommunityOpen(false); setMuseumOpen(true); }}>✦ {t.museum}</button>
+          <button className="museum-link" onClick={() => { setSelectedId(null); setCommunityOpen(false); setEquipmentOpen(false); setMuseumOpen(true); }}>✦ {t.museum}</button>
           <button className="reference-link" onClick={() => setModal("references")}>{t.references}</button>
           <button className="about-link" onClick={() => setModal("about")}>{t.about}</button>
           <button className="safety-link" onClick={() => setModal("safety")}>
@@ -3275,7 +3460,7 @@ export function FossilMap() {
         </div>
       </header>
 
-      <section className={`overview ${selected || museumOpen || communityOpen ? "is-zoomed" : ""}`} aria-hidden={Boolean(selected || museumOpen || communityOpen)}>
+      <section className={`overview ${selected || museumOpen || communityOpen || equipmentOpen ? "is-zoomed" : ""}`} aria-hidden={Boolean(selected || museumOpen || communityOpen || equipmentOpen)}>
         <div className={`overview-title ${introPhase === "done" ? "hero-ripple-ready" : ""}`}>
           <span className="hero-ripples" aria-hidden="true" />
           <div className="hero-copy">
@@ -3454,6 +3639,8 @@ export function FossilMap() {
       {museumOpen && <MuseumView language={language} onBack={() => setMuseumOpen(false)} onOpenLocation={openLocation} />}
 
       {communityOpen && <CommunityView language={language} initialLocationId={communityLocationId} onPublished={refreshRecordCounts} onBack={() => setCommunityOpen(false)} />}
+
+      {equipmentOpen && <EquipmentView language={language} onBack={() => setEquipmentOpen(false)} />}
 
       <NautilusGuide key={language} language={language} siteLocations={localizedLocations} onOpenLocation={openLocation} onOpenSunset={openSunset} />
       <SiteVisitCounter language={language} />
