@@ -3497,7 +3497,7 @@ button {
   grid-template-columns: minmax(0, 1fr) 126px;
   gap: 30px;
   align-items: center;
-  margin-bottom: 24px;
+  margin-top: 24px;
   padding: clamp(24px, 4vw, 50px);
   border: 1px solid var(--line);
   background: var(--paper-deep);
@@ -11178,6 +11178,20 @@ body {
 .packing-strategy button b { display: block; margin-bottom: 5px; font-size: 15px; }
 .packing-strategy button small { display: block; color: #536f69; font-size: 11px; line-height: 1.5; }
 
+.packing-scenario { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px; align-items: center; padding: 14px 24px; border-bottom: 3px solid var(--pack-ink); background: #d8ead5; }
+.packing-scenario > p { margin: 0; font: 800 10px/1 var(--font-mono), monospace; letter-spacing: .1em; white-space: nowrap; }
+.packing-scenario > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+.packing-scenario button { display: grid; grid-template-columns: 43px minmax(0, 1fr); gap: 10px; align-items: center; padding: 9px 11px; border: 2px solid #708078; background: #fff9e8; color: var(--pack-ink); text-align: left; box-shadow: 2px 2px 0 rgba(23, 63, 62, .14); cursor: pointer; }
+.packing-scenario button:hover,
+.packing-scenario button:focus-visible { border-color: #244f49; transform: translate(-1px, -1px); }
+.packing-scenario button.is-active { border-color: #174e45; background: #eaffdb; box-shadow: inset 0 -4px 0 #8fca90, 2px 2px 0 rgba(23, 63, 62, .16); }
+.packing-scenario button:last-child.is-active { background: #dce3f3; box-shadow: inset 0 -4px 0 #7a91bd, 2px 2px 0 rgba(23, 63, 62, .16); }
+.scenario-pixel-icon { display: grid; width: 41px; height: 36px; place-items: center; border: 2px solid #274d49; color: #213d3c; font: 900 8px/1 var(--font-mono), monospace; }
+.scenario-pixel-icon.icon-day { background: #f0ca60; box-shadow: inset -5px -5px #dc9c4d; }
+.scenario-pixel-icon.icon-night { background: #7488b1; color: #fff8dc; box-shadow: inset -5px -5px #4c5c87; }
+.packing-scenario button b { display: block; margin-bottom: 3px; font-size: 12px; }
+.packing-scenario button small { display: block; color: #5d746d; font-size: 9px; line-height: 1.4; }
+
 .packing-board { display: grid; grid-template-columns: minmax(280px, .94fr) minmax(320px, 1.05fr) minmax(250px, .78fr); min-height: 590px; }
 .packing-shelf,
 .packing-check { min-width: 0; padding: 20px; background: rgba(255, 249, 232, .96); }
@@ -11240,7 +11254,11 @@ body {
 .packing-stage.status-ready { box-shadow: inset 0 0 0 8px #4aa277; }
 .pixel-coast { position: absolute; inset: 0; overflow: hidden; image-rendering: pixelated; }
 .pixel-coast::before { position: absolute; inset: 0; background: linear-gradient(#92d2d2 0 49%, #6fbab6 49% 58%, #376c76 58% 63%, #d6b67c 63%); content: ""; }
+.packing-stage.scene-night .pixel-coast::before { background: linear-gradient(#263d5a 0 49%, #35546a 49% 58%, #243f54 58% 63%, #8c806d 63%); }
+.packing-stage.scene-night .pixel-coast::after { position: absolute; top: 42px; left: 58px; z-index: 1; width: 4px; height: 4px; background: #fff5bd; box-shadow: 48px 42px #fff5bd, 92px -12px #fff5bd, 154px 22px #fff5bd, 214px -3px #fff5bd, 266px 52px #fff5bd; content: ""; }
 .pixel-sun { position: absolute; top: 42px; right: 34px; width: 42px; height: 42px; z-index: 1; background: #ffe483; box-shadow: -7px 0 #ffe483, 7px 0 #ffe483, 0 -7px #ffe483, 0 7px #ffe483; }
+.packing-stage.scene-night .pixel-sun { background: #f4f0c9; box-shadow: -7px 0 #f4f0c9, 7px 0 #f4f0c9, 0 -7px #f4f0c9, 0 7px #f4f0c9, inset -12px -5px #b7bed2; }
+.packing-stage.scene-night .pixel-cloud { opacity: .35; }
 .pixel-cloud { position: absolute; z-index: 1; width: 56px; height: 12px; background: #e8f4da; box-shadow: 12px -10px #e8f4da, 30px -4px #e8f4da; opacity: .78; }
 .pixel-cloud.cloud-a { top: 74px; left: 36px; }
 .pixel-cloud.cloud-b { top: 128px; right: 90px; transform: scale(.7); }
@@ -11289,6 +11307,9 @@ body {
 .pixel-hunter-head { top: 42px; left: 34px; z-index: 4; width: 48px; height: 49px; background: #d89d72; box-shadow: -6px 12px #d89d72, 6px 12px #d89d72; }
 .pixel-hunter-hair { top: 29px; left: 28px; z-index: 5; width: 60px; height: 31px; background: #273d3b; clip-path: polygon(10% 0, 90% 0, 100% 40%, 87% 40%, 87% 75%, 70% 75%, 70% 100%, 58% 100%, 58% 68%, 18% 68%, 18% 84%, 0 84%, 0 32%); box-shadow: inset 8px 0 #3e5850; }
 .pixel-hunter-face { top: 65px; left: 45px; z-index: 6; width: 6px; height: 6px; background: #223431; box-shadow: 24px 0 #223431, 12px 15px #a85f58; }
+.pixel-hunter-headlamp { top: 43px; left: 25px; z-index: 7; width: 0; height: 8px; background: #eef47a; box-shadow: 7px 0 #3f5651, 14px 0 #3f5651, 21px 0 #eef47a, 28px 0 #3f5651, 35px 0 #3f5651, 42px 0 #3f5651, 49px 0 #3f5651, 56px 0 #3f5651; opacity: 0; }
+.pixel-hunter.has-headlamp .pixel-hunter-headlamp { width: 7px; opacity: 1; }
+.scene-night .pixel-hunter.has-headlamp::after { position: absolute; top: 44px; left: 84px; z-index: 7; width: 72px; height: 46px; background: linear-gradient(90deg, rgba(255,249,184,.52), transparent); clip-path: polygon(0 40%, 100% 0, 100% 100%); content: ""; }
 .pixel-hunter-body { top: 98px; left: 27px; z-index: 3; width: 62px; height: 74px; background: #e69b4c; box-shadow: inset 0 -14px #bd6d3d, 0 8px #e69b4c; clip-path: polygon(12% 0, 88% 0, 100% 18%, 91% 100%, 9% 100%, 0 18%); }
 .pixel-hunter-body::after { position: absolute; top: 9px; left: 28px; width: 6px; height: 55px; background: #694a3c; content: ""; }
 .pixel-hunter-arm { top: 107px; z-index: 2; width: 20px; height: 82px; background: #e69b4c; box-shadow: inset 0 -19px #d89d72; }
@@ -11616,12 +11637,14 @@ body {
   .equipment-view { inset: 104px 0 0; }
   .equipment-shell { width: 100%; padding: 12px 0 74px; }
   .equipment-back { margin: 0 16px 12px; }
-  .packing-game { margin: 0 0 12px; border-width: 3px 0; border-radius: 0; box-shadow: none; }
+  .packing-game { margin: 12px 0 0; border-width: 3px 0; border-radius: 0; box-shadow: none; }
   .packing-game-heading { padding: 23px 18px; }
   .packing-game-heading > div:first-child > span { font-size: 12px; }
   .packing-game-stamp { display: none; }
   .packing-strategy { padding: 17px 16px; }
   .packing-strategy > div { grid-template-columns: 1fr; }
+  .packing-scenario { grid-template-columns: 1fr; gap: 10px; padding: 15px 16px; }
+  .packing-scenario > div { grid-template-columns: 1fr; }
   .packing-board { grid-template-columns: 1fr; }
   .packing-shelf { border-right: 0; border-bottom: 3px solid var(--pack-ink); }
   .packing-stage { min-height: 540px; }

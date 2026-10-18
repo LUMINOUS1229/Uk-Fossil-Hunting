@@ -1701,6 +1701,7 @@ const equipmentItems = [
 ] as const;
 
 type PackStrategy = "hammer" | "pick";
+type PackScene = "day" | "night";
 type PackingStatus = "over" | "tight" | "conflict" | "missing" | "ready";
 
 const FOLKESTONE_PACK_LIMITS = {
@@ -1720,6 +1721,7 @@ const folkestonePackingItems = [
   { id: "wrap", glyph: "PPR", weight: 0.10, volume: 1.0, tone: "care", en: "Tissue + labels", zh: "纸巾与标签" },
   { id: "shell", glyph: "DRY", weight: 0.35, volume: 1.2, tone: "core", en: "Rain shell", zh: "防风雨外层" },
   { id: "lens", glyph: "10×", weight: 0.09, volume: 0.1, tone: "field", en: "Hand lens", zh: "手持放大镜" },
+  { id: "headlamp", glyph: "LUX", weight: 0.12, volume: 0.25, tone: "field", en: "Head torch", zh: "头灯" },
   { id: "hammer", glyph: "HAM", weight: 0.82, volume: 0.7, tone: "tool", en: "Geological hammer", zh: "地质锤" },
   { id: "glasses", glyph: "EYE", weight: 0.09, volume: 0.4, tone: "tool", en: "Safety glasses", zh: "护目镜" },
   { id: "kneepad", glyph: "KNE", weight: 0.35, volume: 1.5, tone: "field", en: "Kneeling pad", zh: "跪垫" },
@@ -1744,10 +1746,15 @@ const folkestonePackingCopy = {
     hammerBody: "For permitted loose material only. Eye protection and a geological hammer travel as a pair.",
     pickTitle: "Surface-pick route",
     pickBody: "Scan shingle and fallen loose pieces. Travel lighter and keep both hands free for careful finds.",
-    gearTitle: "2 · Gear shelf",
+    sceneChoose: "2 · Choose the light",
+    dayTitle: "Daylight window",
+    dayBody: "Natural light is expected for the full route and the walk back.",
+    nightTitle: "After-dark return",
+    nightBody: "A head torch becomes essential; a phone light is only backup.",
+    gearTitle: "3 · Gear shelf",
     gearHint: "DRAG TO ROWAN · OR TAP",
     stageHint: "DROP KIT HERE",
-    packTitle: "3 · Daypack check",
+    packTitle: "4 · Daypack check",
     clear: "Empty pack",
     bag: "16 L pack · bag itself 0.8 kg",
     weight: "Walking weight",
@@ -1776,10 +1783,15 @@ const folkestonePackingCopy = {
     hammerBody: "只处理允许采集的松散岩块。地质锤与护目镜必须成对装入。",
     pickTitle: "不带锤纯捡路线",
     pickBody: "观察砾石滩与已经掉落的松散材料，轻装行动，双手留给脆弱标本。",
-    gearTitle: "2 · 像素装备架",
+    sceneChoose: "2 · 选择光线情景",
+    dayTitle: "白天潮窗",
+    dayBody: "预计采集与完整返程都有自然光，可以按常规基础包装包。",
+    nightTitle: "夜间返程",
+    nightBody: "头灯变为必需品；手机照明只能作为备用，不能替代头灯。",
+    gearTitle: "3 · 像素装备架",
     gearHint: "拖给 ROWAN · 或点击",
     stageHint: "把装备拖到这里",
-    packTitle: "3 · 日包检查",
+    packTitle: "4 · 日包检查",
     clear: "清空背包",
     bag: "16 L 日包 · 包体自重 0.8 kg",
     weight: "行走负重",
@@ -3381,6 +3393,7 @@ function MuseumView({
 function FolkestonePackingGame({ language }: { language: Language }) {
   const t = folkestonePackingCopy[language];
   const [strategy, setStrategy] = useState<PackStrategy>("pick");
+  const [scene, setScene] = useState<PackScene>("day");
   const [packedIds, setPackedIds] = useState<string[]>([]);
 
   const packedItems = useMemo(
@@ -3389,7 +3402,8 @@ function FolkestonePackingGame({ language }: { language: Language }) {
   );
   const weight = FOLKESTONE_PACK_LIMITS.bagWeight + packedItems.reduce((sum, item) => sum + item.weight, 0);
   const volume = packedItems.reduce((sum, item) => sum + item.volume, 0);
-  const missing = folkestoneRequired[strategy].filter((id) => !packedIds.includes(id));
+  const requiredIds = scene === "night" ? [...folkestoneRequired[strategy], "headlamp"] : folkestoneRequired[strategy];
+  const missing = requiredIds.filter((id) => !packedIds.includes(id));
   const conflicting = strategy === "pick" && packedIds.some((id) => id === "hammer" || id === "chisel");
   const status: PackingStatus = weight > FOLKESTONE_PACK_LIMITS.hardWeight || volume > FOLKESTONE_PACK_LIMITS.hardVolume
     ? "over"
@@ -3442,6 +3456,20 @@ function FolkestonePackingGame({ language }: { language: Language }) {
         </div>
       </div>
 
+      <div className="packing-scenario" role="group" aria-label={t.sceneChoose}>
+        <p>{t.sceneChoose}</p>
+        <div>
+          <button className={scene === "day" ? "is-active" : ""} aria-pressed={scene === "day"} onClick={() => setScene("day")}>
+            <span className="scenario-pixel-icon icon-day" aria-hidden="true">DAY</span>
+            <span><b>{t.dayTitle}</b><small>{t.dayBody}</small></span>
+          </button>
+          <button className={scene === "night" ? "is-active" : ""} aria-pressed={scene === "night"} onClick={() => setScene("night")}>
+            <span className="scenario-pixel-icon icon-night" aria-hidden="true">NITE</span>
+            <span><b>{t.nightTitle}</b><small>{t.nightBody}</small></span>
+          </button>
+        </div>
+      </div>
+
       <div className="packing-board">
         <section className="packing-shelf" aria-labelledby="packing-shelf-title">
           <div className="packing-subhead"><h3 id="packing-shelf-title">{t.gearTitle}</h3><span>{t.gearHint}</span></div>
@@ -3470,7 +3498,7 @@ function FolkestonePackingGame({ language }: { language: Language }) {
         </section>
 
         <section
-          className={`packing-stage status-${status}`}
+          className={`packing-stage scene-${scene} status-${status}`}
           aria-label={t.stageHint}
           onDragOver={(event) => {
             event.preventDefault();
@@ -3486,10 +3514,10 @@ function FolkestonePackingGame({ language }: { language: Language }) {
             <span className="pixel-cliff" /><span className="pixel-sea sea-a" /><span className="pixel-sea sea-b" /><span className="pixel-shingle" />
           </div>
           <div className="packing-speech" role="status" aria-live="polite"><span>{reaction}</span></div>
-          <div className={`pixel-hunter ${packedIds.length ? "has-pack" : ""}`} role="img" aria-label={language === "zh" ? "短发中性像素化石猎人 Rowan" : "Rowan, a short-haired androgynous pixel fossil hunter"}>
+          <div className={`pixel-hunter ${packedIds.length ? "has-pack" : ""} ${packedIds.includes("headlamp") ? "has-headlamp" : ""}`} role="img" aria-label={language === "zh" ? "短发中性像素化石猎人 Rowan" : "Rowan, a short-haired androgynous pixel fossil hunter"}>
             <span className="pixel-hunter-pack" /><span className="pixel-hunter-leg leg-left" /><span className="pixel-hunter-leg leg-right" />
             <span className="pixel-hunter-body" /><span className="pixel-hunter-arm arm-left" /><span className="pixel-hunter-arm arm-right" />
-            <span className="pixel-hunter-head" /><span className="pixel-hunter-hair" /><span className="pixel-hunter-face" />
+            <span className="pixel-hunter-head" /><span className="pixel-hunter-hair" /><span className="pixel-hunter-face" /><span className="pixel-hunter-headlamp" />
           </div>
           <div className="packing-drop-hint"><span>↓</span>{t.stageHint}</div>
         </section>
@@ -3536,8 +3564,6 @@ function EquipmentView({ language, onBack }: { language: Language; onBack: () =>
     <section ref={viewRef} className="equipment-view" aria-label={t.title}>
       <div className="equipment-shell">
         <button className="equipment-back" onClick={onBack}><span>←</span> {t.back}</button>
-
-        <FolkestonePackingGame language={language} />
 
         <header className="equipment-hero">
           <div>
@@ -3599,6 +3625,8 @@ function EquipmentView({ language, onBack }: { language: Language; onBack: () =>
           <span aria-hidden="true">!</span>
           <div><h2>{t.safetyTitle}</h2><p>{t.safetyBody}</p></div>
         </aside>
+
+        <FolkestonePackingGame language={language} />
       </div>
     </section>
   );

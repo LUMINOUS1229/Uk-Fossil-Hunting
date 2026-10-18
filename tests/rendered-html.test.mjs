@@ -82,10 +82,16 @@ test("adds the Folkestone packing game with two realistic load strategies", asyn
   assert.match(component, /hardWeight: 7/);
   assert.match(component, /hardVolume: 16/);
   assert.match(component, /comfortableWeight: 5/);
+  assert.match(component, /scene === "night"/);
+  assert.match(component, /id: "headlamp"/);
+  assert.match(component, /夜间返程/);
   assert.match(component, /onDragStart=/);
   assert.match(component, /onDrop=/);
   assert.match(component, /status === "ready"/);
+  assert.match(component, /className="equipment-safety"[\s\S]*<FolkestonePackingGame language=\{language\}/);
   assert.match(css, /\.pixel-hunter-hair/);
+  assert.match(css, /\.packing-stage\.scene-night/);
+  assert.match(css, /\.pixel-hunter\.has-headlamp/);
   assert.match(css, /\.packing-stage\.status-over/);
   assert.match(css, /\.packing-item\.is-packed/);
 });
