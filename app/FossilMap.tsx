@@ -1700,6 +1700,107 @@ const equipmentItems = [
   },
 ] as const;
 
+type PackStrategy = "hammer" | "pick";
+type PackingStatus = "over" | "tight" | "conflict" | "missing" | "ready";
+
+const FOLKESTONE_PACK_LIMITS = {
+  bagWeight: 0.8,
+  comfortableWeight: 5,
+  hardWeight: 7,
+  comfortableVolume: 13,
+  hardVolume: 16,
+} as const;
+
+const folkestonePackingItems = [
+  { id: "water", glyph: "H₂O", weight: 1.05, volume: 1.2, tone: "core", en: "1 L water", zh: "1 升饮水" },
+  { id: "phone", glyph: "GPS", weight: 0.35, volume: 0.5, tone: "core", en: "Phone + power bank", zh: "手机与移动电源" },
+  { id: "firstAid", glyph: "+", weight: 0.22, volume: 0.8, tone: "core", en: "First-aid kit", zh: "急救包" },
+  { id: "gloves", glyph: "GLV", weight: 0.12, volume: 0.5, tone: "core", en: "Work gloves", zh: "耐磨手套" },
+  { id: "boxes", glyph: "BOX", weight: 0.35, volume: 2.8, tone: "care", en: "Specimen boxes", zh: "标本盒" },
+  { id: "wrap", glyph: "PPR", weight: 0.10, volume: 1.0, tone: "care", en: "Tissue + labels", zh: "纸巾与标签" },
+  { id: "shell", glyph: "DRY", weight: 0.35, volume: 1.2, tone: "core", en: "Rain shell", zh: "防风雨外层" },
+  { id: "lens", glyph: "10×", weight: 0.09, volume: 0.1, tone: "field", en: "Hand lens", zh: "手持放大镜" },
+  { id: "hammer", glyph: "HAM", weight: 0.82, volume: 0.7, tone: "tool", en: "Geological hammer", zh: "地质锤" },
+  { id: "glasses", glyph: "EYE", weight: 0.09, volume: 0.4, tone: "tool", en: "Safety glasses", zh: "护目镜" },
+  { id: "kneepad", glyph: "KNE", weight: 0.35, volume: 1.5, tone: "field", en: "Kneeling pad", zh: "跪垫" },
+  { id: "snack", glyph: "BAR", weight: 0.25, volume: 0.6, tone: "field", en: "Trail snack", zh: "路餐" },
+  { id: "chisel", glyph: "CHS", weight: 1.10, volume: 1.3, tone: "tool", en: "Heavy chisel set", zh: "重型凿具组" },
+  { id: "bucket", glyph: "POT", weight: 0.65, volume: 6.0, tone: "bulky", en: "Large bucket", zh: "大号收集桶" },
+  { id: "spareWater", glyph: "1.5L", weight: 1.55, volume: 1.6, tone: "bulky", en: "Extra 1.5 L water", zh: "额外 1.5 升水" },
+] as const;
+
+const folkestoneRequired: Record<PackStrategy, readonly string[]> = {
+  hammer: ["water", "phone", "firstAid", "gloves", "boxes", "wrap", "shell", "hammer", "glasses"],
+  pick: ["water", "phone", "firstAid", "gloves", "boxes", "wrap", "shell", "lens"],
+};
+
+const folkestonePackingCopy = {
+  en: {
+    eyebrow: "PLAYABLE FIELD PREP · FOLKESTONE",
+    title: "Pack for the tide window",
+    intro: "Choose a collecting style, then drag kit to Rowan—or tap an item on mobile. A 16 L daypack must still leave room for the walk home and your finds.",
+    choose: "1 · Choose a strategy",
+    hammerTitle: "Hammer route",
+    hammerBody: "For permitted loose material only. Eye protection and a geological hammer travel as a pair.",
+    pickTitle: "Surface-pick route",
+    pickBody: "Scan shingle and fallen loose pieces. Travel lighter and keep both hands free for careful finds.",
+    gearTitle: "2 · Gear shelf",
+    gearHint: "DRAG TO ROWAN · OR TAP",
+    stageHint: "DROP KIT HERE",
+    packTitle: "3 · Daypack check",
+    clear: "Empty pack",
+    bag: "16 L pack · bag itself 0.8 kg",
+    weight: "Walking weight",
+    volume: "Pack space",
+    findsReserve: "Reserve for finds",
+    packed: "Packed kit",
+    empty: "Nothing packed yet",
+    remove: "Remove",
+    ready: "READY",
+    adjust: "ADJUST",
+    rule: "The green target is ≤ 5.0 kg and ≤ 13 L, preserving about 2 kg and 3 L for wrapped finds. The red line is the absolute 7 kg / 16 L limit.",
+    reactions: {
+      over: "Whoa—this will not fit. I cannot safely carry it over Folkestone shingle.",
+      tight: "Too full for the return walk. Please keep 2 kg and 3 L free for the finds.",
+      conflict: "Today is surface-picking. The hammer and chisel can stay at home.",
+      missing: "I am still missing: {items}.",
+      ready: "Packed! Light enough to walk, protected enough to collect—and there is room for fossils.",
+    },
+  },
+  zh: {
+    eyebrow: "可玩野外准备 · FOLKESTONE",
+    title: "赶在潮窗前装好背包",
+    intro: "先选采集策略，再把装备拖给 Rowan；手机上也可以直接点选。16 L 日包不仅要装得下，还要为返程体力和化石留余量。",
+    choose: "1 · 选择策略",
+    hammerTitle: "带地质锤路线",
+    hammerBody: "只处理允许采集的松散岩块。地质锤与护目镜必须成对装入。",
+    pickTitle: "不带锤纯捡路线",
+    pickBody: "观察砾石滩与已经掉落的松散材料，轻装行动，双手留给脆弱标本。",
+    gearTitle: "2 · 像素装备架",
+    gearHint: "拖给 ROWAN · 或点击",
+    stageHint: "把装备拖到这里",
+    packTitle: "3 · 日包检查",
+    clear: "清空背包",
+    bag: "16 L 日包 · 包体自重 0.8 kg",
+    weight: "行走负重",
+    volume: "背包空间",
+    findsReserve: "留给化石",
+    packed: "已装装备",
+    empty: "背包还是空的",
+    remove: "移除",
+    ready: "可以出发",
+    adjust: "还要调整",
+    rule: "绿色目标为 ≤ 5.0 kg、≤ 13 L，约为包好的化石保留 2 kg 与 3 L；红线为 7 kg / 16 L 的绝对上限。",
+    reactions: {
+      over: "哎呀，真的塞不下了！这样的负重没法安全走过 Folkestone 的砾石滩。",
+      tight: "返程余量不够。请为化石留出 2 kg 和 3 L 空间。",
+      conflict: "今天是纯捡路线，地质锤和凿具就留在家里吧。",
+      missing: "我还缺：{items}。",
+      ready: "装好啦！走得动、防护够，也给化石留好了位置。",
+    },
+  },
+} as const;
+
 type CommunityPost = {
   id: string;
   author: string;
@@ -3277,6 +3378,152 @@ function MuseumView({
   );
 }
 
+function FolkestonePackingGame({ language }: { language: Language }) {
+  const t = folkestonePackingCopy[language];
+  const [strategy, setStrategy] = useState<PackStrategy>("pick");
+  const [packedIds, setPackedIds] = useState<string[]>([]);
+
+  const packedItems = useMemo(
+    () => folkestonePackingItems.filter((item) => packedIds.includes(item.id)),
+    [packedIds],
+  );
+  const weight = FOLKESTONE_PACK_LIMITS.bagWeight + packedItems.reduce((sum, item) => sum + item.weight, 0);
+  const volume = packedItems.reduce((sum, item) => sum + item.volume, 0);
+  const missing = folkestoneRequired[strategy].filter((id) => !packedIds.includes(id));
+  const conflicting = strategy === "pick" && packedIds.some((id) => id === "hammer" || id === "chisel");
+  const status: PackingStatus = weight > FOLKESTONE_PACK_LIMITS.hardWeight || volume > FOLKESTONE_PACK_LIMITS.hardVolume
+    ? "over"
+    : weight > FOLKESTONE_PACK_LIMITS.comfortableWeight || volume > FOLKESTONE_PACK_LIMITS.comfortableVolume
+      ? "tight"
+      : conflicting
+        ? "conflict"
+        : missing.length
+          ? "missing"
+          : "ready";
+  const missingNames = missing
+    .map((id) => folkestonePackingItems.find((item) => item.id === id)?.[language])
+    .filter(Boolean)
+    .slice(0, 4)
+    .join(language === "zh" ? "、" : ", ");
+  const reaction = status === "missing"
+    ? t.reactions.missing.replace("{items}", `${missingNames}${missing.length > 4 ? (language === "zh" ? "等" : "…") : ""}`)
+    : t.reactions[status];
+
+  const toggleItem = (id: string) => {
+    setPackedIds((current) => current.includes(id) ? current.filter((itemId) => itemId !== id) : [...current, id]);
+  };
+  const addItem = (id: string) => {
+    if (!folkestonePackingItems.some((item) => item.id === id)) return;
+    setPackedIds((current) => current.includes(id) ? current : [...current, id]);
+  };
+
+  return (
+    <section className="packing-game" aria-labelledby="packing-game-title">
+      <header className="packing-game-heading">
+        <div>
+          <p>{t.eyebrow}</p>
+          <h2 id="packing-game-title">{t.title}</h2>
+          <span>{t.intro}</span>
+        </div>
+        <div className="packing-game-stamp" aria-hidden="true"><b>16</b><span>LITRE<br />DAYPACK</span></div>
+      </header>
+
+      <div className="packing-strategy" role="group" aria-label={t.choose}>
+        <p>{t.choose}</p>
+        <div>
+          <button className={strategy === "hammer" ? "is-active" : ""} aria-pressed={strategy === "hammer"} onClick={() => setStrategy("hammer")}>
+            <span className="strategy-pixel-icon">HAM</span>
+            <span><b>{t.hammerTitle}</b><small>{t.hammerBody}</small></span>
+          </button>
+          <button className={strategy === "pick" ? "is-active" : ""} aria-pressed={strategy === "pick"} onClick={() => setStrategy("pick")}>
+            <span className="strategy-pixel-icon">EYE</span>
+            <span><b>{t.pickTitle}</b><small>{t.pickBody}</small></span>
+          </button>
+        </div>
+      </div>
+
+      <div className="packing-board">
+        <section className="packing-shelf" aria-labelledby="packing-shelf-title">
+          <div className="packing-subhead"><h3 id="packing-shelf-title">{t.gearTitle}</h3><span>{t.gearHint}</span></div>
+          <div className="packing-item-grid">
+            {folkestonePackingItems.map((item) => {
+              const selected = packedIds.includes(item.id);
+              return (
+                <button
+                  className={`packing-item tone-${item.tone} ${selected ? "is-packed" : ""}`}
+                  key={item.id}
+                  draggable
+                  aria-pressed={selected}
+                  onDragStart={(event) => {
+                    event.dataTransfer.setData("text/plain", item.id);
+                    event.dataTransfer.effectAllowed = "copy";
+                  }}
+                  onClick={() => toggleItem(item.id)}
+                >
+                  <span className="packing-item-glyph" aria-hidden="true">{item.glyph}</span>
+                  <span className="packing-item-copy"><b>{item[language]}</b><small>{item.weight.toFixed(2)} kg · {item.volume.toFixed(1)} L</small></span>
+                  <i aria-hidden="true">{selected ? "✓" : "+"}</i>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        <section
+          className={`packing-stage status-${status}`}
+          aria-label={t.stageHint}
+          onDragOver={(event) => {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = "copy";
+          }}
+          onDrop={(event) => {
+            event.preventDefault();
+            addItem(event.dataTransfer.getData("text/plain"));
+          }}
+        >
+          <div className="pixel-coast" aria-hidden="true">
+            <span className="pixel-sun" /><span className="pixel-cloud cloud-a" /><span className="pixel-cloud cloud-b" />
+            <span className="pixel-cliff" /><span className="pixel-sea sea-a" /><span className="pixel-sea sea-b" /><span className="pixel-shingle" />
+          </div>
+          <div className="packing-speech" role="status" aria-live="polite"><span>{reaction}</span></div>
+          <div className={`pixel-hunter ${packedIds.length ? "has-pack" : ""}`} role="img" aria-label={language === "zh" ? "短发中性像素化石猎人 Rowan" : "Rowan, a short-haired androgynous pixel fossil hunter"}>
+            <span className="pixel-hunter-pack" /><span className="pixel-hunter-leg leg-left" /><span className="pixel-hunter-leg leg-right" />
+            <span className="pixel-hunter-body" /><span className="pixel-hunter-arm arm-left" /><span className="pixel-hunter-arm arm-right" />
+            <span className="pixel-hunter-head" /><span className="pixel-hunter-hair" /><span className="pixel-hunter-face" />
+          </div>
+          <div className="packing-drop-hint"><span>↓</span>{t.stageHint}</div>
+        </section>
+
+        <aside className="packing-check" aria-labelledby="packing-check-title">
+          <div className="packing-subhead"><h3 id="packing-check-title">{t.packTitle}</h3><button onClick={() => setPackedIds([])} disabled={!packedIds.length}>{t.clear}</button></div>
+          <p className="packing-bag-note">{t.bag}</p>
+          <div className={`packing-meter ${weight > FOLKESTONE_PACK_LIMITS.comfortableWeight ? "is-warning" : ""}`}>
+            <div><span>{t.weight}</span><b>{weight.toFixed(2)} / 7 kg</b></div>
+            <i><span style={{ width: `${Math.min(100, (weight / FOLKESTONE_PACK_LIMITS.hardWeight) * 100)}%` }} /></i>
+          </div>
+          <div className={`packing-meter ${volume > FOLKESTONE_PACK_LIMITS.comfortableVolume ? "is-warning" : ""}`}>
+            <div><span>{t.volume}</span><b>{volume.toFixed(1)} / 16 L</b></div>
+            <i><span style={{ width: `${Math.min(100, (volume / FOLKESTONE_PACK_LIMITS.hardVolume) * 100)}%` }} /></i>
+          </div>
+          <div className="packing-reserve">
+            <span>{t.findsReserve}</span>
+            <b>{Math.max(0, FOLKESTONE_PACK_LIMITS.hardWeight - weight).toFixed(2)} kg · {Math.max(0, FOLKESTONE_PACK_LIMITS.hardVolume - volume).toFixed(1)} L</b>
+          </div>
+          <div className="packing-inventory">
+            <span>{t.packed}</span>
+            {packedItems.length ? <ul>{packedItems.map((item) => (
+              <li key={item.id}><span>{item[language]}</span><button onClick={() => toggleItem(item.id)} aria-label={`${t.remove} ${item[language]}`}>×</button></li>
+            ))}</ul> : <p>{t.empty}</p>}
+          </div>
+          <div className={`packing-verdict is-${status}`}><b>{status === "ready" ? t.ready : t.adjust}</b><span>{packedItems.length}/{folkestonePackingItems.length}</span></div>
+        </aside>
+      </div>
+
+      <p className="packing-rule"><span aria-hidden="true">i</span>{t.rule}</p>
+    </section>
+  );
+}
+
 function EquipmentView({ language, onBack }: { language: Language; onBack: () => void }) {
   const t = equipmentCopy[language];
   const viewRef = useRef<HTMLElement>(null);
@@ -3289,6 +3536,8 @@ function EquipmentView({ language, onBack }: { language: Language; onBack: () =>
     <section ref={viewRef} className="equipment-view" aria-label={t.title}>
       <div className="equipment-shell">
         <button className="equipment-back" onClick={onBack}><span>←</span> {t.back}</button>
+
+        <FolkestonePackingGame language={language} />
 
         <header className="equipment-hero">
           <div>

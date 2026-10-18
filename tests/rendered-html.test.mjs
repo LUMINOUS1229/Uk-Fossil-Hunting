@@ -70,6 +70,26 @@ test("offers distinct Weymouth field sheets and station routes", async () => {
   assert.match(css, /\.weymouth-site-options article\.is-selected/);
 });
 
+test("adds the Folkestone packing game with two realistic load strategies", async () => {
+  const [component, css] = await Promise.all([
+    read("../app/FossilMap.tsx"),
+    read("../app/globals.css"),
+  ]);
+
+  assert.match(component, /function FolkestonePackingGame/);
+  assert.match(component, /带地质锤路线/);
+  assert.match(component, /不带锤纯捡路线/);
+  assert.match(component, /hardWeight: 7/);
+  assert.match(component, /hardVolume: 16/);
+  assert.match(component, /comfortableWeight: 5/);
+  assert.match(component, /onDragStart=/);
+  assert.match(component, /onDrop=/);
+  assert.match(component, /status === "ready"/);
+  assert.match(css, /\.pixel-hunter-hair/);
+  assert.match(css, /\.packing-stage\.status-over/);
+  assert.match(css, /\.packing-item\.is-packed/);
+});
+
 test("uses bright cyan map connectors while retaining the selected line emphasis", async () => {
   const css = await read("../app/coastal-map.css");
   assert.match(css, /\.coast-connection line \{ stroke: #78e9f8; stroke-width: 1; opacity: \.8;/);
