@@ -33,6 +33,8 @@ test("keeps the guide focused and adds the requested discovery play", async () =
   assert.match(component, /collectionFilter/);
   assert.match(component, /feedNori/);
   assert.match(component, /nori-guide-minimized-v1/);
+  assert.doesNotMatch(component, /locationRoasts|location-roast|诺里锐评|Nori's verdict/);
+  assert.doesNotMatch(css, /\.location-roast/);
   assert.match(component, /nori-restore/);
   assert.match(component, /map-viewport-controls/);
   assert.match(component, /handleMapPointerMove/);
