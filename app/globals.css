@@ -1887,6 +1887,138 @@ button {
   scroll-margin-top: 40px;
 }
 
+.weymouth-site-picker {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--rust) 16%, transparent), transparent 46%),
+    color-mix(in srgb, var(--sea) 86%, transparent);
+  box-shadow: 4px 4px 0 rgba(23,39,36,.12);
+}
+
+.weymouth-site-picker-heading > span,
+.weymouth-active-site > span {
+  color: var(--rust);
+  font-family: var(--font-mono), monospace;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.weymouth-site-picker-heading h3 {
+  margin: 5px 0 7px;
+  font-family: var(--font-display), serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -.02em;
+}
+
+.weymouth-site-picker-heading p {
+  max-width: 650px;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.weymouth-site-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.weymouth-site-options article {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--sea) 78%, transparent);
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.weymouth-site-options article.is-selected {
+  border-color: var(--rust);
+  box-shadow: inset 0 0 0 1px var(--rust), 3px 3px 0 rgba(194,87,45,.18);
+  transform: translateY(-2px);
+}
+
+.weymouth-site-options button {
+  display: flex;
+  min-height: 148px;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 13px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.weymouth-site-options button:focus-visible,
+.weymouth-site-options a:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: -3px;
+}
+
+.weymouth-site-options button > span {
+  color: var(--ink-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: 6px;
+  letter-spacing: .09em;
+}
+
+.weymouth-site-options button > strong {
+  margin-top: 7px;
+  font-family: var(--font-display), serif;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.weymouth-site-options button > p {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.weymouth-site-options article > a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 38px;
+  padding: 9px 12px;
+  border-top: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 8px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.weymouth-site-options article > a:hover {
+  background: var(--rust);
+  color: #fff;
+}
+
+.weymouth-active-site {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 11px;
+  border-top: 1px dashed var(--line);
+}
+
+.weymouth-active-site strong {
+  font-size: 11px;
+}
+
 .section-title {
   display: flex;
   align-items: center;
@@ -11237,4 +11369,47 @@ body {
   .equipment-card h3 { min-height: 0; }
   .equipment-safety { grid-template-columns: 38px minmax(0, 1fr); gap: 12px; }
   .equipment-safety > span { width: 34px; height: 34px; }
+}
+
+@media (max-width: 720px) {
+  .weymouth-site-picker {
+    margin-right: -2px;
+    margin-left: -2px;
+    padding: 13px;
+    box-shadow: 3px 3px 0 rgba(23,39,36,.1);
+  }
+
+  .weymouth-site-picker-heading h3 {
+    font-size: 22px;
+    line-height: 1.15;
+  }
+
+  .weymouth-site-picker-heading p,
+  .weymouth-site-options button > p {
+    font-size: 11px;
+  }
+
+  .weymouth-site-options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .weymouth-site-options button {
+    min-height: 132px;
+    padding: 14px;
+  }
+
+  .weymouth-site-options button > strong {
+    font-size: 20px;
+  }
+
+  .weymouth-site-options article > a {
+    min-height: 44px;
+    font-size: 10px;
+  }
+
+  .weymouth-active-site {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
 }

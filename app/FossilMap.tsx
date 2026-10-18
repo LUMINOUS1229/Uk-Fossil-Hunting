@@ -622,7 +622,7 @@ const baseLocations: Location[] = [
   },
   {
     id: "weymouth",
-    name: "Weymouth / Bowleaze Cove",
+    name: "Weymouth · Bowleaze + Smallmouth",
     shortName: "Weymouth",
     region: "Dorset · Jurassic Coast",
     period: "Late Jurassic",
@@ -1243,6 +1243,203 @@ const localizeLocation = (location: Location, language: Language): Location => {
   };
 };
 
+type WeymouthSiteOption = {
+  id: "bowleaze" | "smallmouth";
+  eyebrow: string;
+  summary: string;
+  location: Location;
+};
+
+const smallmouthGeology: Record<Language, GeologyProfile> = {
+  en: {
+    intro: "Smallmouth Sands records the transition from the latest Corallian shelf deposits into the Lower Kimmeridge Clay. The harbour-side section is slipped and discontinuous, so a loose find's position on the beach does not automatically identify its original bed.",
+    units: [
+      {
+        name: "Sandsfoot Formation · upper boundary beds",
+        age: "Late Oxfordian · before c. 155 million years ago",
+        environment: "Quiet marine shelf with condensed iron-rich intervals",
+        description: "Ringstead Clay and the thin Osmington Mills Ironstone form the uppermost Corallian context beneath the Kimmeridge Clay. Modern exposure is limited and locally masked.",
+        fossils: "Bivalves, serpulids, echinoids and rare ammonites",
+      },
+      {
+        name: "Kimmeridge Clay Formation · lower succession",
+        age: "Early Kimmeridgian · c. 155–153 million years ago",
+        environment: "Low-energy offshore marine mud",
+        description: "Dark Baylei- and Cymodoce-zone mudstones, shell beds and the Wyke Siltstone weather across the low cliffs and foreshore. Harbour-derived nodules can mix material from other horizons.",
+        fossils: "Small fish and shark remains, oysters, ammonites and rare reptile or pterosaur fragments",
+      },
+    ],
+    beds: ["Inconstans boundary bed", "Nanogyra nana shell bed", "Deltoideum-rich Baylei mudstones", "Wyke Siltstone", "Lower Cymodoce mudstones"],
+    fieldNote: "Label every small find with its precise bay or grid reference. Important vertebrate material should be photographed in context and reported before preparation.",
+    sourceLabel: "UK Fossils · Geological Conservation Review",
+    sourceLink: "https://ukfossils.co.uk/smallmouth-sands/",
+  },
+  zh: {
+    intro: "Smallmouth Sands 记录了最晚期 Corallian 浅海沉积向下部 Kimmeridge Clay 的过渡。港湾一侧的剖面受滑塌影响且并不连续，因此松散化石所在的海滩位置不一定就是它原来的层位。",
+    units: [
+      {
+        name: "Sandsfoot 组 · 上部界线层",
+        age: "晚牛津期 · 约 1.55 亿年前以前",
+        environment: "安静陆棚海与富铁凝缩层",
+        description: "Ringstead Clay 与薄层 Osmington Mills Ironstone 构成 Kimmeridge Clay 之下最上部的 Corallian 地层背景；现代露头有限，局部被覆盖。",
+        fossils: "双壳类、龙介虫、海胆及罕见菊石",
+      },
+      {
+        name: "Kimmeridge Clay 组 · 下部层序",
+        age: "早启莫里期 · 约 1.55–1.53 亿年前",
+        environment: "低能量外陆棚海相软泥",
+        description: "Baylei 与 Cymodoce 菊石带的暗色泥岩、贝壳层和 Wyke Siltstone 出露于低矮软崖与前滩；从 Portland Harbour 冲来的结核可能混入其他层位材料。",
+        fossils: "细小鱼类与鲨鱼遗骸、牡蛎、菊石，以及罕见爬行动物或翼龙碎片",
+      },
+    ],
+    beds: ["Inconstans 界线层", "Nanogyra nana 贝壳层", "富 Deltoideum 的 Baylei 泥岩", "Wyke Siltstone", "下部 Cymodoce 泥岩"],
+    fieldNote: "每件微小发现都应记录具体海湾或网格位置。重要脊椎动物材料应先拍摄原位信息，并在清修前报告。",
+    sourceLabel: "UK Fossils · 英国地质保护评审",
+    sourceLink: "https://ukfossils.co.uk/smallmouth-sands/",
+  },
+};
+
+const smallmouthLocationCopy: Record<Language, Partial<Location>> = {
+  en: {
+    name: "Smallmouth Sands",
+    region: "Dorset · Portland Harbour",
+    period: "Late Jurassic · Kimmeridgian",
+    age: "c. 155–153 million years",
+    type: "Sheltered foreshore & low clay cliffs",
+    risk: "MODERATE",
+    level: "Patient beginners · older children",
+    findRating: 4,
+    accessRating: 4,
+    familyRating: 3,
+    local: "Taxi, cycle or local bus toward Wyke Regis / Sandsfoot",
+    walk: "10–15 min from the Sandsfoot Castle access; about 40–50 min on foot from Weymouth station",
+    duration: "3 hr 15–4 hr",
+    mapsLink: "https://www.google.com/maps/dir/Weymouth+Station/Sandsfoot+Castle,+39+Old+Castle+Road,+Weymouth+DT4+8QE",
+    route: [
+      "Travel from Weymouth station to the public access beside Sandsfoot Castle on Old Castle Road.",
+      "Follow the coast path beside the fence and around Castle Cove Sailing Club to the formal foreshore access.",
+      "Once on the shore, turn south-west toward Smallmouth and search loose shingle and permitted loose clay slowly.",
+      "Return by the same signed path before the rising tide restricts the foreshore; do not climb or cut into the low banks.",
+    ],
+    terrain: "Uneven shingle · soft clay · slippery seaweed · low banks",
+    exit: "Sandsfoot Castle / Castle Cove coast-path access; return the same way",
+    tideWindow: "Use a falling tide; arrive 1–2 hours before low water",
+    season: "Autumn–spring, after useful scour in settled weather",
+    conditions: "Sheltered harbour erosion is limited; success depends on slow searching for millimetre-scale material",
+    geology: smallmouthGeology,
+    finds: [
+      { glyph: "▲", category: "Shark Teeth", name: "Fish or shark tooth", zh: "鱼类或鲨鱼牙", rarity: "Occasional", size: "2–25 mm", tip: "Use a hand lens to check tiny glossy teeth, scales, jaw plates and vertebrae among dark grit." },
+      { glyph: "◇", category: "Reptile", name: "Marine reptile fragment", zh: "海生爬行动物碎片", rarity: "Rare", size: "5 mm–8 cm", tip: "Isolated teeth, vertebrae or bone may belong to ichthyosaurs, plesiosaurs, pliosaurs or marine crocodilians; record and report them." },
+      { glyph: "⌁", category: "Vertebrates", name: "Pterosaur bone fragment", zh: "翼龙骨骼碎片", rarity: "Rare", size: "3–50 mm", tip: "Thin-walled fragments can be scientifically important. Photograph the context and do not prepare them in the field." },
+      { glyph: "◒", category: "Bivalves & Brachiopods", name: "Flat oyster", zh: "扁平牡蛎", rarity: "Occasional", size: "1–10 cm", tip: "Look for Deltoideum delta, Nanogyra and other shell fragments in loose mudstone and shingle." },
+      { glyph: "◎", category: "Ammonites & Heteromorphs", name: "Kimmeridgian ammonite", zh: "启莫里期菊石", rarity: "Occasional", size: "1–12 cm", tip: "Pictonia or Rasenia fragments may occur in loose mudstone or reworked harbour nodules; keep locality details." },
+      { glyph: "◇", category: "Reptile", name: "Crocodylomorph tooth", zh: "鳄形类牙齿", rarity: "Very rare", size: "5–40 mm", tip: "Conical marine-crocodilian teeth are exceptional finds and should be documented for specialist review." },
+    ],
+    required: ["Tide plan", "Sturdy waterproof boots", "Hand lens", "Small labelled boxes", "Water"],
+    useful: ["1–2 mm fine sieve for permitted loose sediment", "Soft brush", "Phone for grid references", "Small rounded trowel"],
+    avoid: ["Hammering bedrock", "Digging into low cliffs or banks", "Heavy tools", "Mixing unlabelled finds from different bays"],
+    hazards: ["Rising tide can restrict the foreshore", "Soft and slippery clay", "Seaweed-covered stones", "Fragile, very small specimens"],
+    safetyLead: "Smallmouth is sheltered, but the clay and seaweed can be very slippery and the tide still controls access. Use the formal Sandsfoot route, stay off the low banks and return the same way.",
+    sssi: "Chesil and the Fleet SSSI · GCR conservation site · Jurassic Coast",
+    rules: ["Collect only permitted loose foreshore material; do not hammer bedrock.", "Do not cut into low cliffs, banks or in-situ clay.", "Keep finds labelled by collecting position rather than combining material from different bays.", "Photograph and report important reptile, pterosaur or associated vertebrate material before preparation."],
+    source: "UK Fossils · Geological Conservation Review",
+    sourceLink: "https://ukfossils.co.uk/smallmouth-sands/",
+    verified: "18 Oct 2026",
+    accent: "#4f98a3",
+  },
+  zh: {
+    name: "Smallmouth Sands",
+    region: "多塞特郡 · Portland Harbour",
+    period: "晚侏罗世 · 启莫里期",
+    age: "约 1.55–1.53 亿年前",
+    type: "港湾前滩与低矮黏土崖",
+    risk: "MODERATE",
+    level: "耐心新手 · 较大儿童",
+    findRating: 4,
+    accessRating: 4,
+    familyRating: 3,
+    local: "乘出租车、骑行，或搭当地巴士往 Wyke Regis / Sandsfoot",
+    walk: "从 Sandsfoot Castle 入口步行约 10–15 分钟；从 Weymouth 车站全程步行约 40–50 分钟",
+    duration: "3小时15分–4小时",
+    mapsLink: "https://www.google.com/maps/dir/Weymouth+Station/Sandsfoot+Castle,+39+Old+Castle+Road,+Weymouth+DT4+8QE",
+    route: [
+      "从 Weymouth 车站前往 Old Castle Road 上 Sandsfoot Castle 旁的公共入口。",
+      "沿围栏旁海岸步道绕过 Castle Cove Sailing Club，前往正式前滩入口。",
+      "下到岸边后向西南往 Smallmouth 行进，慢慢检查松散砾石和允许采集的松散黏土。",
+      "涨潮限制前滩前，从同一条有标识步道返回；不要攀爬或挖掘低矮岸坡。",
+    ],
+    terrain: "不平砾石 · 软黏土 · 湿滑海藻 · 低矮岸坡",
+    exit: "Sandsfoot Castle / Castle Cove 海岸步道入口；必须原路返回",
+    tideWindow: "退潮时前往；建议低潮前 1–2 小时抵达",
+    season: "秋至春，安全冲刷后且天气稳定时",
+    conditions: "港湾内侵蚀较弱；收获依赖耐心寻找毫米级细小材料",
+    geology: smallmouthGeology,
+    finds: [
+      { glyph: "▲", category: "鲨鱼牙", name: "鱼类或鲨鱼牙", zh: "Fish or shark tooth", rarity: "偶见", size: "2–25 毫米", tip: "用手持放大镜检查暗色细砾中的微小亮面牙齿、鳞片、颌板和椎骨。" },
+      { glyph: "◇", category: "爬行动物", name: "海生爬行动物碎片", zh: "Marine reptile fragment", rarity: "罕见", size: "5 毫米–8 厘米", tip: "零散牙齿、椎骨或骨片可能来自鱼龙、蛇颈龙、上龙或海生鳄形类；请记录并报告。" },
+      { glyph: "⌁", category: "脊椎动物", name: "翼龙骨骼碎片", zh: "Pterosaur bone fragment", rarity: "罕见", size: "3–50 毫米", tip: "薄壁碎片可能具有科学价值。拍摄发现环境，不要在现场清修。" },
+      { glyph: "◒", category: "双壳类与腕足类", name: "扁平牡蛎", zh: "Flat oyster", rarity: "偶见", size: "1–10 厘米", tip: "在松散泥岩和砾石中寻找 Deltoideum delta、Nanogyra 及其他贝壳碎片。" },
+      { glyph: "◎", category: "菊石与异形菊石", name: "启莫里期菊石", zh: "Kimmeridgian ammonite", rarity: "偶见", size: "1–12 厘米", tip: "松散泥岩或港内再搬运结核中可能出现 Pictonia 或 Rasenia 碎片；务必保留地点记录。" },
+      { glyph: "◇", category: "爬行动物", name: "鳄形类牙齿", zh: "Crocodylomorph tooth", rarity: "非常罕见", size: "5–40 毫米", tip: "锥形海生鳄形类牙齿属于特殊发现，应记录并交由专业人员核查。" },
+    ],
+    required: ["潮汐计划", "结实防水靴", "手持放大镜", "带标签的小标本盒", "饮用水"],
+    useful: ["用于允许采集的松散沉积物的 1–2 毫米细筛", "软刷", "记录网格位置的手机", "小圆头铲"],
+    avoid: ["敲击基岩", "挖掘低矮崖壁或岸坡", "使用重型工具", "混装不同海湾且不做标签"],
+    hazards: ["涨潮会限制前滩通行", "软且湿滑的黏土", "覆有海藻的石块", "标本细小且脆弱"],
+    safetyLead: "Smallmouth 位于较遮蔽的港湾内，但黏土和海藻仍非常湿滑，通行也受潮汐控制。请使用 Sandsfoot 正式路线，远离低矮岸坡并原路返回。",
+    sssi: "Chesil and the Fleet 特别科学价值地点 · GCR 地质保护地 · 侏罗纪海岸",
+    rules: ["只采集允许的松散前滩材料，不得敲击基岩。", "不得挖掘低矮崖壁、岸坡或原位黏土。", "按发现位置给标本贴标签，不要混装不同海湾材料。", "重要爬行动物、翼龙或关联脊椎动物材料应先拍照记录，并在清修前报告。"],
+    source: "UK Fossils · 英国地质保护评审",
+    sourceLink: "https://ukfossils.co.uk/smallmouth-sands/",
+    verified: "18 Oct 2026",
+    accent: "#4f98a3",
+  },
+};
+
+const weymouthPickerCopy = {
+  en: {
+    eyebrow: "TWO SHORES · ONE STATION",
+    title: "Choose your Weymouth field site",
+    intro: "Both routes begin at Weymouth station, but the geology, terrain and likely finds are different. Select a shore to update the full field sheet below.",
+    stationRoute: "Navigate from Weymouth station",
+    selected: "CURRENT FIELD SHEET",
+    bowleazeEyebrow: "EAST OF TOWN · ROUGH FORESHORE",
+    bowleazeSummary: "Oxford Clay and Corallian blocks: larger shells, ammonites, belemnites and abundant burrow traces.",
+    smallmouthEyebrow: "PORTLAND HARBOUR · SLOW SEARCH",
+    smallmouthSummary: "Lower Kimmeridge Clay: tiny fish, shell and rare reptile or pterosaur material requiring careful recording.",
+  },
+  zh: {
+    eyebrow: "两个海岸 · 同一车站",
+    title: "选择 Weymouth 的具体采集点",
+    intro: "两条路线都从 Weymouth 车站开始，但地层、地形与可能收获完全不同。选择点位后，下方整份现场指南会同步更新。",
+    stationRoute: "从 Weymouth 车站导航",
+    selected: "当前现场指南",
+    bowleazeEyebrow: "城东 · 崎岖潮间带",
+    bowleazeSummary: "Oxford Clay 与 Corallian 岩块：较大的贝壳、菊石、箭石和丰富的洞穴遗迹化石。",
+    smallmouthEyebrow: "PORTLAND HARBOUR · 慢速细找",
+    smallmouthSummary: "下部 Kimmeridge Clay：细小鱼类、贝壳及罕见爬行动物或翼龙材料，需要认真记录。",
+  },
+} as const;
+
+function getWeymouthSiteOptions(location: Location, language: Language): WeymouthSiteOption[] {
+  const picker = weymouthPickerCopy[language];
+  const bowleazeName = "Bowleaze Cove · Redcliff";
+  return [
+    {
+      id: "bowleaze",
+      eyebrow: picker.bowleazeEyebrow,
+      summary: picker.bowleazeSummary,
+      location: { ...location, name: bowleazeName },
+    },
+    {
+      id: "smallmouth",
+      eyebrow: picker.smallmouthEyebrow,
+      summary: picker.smallmouthSummary,
+      location: { ...location, ...smallmouthLocationCopy[language], id: location.id, shortName: location.shortName },
+    },
+  ];
+}
+
 const copy = {
   en: {
     returnMap: "Return to UK map", museum: "Fossil museum", references: "Reference", about: "About", safetyFirst: "Safety first",
@@ -1691,8 +1888,8 @@ const locationRoasts: Record<string, Record<Language, string>> = {
     zh: "菊石很经典，站在崖下这件事可别经典复刻螺。",
   },
   weymouth: {
-    en: "Devil's Toenails are easy to spot; so is the returning tide, if you actually turn around—luo.",
-    zh: "魔鬼趾很好认，回涨的潮水也一样——前提是你肯回头螺。",
+    en: "Choose your shore before your fossil: Bowleaze goes big and bouldery, Smallmouth goes tiny and patient—luo.",
+    zh: "先选海岸再找化石：Bowleaze 看大岩块，Smallmouth 拼耐心找微小标本螺。",
   },
   peterborough: {
     en: "The fossils are generous; the gate code and Oxford Clay are not—luo.",
@@ -1756,7 +1953,7 @@ const locationAliases: Record<string, string[]> = {
   bracklesham: ["bracklesham", "bracklesham bay", "布拉克勒舍姆"],
   "isle-of-wight": ["isle of wight", "yaverland", "怀特岛", "亚弗兰"],
   charmouth: ["charmouth", "black ven", "查茅斯"],
-  weymouth: ["weymouth", "bowleaze", "bowleaze cove", "redcliff", "韦茅斯"],
+  weymouth: ["weymouth", "bowleaze", "bowleaze cove", "redcliff", "smallmouth", "smallmouth sands", "smallmouth beach", "sandsfoot", "韦茅斯", "小嘴海滩"],
   peterborough: ["peterborough", "king s dyke", "kings dyke", "king’s dyke", "whittlesey", "haddon lake", "哈登湖", "yaxley", "hampton vale", "hampton lake", "彼得伯勒", "亚克斯利", "汉普顿湖"],
   nacton: ["nacton", "nacton shore", "river orwell", "纳克顿"],
   "fort-victoria": ["fort victoria", "yarmouth", "维多利亚堡"],
@@ -1900,7 +2097,7 @@ function answerGuideQuestion(question: string, siteLocations: Location[], langua
   }
   const smallTalk = answerNoriSmallTalk(query, language);
   if (smallTalk) return { text: smallTalk };
-  const location = findGuideLocation(query, siteLocations);
+  let location = findGuideLocation(query, siteLocations);
   const isZh = language === "zh";
   const asksRoute = /(怎么去|如何去|怎样去|路线|交通|抵达|到达|how.*(get|go)|route|train|travel)/i.test(query);
   const asksSafety = /(注意|安全|危险|风险|准备|采集前|safe|safety|hazard|risk|before.*collect)/i.test(query);
@@ -1910,6 +2107,11 @@ function answerGuideQuestion(question: string, siteLocations: Location[], langua
   const asksRules = /(规则|允许|可以带走|能带走|敲|挖|rule|allowed|collecting code|hammer|dig)/i.test(query);
   const asksBeginner = /(新手|第一次|亲子|孩子|家庭|简单|beginner|first time|family|children|easy)/i.test(query);
   const asksYaxley = /(haddon lake|哈登湖|yaxley|hampton vale|hampton lake|亚克斯利|汉普顿湖|养老院|湖边)/i.test(query);
+  const asksSmallmouth = /(smallmouth|small mouth|sandsfoot|小嘴海滩)/i.test(query);
+
+  if (location?.id === "weymouth" && asksSmallmouth) {
+    location = getWeymouthSiteOptions(location, language).find((option) => option.id === "smallmouth")?.location ?? location;
+  }
 
   if (asksSafety && !location) {
     return {
@@ -3721,8 +3923,12 @@ export function FossilMap() {
 function LocationDetail({ location, language, onBack, recordCount, onViewRecords }: { location: Location; language: Language; onBack: () => void; recordCount: string; onViewRecords: () => void }) {
   const t = detailCopy[language];
   const locationNumber = String(locations.findIndex((item) => item.id === location.id) + 1).padStart(2, "0");
-  const geology = location.geology?.[language];
-  const fieldIntel = location.fieldIntel?.[language];
+  const [weymouthSiteId, setWeymouthSiteId] = useState<"bowleaze" | "smallmouth">("bowleaze");
+  const weymouthSites = useMemo(() => location.id === "weymouth" ? getWeymouthSiteOptions(location, language) : [], [location, language]);
+  const activeLocation = weymouthSites.find((option) => option.id === weymouthSiteId)?.location ?? location;
+  const activeWeymouthOption = weymouthSites.find((option) => option.id === weymouthSiteId);
+  const geology = activeLocation.geology?.[language];
+  const fieldIntel = activeLocation.fieldIntel?.[language];
   const isDinosaurIsle = location.id === "isle-of-wight";
   const photo = locationPhotos[location.id];
   const [photoFailed, setPhotoFailed] = useState(false);
@@ -3731,8 +3937,8 @@ function LocationDetail({ location, language, onBack, recordCount, onViewRecords
     <section className={`detail-view detail-text-only ${isDinosaurIsle ? "is-dinosaur-isle" : ""}`}>
       {isDinosaurIsle && <IsleOfWightSurprise language={language} />}
       <div className="detail-safety">
-        <span className={`risk-pill ${riskClass(location.risk)}`}>{riskLabel(location.risk, language)} {t.risk}</span>
-        <p>{location.safetyLead}</p>
+        <span className={`risk-pill ${riskClass(activeLocation.risk)}`}>{riskLabel(activeLocation.risk, language)} {t.risk}</span>
+        <p>{activeLocation.safetyLead}</p>
       </div>
 
       <aside className="info-panel">
@@ -3740,21 +3946,21 @@ function LocationDetail({ location, language, onBack, recordCount, onViewRecords
           {photo && !photoFailed && <img key={photo.src} className="place-background-photo" src={photo.src} alt="" style={{ objectPosition: photo.position ?? "center" }} decoding="async" onError={() => setPhotoFailed(true)} />}
         <button className="back-button" onClick={onBack}><span>←</span> {t.allSites}</button>
         <button className="location-record-link" onClick={onViewRecords}>🪨 {recordCount} {language === "zh" ? "条点位记录 · 查看 / 添加分享 ↗" : "field records · View / share a find ↗"}</button>
-        <div className="place-heading" style={{ "--place-accent": location.accent } as React.CSSProperties}>
+        <div className="place-heading" style={{ "--place-accent": activeLocation.accent } as React.CSSProperties}>
           <div className="place-symbol"><PixelSiteIcon id={location.id} /><span>{locationNumber}</span></div>
           <div>
-            <p>{location.region}</p>
+            <p>{activeLocation.region}</p>
             <h2>{location.name}</h2>
-            <div className="place-tags"><span>{location.period}</span><span>{location.type}</span><span>{location.level}</span></div>
+            <div className="place-tags"><span>{activeLocation.period}</span><span>{activeLocation.type}</span><span>{activeLocation.level}</span></div>
             <blockquote className="location-roast">
               <span aria-hidden="true">✦</span>
               <p><strong>{language === "zh" ? "诺里锐评" : "Nori's verdict"}</strong>{locationRoasts[location.id]?.[language]}</p>
             </blockquote>
             {isDinosaurIsle && <div className="isle-secret-badge"><span>◆</span>{language === "zh" ? "恐龙岛 · 彩蛋已解锁" : "Dinosaur Island · secret hatched"}</div>}
             <div className="field-profile">
-              <ProfileRating label={t.findFrequency} rating={location.findRating} />
-              <ProfileRating label={t.accessRating} rating={location.accessRating} />
-              <ProfileRating label={t.familyRating} rating={location.familyRating} />
+              <ProfileRating label={t.findFrequency} rating={activeLocation.findRating} />
+              <ProfileRating label={t.accessRating} rating={activeLocation.accessRating} />
+              <ProfileRating label={t.familyRating} rating={activeLocation.familyRating} />
             </div>
           </div>
         </div>
@@ -3772,26 +3978,58 @@ function LocationDetail({ location, language, onBack, recordCount, onViewRecords
         <div className="panel-content">
           <section className="info-section route-section" id="get-there">
             <SectionTitle number="01" title={t.section1} />
-            <div className="journey-time"><span>{t.typicalTotal}</span><strong>{location.duration}</strong></div>
+            {weymouthSites.length > 0 && (
+              <div className="weymouth-site-picker">
+                <div className="weymouth-site-picker-heading">
+                  <span>{weymouthPickerCopy[language].eyebrow}</span>
+                  <h3>{weymouthPickerCopy[language].title}</h3>
+                  <p>{weymouthPickerCopy[language].intro}</p>
+                </div>
+                <div className="weymouth-site-options" aria-label={weymouthPickerCopy[language].title}>
+                  {weymouthSites.map((option) => {
+                    const selected = option.id === weymouthSiteId;
+                    return (
+                      <article className={selected ? "is-selected" : ""} key={option.id}>
+                        <button type="button" aria-pressed={selected} onClick={() => setWeymouthSiteId(option.id)}>
+                          <span>{option.eyebrow}</span>
+                          <strong>{option.location.name}</strong>
+                          <p>{option.summary}</p>
+                        </button>
+                        <a href={option.location.mapsLink} target="_blank" rel="noreferrer noopener">
+                          {weymouthPickerCopy[language].stationRoute} <span aria-hidden="true">↗</span>
+                        </a>
+                      </article>
+                    );
+                  })}
+                </div>
+                {activeWeymouthOption && (
+                  <div className="weymouth-active-site" aria-live="polite">
+                    <span>{weymouthPickerCopy[language].selected}</span>
+                    <strong>{activeWeymouthOption.location.name}</strong>
+                  </div>
+                )}
+              </div>
+            )}
+            <div className="journey-time"><span>{t.typicalTotal}</span><strong>{activeLocation.duration}</strong></div>
             <div className="journey-steps">
-              <JourneyStep label={t.london} value={location.departure} detail={t.recommendedDeparture} />
-              <JourneyStep label={t.train} value={location.station} detail={t.checkService} />
-              <JourneyStep label={t.local} value={location.local} detail={location.walk} />
+              <JourneyStep label={t.london} value={activeLocation.departure} detail={t.recommendedDeparture} />
+              <JourneyStep label={t.train} value={activeLocation.station} detail={t.checkService} />
+              <JourneyStep label={t.local} value={activeLocation.local} detail={activeLocation.walk} />
             </div>
             <div className="action-row">
-              <a className="primary-action" href={location.railLink} target="_blank" rel="noreferrer">{t.planRail} <span>↗</span></a>
-              <a className="secondary-action" href={location.mapsLink} target="_blank" rel="noreferrer">{t.openMaps}</a>
+              <a className="primary-action" href={activeLocation.railLink} target="_blank" rel="noreferrer">{t.planRail} <span>↗</span></a>
+              <a className="secondary-action" href={activeLocation.mapsLink} target="_blank" rel="noreferrer">{t.openMaps}</a>
             </div>
           </section>
 
           <section className="info-section" id="route">
             <SectionTitle number="02" title={t.section2} />
             <ol className="route-list">
-              {location.route.map((step, index) => <li key={step}><span>{index + 1}</span><p>{step}</p></li>)}
+              {activeLocation.route.map((step, index) => <li key={step}><span>{index + 1}</span><p>{step}</p></li>)}
             </ol>
             <div className="route-facts">
-              <p><span>{t.terrain}</span>{location.terrain}</p>
-              <p><span>{t.exit}</span>{location.exit}</p>
+              <p><span>{t.terrain}</span>{activeLocation.terrain}</p>
+              <p><span>{t.exit}</span>{activeLocation.exit}</p>
             </div>
           </section>
 
@@ -3850,7 +4088,7 @@ function LocationDetail({ location, language, onBack, recordCount, onViewRecords
           <section className="info-section" id="finds">
             <SectionTitle number="03" title={t.section3} />
             <div className="finds-grid">
-              {location.finds.map((find) => (
+              {activeLocation.finds.map((find) => (
                 <article key={find.name}>
                   <div className="find-card-top">
                     <PixelFossilIcon find={find} />
@@ -3866,38 +4104,38 @@ function LocationDetail({ location, language, onBack, recordCount, onViewRecords
 
           <section className="info-section" id="time">
             <SectionTitle number="04" title={t.section4} />
-            <div className="time-hero"><span>{t.recommendedWindow}</span><strong>{location.tideWindow}</strong></div>
+            <div className="time-hero"><span>{t.recommendedWindow}</span><strong>{activeLocation.tideWindow}</strong></div>
             <div className="time-grid">
-              <p><span>{t.season}</span>{location.season}</p>
-              <p><span>{t.conditions}</span>{location.conditions}</p>
+              <p><span>{t.season}</span>{activeLocation.season}</p>
+              <p><span>{t.conditions}</span>{activeLocation.conditions}</p>
             </div>
-            {location.tideLink ? (
-              <a className="tide-action" href={location.tideLink} target="_blank" rel="noreferrer">{t.checkTide} <span>↗</span></a>
+            {activeLocation.tideLink ? (
+              <a className="tide-action" href={activeLocation.tideLink} target="_blank" rel="noreferrer">{t.checkTide} <span>↗</span></a>
             ) : <div className="not-applicable">{t.tideNA}</div>}
             <p className="caveat">{t.caveat}</p>
           </section>
 
           <section className="info-section" id="equipment">
             <SectionTitle number="05" title={t.section5} />
-            <KitList title={t.bring} symbol="✓" items={location.required} />
-            <KitList title={t.useful} symbol="+" items={location.useful} />
-            <KitList title={t.avoid} symbol="×" items={location.avoid} danger />
+            <KitList title={t.bring} symbol="✓" items={activeLocation.required} />
+            <KitList title={t.useful} symbol="+" items={activeLocation.useful} />
+            <KitList title={t.avoid} symbol="×" items={activeLocation.avoid} danger />
           </section>
 
           <section className="info-section safety-section" id="safety">
             <SectionTitle number="06" title={t.section6} />
-            <div className={`large-risk ${riskClass(location.risk)}`}><span>{t.fieldRisk}</span><strong>{riskLabel(location.risk, language)}</strong></div>
-            <ul className="hazard-list">{location.hazards.map((hazard) => <li key={hazard}><span>!</span>{hazard}</li>)}</ul>
+            <div className={`large-risk ${riskClass(activeLocation.risk)}`}><span>{t.fieldRisk}</span><strong>{riskLabel(activeLocation.risk, language)}</strong></div>
+            <ul className="hazard-list">{activeLocation.hazards.map((hazard) => <li key={hazard}><span>!</span>{hazard}</li>)}</ul>
             <div className="coastguard-note">{t.coastguardA} <strong>999</strong> {t.coastguardB} <strong>Coastguard</strong>.</div>
           </section>
 
           <section className="info-section rules-section" id="rules">
             <SectionTitle number="07" title={t.section7} />
-            <div className="sssi-card"><span>{t.status}</span><strong>{location.sssi}</strong><p>{t.siteSpecific}</p></div>
-            <ul>{location.rules.map((rule) => <li key={rule}><span>→</span>{rule}</li>)}</ul>
+            <div className="sssi-card"><span>{t.status}</span><strong>{activeLocation.sssi}</strong><p>{t.siteSpecific}</p></div>
+            <ul>{activeLocation.rules.map((rule) => <li key={rule}><span>→</span>{rule}</li>)}</ul>
             <div className="source-block">
-              <div><span>{t.source}</span><a href={location.sourceLink} target="_blank" rel="noreferrer">{location.source} ↗</a></div>
-              <div><span>{t.reviewed}</span><strong>{location.verified}</strong></div>
+              <div><span>{t.source}</span><a href={activeLocation.sourceLink} target="_blank" rel="noreferrer">{activeLocation.source} ↗</a></div>
+              <div><span>{t.reviewed}</span><strong>{activeLocation.verified}</strong></div>
               <p>{t.precision}</p>
             </div>
           </section>

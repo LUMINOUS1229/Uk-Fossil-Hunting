@@ -54,6 +54,22 @@ test("keeps the guide focused and adds the requested discovery play", async () =
   assert.match(css, /height:\s*104px/);
 });
 
+test("offers distinct Weymouth field sheets and station routes", async () => {
+  const [component, css] = await Promise.all([
+    read("../app/FossilMap.tsx"),
+    read("../app/globals.css"),
+  ]);
+
+  assert.match(component, /Weymouth · Bowleaze \+ Smallmouth/);
+  assert.match(component, /Smallmouth Sands/);
+  assert.match(component, /Navigate from Weymouth station/);
+  assert.match(component, /Weymouth\+Station\/Sandsfoot\+Castle/);
+  assert.match(component, /activeLocation\.finds\.map/);
+  assert.match(component, /Kimmeridge Clay Formation · lower succession/);
+  assert.match(css, /\.weymouth-site-picker/);
+  assert.match(css, /\.weymouth-site-options article\.is-selected/);
+});
+
 test("uses bright cyan map connectors while retaining the selected line emphasis", async () => {
   const css = await read("../app/coastal-map.css");
   assert.match(css, /\.coast-connection line \{ stroke: #78e9f8; stroke-width: 1; opacity: \.8;/);
