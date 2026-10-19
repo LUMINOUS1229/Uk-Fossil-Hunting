@@ -82,7 +82,7 @@ test("adds private smart location matching and a basic trip profile", async () =
   assert.match(component, /function finderLocationScore/);
   assert.match(component, /function finderGoalMatches/);
   assert.match(component, /仅在本页即时分析 · 不保存你的选择/);
-  assert.match(component, /基础用户分析/);
+  assert.match(component, /你是什么类型的猎人？/);
   assert.match(component, /locations\.length\} \{language === "zh" \? "个野外地点/);
   assert.doesNotMatch(component, /<b>N\+<\/b>/);
   assert.match(css, /\.finder-workbench/);
