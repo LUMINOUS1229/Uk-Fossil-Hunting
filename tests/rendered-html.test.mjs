@@ -72,6 +72,25 @@ test("offers distinct Weymouth field sheets and station routes", async () => {
   assert.match(css, /\.weymouth-site-options article\.is-selected/);
 });
 
+test("adds private smart location matching and a basic trip profile", async () => {
+  const [component, css] = await Promise.all([
+    read("../app/FossilMap.tsx"),
+    read("../app/globals.css"),
+  ]);
+
+  assert.match(component, /function SmartFinderView/);
+  assert.match(component, /function finderLocationScore/);
+  assert.match(component, /function finderGoalMatches/);
+  assert.match(component, /仅在本页即时分析 · 不保存你的选择/);
+  assert.match(component, /基础用户分析/);
+  assert.match(component, /locations\.length\} \{language === "zh" \? "个野外地点/);
+  assert.doesNotMatch(component, /<b>N\+<\/b>/);
+  assert.match(css, /\.finder-workbench/);
+  assert.match(css, /\.finder-result-grid/);
+  assert.match(css, /\.finder-profile-card/);
+  assert.match(css, /@media \(max-width: 560px\)[\s\S]*\.finder-result-grid \{ grid-template-columns: minmax\(0, 1fr\); \}/);
+});
+
 test("adds the Folkestone packing game with two realistic load strategies", async () => {
   const [component, css] = await Promise.all([
     read("../app/FossilMap.tsx"),

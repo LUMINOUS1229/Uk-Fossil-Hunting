@@ -1443,10 +1443,10 @@ function getWeymouthSiteOptions(location: Location, language: Language): Weymout
 const copy = {
   en: {
     returnMap: "Return to UK map", museum: "Fossil museum", references: "Reference", about: "About", safetyFirst: "Safety first",
-    heroEyebrow: "N+ FIELD SITES · ROUTES FROM LONDON", heroTitle: "Fossil Hunters",
+    heroEyebrow: "21 FIELD SITES · ROUTES FROM LONDON", heroTitle: "Fossil Hunters",
     scopeSites: "FIELD SITES", scopeStart: "STARTING FROM", scopeStartValue: "LONDON", scopeCheck: "CHECK BEFORE", scopeCheckValue: "TIDE & ACCESS",
     northSea: "NORTH SEA", channel: "ENGLISH CHANNEL", london: "London", open: "Open",
-    fromLondon: "from London", fieldSites: "FIELD SITES · N+", sitesHint: "Click or hover for field sites", close: "Close", explore: "Explore N+ field sites", findShort: "Finds", accessShort: "Access",
+    fromLondon: "from London", fieldSites: "FIELD SITES · 21", sitesHint: "Click or hover for field sites", close: "Close", explore: "Explore 21 field sites", findShort: "Finds", accessShort: "Access",
     routeToggle: "From London routes", fieldSite: "Field site", research: "In research", railRoute: "Rail route",
     questLabel: "MAIN QUEST", questTitle: "FOSSIL TRAIL", questHint: "Choose a fossil marker to begin", questSites: "SITES TO EXPLORE",
     mapCredit: "Pixel map · locations approximate", researchLabel: "IN RESEARCH", dismiss: "Dismiss",
@@ -1471,10 +1471,10 @@ const copy = {
   },
   zh: {
     returnMap: "返回英国总览地图", museum: "化石图鉴博物馆", references: "参考资料", about: "关于", safetyFirst: "安全须知",
-    heroEyebrow: "N+ 个重点地点 · 从伦敦出发", heroTitle: "Fossil Hunters",
+    heroEyebrow: "21 个野外地点 · 从伦敦出发", heroTitle: "Fossil Hunters",
     scopeSites: "收录地点", scopeStart: "默认出发地", scopeStartValue: "伦敦", scopeCheck: "出发前确认", scopeCheckValue: "潮汐与通行",
     northSea: "北海", channel: "英吉利海峡", london: "伦敦", open: "打开",
-    fromLondon: "从伦敦出发", fieldSites: "重点地点 · N+", sitesHint: "点击悬停查看地点", close: "关闭", explore: "探索 N+ 个重点地点", findShort: "发现", accessShort: "通行",
+    fromLondon: "从伦敦出发", fieldSites: "野外地点 · 21", sitesHint: "点击悬停查看地点", close: "关闭", explore: "探索 21 个野外地点", findShort: "发现", accessShort: "通行",
     routeToggle: "显示伦敦出发路线", fieldSite: "完整地点", research: "调研中", railRoute: "铁路路线",
     questLabel: "主线任务", questTitle: "寻找英国化石", questHint: "选择一个化石图标开始", questSites: "个探索地点",
     mapCredit: "像素底图 · 地点为近似位置", researchLabel: "调研中", dismiss: "关闭",
@@ -3545,6 +3545,267 @@ function EquipmentView({ language, onBack }: { language: Language; onBack: () =>
   );
 }
 
+type FinderExperience = "first" | "some" | "experienced";
+type FinderParty = "solo" | "friends" | "family";
+type FinderTravel = "short" | "day" | "any";
+type FinderRisk = "low" | "moderate" | "any";
+type FinderGoal = "any" | "ammonite" | "shark" | "vertebrate" | "shell";
+
+type FinderPreferences = {
+  experience: FinderExperience;
+  party: FinderParty;
+  travel: FinderTravel;
+  risk: FinderRisk;
+  goal: FinderGoal;
+};
+
+const finderCopy = {
+  en: {
+    nav: "Smart finder",
+    back: "Back to map",
+    eyebrow: "TRIP MATCHER · 21 FIELD SITES",
+    title: "Find a coast that fits you.",
+    intro: "Tell us how you want to hunt. The matcher weighs access, travel time, field risk, family suitability and likely finds—then ranks the field guides already on this map.",
+    privacy: "Instant analysis only · your choices are not saved",
+    controls: "Your field-day brief",
+    experience: "Experience",
+    party: "Who is going?",
+    travel: "One-way travel from London",
+    risk: "Maximum field risk",
+    goal: "What would you love to find?",
+    reset: "Reset choices",
+    profile: "Basic user analysis",
+    profileHint: "A lightweight trip profile—not a safety assessment.",
+    safetyFit: "Safety fit",
+    accessFit: "Easy access",
+    findFit: "Find potential",
+    results: "Ranked matches",
+    resultHint: "Best fit first. Always re-check live tide, weather, transport and access before travelling.",
+    matched: "sites match",
+    match: "match",
+    open: "Open field guide",
+    noResults: "No site matches every choice.",
+    noResultsHint: "Try a longer journey, a broader fossil goal or a higher risk ceiling.",
+    options: {
+      experience: [["first", "First hunt"], ["some", "A few trips"], ["experienced", "Experienced"]],
+      party: [["solo", "Solo"], ["friends", "With friends"], ["family", "With children"]],
+      travel: [["short", "Up to 2½ hr"], ["day", "Up to 4 hr"], ["any", "Any distance"]],
+      risk: [["low", "Low only"], ["moderate", "Up to moderate"], ["any", "Show high risk"]],
+      goal: [["any", "Surprise me"], ["ammonite", "Ammonites"], ["shark", "Shark teeth"], ["vertebrate", "Reptiles & dinosaurs"], ["shell", "Shells"]],
+    },
+  },
+  zh: {
+    nav: "智能选点",
+    back: "返回地图",
+    eyebrow: "智能匹配 · 21 个野外地点",
+    title: "找到真正适合你的采集地。",
+    intro: "告诉我们这次想怎么找化石。系统会综合交通、地形风险、亲子友好度、到达难度与可能收获，对地图内的现场指南实时排序。",
+    privacy: "仅在本页即时分析 · 不保存你的选择",
+    controls: "你的野外需求",
+    experience: "采集经验",
+    party: "与谁同行",
+    travel: "从伦敦单程时间",
+    risk: "可接受的最高风险",
+    goal: "最想找到什么",
+    reset: "重置选择",
+    profile: "基础用户分析",
+    profileHint: "轻量行程画像，不替代安全判断。",
+    safetyFit: "安全适配",
+    accessFit: "到达便利",
+    findFit: "收获潜力",
+    results: "智能排序结果",
+    resultHint: "优先显示更匹配的地点；出发前仍须重新核对实时潮汐、天气、交通与开放情况。",
+    matched: "个地点符合",
+    match: "匹配",
+    open: "打开地点攻略",
+    noResults: "暂时没有地点满足全部条件。",
+    noResultsHint: "可以放宽单程时间、目标化石或风险上限再试试。",
+    options: {
+      experience: [["first", "第一次"], ["some", "去过几次"], ["experienced", "经验丰富"]],
+      party: [["solo", "独自前往"], ["friends", "朋友同行"], ["family", "带儿童"]],
+      travel: [["short", "2.5 小时内"], ["day", "4 小时内"], ["any", "不限距离"]],
+      risk: [["low", "只看低风险"], ["moderate", "最高中等风险"], ["any", "可看高风险"]],
+      goal: [["any", "随缘探索"], ["ammonite", "菊石"], ["shark", "鲨鱼牙"], ["vertebrate", "爬行动物与恐龙"], ["shell", "贝壳类"]],
+    },
+  },
+} as const;
+
+const finderDefaults: FinderPreferences = {
+  experience: "first",
+  party: "friends",
+  travel: "day",
+  risk: "moderate",
+  goal: "any",
+};
+
+function durationFloorMinutes(duration: string) {
+  const hours = Number(duration.match(/(\d+(?:\.\d+)?)\s*hr/i)?.[1] ?? 0);
+  const minutes = Number(duration.match(/(\d+)\s*min/i)?.[1] ?? 0);
+  return Math.round(hours * 60 + minutes);
+}
+
+function finderGoalMatches(location: Location, goal: FinderGoal) {
+  if (goal === "any") return true;
+  const fossilText = location.finds.map((find) => `${find.category} ${find.name}`).join(" ");
+  if (goal === "ammonite") return /ammonite|heteromorph/i.test(fossilText);
+  if (goal === "shark") return /shark/i.test(fossilText);
+  if (goal === "vertebrate") return /reptile|dinosaur|vertebrate|pterosaur|turtle|crocod/i.test(fossilText);
+  return /bivalve|brachiopod|oyster|shell|gastropod/i.test(fossilText);
+}
+
+function finderLocationScore(location: Location, preferences: FinderPreferences) {
+  const minutes = durationFloorMinutes(location.duration);
+  const riskValue = { LOW: 1, MODERATE: 2, HIGH: 3 }[location.risk];
+  let score = 22 + location.accessRating * 3 + location.findRating * 2;
+
+  if (preferences.experience === "first") score += location.accessRating + (/beginner|first/i.test(location.level) ? 6 : 0) - (riskValue === 3 ? 12 : 0);
+  if (preferences.experience === "some") score += location.findRating + location.accessRating;
+  if (preferences.experience === "experienced") score += location.findRating * 2 + (riskValue === 3 ? 3 : 0);
+  if (preferences.party === "family") score += location.familyRating * 3 - (riskValue === 3 ? 12 : 0);
+  if (preferences.party === "solo") score += riskValue === 1 ? 6 : riskValue === 2 ? 1 : -8;
+  if (preferences.party === "friends") score += location.findRating;
+  if (preferences.travel === "short") score += minutes <= 150 ? 10 : -10;
+  if (preferences.travel === "day") score += minutes <= 240 ? 7 : -8;
+  if (preferences.travel === "any") score += 4;
+  if (preferences.risk === "low") score += riskValue === 1 ? 10 : -18;
+  if (preferences.risk === "moderate") score += riskValue <= 2 ? 8 : -14;
+  if (preferences.risk === "any") score += 4;
+  if (preferences.goal === "any") score += 3;
+  else score += finderGoalMatches(location, preferences.goal) ? 16 : -12;
+
+  return Math.max(35, Math.min(97, Math.round(score)));
+}
+
+function FinderOptionGroup<T extends string>({ legend, value, options, onChange }: {
+  legend: string;
+  value: T;
+  options: readonly (readonly [string, string])[];
+  onChange: (value: T) => void;
+}) {
+  return (
+    <fieldset className="finder-option-group">
+      <legend>{legend}</legend>
+      <div>
+        {options.map(([optionValue, label]) => (
+          <button key={optionValue} type="button" className={value === optionValue ? "is-active" : ""} aria-pressed={value === optionValue} onClick={() => onChange(optionValue as T)}>{label}</button>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
+function SmartFinderView({ language, onBack, onOpenLocation }: { language: Language; onBack: () => void; onOpenLocation: (id: string) => void }) {
+  const t = finderCopy[language];
+  const [preferences, setPreferences] = useState<FinderPreferences>(finderDefaults);
+  const updatePreference = <K extends keyof FinderPreferences>(key: K, value: FinderPreferences[K]) => setPreferences((current) => ({ ...current, [key]: value }));
+
+  const matches = useMemo(() => locations
+    .map((original) => ({
+      original,
+      location: localizeLocation(original, language),
+      minutes: durationFloorMinutes(original.duration),
+      score: finderLocationScore(original, preferences),
+    }))
+    .filter(({ original, minutes }) => {
+      if (preferences.risk === "low" && original.risk !== "LOW") return false;
+      if (preferences.risk === "moderate" && original.risk === "HIGH") return false;
+      if (preferences.travel === "short" && minutes > 150) return false;
+      if (preferences.travel === "day" && minutes > 240) return false;
+      return finderGoalMatches(original, preferences.goal);
+    })
+    .sort((a, b) => b.score - a.score || b.original.accessRating - a.original.accessRating), [language, preferences]);
+
+  const profileTitle = language === "zh"
+    ? preferences.party === "family" ? "亲子自然观察者" : preferences.experience === "first" ? "谨慎型新手猎人" : preferences.experience === "experienced" ? "目标型野外猎人" : preferences.party === "solo" ? "独立探索者" : "周末结伴探索者"
+    : preferences.party === "family" ? "Family nature observer" : preferences.experience === "first" ? "Cautious first-time hunter" : preferences.experience === "experienced" ? "Goal-led field hunter" : preferences.party === "solo" ? "Independent explorer" : "Weekend group explorer";
+  const profileSummary = language === "zh"
+    ? `${preferences.travel === "short" ? "你偏好轻松往返" : preferences.travel === "day" ? "你适合完整一日行程" : "你愿意为目标地点走得更远"}，${preferences.risk === "low" ? "并把低风险放在首位" : preferences.risk === "moderate" ? "在安全与收获之间取平衡" : "也愿意研究条件更复杂的地点"}。推荐分数只比较本站地点，不代表当天一定适合出发。`
+    : `${preferences.travel === "short" ? "You favour an easy return journey" : preferences.travel === "day" ? "You suit a full day trip" : "You are willing to travel farther for the right site"}, ${preferences.risk === "low" ? "with low field risk first" : preferences.risk === "moderate" ? "balancing safety and finds" : "including more complex field conditions"}. Scores compare this map only; they never mean a site is safe today.`;
+  const topMatches = matches.slice(0, 3);
+  const profileMetrics = {
+    safety: topMatches.length ? Math.round(topMatches.reduce((sum, item) => sum + (4 - ({ LOW: 1, MODERATE: 2, HIGH: 3 }[item.original.risk])) * 33, 0) / topMatches.length) : 0,
+    access: topMatches.length ? Math.round(topMatches.reduce((sum, item) => sum + item.original.accessRating * 20, 0) / topMatches.length) : 0,
+    finds: topMatches.length ? Math.round(topMatches.reduce((sum, item) => sum + item.original.findRating * 20, 0) / topMatches.length) : 0,
+  };
+
+  const reasonFor = (item: typeof matches[number]) => {
+    const reasons: string[] = [];
+    if (preferences.goal !== "any") reasons.push(language === "zh" ? "有目标化石记录" : "Target fossil recorded");
+    if (item.original.accessRating >= 4) reasons.push(language === "zh" ? "到达较方便" : "Easier access");
+    if (preferences.party === "family" && item.original.familyRating >= 4) reasons.push(language === "zh" ? "亲子适配较好" : "Good family fit");
+    if (item.minutes <= 150) reasons.push(language === "zh" ? "伦敦短途可达" : "Shorter London journey");
+    if (item.original.risk === "LOW") reasons.push(language === "zh" ? "本站标注为低风险" : "Lower mapped risk");
+    if (item.original.findRating >= 4) reasons.push(language === "zh" ? "收获潜力较高" : "Strong find potential");
+    return reasons.slice(0, 3);
+  };
+
+  return (
+    <section className="finder-view" aria-labelledby="finder-title">
+      <div className="finder-shell">
+        <button className="finder-back" onClick={onBack}><span>←</span>{t.back}</button>
+        <header className="finder-hero">
+          <div>
+            <p>{t.eyebrow}</p>
+            <h1 id="finder-title">{t.title}</h1>
+            <span>{t.intro}</span>
+          </div>
+          <small><i aria-hidden="true">●</i>{t.privacy}</small>
+        </header>
+
+        <div className="finder-workbench">
+          <form className="finder-controls" onSubmit={(event) => event.preventDefault()}>
+            <div className="finder-section-heading"><span>01</span><h2>{t.controls}</h2><button type="button" onClick={() => setPreferences(finderDefaults)}>{t.reset}</button></div>
+            <FinderOptionGroup legend={t.experience} value={preferences.experience} options={t.options.experience} onChange={(value) => updatePreference("experience", value)} />
+            <FinderOptionGroup legend={t.party} value={preferences.party} options={t.options.party} onChange={(value) => updatePreference("party", value)} />
+            <FinderOptionGroup legend={t.travel} value={preferences.travel} options={t.options.travel} onChange={(value) => updatePreference("travel", value)} />
+            <FinderOptionGroup legend={t.risk} value={preferences.risk} options={t.options.risk} onChange={(value) => updatePreference("risk", value)} />
+            <FinderOptionGroup legend={t.goal} value={preferences.goal} options={t.options.goal} onChange={(value) => updatePreference("goal", value)} />
+          </form>
+
+          <aside className="finder-profile" aria-live="polite">
+            <div className="finder-section-heading"><span>02</span><h2>{t.profile}</h2></div>
+            <div className="finder-profile-card">
+              <div className="finder-profile-orbit" aria-hidden="true"><i /><i /><i /><b>◎</b></div>
+              <p>{language === "zh" ? "你的本次类型" : "YOUR TRIP TYPE"}</p>
+              <h3>{profileTitle}</h3>
+              <span>{profileSummary}</span>
+              <div className="finder-metrics">
+                {([["safety", t.safetyFit], ["access", t.accessFit], ["finds", t.findFit]] as const).map(([key, label]) => <div key={key}><label>{label}<b>{profileMetrics[key]}%</b></label><i><span style={{ width: `${profileMetrics[key]}%` }} /></i></div>)}
+              </div>
+              <small>{t.profileHint}</small>
+            </div>
+          </aside>
+        </div>
+
+        <section className="finder-results" aria-labelledby="finder-results-title">
+          <div className="finder-results-heading">
+            <div><span>03</span><h2 id="finder-results-title">{t.results}</h2><strong>{matches.length} / {locations.length} {t.matched}</strong></div>
+            <p>{t.resultHint}</p>
+          </div>
+          {matches.length ? <div className="finder-result-grid">
+            {matches.map((item, index) => {
+              const reasons = reasonFor(item);
+              return <article key={item.original.id} className={index < 3 ? "is-top-match" : ""}>
+                <header><span>#{String(index + 1).padStart(2, "0")}</span><b>{item.score}% {t.match}</b></header>
+                <div className="finder-result-icon"><PixelSiteIcon id={item.original.id} compact /></div>
+                <h3>{item.location.shortName}</h3>
+                <p>{item.location.region}</p>
+                <dl>
+                  <div><dt>{language === "zh" ? "单程" : "Travel"}</dt><dd>{item.location.duration}</dd></div>
+                  <div><dt>{language === "zh" ? "风险" : "Risk"}</dt><dd className={`list-risk ${riskClass(item.original.risk)}`}>{riskLabel(item.original.risk, language)}</dd></div>
+                </dl>
+                <div className="finder-reasons">{reasons.map((reason) => <span key={reason}>✓ {reason}</span>)}</div>
+                <div className="finder-result-ratings"><InlineStarRating label={copy[language].findShort} value={item.original.findRating} /><InlineStarRating label={copy[language].accessShort} value={item.original.accessRating} /></div>
+                <button onClick={() => onOpenLocation(item.original.id)}>{t.open}<span>↗</span></button>
+              </article>;
+            })}
+          </div> : <div className="finder-empty"><b>×</b><h3>{t.noResults}</h3><p>{t.noResultsHint}</p><button type="button" onClick={() => setPreferences(finderDefaults)}>{t.reset}</button></div>}
+        </section>
+      </div>
+    </section>
+  );
+}
+
 export function FossilMap() {
   const [introPhase, setIntroPhase] = useState<IntroPhase>("loading");
   const [language, setLanguage] = useState<Language>("zh");
@@ -3552,6 +3813,7 @@ export function FossilMap() {
   const [museumOpen, setMuseumOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
   const [equipmentOpen, setEquipmentOpen] = useState(false);
+  const [finderOpen, setFinderOpen] = useState(false);
   const [communityLocationId, setCommunityLocationId] = useState("");
   const [recordCounts, setRecordCounts] = useState<Record<string, number> | null>(null);
   const [recordCountsError, setRecordCountsError] = useState(false);
@@ -3575,6 +3837,7 @@ export function FossilMap() {
     setSelectedId(null);
     setMuseumOpen(false);
     setEquipmentOpen(false);
+    setFinderOpen(false);
     setMobileList(false);
     setCommunityOpen(true);
   };
@@ -3669,6 +3932,7 @@ export function FossilMap() {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         if (modal) setModal(null);
+        else if (finderOpen) setFinderOpen(false);
         else if (equipmentOpen) setEquipmentOpen(false);
         else if (communityOpen) setCommunityOpen(false);
         else if (museumOpen) setMuseumOpen(false);
@@ -3679,13 +3943,14 @@ export function FossilMap() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [communityOpen, equipmentOpen, modal, mobileList, museumOpen, selectedId, mapActiveId]);
+  }, [communityOpen, equipmentOpen, finderOpen, modal, mobileList, museumOpen, selectedId, mapActiveId]);
 
   const openLocation = (id: string) => {
     setMobileList(false);
     setMuseumOpen(false);
     setCommunityOpen(false);
     setEquipmentOpen(false);
+    setFinderOpen(false);
     setSelectedId(id);
   };
 
@@ -3826,11 +4091,11 @@ export function FossilMap() {
   };
 
   return (
-    <main className={`site-shell ${sunsetTheme ? "sunset-theme" : ""} ${selected ? "detail-open" : ""} ${selected?.id === "isle-of-wight" ? "dinosaur-isle-open" : ""} ${museumOpen ? "museum-open" : ""} ${communityOpen ? "community-open" : ""} ${equipmentOpen ? "equipment-open" : ""} lang-${language} intro-${introPhase}`}>
+    <main className={`site-shell ${sunsetTheme ? "sunset-theme" : ""} ${selected ? "detail-open" : ""} ${selected?.id === "isle-of-wight" ? "dinosaur-isle-open" : ""} ${museumOpen ? "museum-open" : ""} ${communityOpen ? "community-open" : ""} ${equipmentOpen ? "equipment-open" : ""} ${finderOpen ? "finder-open" : ""} lang-${language} intro-${introPhase}`}>
       {introPhase !== "done" && <IntroScreen phase={introPhase} />}
       <header className="topbar">
         <div className="header-left">
-          <button className="brand" onClick={() => { setSelectedId(null); setMuseumOpen(false); setCommunityOpen(false); setEquipmentOpen(false); }} aria-label={t.returnMap}>
+          <button className="brand" onClick={() => { setSelectedId(null); setMuseumOpen(false); setCommunityOpen(false); setEquipmentOpen(false); setFinderOpen(false); }} aria-label={t.returnMap}>
             <AmmoniteMark small />
             <span className="brand-title">FOSSIL HUNTERS <small>IN UK</small></span>
           </button>
@@ -3841,9 +4106,10 @@ export function FossilMap() {
           </div>
         </div>
         <div className="top-actions">
-          <button className="equipment-link" onClick={() => { setSelectedId(null); setMuseumOpen(false); setCommunityOpen(false); setEquipmentOpen(true); }}>▣ {equipmentCopy[language].nav}</button>
+          <button className="finder-link" onClick={() => { setSelectedId(null); setMuseumOpen(false); setCommunityOpen(false); setEquipmentOpen(false); setFinderOpen(true); }}>⌖ {finderCopy[language].nav}</button>
+          <button className="equipment-link" onClick={() => { setSelectedId(null); setMuseumOpen(false); setCommunityOpen(false); setFinderOpen(false); setEquipmentOpen(true); }}>▣ {equipmentCopy[language].nav}</button>
           <button className="community-link" onClick={() => openCommunity()}>◉ {communityCopy[language].nav}</button>
-          <button className="museum-link" onClick={() => { setSelectedId(null); setCommunityOpen(false); setEquipmentOpen(false); setMuseumOpen(true); }}>✦ {t.museum}</button>
+          <button className="museum-link" onClick={() => { setSelectedId(null); setCommunityOpen(false); setEquipmentOpen(false); setFinderOpen(false); setMuseumOpen(true); }}>✦ {t.museum}</button>
           <button className="reference-link" onClick={() => setModal("references")}>{t.references}</button>
           <button className="about-link" onClick={() => setModal("about")}>{t.about}</button>
           <button className="safety-link" onClick={() => setModal("safety")}>
@@ -3852,11 +4118,11 @@ export function FossilMap() {
         </div>
       </header>
 
-      <section className={`overview ${selected || museumOpen || communityOpen || equipmentOpen ? "is-zoomed" : ""}`} aria-hidden={Boolean(selected || museumOpen || communityOpen || equipmentOpen)}>
+      <section className={`overview ${selected || museumOpen || communityOpen || equipmentOpen || finderOpen ? "is-zoomed" : ""}`} aria-hidden={Boolean(selected || museumOpen || communityOpen || equipmentOpen || finderOpen)}>
         <div className={`overview-title ${introPhase === "done" ? "hero-ripple-ready" : ""}`}>
           <span className="hero-ripples" aria-hidden="true" />
           <div className="hero-copy">
-            <p className="eyebrow">{t.heroEyebrow}</p>
+            <p className="eyebrow">{locations.length} {language === "zh" ? "个野外地点 · 伦敦出发路线" : "FIELD SITES · ROUTES FROM LONDON"}</p>
             <h1 className="fossil-title"><span>Fossil Hunters</span><small>in UK</small></h1>
             <p className="brand-tagline">We collect fossils, and memories too.</p>
           </div>
@@ -3882,7 +4148,7 @@ export function FossilMap() {
             <span>{t.questLabel}</span>
             <strong>{t.questTitle}</strong>
             <small>{t.questHint}</small>
-            <div><b>N+</b><i>{t.questSites}</i></div>
+            <div><b>{locations.length}</b><i>{t.questSites}</i></div>
             {recordCountsError && <button onClick={() => void refreshRecordCounts()}>{language === "zh" ? "数量加载失败 · 重试" : "Counts unavailable · Retry"}</button>}
           </div>
           <div
@@ -3992,7 +4258,7 @@ export function FossilMap() {
 
         <aside id="field-site-list" className={`location-list ${mobileList ? "mobile-open" : ""}`}>
           <div className="list-heading">
-            <span>{t.fieldSites}</span>
+            <span>{language === "zh" ? `野外地点 · ${locations.length}` : `FIELD SITES · ${locations.length}`}</span>
             <button className="list-close" onClick={() => setMobileList(false)}>{t.close}</button>
           </div>
           <p className="stone-list-legend">{language === "zh" ? "🪨 一颗石头 = 一条产地分享" : "🪨 One stone = one field note"}
@@ -4020,7 +4286,7 @@ export function FossilMap() {
         </aside>
 
         <button className="mobile-sites-button" onClick={() => setMobileList(true)}>
-          {t.explore} <span>↑</span>
+          {language === "zh" ? `探索 ${locations.length} 个野外地点` : `Explore ${locations.length} field sites`} <span>↑</span>
         </button>
 
         <small className="map-credit-note">{t.mapCredit}</small>
@@ -4033,6 +4299,8 @@ export function FossilMap() {
       {communityOpen && <CommunityView language={language} initialLocationId={communityLocationId} onPublished={refreshRecordCounts} onBack={() => setCommunityOpen(false)} />}
 
       {equipmentOpen && <EquipmentView language={language} onBack={() => setEquipmentOpen(false)} />}
+
+      {finderOpen && <SmartFinderView language={language} onBack={() => setFinderOpen(false)} onOpenLocation={openLocation} />}
 
       <NautilusGuide key={language} language={language} siteLocations={localizedLocations} onOpenLocation={openLocation} onOpenSunset={openSunset} />
       <SiteVisitCounter language={language} />
