@@ -91,6 +91,24 @@ test("adds private smart location matching and a basic trip profile", async () =
   assert.match(css, /@media \(max-width: 560px\)[\s\S]*\.finder-result-grid \{ grid-template-columns: minmax\(0, 1fr\); \}/);
 });
 
+test("adds a museum specimen-care guide and removes the standalone safety notice", async () => {
+  const [component, css] = await Promise.all([
+    read("../app/FossilMap.tsx"),
+    read("../app/globals.css"),
+  ]);
+
+  assert.match(component, /捡到化石后怎么办？/);
+  assert.match(component, /黄铁矿化标本/);
+  assert.match(component, /不要自行涂胶/);
+  assert.match(component, /className="museum-care" open/);
+  assert.match(component, /careMuseumBody/);
+  assert.doesNotMatch(component, /setModal\("safety"\)/);
+  assert.doesNotMatch(component, /className="safety-link"/);
+  assert.match(css, /\.museum-care-steps/);
+  assert.match(css, /\.museum-care-special/);
+  assert.match(css, /\.museum-care-museum-note/);
+});
+
 test("adds the Folkestone packing game with two realistic load strategies", async () => {
   const [component, css] = await Promise.all([
     read("../app/FossilMap.tsx"),

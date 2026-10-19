@@ -1557,6 +1557,24 @@ const museumCopy = {
     categoryIntro: "GROUP NOTE", rarity: "RARITY", size: "TYPICAL SIZE", starScale: "1–5 starfish rarity scale",
     entries: "museum entries", openSite: "Open field guide", empty: "No specimens match these filters.", progress: "COLLECTION PROGRESS",
     dexIndex: "FIELD DEX", allStatus: "All", ownedStatus: "Collected", missingStatus: "To discover", referencePhoto: "REAL SPECIMEN REFERENCE",
+    careEyebrow: "AFTER THE FIND · SPECIMEN FIRST AID", careTitle: "Found a fossil—what next?",
+    careIntro: "Stabilise first and clean later. Most accidental damage happens between the beach and the shelf, so give every find a simple record and a slow, gentle journey home.",
+    careToggle: "Open / close care guide",
+    careSteps: [
+      ["01", "Record it before moving it", "Photograph the fossil and its surroundings. Note the field site, date, loose or in-situ context and, when useful, the bed. Keep exact coordinates of rare finds private."],
+      ["02", "Wrap pieces separately", "Use tissue or paper, then a rigid box. Keep matching fragments together in one labelled packet, but stop them rubbing against other finds."],
+      ["03", "Let it dry slowly", "At home, unwrap damp finds and air-dry them at room temperature. Avoid radiators, hairdryers, direct sun and sealed boxes while moisture remains."],
+      ["04", "Clean from gentle to gentler", "Start with a dry, soft brush and a wooden pick. Do not soak porous shale, chalk, clay fossils or delicate shell; stop immediately if the surface flakes."],
+      ["05", "Label and store", "Keep an archival paper label with the specimen: site, date, finder and geological context. Store in an acid-free box with stable temperature and humidity."],
+    ],
+    careSpecialTitle: "Material-specific tips",
+    careSpecial: [
+      ["SOFT MATRIX", "Clay & shale", "Support thin pieces from below, keep loose fragments, and let the surrounding matrix dry naturally. Do not prise layers apart."],
+      ["KEEP DRY", "Pyritised fossils", "Store separately in a dry, sealed box with fresh silica gel. Isolate the fossil if powder, cracks or a sharp acidic smell appears."],
+      ["NO DIY COATING", "Shell, bone & fragile finds", "Avoid superglue, PVA, nail varnish and household sealants. A conservator or museum can recommend a reversible treatment if one is genuinely needed."],
+    ],
+    careMuseumTitle: "Pause before preparing an important find",
+    careMuseumBody: "For articulated remains, vertebrate bone or teeth, footprints, eggs, or an unusual associated group: photograph it in place, do not clean or glue it, record the location privately and contact the nearest museum, fossil centre or site manager.",
   },
   zh: {
     back: "返回地图", eyebrow: "野外收藏 · 个人档案", title: "化石图鉴博物馆",
@@ -1572,6 +1590,24 @@ const museumCopy = {
     categoryIntro: "门类介绍", rarity: "稀有度", size: "典型尺寸", starScale: "1–5 枚海星稀有度等级",
     entries: "项地区图鉴", openSite: "打开地区攻略", empty: "当前筛选下没有对应标本。", progress: "收集进度",
     dexIndex: "野外图鉴", allStatus: "全部", ownedStatus: "已收集", missingStatus: "待发现", referencePhoto: "真实标本参考",
+    careEyebrow: "捡到以后 · 标本急救与保存", careTitle: "捡到化石后怎么办？",
+    careIntro: "先稳定，后清理。化石最容易在从海滩到收藏柜的途中受损；为每一件发现留下记录，也让它慢慢、轻柔地回家。",
+    careToggle: "展开或收起保养指南",
+    careSteps: [
+      ["01", "移动前先记录", "拍摄化石及周围环境，记下地点、日期、松散或原位状态，必要时记录层位。稀有发现的精确坐标不要公开。"],
+      ["02", "逐件分开包裹", "先用纸巾或无酸纸包裹，再放入硬质盒。属于同一件的碎片放在同一标记袋内，但避免彼此摩擦。"],
+      ["03", "回家后慢慢阴干", "潮湿标本应拆开包装，在室温下自然通风干燥。不要用暖气、吹风机、阳光暴晒，也不要在未干时密封。"],
+      ["04", "从最温和的清理开始", "先用干燥软刷和木质小签。多孔页岩、白垩、黏土化石或脆弱贝壳不要浸泡；一旦表面掉粉就立即停止。"],
+      ["05", "做好标签再存放", "用独立纸质标签记录地点、日期、发现者与地质背景。放入无酸盒，在温湿度稳定的柜中保存。"],
+    ],
+    careSpecialTitle: "不同材质的小 tips",
+    careSpecial: [
+      ["软质围岩", "黏土与页岩", "从下方托住薄片，保留松散碎片，让围岩自然慢干；不要强行撬开层理。"],
+      ["保持干燥", "黄铁矿化标本", "单独放入干燥密封盒并加入新鲜硅胶。若出现白黄粉末、裂纹或刺鼻酸味，应立即隔离。"],
+      ["不要自行涂胶", "贝壳、骨骼与脆弱标本", "避免瞬间胶、白乳胶、指甲油和家用清漆。确需加固时，请让博物馆或修复人员建议可逆材料。"],
+    ],
+    careMuseumTitle: "重要发现先暂停清修",
+    careMuseumBody: "如果是关节相连的骨骼、脊椎动物骨头或牙齿、足迹、蛋化石，或异常集中保存的一组标本：先拍原位照片，不要清洗和粘接，私下记录位置，并联系附近博物馆、化石中心或地点管理方。",
   },
 } as const;
 
@@ -3155,6 +3191,33 @@ function MuseumView({
           </div>
         </section>
 
+        <details className="museum-care" open>
+          <summary aria-label={t.careToggle}>
+            <span>CARE · 01</span>
+            <div><p>{t.careEyebrow}</p><h2>{t.careTitle}</h2><small>{t.careIntro}</small></div>
+            <i aria-hidden="true">＋</i>
+          </summary>
+          <div className="museum-care-body">
+            <ol className="museum-care-steps">
+              {t.careSteps.map(([number, title, body]) => (
+                <li key={number}><b>{number}</b><div><h3>{title}</h3><p>{body}</p></div></li>
+              ))}
+            </ol>
+            <section className="museum-care-special" aria-label={t.careSpecialTitle}>
+              <h3>{t.careSpecialTitle}</h3>
+              <div>
+                {t.careSpecial.map(([label, title, body]) => (
+                  <article key={label}><span>{label}</span><h4>{title}</h4><p>{body}</p></article>
+                ))}
+              </div>
+            </section>
+            <aside className="museum-care-museum-note">
+              <span aria-hidden="true">!</span>
+              <div><h3>{t.careMuseumTitle}</h3><p>{t.careMuseumBody}</p></div>
+            </aside>
+          </div>
+        </details>
+
         <section className="museum-filters">
           <div className="museum-dex-filter">
             <span>{t.dexIndex}</span>
@@ -3843,7 +3906,7 @@ export function FossilMap() {
   };
   const [sunsetTheme, setSunsetTheme] = useState(false);
   const openSunset = () => setSunsetTheme(true);
-  const [modal, setModal] = useState<"about" | "references" | "safety" | null>(null);
+  const [modal, setModal] = useState<"about" | "references" | null>(null);
   const [mobileList, setMobileList] = useState(false);
   const [mapView, setMapView] = useState<MapView>(FITTED_MAP_VIEW);
   const [mapDragging, setMapDragging] = useState(false);
@@ -4112,9 +4175,6 @@ export function FossilMap() {
           <button className="museum-link" onClick={() => { setSelectedId(null); setCommunityOpen(false); setEquipmentOpen(false); setFinderOpen(false); setMuseumOpen(true); }}>✦ {t.museum}</button>
           <button className="reference-link" onClick={() => setModal("references")}>{t.references}</button>
           <button className="about-link" onClick={() => setModal("about")}>{t.about}</button>
-          <button className="safety-link" onClick={() => setModal("safety")}>
-            <span className="alert-dot" /> {t.safetyFirst}
-          </button>
         </div>
       </header>
 
@@ -4332,7 +4392,7 @@ export function FossilMap() {
                 <p className="fine-print">{t.changing}</p>
                 <p className="about-contact">{language === "zh" ? "联系方式：" : "Contact: "}<a href="mailto:xli072@gold.ac.uk"><strong>xli072@gold.ac.uk</strong></a></p>
               </>
-            ) : modal === "references" ? (
+            ) : (
               <>
                 <p className="eyebrow">{t.referencesEyebrow}</p>
                 <h2 id="modal-title">{t.referencesTitle}</h2>
@@ -4360,15 +4420,6 @@ export function FossilMap() {
                     <small>ukfossils.co.uk ↗</small>
                   </a>
                 </div>
-              </>
-            ) : (
-              <>
-                <p className="eyebrow danger">{t.beforeTrip}</p>
-                <h2 id="modal-title">{t.tideDeadline}</h2>
-                <div className="safety-grid">
-                  {t.safetyCards.map((card, index) => <div key={card[0]}><b>{String(index + 1).padStart(2, "0")}</b><strong>{card[0]}</strong><p>{card[1]}</p></div>)}
-                </div>
-                <div className="modal-note warning"><strong>{t.emergencyStrong}</strong> {t.emergencyBody}</div>
               </>
             )}
           </section>
