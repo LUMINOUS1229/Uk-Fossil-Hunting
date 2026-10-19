@@ -31,7 +31,10 @@ test("keeps the guide focused and adds the requested discovery play", async () =
   assert.doesNotMatch(component, /tidmoor/i);
   assert.match(component, /referencePhotos/);
   assert.match(component, /collectionFilter/);
-  assert.match(component, /feedNori/);
+  assert.match(component, /Nori 的探险任务系统/);
+  assert.match(component, /nori-field-note-recorded/);
+  assert.match(component, /nori-geology-learned/);
+  assert.match(component, /SAFETY_CHECK_IDS/);
   assert.match(component, /nori-guide-minimized-v1/);
   assert.doesNotMatch(component, /locationRoasts|location-roast|诺里锐评|Nori's verdict/);
   assert.doesNotMatch(css, /\.location-roast/);
@@ -50,7 +53,8 @@ test("keeps the guide focused and adds the requested discovery play", async () =
   assert.match(component, /function IsleOfWightSurprise/);
   assert.match(component, /is-dinosaur-isle/);
   assert.match(css, /\.museum-reference-photo/);
-  assert.match(css, /\.nori-food-menu/);
+  assert.match(css, /\.nori-quest-menu/);
+  assert.match(css, /\.geology-learn-button/);
   assert.match(css, /\.map-viewport\.is-dragging/);
   assert.match(css, /\.isle-hatchling/);
   assert.match(css, /height:\s*104px/);

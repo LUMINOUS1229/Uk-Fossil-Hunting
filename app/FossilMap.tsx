@@ -1949,6 +1949,34 @@ const rarityTier = (stars: number) => stars >= 5 ? "gold" : stars >= 3 ? "silver
 
 const museumFindKey = (location: Location, find: Find) => `${location.id}:${find.name}`;
 const TOTAL_FOSSILS = locations.reduce((total, location) => total + location.finds.length, 0);
+const NORI_QUEST_KEY = "nori-exploration-v1";
+const GEOLOGY_LESSON_KEY = "nori-geology-lessons-v1";
+const SAFETY_CHECK_IDS = ["tide", "route", "weather", "leave-no-trace"] as const;
+
+type NoriQuestProgress = {
+  safetyChecks: string[];
+  geologyLessons: string[];
+  fieldNotes: number;
+};
+
+const emptyNoriQuestProgress = (): NoriQuestProgress => ({ safetyChecks: [], geologyLessons: [], fieldNotes: 0 });
+
+const readNoriQuestProgress = (): NoriQuestProgress => {
+  try {
+    const stored = JSON.parse(window.localStorage.getItem(NORI_QUEST_KEY) ?? "{}") as Partial<NoriQuestProgress>;
+    return {
+      safetyChecks: Array.isArray(stored.safetyChecks) ? stored.safetyChecks.filter((item): item is string => typeof item === "string") : [],
+      geologyLessons: Array.isArray(stored.geologyLessons) ? stored.geologyLessons.filter((item): item is string => typeof item === "string") : [],
+      fieldNotes: Math.max(0, Number(stored.fieldNotes) || 0),
+    };
+  } catch {
+    return emptyNoriQuestProgress();
+  }
+};
+
+const saveNoriQuestProgress = (progress: NoriQuestProgress) => {
+  window.localStorage.setItem(NORI_QUEST_KEY, JSON.stringify(progress));
+};
 
 type GuideTurn = {
   id: number;
@@ -1969,8 +1997,15 @@ const guideCopy = {
     source: "Answers use the route and safety notes on this site.",
     welcome: "Hello! I’m Nori, your slightly confused nautilus guide. Name a place in English or Chinese and I’ll find its guide—luo.",
     openSite: "Open location page",
-    feed: "Feed Nori", fed: "Snacks", discoveries: "Seen", full: "Shell-happy!", hungry: "A little peckish…",
-    foods: [["🦐", "Shrimp"], ["🦀", "Crab"], ["🫧", "Bubble snack"]],
+    missions: "Nori missions", badges: "Exploration badges", discoveries: "Observed",
+    missionKicker: "NORI FIELD CLUB", missionTitle: "Exploration missions",
+    missionIntro: "Small badges for safe, curious and responsible fieldwork—not for taking more fossils.",
+    missionProgress: "mission badges earned", complete: "Badge earned", start: "Start mission",
+    safetyMission: "Ready before the beach", safetyMissionBody: "Complete the four-point safety check before setting out.",
+    safetyChecks: [["tide", "Check tide and weather"], ["route", "Choose an entrance, exit and turn-back time"], ["weather", "Pack water, a charged phone and layers"], ["leave-no-trace", "Take only a few loose finds; leave cliffs and habitats intact"]],
+    geologyMission: "Read the rocks", geologyMissionBody: "Open a location's geology guide and record one layer you learned.", geologyAction: "Explore a geology guide",
+    recordMission: "Make a field note", recordMissionBody: "Publish one thoughtful observation with context. A photo or a no-find day still counts as learning.", recordAction: "Open field log",
+    responsibilityNote: "Observe first · record context · collect lightly · report important finds",
     presets: ["How do I get to Folkestone?", "What should I check before fossil collecting?", "Which site is best for beginners?", "Nori, can you swim?"],
     hover: [
       "Need a route? Ask me—luo.",
@@ -1991,8 +2026,15 @@ const guideCopy = {
     source: "回答来自本站的路线与安全资料。",
     welcome: "你好螺！我是鹦鹉螺诺里。输入中文或英文地名，我会找到地点资料和详情页；路线、潮汐和化石也能问我螺。",
     openSite: "查看地点详情页",
-    feed: "投喂诺里", fed: "已投喂", discoveries: "已发现", full: "壳光满满！", hungry: "有一点点饿螺……",
-    foods: [["🦐", "小虾"], ["🦀", "小蟹"], ["🫧", "泡泡零食"]],
+    missions: "Nori 的探险任务", badges: "探索徽章", discoveries: "已观察",
+    missionKicker: "NORI FIELD CLUB · 自然探索组", missionTitle: "Nori 的探险任务系统",
+    missionIntro: "安全、观察、学习与负责任的记录会获得徽章；采得多不会加分。",
+    missionProgress: "枚探索徽章", complete: "徽章已获得", start: "开始任务",
+    safetyMission: "出发前准备员", safetyMissionBody: "出发前完成四项安全清单。",
+    safetyChecks: [["tide", "核对潮汐与天气"], ["route", "确认入口、出口与折返时间"], ["weather", "带好饮水、满电手机与保暖防雨层"], ["leave-no-trace", "只少量拾取松散材料，不破坏崖壁与栖息地"]],
+    geologyMission: "读懂一层岩石", geologyMissionBody: "打开任一地点的地层指南，记录一个学到的地层。", geologyAction: "去学一个地层",
+    recordMission: "留下一份野外记录", recordMissionBody: "发布一次带环境信息的观察；拍到化石或记录一次‘没有发现’都同样有价值。", recordAction: "打开野外记录",
+    responsibilityNote: "先观察 · 记环境 · 少量采集 · 重要发现及时报告",
     presets: ["怀特岛有哪些化石？", "化石采集前我应该注意什么？", "哪个地点最适合新手？", "诺里，你会游泳吗？"],
     hover: [
       "想查路线？问我螺！",
@@ -2510,13 +2552,13 @@ function SiteVisitCounter({ language }: { language: Language }) {
   );
 }
 
-function NautilusGuide({ language, siteLocations, onOpenLocation, onOpenSunset }: { language: Language; siteLocations: Location[]; onOpenLocation: (id: string) => void; onOpenSunset: () => void }) {
+function NautilusGuide({ language, siteLocations, onOpenLocation, onOpenCommunity, onOpenSunset }: { language: Language; siteLocations: Location[]; onOpenLocation: (id: string) => void; onOpenCommunity: () => void; onOpenSunset: () => void }) {
   const t = guideCopy[language];
   const [open, setOpen] = useState(false);
   const [hoverLine, setHoverLine] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [petMenuOpen, setPetMenuOpen] = useState(false);
-  const [feedCount, setFeedCount] = useState(0);
+  const [questProgress, setQuestProgress] = useState<NoriQuestProgress>(emptyNoriQuestProgress);
   const [seenCount, setSeenCount] = useState(0);
   const [petBurst, setPetBurst] = useState(false);
   const [petMessage, setPetMessage] = useState("");
@@ -2537,22 +2579,50 @@ function NautilusGuide({ language, siteLocations, onOpenLocation, onOpenSunset }
     const loadTimer = window.setTimeout(() => {
       setMinimized(window.localStorage.getItem("nori-guide-minimized-v1") === "1");
       try {
-        const stored = JSON.parse(window.localStorage.getItem("nori-pet-v1") ?? "{}") as { feedCount?: number };
-        setFeedCount(Math.max(0, Number(stored.feedCount) || 0));
+        setQuestProgress(readNoriQuestProgress());
         const seen = JSON.parse(window.localStorage.getItem("fossil-museum-seen-v1") ?? "[]") as unknown;
         setSeenCount(Array.isArray(seen) ? seen.length : 0);
       } catch {
-        setFeedCount(0);
+        setQuestProgress(emptyNoriQuestProgress());
         setSeenCount(0);
       }
     }, 0);
     const updateSeen = (event: Event) => setSeenCount(Math.min(TOTAL_FOSSILS, Number((event as CustomEvent<number>).detail) || 0));
+    const updateGeology = (event: Event) => {
+      const lesson = String((event as CustomEvent<string>).detail ?? "");
+      if (!lesson) return;
+      setQuestProgress((current) => {
+        if (current.geologyLessons.includes(lesson)) return current;
+        const next = { ...current, geologyLessons: [...current.geologyLessons, lesson] };
+        saveNoriQuestProgress(next);
+        return next;
+      });
+      setPetMessage(language === "zh" ? "读懂新地层！岩层观察徽章亮起来了螺 ✦" : "A new layer learned! Your rock reader badge is glowing—luo ✦");
+      setPetBurst(true);
+      window.setTimeout(() => setPetBurst(false), 850);
+      window.setTimeout(() => setPetMessage(""), 2600);
+    };
+    const updateFieldNotes = () => {
+      setQuestProgress((current) => {
+        const next = { ...current, fieldNotes: current.fieldNotes + 1 };
+        saveNoriQuestProgress(next);
+        return next;
+      });
+      setPetMessage(language === "zh" ? "野外观察已记录！这比装满一袋化石更有意义螺 ✦" : "Field observation recorded! More meaningful than a bag full of fossils—luo ✦");
+      setPetBurst(true);
+      window.setTimeout(() => setPetBurst(false), 850);
+      window.setTimeout(() => setPetMessage(""), 2800);
+    };
     window.addEventListener("fossil-seen", updateSeen);
+    window.addEventListener("nori-geology-learned", updateGeology);
+    window.addEventListener("nori-field-note-recorded", updateFieldNotes);
     return () => {
       window.clearTimeout(loadTimer);
       window.removeEventListener("fossil-seen", updateSeen);
+      window.removeEventListener("nori-geology-learned", updateGeology);
+      window.removeEventListener("nori-field-note-recorded", updateFieldNotes);
     };
-  }, []);
+  }, [language]);
 
   const askQuestion = (question: string) => {
     const cleanQuestion = question.trim();
@@ -2577,17 +2647,36 @@ function NautilusGuide({ language, siteLocations, onOpenLocation, onOpenSunset }
     setHoverLine(choices[Math.floor(Math.random() * choices.length)] ?? t.hover[0]);
   };
 
-  const feedNori = (food: readonly string[]) => {
-    const nextCount = Math.min(999, feedCount + 1);
-    setFeedCount(nextCount);
-    setPetMessage(language === "zh" ? `${food[1]}好吃！谢谢你螺 ✦` : `${food[1]}! Delicious—thank you, luo ✦`);
-    setPetBurst(true);
-    window.localStorage.setItem("nori-pet-v1", JSON.stringify({ feedCount: nextCount }));
-    window.setTimeout(() => setPetBurst(false), 850);
-    window.setTimeout(() => setPetMessage(""), 2200);
+  const toggleSafetyCheck = (checkId: string) => {
+    setQuestProgress((current) => {
+      const active = current.safetyChecks.includes(checkId);
+      const next = {
+        ...current,
+        safetyChecks: active ? current.safetyChecks.filter((id) => id !== checkId) : [...current.safetyChecks, checkId],
+      };
+      saveNoriQuestProgress(next);
+      if (!active && SAFETY_CHECK_IDS.every((id) => next.safetyChecks.includes(id))) {
+        setPetMessage(language === "zh" ? "安全清单完成！准备充分才是最酷的探险家螺 ✦" : "Safety check complete! Prepared explorers are the coolest—luo ✦");
+        setPetBurst(true);
+        window.setTimeout(() => setPetBurst(false), 850);
+        window.setTimeout(() => setPetMessage(""), 2600);
+      }
+      return next;
+    });
   };
 
-  const isFull = feedCount > 0;
+  const safetyComplete = SAFETY_CHECK_IDS.every((id) => questProgress.safetyChecks.includes(id));
+  const geologyComplete = questProgress.geologyLessons.length > 0;
+  const recordComplete = questProgress.fieldNotes > 0;
+  const badgeCount = [safetyComplete, geologyComplete, recordComplete].filter(Boolean).length;
+
+  const openGeologyMission = () => {
+    const target = siteLocations.find((location) => location.geology) ?? siteLocations[0];
+    if (!target) return;
+    setPetMenuOpen(false);
+    onOpenLocation(target.id);
+    window.setTimeout(() => document.getElementById("geology")?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
+  };
 
   const minimizeGuide = () => {
     setOpen(false);
@@ -2618,13 +2707,32 @@ function NautilusGuide({ language, siteLocations, onOpenLocation, onOpenSunset }
       {!open && petMessage && <div className="nori-pet-message" role="status">{petMessage}</div>}
 
       {!open && <div className={`nori-pet-strip ${petMenuOpen ? "is-open" : ""}`}>
-        <button type="button" className="nori-feed-toggle" onClick={() => setPetMenuOpen((value) => !value)} aria-expanded={petMenuOpen}><span>🦐</span>{t.feed}</button>
-        <span title={t.fed}>♥ {feedCount}</span>
+        <button type="button" className="nori-quest-toggle" onClick={() => setPetMenuOpen((value) => !value)} aria-expanded={petMenuOpen}><span>✦</span>{t.missions}</button>
+        <span title={t.badges}>🏅 {badgeCount}/3</span>
         <span title={t.discoveries}>◆ {seenCount}/{TOTAL_FOSSILS}</span>
         <button type="button" className="nori-hide-button" onClick={minimizeGuide} aria-label={t.hide} title={t.hide}><span aria-hidden="true">⌄</span><em>{language === "zh" ? "收起" : "Hide"}</em></button>
-        {petMenuOpen && <div className="nori-food-menu">
-          <small>{isFull ? t.full : t.hungry}</small>
-          {t.foods.map((food) => <button type="button" key={food[1]} onClick={() => feedNori(food)}><b>{food[0]}</b>{food[1]}</button>)}
+        {petMenuOpen && <div className="nori-quest-menu">
+          <header className="nori-quest-head">
+            <span>{t.missionKicker}</span>
+            <strong>{t.missionTitle}</strong>
+            <p>{t.missionIntro}</p>
+            <div><i><b style={{ width: `${badgeCount / 3 * 100}%` }} /></i><small>{badgeCount}/3 {t.missionProgress}</small></div>
+          </header>
+          <article className={safetyComplete ? "is-complete" : ""}>
+            <div className="nori-mission-title"><span>01</span><div><strong>{t.safetyMission}</strong><small>{t.safetyMissionBody}</small></div><b aria-label={safetyComplete ? t.complete : t.start}>{safetyComplete ? "🏅" : "○"}</b></div>
+            <div className="nori-safety-checks">
+              {t.safetyChecks.map(([id, label]) => <button type="button" className={questProgress.safetyChecks.includes(id) ? "is-checked" : ""} aria-pressed={questProgress.safetyChecks.includes(id)} key={id} onClick={() => toggleSafetyCheck(id)}><i>{questProgress.safetyChecks.includes(id) ? "✓" : ""}</i>{label}</button>)}
+            </div>
+          </article>
+          <article className={geologyComplete ? "is-complete" : ""}>
+            <div className="nori-mission-title"><span>02</span><div><strong>{t.geologyMission}</strong><small>{t.geologyMissionBody}</small></div><b aria-label={geologyComplete ? t.complete : t.start}>{geologyComplete ? "🏅" : "○"}</b></div>
+            <button type="button" className="nori-mission-action" onClick={openGeologyMission}>{geologyComplete ? `${t.complete} · ${questProgress.geologyLessons.length}` : t.geologyAction} <span>→</span></button>
+          </article>
+          <article className={recordComplete ? "is-complete" : ""}>
+            <div className="nori-mission-title"><span>03</span><div><strong>{t.recordMission}</strong><small>{t.recordMissionBody}</small></div><b aria-label={recordComplete ? t.complete : t.start}>{recordComplete ? "🏅" : "○"}</b></div>
+            <button type="button" className="nori-mission-action" onClick={() => { setPetMenuOpen(false); onOpenCommunity(); }}>{recordComplete ? `${t.complete} · ${questProgress.fieldNotes}` : t.recordAction} <span>→</span></button>
+          </article>
+          <small className="nori-responsibility-note">{t.responsibilityNote}</small>
         </div>}
       </div>}
 
@@ -2887,6 +2995,7 @@ function CommunityView({ language, onBack, initialLocationId, onPublished }: { l
       setBody("");
       setSuccess(t.success);
       onPublished();
+      window.dispatchEvent(new CustomEvent("nori-field-note-recorded"));
       await loadPosts();
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Publish failed.");
@@ -4362,7 +4471,7 @@ export function FossilMap() {
 
       {finderOpen && <SmartFinderView language={language} onBack={() => setFinderOpen(false)} onOpenLocation={openLocation} />}
 
-      <NautilusGuide key={language} language={language} siteLocations={localizedLocations} onOpenLocation={openLocation} onOpenSunset={openSunset} />
+      <NautilusGuide key={language} language={language} siteLocations={localizedLocations} onOpenLocation={openLocation} onOpenCommunity={() => openCommunity()} onOpenSunset={openSunset} />
       <SiteVisitCounter language={language} />
       {sunsetTheme && <button type="button" className="sunset-theme-reset" onClick={() => setSunsetTheme(false)}>{language === "zh" ? "恢复原配色" : "Restore original colours"}</button>}
 
@@ -4441,6 +4550,25 @@ function LocationDetail({ location, language, onBack, recordCount, onViewRecords
   const isDinosaurIsle = location.id === "isle-of-wight";
   const photo = locationPhotos[location.id];
   const [photoFailed, setPhotoFailed] = useState(false);
+  const [learnedGeology, setLearnedGeology] = useState<string[]>([]);
+
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(window.localStorage.getItem(GEOLOGY_LESSON_KEY) ?? "[]") as unknown;
+      setLearnedGeology(Array.isArray(stored) ? stored.filter((item): item is string => typeof item === "string") : []);
+    } catch {
+      setLearnedGeology([]);
+    }
+  }, []);
+
+  const recordGeologyLesson = (unitName: string) => {
+    const lessonId = `${activeLocation.id}:${unitName}`;
+    if (learnedGeology.includes(lessonId)) return;
+    const next = [...learnedGeology, lessonId];
+    setLearnedGeology(next);
+    window.localStorage.setItem(GEOLOGY_LESSON_KEY, JSON.stringify(next));
+    window.dispatchEvent(new CustomEvent("nori-geology-learned", { detail: lessonId }));
+  };
 
   return (
     <section className={`detail-view detail-text-only ${isDinosaurIsle ? "is-dinosaur-isle" : ""}`}>
@@ -4566,7 +4694,7 @@ function LocationDetail({ location, language, onBack, recordCount, onViewRecords
               <div className="geology-label">{t.formations}</div>
               <div className="geology-units">
                 {geology.units.map((unit, index) => (
-                  <article key={unit.name}>
+                  <article className={learnedGeology.includes(`${activeLocation.id}:${unit.name}`) ? "is-learned" : ""} key={unit.name}>
                     <header>
                       <span>{String(index + 1).padStart(2, "0")}</span>
                       <div><h3>{unit.name}</h3><small>{unit.age}</small></div>
@@ -4574,6 +4702,11 @@ function LocationDetail({ location, language, onBack, recordCount, onViewRecords
                     <p className="geology-environment"><span>{t.environment}</span>{unit.environment}</p>
                     <p>{unit.description}</p>
                     <p className="geology-fossils"><span>{t.typicalFossils}</span>{unit.fossils}</p>
+                    <button type="button" className="geology-learn-button" onClick={() => recordGeologyLesson(unit.name)} disabled={learnedGeology.includes(`${activeLocation.id}:${unit.name}`)}>
+                      {learnedGeology.includes(`${activeLocation.id}:${unit.name}`)
+                        ? (language === "zh" ? "✓ 已记录到 Nori 的地层笔记" : "✓ Saved to Nori's rock notes")
+                        : (language === "zh" ? "我学会了这一层 · 获得任务进度" : "I learned this layer · Add mission progress")}
+                    </button>
                   </article>
                 ))}
               </div>

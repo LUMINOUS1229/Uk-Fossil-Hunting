@@ -3907,23 +3907,44 @@ button {
 .museum-open .nautilus-guide { display: none; }
 .nori-pet-strip { position: absolute; right: 66px; bottom: 3px; display: flex; align-items: center; gap: 5px; min-width: max-content; pointer-events: auto; }
 .nori-pet-strip > span,
-.nori-feed-toggle { min-height: 31px; padding: 0 9px; border: 1px solid var(--line); background: rgba(255,255,255,.94); color: var(--ink); box-shadow: 0 6px 18px rgba(23,63,103,.09); font-family: var(--font-mono), monospace; font-size: 9px; }
+.nori-quest-toggle { min-height: 31px; padding: 0 9px; border: 1px solid var(--line); background: rgba(255,255,255,.94); color: var(--ink); box-shadow: 0 6px 18px rgba(23,63,103,.09); font-family: var(--font-mono), monospace; font-size: 9px; }
 .nori-pet-strip > span { display: inline-flex; align-items: center; color: var(--ink-soft); }
-.nori-feed-toggle { display: inline-flex; align-items: center; gap: 5px; color: var(--rust); cursor: pointer; }
-.nori-feed-toggle:hover,
-.nori-feed-toggle:focus-visible,
-.nori-pet-strip.is-open .nori-feed-toggle { background: var(--sea); }
-.nori-food-menu { position: absolute; right: 0; bottom: 41px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 260px; padding: 10px; border: 1px solid var(--line); background: var(--paper-deep); box-shadow: 0 14px 32px rgba(23,63,103,.14); }
-.nori-food-menu > small { grid-column: 1 / -1; color: var(--ink-soft); font-size: 9px; }
-.nori-food-menu button { padding: 8px 5px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); font-size: 9px; cursor: pointer; }
-.nori-food-menu button:hover { border-color: var(--rust); background: var(--sea); }
-.nori-food-menu b { display: block; margin-bottom: 4px; font-size: 19px; }
+.nori-quest-toggle { display: inline-flex; align-items: center; gap: 5px; color: var(--rust); cursor: pointer; }
+.nori-quest-toggle:hover,
+.nori-quest-toggle:focus-visible,
+.nori-pet-strip.is-open .nori-quest-toggle { background: var(--sea); }
+.nori-quest-menu { position: absolute; right: 0; bottom: 41px; display: grid; gap: 8px; width: min(390px, calc(100vw - 24px)); max-height: min(680px, calc(100vh - 92px)); overflow-y: auto; padding: 12px; border: 1px solid var(--line); background: var(--paper-deep); box-shadow: 0 18px 44px rgba(23,63,103,.2); }
+.nori-quest-head { display: grid; gap: 5px; padding: 3px 3px 10px; border-bottom: 1px solid var(--line); }
+.nori-quest-head > span { color: var(--rust); font-family: var(--font-mono), monospace; font-size: 8px; letter-spacing: .12em; }
+.nori-quest-head > strong { font-family: var(--font-display), serif; font-size: 19px; line-height: 1.15; }
+.nori-quest-head > p { margin: 0; color: var(--ink-soft); font-size: 10px; line-height: 1.5; }
+.nori-quest-head > div { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 9px; margin-top: 3px; }
+.nori-quest-head > div > i { display: block; height: 5px; overflow: hidden; background: var(--sea); }
+.nori-quest-head > div > i > b { display: block; height: 100%; background: var(--rust); transition: width .3s ease; }
+.nori-quest-head > div > small { color: var(--ink-soft); font-family: var(--font-mono), monospace; font-size: 8px; }
+.nori-quest-menu > article { display: grid; gap: 8px; padding: 10px; border: 1px solid var(--line); background: rgba(255,255,255,.42); }
+.nori-quest-menu > article.is-complete { border-color: color-mix(in srgb, var(--rust) 62%, var(--line)); background: color-mix(in srgb, var(--sea) 58%, transparent); }
+.nori-mission-title { display: grid; grid-template-columns: 25px minmax(0,1fr) auto; align-items: start; gap: 8px; }
+.nori-mission-title > span { display: grid; width: 25px; height: 25px; place-items: center; border: 1px solid var(--line); color: var(--rust); font-family: var(--font-mono), monospace; font-size: 8px; }
+.nori-mission-title > div { display: grid; gap: 3px; }
+.nori-mission-title strong { font-size: 11px; }
+.nori-mission-title small { color: var(--ink-soft); font-size: 9px; line-height: 1.4; }
+.nori-mission-title > b { font-size: 17px; font-weight: 400; }
+.nori-safety-checks { display: grid; gap: 5px; }
+.nori-safety-checks button { display: grid; grid-template-columns: 18px 1fr; align-items: center; gap: 7px; padding: 7px 8px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); text-align: left; font-size: 9px; line-height: 1.35; cursor: pointer; }
+.nori-safety-checks button i { display: grid; width: 16px; height: 16px; place-items: center; border: 1px solid var(--line); color: white; font-size: 9px; font-style: normal; }
+.nori-safety-checks button.is-checked { border-color: var(--rust); background: var(--sea); }
+.nori-safety-checks button.is-checked i { border-color: var(--rust); background: var(--rust); }
+.nori-mission-action { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 7px 8px; border: 1px solid var(--line); background: var(--paper); color: var(--rust); font-family: var(--font-mono), monospace; font-size: 8px; cursor: pointer; }
+.nori-mission-action:hover,
+.nori-mission-action:focus-visible { border-color: var(--rust); background: var(--sea); }
+.nori-responsibility-note { color: var(--ink-soft); font-size: 8px; line-height: 1.45; text-align: center; }
 .nori-pet-message { position: absolute; right: 0; bottom: 78px; width: 220px; padding: 10px 12px; border: 1px solid var(--rust); background: var(--paper-deep); color: var(--ink); box-shadow: 5px 5px 0 var(--sea-deep); font-size: 11px; line-height: 1.45; pointer-events: auto; }
 .guide-panel { bottom: 78px; }
-.nautilus-guide.is-feeding .guide-nautilus-art { animation: nori-snack-dance .8s steps(4, end) both; }
-.nautilus-guide.is-feeding .guide-trigger::after { position: absolute; inset: -8px; color: var(--rust); content: "✦  ·  ✦"; font-size: 15px; animation: nori-snack-stars .8s ease-out both; }
-@keyframes nori-snack-dance { 0%,100% { transform: scale(1.26) scaleX(-1); } 25% { transform: scale(1.32) scaleX(-1) rotate(-7deg) translateY(-4px); } 65% { transform: scale(1.3) scaleX(-1) rotate(6deg) translateY(-2px); } }
-@keyframes nori-snack-stars { from { opacity: 0; transform: scale(.7); } 45% { opacity: 1; } to { opacity: 0; transform: scale(1.25) translateY(-10px); } }
+.nautilus-guide.is-feeding .guide-nautilus-art { animation: nori-badge-dance .8s steps(4, end) both; }
+.nautilus-guide.is-feeding .guide-trigger::after { position: absolute; inset: -8px; color: var(--rust); content: "✦  ·  ✦"; font-size: 15px; animation: nori-badge-stars .8s ease-out both; }
+@keyframes nori-badge-dance { 0%,100% { transform: scale(1.26) scaleX(-1); } 25% { transform: scale(1.32) scaleX(-1) rotate(-7deg) translateY(-4px); } 65% { transform: scale(1.3) scaleX(-1) rotate(6deg) translateY(-2px); } }
+@keyframes nori-badge-stars { from { opacity: 0; transform: scale(.7); } 45% { opacity: 1; } to { opacity: 0; transform: scale(1.25) translateY(-10px); } }
 
 /* Mobile typography and navigation: keep Chinese labels from colliding. */
 @media (max-width: 900px) {
@@ -3978,9 +3999,9 @@ button {
   .nautilus-guide { right: 10px; bottom: 76px; }
   .nori-pet-strip { right: 57px; bottom: 2px; gap: 4px; }
   .nori-pet-strip > span,
-  .nori-feed-toggle { min-height: 29px; padding: 0 7px; font-size: 8px; }
-  .nori-pet-strip > span:first-of-type { display: none; }
-  .nori-food-menu { right: -2px; width: 242px; }
+  .nori-quest-toggle { min-height: 29px; padding: 0 7px; font-size: 8px; }
+  .nori-pet-strip > span:last-of-type { display: none; }
+  .nori-quest-menu { right: -2px; width: min(340px, calc(100vw - 18px)); max-height: calc(100vh - 112px); }
   .nori-pet-message { right: 0; bottom: 68px; }
   .guide-panel { bottom: 70px; max-height: calc(100svh - 190px); }
 }
@@ -6255,6 +6276,24 @@ body {
   font-size: 8px;
   letter-spacing: .08em;
 }
+
+.geology-learn-button {
+  width: 100%;
+  margin-top: 14px;
+  padding: 9px 10px;
+  border: 1px solid var(--rust);
+  background: transparent;
+  color: var(--rust);
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.geology-learn-button:hover,
+.geology-learn-button:focus-visible { background: var(--sea); }
+.geology-units article.is-learned { border-color: var(--rust); }
+.geology-learn-button:disabled { background: var(--sea); color: var(--ink); cursor: default; opacity: .82; }
 
 .geology-notes {
   display: grid;
@@ -10669,7 +10708,7 @@ body {
 .nori-restore,
 .guide-panel,
 .guide-hover-line,
-.nori-food-menu,
+.nori-quest-menu,
 .nori-pet-message {
   border: 1px solid var(--cyber-line);
   background: var(--cyber-panel);
@@ -10683,7 +10722,7 @@ body {
 .location-list,
 .map-viewport-controls,
 .guide-panel,
-.nori-food-menu { border-radius: 10px 2px 10px 2px; }
+.nori-quest-menu { border-radius: 10px 2px 10px 2px; }
 
 .quest-hud::before,
 .location-list::before,
@@ -10761,7 +10800,7 @@ body {
 
 .guide-panel,
 .guide-hover-line,
-.nori-food-menu,
+.nori-quest-menu,
 .nori-pet-message {
   --ink: var(--cyber-ink);
   --ink-soft: var(--cyber-muted);
@@ -10775,8 +10814,9 @@ body {
 .nori-restore strong { color: var(--cyber-ink); }
 .nori-restore small { color: var(--cyber-muted); }
 .nori-pet-strip > span,
-.nori-feed-toggle { border-color: var(--cyber-line); background: rgba(6, 25, 48, .9); color: var(--cyber-cyan); box-shadow: var(--cyber-shadow); }
-.nori-food-menu button { background: rgba(31, 91, 123, .25); color: var(--cyber-ink); }
+.nori-quest-toggle { border-color: var(--cyber-line); background: rgba(6, 25, 48, .9); color: var(--cyber-cyan); box-shadow: var(--cyber-shadow); }
+.nori-quest-menu > article,
+.nori-quest-menu button { background: rgba(31, 91, 123, .25); color: var(--cyber-ink); }
 
 /* Secondary views use dark display panels; specimen photos stay on their original cards. */
 .detail-view.detail-text-only,
@@ -10977,7 +11017,7 @@ body {
 .sunset-theme .guide-panel-header,.sunset-theme .guide-turn p,.sunset-theme .guide-turn.user p { background:#ffe7ce; color:#573047; }
 .sunset-theme .guide-form input { background:#fff4e2; color:#573047; }
 .sunset-theme .guide-form input::placeholder { color:#775065; }
-.sunset-theme .nori-feed-toggle { background:#ffe5c9; color:#8e3558; }
+.sunset-theme .nori-quest-toggle { background:#ffe5c9; color:#8e3558; }
 .sunset-theme-reset { position:fixed; z-index:90; top:100px; right:20px; min-height:44px; padding:10px 16px; border:1px solid #a95a75; border-radius:22px; background:#fff0d9; color:#66354e; font-size:14px; box-shadow:0 5px 18px #93435d25; cursor:pointer; }
 .sunset-theme-reset:focus-visible { outline:3px solid #8e3558; outline-offset:3px; }
 .sunset-theme .topbar .top-actions button { background:#ffe8cd; color:#66354e; border-color:#aa617a55; }
