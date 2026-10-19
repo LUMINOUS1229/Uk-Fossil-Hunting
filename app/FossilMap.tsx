@@ -3427,10 +3427,10 @@ function FolkestonePackingGame({ language }: { language: Language }) {
             <span className="pixel-cliff" /><span className="pixel-sea sea-a" /><span className="pixel-sea sea-b" /><span className="pixel-shingle" />
           </div>
           <div className="packing-speech" role="status" aria-live="polite"><span>{reaction}</span></div>
-          <div className={`pixel-hunter ${packedIds.length ? "has-pack" : ""} ${packedIds.includes("headlamp") ? "has-headlamp" : ""}`} role="img" aria-label={language === "zh" ? "短发中性像素化石猎人 Rowan" : "Rowan, a short-haired androgynous pixel fossil hunter"}>
+          <div className={`pixel-hunter ${packedIds.length ? "has-pack" : ""} ${packedIds.includes("headlamp") ? "has-headlamp" : ""}`} role="img" aria-label={language === "zh" ? "戴鱼纹渔夫帽、穿蓝色外套的像素男生 Rowan" : "Rowan, a pixel boy in a fish-pattern bucket hat and blue jacket"}>
             <span className="pixel-hunter-pack" /><span className="pixel-hunter-leg leg-left" /><span className="pixel-hunter-leg leg-right" />
             <span className="pixel-hunter-body" /><span className="pixel-hunter-arm arm-left" /><span className="pixel-hunter-arm arm-right" />
-            <span className="pixel-hunter-head" /><span className="pixel-hunter-hair" /><span className="pixel-hunter-face" /><span className="pixel-hunter-headlamp" />
+            <span className="pixel-hunter-head" /><span className="pixel-hunter-hair" /><span className="pixel-hunter-hat" /><span className="pixel-hunter-hat-fish" /><span className="pixel-hunter-face" /><span className="pixel-hunter-headlamp" />
           </div>
           <div className="packing-drop-hint"><span>↓</span>{t.stageHint}</div>
         </section>

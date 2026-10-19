@@ -92,6 +92,8 @@ test("adds the Folkestone packing game with two realistic load strategies", asyn
   assert.match(component, /status === "ready"/);
   assert.match(component, /className="equipment-safety"[\s\S]*<FolkestonePackingGame language=\{language\}/);
   assert.match(css, /\.pixel-hunter-hair/);
+  assert.match(css, /\.pixel-hunter-hat-fish/);
+  assert.match(component, /鱼纹渔夫帽、穿蓝色外套的像素男生/);
   assert.match(css, /\.packing-stage\.scene-night/);
   assert.match(css, /\.pixel-hunter\.has-headlamp/);
   assert.match(css, /\.packing-stage\.status-over/);
