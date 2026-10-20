@@ -3946,6 +3946,39 @@ button {
 @keyframes nori-badge-dance { 0%,100% { transform: scale(1.26) scaleX(-1); } 25% { transform: scale(1.32) scaleX(-1) rotate(-7deg) translateY(-4px); } 65% { transform: scale(1.3) scaleX(-1) rotate(6deg) translateY(-2px); } }
 @keyframes nori-badge-stars { from { opacity: 0; transform: scale(.7); } 45% { opacity: 1; } to { opacity: 0; transform: scale(1.25) translateY(-10px); } }
 
+/* Three responsible-exploration badges permanently unlock Rainbow Nori. */
+.nautilus-guide.is-rainbow .guide-nautilus-art .nautilus-shell {
+  border-color: #ffe46b;
+  background: conic-gradient(from 25deg, #ff5d8f, #ffcb57, #76e6b7, #58c8ff, #9f83ff, #ff5d8f);
+  box-shadow: 0 0 0 2px rgba(255,255,255,.34), 0 0 16px rgba(107,224,255,.72);
+  animation: nautilus-bob .9s steps(2, end) infinite, nori-rainbow-shell 3.6s linear infinite;
+}
+.nautilus-guide.is-rainbow .guide-nautilus-art .nautilus-shell::before { border-color: rgba(255,255,255,.92); border-right-color: transparent; }
+.nautilus-guide.is-rainbow .guide-nautilus-art .nautilus-shell::after,
+.nautilus-guide.is-rainbow .guide-nautilus-art .nautilus-shell i { background: #fff4c5; }
+.nautilus-guide.is-rainbow:not(.is-feeding) .guide-trigger::after {
+  position: absolute;
+  inset: -7px;
+  color: #ffe46b;
+  content: "✦  ·  ✦";
+  font-size: 13px;
+  text-shadow: 0 0 7px #66dfff, 0 0 12px #f36fc8;
+  animation: nori-rainbow-stars 1.8s steps(2, end) infinite;
+}
+.nautilus-guide.is-rainbow .nori-restore { border-color: #8adfff; box-shadow: 4px 4px 0 #c36ee3, 0 0 18px rgba(102,223,255,.36); }
+.nautilus-guide.is-rainbow .nori-restore > span { color: #ffe46b; text-shadow: 0 0 8px #6fdcff; }
+.nori-rainbow-unlock { display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: center; gap: 9px; padding: 10px; border: 1px solid transparent; background: linear-gradient(var(--paper-deep), var(--paper-deep)) padding-box, linear-gradient(105deg, #ff6e9c, #ffd866, #68e1c1, #61cfff, #aa86ff) border-box; }
+.nori-rainbow-unlock > span { color: #ffe46b; text-shadow: 0 0 8px #6fdcff; }
+.nori-rainbow-unlock > div { display: grid; gap: 3px; }
+.nori-rainbow-unlock strong { color: var(--ink); font-size: 11px; }
+.nori-rainbow-unlock small { color: var(--ink-soft); font-size: 9px; line-height: 1.45; }
+@keyframes nori-rainbow-shell { to { filter: hue-rotate(360deg) saturate(1.22); } }
+@keyframes nori-rainbow-stars { 0%,100% { opacity: .45; transform: scale(.94); } 50% { opacity: 1; transform: scale(1.08); } }
+@media (prefers-reduced-motion: reduce) {
+  .nautilus-guide.is-rainbow .guide-nautilus-art .nautilus-shell,
+  .nautilus-guide.is-rainbow:not(.is-feeding) .guide-trigger::after { animation: none; }
+}
+
 /* Mobile typography and navigation: keep Chinese labels from colliding. */
 @media (max-width: 900px) {
   .community-layout { grid-template-columns: 1fr; }

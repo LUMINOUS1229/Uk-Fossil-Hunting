@@ -32,6 +32,8 @@ test("keeps the guide focused and adds the requested discovery play", async () =
   assert.match(component, /referencePhotos/);
   assert.match(component, /collectionFilter/);
   assert.match(component, /Nori 的探险任务系统/);
+  assert.match(component, /五彩螺已解锁！/);
+  assert.match(component, /badgeCount === 3 \? "is-rainbow"/);
   assert.match(component, /nori-field-note-recorded/);
   assert.match(component, /nori-geology-learned/);
   assert.match(component, /SAFETY_CHECK_IDS/);
@@ -54,6 +56,8 @@ test("keeps the guide focused and adds the requested discovery play", async () =
   assert.match(component, /is-dinosaur-isle/);
   assert.match(css, /\.museum-reference-photo/);
   assert.match(css, /\.nori-quest-menu/);
+  assert.match(css, /\.nautilus-guide\.is-rainbow/);
+  assert.match(css, /@keyframes nori-rainbow-shell/);
   assert.match(css, /\.geology-learn-button/);
   assert.match(css, /\.map-viewport\.is-dragging/);
   assert.match(css, /\.isle-hatchling/);

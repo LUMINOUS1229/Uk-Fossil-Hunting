@@ -2005,6 +2005,7 @@ const guideCopy = {
     safetyChecks: [["tide", "Check tide and weather"], ["route", "Choose an entrance, exit and turn-back time"], ["weather", "Pack water, a charged phone and layers"], ["leave-no-trace", "Take only a few loose finds; leave cliffs and habitats intact"]],
     geologyMission: "Read the rocks", geologyMissionBody: "Open a location's geology guide and record one layer you learned.", geologyAction: "Explore a geology guide",
     recordMission: "Make a field note", recordMissionBody: "Publish one thoughtful observation with context. A photo or a no-find day still counts as learning.", recordAction: "Open field log",
+    rainbowTitle: "Rainbow Nori unlocked!", rainbowBody: "Three badges show that you explore with care. Nori's shell now carries every colour of the coast.",
     responsibilityNote: "Observe first · record context · collect lightly · report important finds",
     presets: ["How do I get to Folkestone?", "What should I check before fossil collecting?", "Which site is best for beginners?", "Nori, can you swim?"],
     hover: [
@@ -2034,6 +2035,7 @@ const guideCopy = {
     safetyChecks: [["tide", "核对潮汐与天气"], ["route", "确认入口、出口与折返时间"], ["weather", "带好饮水、满电手机与保暖防雨层"], ["leave-no-trace", "只少量拾取松散材料，不破坏崖壁与栖息地"]],
     geologyMission: "读懂一层岩石", geologyMissionBody: "打开任一地点的地层指南，记录一个学到的地层。", geologyAction: "去学一个地层",
     recordMission: "留下一份野外记录", recordMissionBody: "发布一次带环境信息的观察；拍到化石或记录一次‘没有发现’都同样有价值。", recordAction: "打开野外记录",
+    rainbowTitle: "五彩螺已解锁！", rainbowBody: "三枚徽章代表安全、学习与负责记录。Nori 的贝壳会从此带着海岸的所有颜色。",
     responsibilityNote: "先观察 · 记环境 · 少量采集 · 重要发现及时报告",
     presets: ["怀特岛有哪些化石？", "化石采集前我应该注意什么？", "哪个地点最适合新手？", "诺里，你会游泳吗？"],
     hover: [
@@ -2693,7 +2695,7 @@ function NautilusGuide({ language, siteLocations, onOpenLocation, onOpenCommunit
 
   if (minimized) {
     return (
-      <aside className="nautilus-guide is-minimized" aria-label={t.name}>
+      <aside className={`nautilus-guide is-minimized ${badgeCount === 3 ? "is-rainbow" : ""}`} aria-label={t.name}>
         <button type="button" className="nori-restore" onClick={restoreGuide} aria-label={t.show} title={t.show}>
           <span aria-hidden="true">◉</span><strong>Nori</strong><small>{t.show}</small>
         </button>
@@ -2702,7 +2704,7 @@ function NautilusGuide({ language, siteLocations, onOpenLocation, onOpenCommunit
   }
 
   return (
-    <aside className={`nautilus-guide ${open ? "is-open" : ""} ${petBurst ? "is-feeding" : ""}`} aria-label={t.name}>
+    <aside className={`nautilus-guide ${open ? "is-open" : ""} ${petBurst ? "is-feeding" : ""} ${badgeCount === 3 ? "is-rainbow" : ""}`} aria-label={t.name}>
       {!open && hoverLine && <div className="guide-hover-line" role="status">{hoverLine}</div>}
       {!open && petMessage && <div className="nori-pet-message" role="status">{petMessage}</div>}
 
@@ -2732,6 +2734,7 @@ function NautilusGuide({ language, siteLocations, onOpenLocation, onOpenCommunit
             <div className="nori-mission-title"><span>03</span><div><strong>{t.recordMission}</strong><small>{t.recordMissionBody}</small></div><b aria-label={recordComplete ? t.complete : t.start}>{recordComplete ? "🏅" : "○"}</b></div>
             <button type="button" className="nori-mission-action" onClick={() => { setPetMenuOpen(false); onOpenCommunity(); }}>{recordComplete ? `${t.complete} · ${questProgress.fieldNotes}` : t.recordAction} <span>→</span></button>
           </article>
+          {badgeCount === 3 && <div className="nori-rainbow-unlock" role="status"><span aria-hidden="true">✦</span><div><strong>{t.rainbowTitle}</strong><small>{t.rainbowBody}</small></div><span aria-hidden="true">✦</span></div>}
           <small className="nori-responsibility-note">{t.responsibilityNote}</small>
         </div>}
       </div>}
