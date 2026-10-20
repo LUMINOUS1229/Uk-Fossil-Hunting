@@ -62,12 +62,14 @@
 }
 
 .museum-view .museum-specimen.rarity-tier-gold {
-  --card-gold: #e6bd62;
-  --card-gold-light: #fff0b6;
-  --card-metal: #aa751e;
-  --card-wine: #6c2948;
-  --card-back: #361b34;
-  --card-paper: #fff4d9;
+  --card-gold: #75dff2;
+  --card-gold-light: #fff8c9;
+  --card-metal: #a56de2;
+  --card-wine: #542870;
+  --card-back: #142853;
+  --card-paper: #f8fbff;
+  --card-ink: #31335f;
+  --card-muted: #686d98;
 }
 
 /* Both faces size the same grid cell, allowing long translations to grow. */
@@ -286,6 +288,77 @@
     var(--card-paper);
 }
 
+/* Five-star specimens use a restrained holographic treatment on both faces. */
+.museum-view .museum-specimen.rarity-tier-gold .museum-card-back {
+  background:
+    radial-gradient(circle at 18% 16%, rgba(255, 112, 169, .28), transparent 28%),
+    radial-gradient(circle at 82% 78%, rgba(84, 221, 255, .25), transparent 32%),
+    linear-gradient(135deg, rgba(255, 220, 95, .12), rgba(105, 231, 192, .1) 35%, rgba(146, 105, 232, .16) 72%),
+    linear-gradient(145deg, var(--card-wine), var(--card-back));
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.48), 0 14px 34px rgba(80, 104, 220, .3), -7px 7px 24px rgba(255, 90, 166, .14), 7px -5px 24px rgba(72, 220, 235, .16);
+}
+
+.museum-view .museum-specimen.rarity-tier-gold .museum-card-front {
+  background:
+    linear-gradient(118deg, rgba(255, 111, 163, .14), rgba(255, 221, 105, .12) 23%, rgba(103, 226, 190, .13) 47%, rgba(91, 202, 255, .14) 70%, rgba(161, 114, 238, .14)),
+    radial-gradient(ellipse at 50% 18%, #fff, transparent 62%),
+    repeating-linear-gradient(0deg, rgba(105, 90, 170, .035) 0 1px, transparent 1px 4px),
+    var(--card-paper);
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.72), 0 14px 34px rgba(80, 104, 220, .24), -7px 7px 24px rgba(255, 90, 166, .12), 7px -5px 24px rgba(72, 220, 235, .14);
+}
+
+.museum-view .museum-specimen.rarity-tier-gold .museum-card-back::before,
+.museum-view .museum-specimen.rarity-tier-gold .museum-card-front::before {
+  position: absolute;
+  z-index: 8;
+  inset: 0;
+  padding: 4px;
+  border-radius: inherit;
+  background: linear-gradient(115deg, #ff6f9f, #ffd968, #6ce5bb, #5ecfff, #a778ef, #ff6f9f);
+  background-size: 260% 260%;
+  content: "";
+  pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: museum-rainbow-border 5.5s linear infinite;
+}
+
+.museum-view .museum-specimen.rarity-tier-gold .museum-card-back::after,
+.museum-view .museum-specimen.rarity-tier-gold .museum-card-front::after {
+  position: absolute;
+  z-index: 7;
+  inset: 4px;
+  background: linear-gradient(112deg, transparent 18%, rgba(255,255,255,.34) 39%, rgba(116,233,255,.18) 47%, transparent 64%);
+  content: "";
+  mix-blend-mode: screen;
+  opacity: .5;
+  pointer-events: none;
+  transform: translateX(-125%);
+  animation: museum-rainbow-glint 5.2s ease-in-out infinite;
+}
+
+.museum-view .museum-specimen.rarity-tier-gold .museum-card-state {
+  color: #704bb2;
+  font-weight: 700;
+  letter-spacing: .06em;
+}
+
+.museum-view .museum-specimen.rarity-tier-gold .starfish-rating > span.filled:nth-child(1) { background: #ff6f9f; }
+.museum-view .museum-specimen.rarity-tier-gold .starfish-rating > span.filled:nth-child(2) { background: #f0bd45; }
+.museum-view .museum-specimen.rarity-tier-gold .starfish-rating > span.filled:nth-child(3) { background: #4fcda4; }
+.museum-view .museum-specimen.rarity-tier-gold .starfish-rating > span.filled:nth-child(4) { background: #49b7eb; }
+.museum-view .museum-specimen.rarity-tier-gold .starfish-rating > span.filled:nth-child(5) { background: #9a68df; }
+
+@keyframes museum-rainbow-border {
+  to { background-position: 260% 50%; }
+}
+
+@keyframes museum-rainbow-glint {
+  0%, 18% { transform: translateX(-125%); }
+  58%, 100% { transform: translateX(125%); }
+}
+
 .museum-view .museum-card-heading {
   display: flex;
   align-items: baseline;
@@ -427,4 +500,10 @@
 @media (prefers-reduced-motion: reduce) {
   .museum-view .museum-specimen .museum-card-inner,
   .museum-view .museum-collect { transition: none; }
+  .museum-view .museum-specimen.rarity-tier-gold .museum-card-back::before,
+  .museum-view .museum-specimen.rarity-tier-gold .museum-card-front::before,
+  .museum-view .museum-specimen.rarity-tier-gold .museum-card-back::after,
+  .museum-view .museum-specimen.rarity-tier-gold .museum-card-front::after { animation: none; }
+  .museum-view .museum-specimen.rarity-tier-gold .museum-card-back::after,
+  .museum-view .museum-specimen.rarity-tier-gold .museum-card-front::after { display: none; }
 }

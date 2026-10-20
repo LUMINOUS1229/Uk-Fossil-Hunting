@@ -3443,7 +3443,7 @@ function MuseumView({
                             <MuseumCardFrame />
                             <div className="museum-card-heading">
                               <span className="museum-entry-number">NO. {String(entryNumber).padStart(3, "0")}</span>
-                              <span className="museum-card-state">{owned ? `✓ ${t.collected}` : find.rarity}</span>
+                              <span className="museum-card-state">{owned ? `✓ ${t.collected}` : stars === 5 ? (language === "zh" ? "五彩稀有 · 5★" : "RAINBOW RARE · 5★") : find.rarity}</span>
                             </div>
                             <div className={`museum-card-portrait ${referencePhoto ? "has-reference" : ""}`}>
                               <span className="museum-portrait-crown" aria-hidden="true">✦</span>

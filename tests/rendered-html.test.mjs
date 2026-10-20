@@ -23,9 +23,10 @@ test("ships the bounded community photo workflow", async () => {
 });
 
 test("keeps the guide focused and adds the requested discovery play", async () => {
-  const [component, css] = await Promise.all([
+  const [component, css, museumCards] = await Promise.all([
     read("../app/FossilMap.tsx"),
     read("../app/globals.css"),
+    read("../app/museum-cards.css"),
   ]);
 
   assert.doesNotMatch(component, /tidmoor/i);
@@ -55,6 +56,9 @@ test("keeps the guide focused and adds the requested discovery play", async () =
   assert.match(component, /function IsleOfWightSurprise/);
   assert.match(component, /is-dinosaur-isle/);
   assert.match(css, /\.museum-reference-photo/);
+  assert.match(component, /五彩稀有 · 5★/);
+  assert.match(museumCards, /@keyframes museum-rainbow-border/);
+  assert.match(museumCards, /rarity-tier-gold \.starfish-rating > span\.filled:nth-child\(5\)/);
   assert.match(css, /\.nori-quest-menu/);
   assert.match(css, /\.nautilus-guide\.is-rainbow/);
   assert.match(css, /@keyframes nori-rainbow-shell/);
