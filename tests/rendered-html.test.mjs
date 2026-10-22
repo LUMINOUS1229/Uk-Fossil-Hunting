@@ -39,6 +39,13 @@ test("keeps the guide focused and adds the requested discovery play", async () =
   assert.match(component, /nori-geology-learned/);
   assert.match(component, /SAFETY_CHECK_IDS/);
   assert.match(component, /nori-guide-minimized-v1/);
+  assert.match(component, /function answerNoriEquipmentQuestion/);
+  assert.match(component, /function answerNoriCuriousQuestion/);
+  assert.match(component, /第一次建议轻装：防滑靴、耐磨手套、饮水/);
+  assert.match(component, /不要舔，也不要尝螺/);
+  assert.match(component, /什么都没捡到算失败吗？/);
+  assert.match(component, /equipmentInvite/);
+  assert.match(component, /onOpenEquipment=\{openEquipmentView\}/);
   assert.doesNotMatch(component, /locationRoasts|location-roast|诺里锐评|Nori's verdict/);
   assert.doesNotMatch(css, /\.location-roast/);
   assert.match(component, /nori-restore/);

@@ -1984,6 +1984,7 @@ type GuideTurn = {
   text: string;
   locationId?: string;
   sunsetInvite?: boolean;
+  equipmentInvite?: boolean;
 };
 
 const guideCopy = {
@@ -1992,11 +1993,12 @@ const guideCopy = {
     status: "SEARCHING THIS SITE ONLY",
     ask: "Ask Nori", hide: "Hide Nori", show: "Show Nori",
     close: "Close guide",
-    placeholder: "Name a place, or ask about routes and fossils…",
+    placeholder: "Ask about a place, kit, fossils—or something odd…",
     send: "Ask",
-    source: "Answers use the route and safety notes on this site.",
+    source: "Answers use this site's route, equipment, fossil-care and safety notes.",
     welcome: "Hello! I’m Nori, your slightly confused nautilus guide. Name a place in English or Chinese and I’ll find its guide—luo.",
     openSite: "Open location page",
+    openEquipment: "Open equipment locker",
     missions: "Nori missions", badges: "Exploration badges", discoveries: "Observed",
     missionKicker: "NORI FIELD CLUB", missionTitle: "Exploration missions",
     missionIntro: "Small badges for safe, curious and responsible fieldwork—not for taking more fossils.",
@@ -2007,7 +2009,7 @@ const guideCopy = {
     recordMission: "Make a field note", recordMissionBody: "Publish one thoughtful observation with context. A photo or a no-find day still counts as learning.", recordAction: "Open field log",
     rainbowTitle: "Rainbow Nori unlocked!", rainbowBody: "Three badges show that you explore with care. Nori's shell now carries every colour of the coast.",
     responsibilityNote: "Observe first · record context · collect lightly · report important finds",
-    presets: ["How do I get to Folkestone?", "What should I check before fossil collecting?", "Which site is best for beginners?", "Nori, can you swim?"],
+    presets: ["What kit should a beginner pack?", "When do I need a geological hammer?", "What changes after dark?", "Which site is best for beginners?", "Can your shell carry fossils?", "Does a no-find day count?"],
     hover: [
       "Need a route? Ask me—luo.",
       "The tide is a deadline. Very rude of it—luo.",
@@ -2022,11 +2024,12 @@ const guideCopy = {
     status: "仅检索本站资料",
     ask: "问问诺里", hide: "收起诺里", show: "唤回诺里",
     close: "关闭向导",
-    placeholder: "输入中英文地名，或询问路线、化石……",
+    placeholder: "问地点、装备、化石，或一个奇怪问题……",
     send: "提问",
-    source: "回答来自本站的路线与安全资料。",
+    source: "回答来自本站的路线、装备、保养与安全资料。",
     welcome: "你好螺！我是鹦鹉螺诺里。输入中文或英文地名，我会找到地点资料和详情页；路线、潮汐和化石也能问我螺。",
     openSite: "查看地点详情页",
+    openEquipment: "打开化石猎人装备栏",
     missions: "Nori 的探险任务", badges: "探索徽章", discoveries: "已观察",
     missionKicker: "NORI FIELD CLUB · 自然探索组", missionTitle: "Nori 的探险任务系统",
     missionIntro: "安全、观察、学习与负责任的记录会获得徽章；采得多不会加分。",
@@ -2037,7 +2040,7 @@ const guideCopy = {
     recordMission: "留下一份野外记录", recordMissionBody: "发布一次带环境信息的观察；拍到化石或记录一次‘没有发现’都同样有价值。", recordAction: "打开野外记录",
     rainbowTitle: "五彩螺已解锁！", rainbowBody: "三枚徽章代表安全、学习与负责记录。Nori 的贝壳会从此带着海岸的所有颜色。",
     responsibilityNote: "先观察 · 记环境 · 少量采集 · 重要发现及时报告",
-    presets: ["怀特岛有哪些化石？", "化石采集前我应该注意什么？", "哪个地点最适合新手？", "诺里，你会游泳吗？"],
+    presets: ["新手第一次要带什么装备？", "什么时候需要地质锤？", "晚上返程要多带什么？", "哪个地点最适合新手？", "诺里，你的壳能装化石吗？", "什么都没捡到算失败吗？"],
     hover: [
       "想查路线？问我螺！",
       "潮水是截止时间，真是一点面子都不给螺。",
@@ -2107,6 +2110,135 @@ const finishWithNoriVoice = (text: string, language: Language) => {
   if (/luo[.!?]?$/.test(trimmed.toLocaleLowerCase())) return trimmed;
   return `${trimmed.replace(/[.!?]+$/, "")}—luo.`;
 };
+
+function answerNoriEquipmentQuestion(query: string, language: Language): Omit<GuideTurn, "id" | "role"> {
+  const isZh = language === "zh";
+  const reply = (zh: string, en: string): Omit<GuideTurn, "id" | "role"> => ({
+    text: isZh ? zh : en,
+    equipmentInvite: true,
+  });
+
+  if (/(晚上|夜间|天黑|摸黑|头灯|手电|after dark|night|head ?torch|headlamp|flashlight|phone light)/i.test(query)) {
+    return reply(
+      "如果返程可能天黑，头灯是必需品，手机灯只能备用。照常带满电手机与移动电源、防风雨外层和路线记录；装包小游戏里选择「夜间返程」，Nori 会把头灯列为必带。",
+      "If the return may be after dark, a head torch is essential and a phone light is only backup. Still pack a charged phone and power bank, weather layer and route notes; choose “After-dark return” in the packing game and Nori will require the head torch.",
+    );
+  }
+
+  if (/(地质锤|锤子|岩石锤|凿|geological hammer|rock hammer|chisel)/i.test(query)) {
+    return reply(
+      "地质锤不是默认装备：只在地点攻略明确允许时，用它处理合适的松散岩块，绝不敲崖壁。新手可选约 600–900 克的一体锻造款；地质锤与护目镜必须成对装入。纯捡路线、保护地或禁锤地点，就把锤和凿留在家里。",
+      "A geological hammer is not default kit. Use one only where the location guide explicitly permits it, on suitable loose rock—never on a cliff. A forged 600–900 g hammer suits most beginners, and it must travel with safety glasses. Leave hammer and chisel at home on surface-picking routes or no-hammer sites.",
+    );
+  }
+
+  if (/(护目镜|眼镜|眼部|石屑|safety glasses|goggles|eye protection|stone chips)/i.test(query)) {
+    return reply(
+      "只要现场有人进行允许的敲击，敲击范围内每个人都要戴抗冲击、包覆式护目镜，不只是拿锤的人。阴暗海岸用透明镜片更实用，并先确认不易起雾。",
+      "Whenever permitted hammering is happening, everyone in the striking area needs impact-rated wraparound safety glasses—not only the person holding the hammer. Clear, low-fog lenses work best in dull coastal light.",
+    );
+  }
+
+  if (/(鞋|靴|雨靴|徒步靴|wellies|boots|footwear|shoes)/i.test(query)) {
+    return reply(
+      "深泥地选高筒雨靴；长距离砾石和岩石路面选有深纹防滑底、能支撑脚踝的徒步靴。无论哪种，都要先在湿地试穿，别让第一次野外测试发生在海滩。",
+      "Choose wellies for deep mud, or ankle-supporting walking boots with deep tread for long shingle and rocky approaches. Test either pair on wet ground before the trip—the beach should not be their first field test.",
+    );
+  }
+
+  if (/(怎么装|怎么包|带回家|运输|标本盒|纸巾|标签|收纳|specimen box|wrap|tissue|label|carry.*home|pack.*fossil)/i.test(query)) {
+    return reply(
+      "用纸巾或无酸纸逐件包裹，再放进有盖硬质小盒；同一标本的碎片放在同一个标记袋里，但别让它们互相摩擦。拿起前先拍原位照片，并用铅笔记录地点、日期与地层背景。",
+      "Wrap finds separately in tissue or acid-free paper, then place them in small rigid lidded boxes. Keep matching fragments in one labelled packet without letting them rub. Photograph the find in place first, then note the site, date and geological context in pencil.",
+    );
+  }
+
+  if (/(放大镜|手持镜|看细节|真假|hand lens|magnifier|10x|10×|identify)/i.test(query)) {
+    return reply(
+      "10× 手持放大镜很轻，却能看壳纹、晶面、孔隙和新鲜断面，是判断化石与普通岩石的高性价比装备。配颈绳或亮色收纳套，海滩上更不容易把它也变成失物。",
+      "A 10× hand lens is light but reveals shell texture, crystal faces, pores and fresh broken surfaces—excellent value for separating fossils from ordinary rock. Add a neck cord or bright case so it does not become a beach find itself.",
+    );
+  }
+
+  if (/(筛|小铲|筛沙|筛牙|sieve|trowel|screen.*sand)/i.test(query)) {
+    return reply(
+      "细筛和圆头小铲只适合地点规则允许处理的松散砂砾或弃土。不要掏挖崖脚、岸壁或栖息地；浅坑要回填，网目也应按目标小化石选择。",
+      "A fine sieve and rounded trowel are only for permitted loose sand, gravel or spoil. Never undermine a cliff, bank or habitat; refill shallow holes and match the mesh to the tiny fossils you expect.",
+    );
+  }
+
+  if (/(全都带|全部带|越多越好|塞满|超重|负重|大桶|everything|all my gear|more tools|overpack|too heavy|large bucket|backpack weight)/i.test(query)) {
+    return reply(
+      "工具不是越多越好。本站 Folkestone 装包目标是行走负重不超过 5 kg、占用不超过 13 L，为包好的化石预留约 2 kg 和 3 L；大桶和重型凿具最容易挤掉这份余量。",
+      "More tools are not better. The Folkestone packing target on this site is no more than 5 kg walking weight and 13 L used, leaving about 2 kg and 3 L for wrapped finds. A large bucket and heavy chisel set consume that reserve fastest.",
+    );
+  }
+
+  return reply(
+    "第一次建议轻装：防滑靴、耐磨手套、饮水、防风雨外层、满电手机与离线地图、急救包，以及标本盒、纸巾和标签。10× 放大镜与软毛刷很实用；地质锤、凿具、筛网和小铲必须先看具体地点规则。",
+    "For a first trip, pack light: sturdy boots, work gloves, water, a weatherproof layer, charged phone with offline map, first-aid kit, plus specimen boxes, tissue and labels. A 10× lens and soft brush are useful; hammer, chisel, sieve and trowel depend on the location rules.",
+  );
+}
+
+function answerNoriCuriousQuestion(query: string, language: Language): string | null {
+  const isZh = language === "zh";
+
+  if (/(舔|尝一口|尝尝|能吃|可以吃|lick|taste|edible|eat.*fossil|fossil.*eat)/i.test(query)) {
+    return isZh
+      ? "不要舔，也不要尝螺。标本可能带盐、泥、矿物粉末或旧处理剂，脆弱表面也经不起这种鉴定法。请用 10× 放大镜观察纹理和断面。"
+      : "Please do not lick or taste it. A specimen may carry salt, mud, mineral dust or old treatments, and fragile surfaces do not enjoy tongue-based identification. Use a 10× lens to inspect texture and broken surfaces—luo.";
+  }
+
+  if (/(壳.*(装|放|背|收).*化石|化石.*(装|放).*壳|shell.*(carry|hold|store|pack).*fossil|fossil.*inside.*shell)/i.test(query)) {
+    return isZh
+      ? "理论上有空间，实际上这里已经装着一只诺里螺。化石请逐件包纸、放硬盒，再给背包留出 2 kg 和 3 L 的返程余量；我的壳只负责提供精神支持。"
+      : "There may be space in theory, but it is already occupied by one Nori. Wrap fossils separately, use rigid boxes and keep about 2 kg and 3 L of pack reserve for the walk home. My shell provides emotional support only—luo.";
+  }
+
+  if (/(?:所有|每块|随便).*石.*化石|石头.*都是.*化石|every rock.*fossil|all rocks.*fossils/i.test(query)) {
+    return isZh
+      ? "不是每块石头都是化石螺。先找有规律的壳纹、对称结构、孔隙或生物形态，再用放大镜看表面与新鲜断面；晶体、结核和风化纹也很会冒充化石。"
+      : "Not every rock is a fossil. Look for repeated shell texture, symmetry, pores or biological structure, then inspect the surface and a fresh broken face with a hand lens. Crystals, concretions and weathering marks are talented impostors—luo.";
+  }
+
+  if (/(?:螺旋|旋涡).*(?:菊石|化石)|菊石.*(?:螺旋|旋涡)|spiral.*ammonite|ammonite.*spiral/i.test(query)) {
+    return isZh
+      ? "有螺旋不一定是菊石：结核、卷贝和矿物纹理也会绕圈。请同时看壳室、缝合线、肋纹与左右对称，并把原位环境一起拍下来。"
+      : "A spiral is not automatically an ammonite: concretions, coiled shells and mineral patterns also make circles. Check for chambers, suture lines, ribs and symmetry, and photograph the original context too—luo.";
+  }
+
+  if (/(没捡到|什么都没找到|空手|白跑|失败|no find|find nothing|empty handed|wasted trip)/i.test(query)) {
+    return isZh
+      ? "不算失败螺。记录一次岩层、潮汐、动物痕迹或「今天没有发现」，都是真实的野外观察；本站 Nori 任务也明确把有环境信息的记录算作学习，不按采集数量发奖。"
+      : "That is not failure. A note about the rock layer, tide, wildlife—or simply “no find today”—is still a real field observation. Nori missions reward contextual learning, not the number of fossils taken—luo.";
+  }
+
+  if (/(化石.*宠物|养.*化石|fossil.*pet|keep.*fossil.*pet)/i.test(query)) {
+    return isZh
+      ? "可以把它当安静的室友，但别当需要洗澡的宠物螺。先保留标签，完全阴干后放入无酸盒；脆弱标本不要泡水、上指甲油或随便涂胶。"
+      : "It can be a very quiet flatmate, but not a pet that needs baths. Keep its label, let it air-dry fully and store it in an acid-free box. Do not soak fragile finds or coat them with nail varnish or household glue—luo.";
+  }
+
+  if (/(化石.*(活|复活|醒)|恐龙.*复活|fossil.*alive|bring.*fossil.*back|resurrect|revive.*dinosaur)/i.test(query)) {
+    return isZh
+      ? "本站的标本保养能让化石更稳定，不能让它复活螺。要是你的石头开始眨眼，先别清洗，拍照记录，然后联系博物馆——也顺便联系我。"
+      : "This site's care advice can stabilise a fossil, not revive it. If your rock starts blinking, do not clean it: photograph it, contact a museum, and please contact me too—luo.";
+  }
+
+  if (/(?:石头|岩石|化石).*(?:说话|聊天|唱歌|秘密)|talk.*rock|rocks.*talk|fossil.*talk|singing rock/i.test(query)) {
+    return isZh
+      ? "它们不直接说话，但岩层、保存方式和发现位置会讲故事螺。所以先拍原位照片、记地点和层位，再拿起标本；离开背景的化石会少说很多。"
+      : "They do not speak aloud, but layers, preservation and find context tell a story. Photograph the specimen in place and record its site and bed before lifting it; a fossil separated from its context has much less to say—luo.";
+  }
+
+  if (/(把.*悬崖.*带走|搬.*悬崖|整面.*崖|take.*cliff.*home|bring.*cliff.*home)/i.test(query)) {
+    return isZh
+      ? "不行螺，悬崖既超重，也不是自助货架。只少量拾取规则允许的松散材料，远离崖脚、新鲜落石和滑坡体，把岩层与栖息地留在原处。"
+      : "No—the cliff is both overweight and not a self-service shelf. Take only a few permitted loose finds, stay clear of cliff bases, fresh falls and active slips, and leave the rock layers and habitat intact—luo.";
+  }
+
+  return null;
+}
 
 function answerNoriSmallTalk(query: string, language: Language): string | null {
   const isZh = language === "zh";
@@ -2201,6 +2333,8 @@ function answerGuideQuestion(question: string, siteLocations: Location[], langua
   if (/(日落|夕阳|晚霞|带我去看海|想看海|\bsunset\b|take me to (the )?(sea|beach))/i.test(query)) {
     return { text: language === "zh" ? "一起给地图披上粉黄的夕阳吧螺。点下面的按钮就能切换配色，地图仍然可以照常探索。" : "Let's bathe the map in a pink and golden sunset. Change the palette below and keep exploring—luo.", sunsetInvite: true };
   }
+  const curiousAnswer = answerNoriCuriousQuestion(query, language);
+  if (curiousAnswer) return { text: curiousAnswer };
   const smallTalk = answerNoriSmallTalk(query, language);
   if (smallTalk) return { text: smallTalk };
   let location = findGuideLocation(query, siteLocations);
@@ -2208,7 +2342,7 @@ function answerGuideQuestion(question: string, siteLocations: Location[], langua
   const asksRoute = /(怎么去|如何去|怎样去|路线|交通|抵达|到达|how.*(get|go)|route|train|travel)/i.test(query);
   const asksSafety = /(注意|安全|危险|风险|准备|采集前|safe|safety|hazard|risk|before.*collect)/i.test(query);
   const asksTide = /(潮|时间|什么时候|季节|weather|tide|when|season)/i.test(query);
-  const asksKit = /(装备|带什么|工具|穿什么|equipment|kit|bring|wear|tool)/i.test(query);
+  const asksKit = /(装备|带什么|工具|穿什么|地质锤|锤子|凿|护目镜|鞋|靴|头灯|手电|放大镜|刷|标本盒|纸巾|标签|筛|小铲|背包|负重|equipment|kit|bring|wear|tool|hammer|chisel|goggles|safety glasses|boots|wellies|head ?torch|headlamp|flashlight|hand lens|brush|specimen box|tissue|label|sieve|trowel|backpack|weight)/i.test(query);
   const asksFinds = /(化石|找到|发现|有什么|find|fossil|tooth|ammonite|belemnite|shell|牙|菊石|箭石|贝壳)/i.test(query);
   const asksRules = /(规则|允许|可以带走|能带走|敲|挖|rule|allowed|collecting code|hammer|dig)/i.test(query);
   const asksBeginner = /(新手|第一次|亲子|孩子|家庭|简单|beginner|first time|family|children|easy)/i.test(query);
@@ -2217,6 +2351,10 @@ function answerGuideQuestion(question: string, siteLocations: Location[], langua
 
   if (location?.id === "weymouth" && asksSmallmouth) {
     location = getWeymouthSiteOptions(location, language).find((option) => option.id === "smallmouth")?.location ?? location;
+  }
+
+  if (asksKit && !location) {
+    return answerNoriEquipmentQuestion(query, language);
   }
 
   if (asksSafety && !location) {
@@ -2554,7 +2692,7 @@ function SiteVisitCounter({ language }: { language: Language }) {
   );
 }
 
-function NautilusGuide({ language, siteLocations, onOpenLocation, onOpenCommunity, onOpenSunset }: { language: Language; siteLocations: Location[]; onOpenLocation: (id: string) => void; onOpenCommunity: () => void; onOpenSunset: () => void }) {
+function NautilusGuide({ language, siteLocations, onOpenLocation, onOpenCommunity, onOpenEquipment, onOpenSunset }: { language: Language; siteLocations: Location[]; onOpenLocation: (id: string) => void; onOpenCommunity: () => void; onOpenEquipment: () => void; onOpenSunset: () => void }) {
   const t = guideCopy[language];
   const [open, setOpen] = useState(false);
   const [hoverLine, setHoverLine] = useState<string | null>(null);
@@ -2759,6 +2897,7 @@ function NautilusGuide({ language, siteLocations, onOpenLocation, onOpenCommunit
                 <div>
                   <p>{turn.text}</p>
                   {turn.sunsetInvite && <button type="button" onClick={() => { setOpen(false); onOpenSunset(); }}>{language === "zh" ? "开启夕阳配色" : "Turn on sunset colours"}</button>}
+                  {turn.equipmentInvite && <button type="button" onClick={() => { setOpen(false); onOpenEquipment(); }}>{t.openEquipment} <b>→</b></button>}
                   {turn.locationId && (
                     <button type="button" onClick={() => { onOpenLocation(turn.locationId!); setOpen(false); }}>
                       {t.openSite} <b>→</b>
@@ -4129,6 +4268,15 @@ export function FossilMap() {
     setSelectedId(id);
   };
 
+  const openEquipmentView = () => {
+    setSelectedId(null);
+    setMuseumOpen(false);
+    setCommunityOpen(false);
+    setFinderOpen(false);
+    setMobileList(false);
+    setEquipmentOpen(true);
+  };
+
   const zoomMapBy = useCallback((factor: number) => {
     setExpandedCoast(null);
     setMapView((view) => ({ ...view, scale: clampMapScale(view.scale * factor) }));
@@ -4282,7 +4430,7 @@ export function FossilMap() {
         </div>
         <div className="top-actions">
           <button className="finder-link" onClick={() => { setSelectedId(null); setMuseumOpen(false); setCommunityOpen(false); setEquipmentOpen(false); setFinderOpen(true); }}>⌖ {finderCopy[language].nav}</button>
-          <button className="equipment-link" onClick={() => { setSelectedId(null); setMuseumOpen(false); setCommunityOpen(false); setFinderOpen(false); setEquipmentOpen(true); }}>▣ {equipmentCopy[language].nav}</button>
+          <button className="equipment-link" onClick={openEquipmentView}>▣ {equipmentCopy[language].nav}</button>
           <button className="community-link" onClick={() => openCommunity()}>◉ {communityCopy[language].nav}</button>
           <button className="museum-link" onClick={() => { setSelectedId(null); setCommunityOpen(false); setEquipmentOpen(false); setFinderOpen(false); setMuseumOpen(true); }}>✦ {t.museum}</button>
           <button className="reference-link" onClick={() => setModal("references")}>{t.references}</button>
@@ -4474,7 +4622,7 @@ export function FossilMap() {
 
       {finderOpen && <SmartFinderView language={language} onBack={() => setFinderOpen(false)} onOpenLocation={openLocation} />}
 
-      <NautilusGuide key={language} language={language} siteLocations={localizedLocations} onOpenLocation={openLocation} onOpenCommunity={() => openCommunity()} onOpenSunset={openSunset} />
+      <NautilusGuide key={language} language={language} siteLocations={localizedLocations} onOpenLocation={openLocation} onOpenCommunity={() => openCommunity()} onOpenEquipment={openEquipmentView} onOpenSunset={openSunset} />
       <SiteVisitCounter language={language} />
       {sunsetTheme && <button type="button" className="sunset-theme-reset" onClick={() => setSunsetTheme(false)}>{language === "zh" ? "恢复原配色" : "Restore original colours"}</button>}
 
