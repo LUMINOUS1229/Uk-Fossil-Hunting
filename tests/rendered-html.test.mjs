@@ -21,6 +21,7 @@ test("ships the bounded community photo workflow", async () => {
   assert.match(component, /role="dialog"/);
   assert.match(css, /\.community-stamp[\s\S]*cursor:\s*pointer/);
   assert.match(css, /\.max-notebook-backdrop/);
+  assert.match(css, /\.location-record-link\s*\{[\s\S]*?background: transparent;[\s\S]*?color: #fff;/);
   assert.match(component, /maxEdge = 1600/);
   assert.match(component, /photos\.length < 3/);
   assert.match(route, /const MAX_IMAGES = 3/);

@@ -5812,13 +5812,20 @@ body {
   display: block;
   margin: 12px 0;
   padding: 10px 14px;
-  border: 1px solid #65a2c2;
-  background: #102c43;
-  color: #a0eafa;
+  border: 1px solid rgba(255, 255, 255, .48);
+  background: transparent;
+  color: #fff;
   font-size: 13px;
   text-align: left;
   cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease;
 }
+.location-record-link:hover,
+.location-record-link:focus-visible {
+  border-color: rgba(255, 255, 255, .82);
+  background: rgba(255, 255, 255, .1);
+}
+.location-record-link:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .record-filter { display: grid; gap: 8px; margin: 18px 0; color: var(--ink); font-size: 13px; }
 .record-filter select { width: 100%; min-height: 42px; padding: 8px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); }
 
