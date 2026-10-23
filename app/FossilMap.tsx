@@ -4765,7 +4765,7 @@ function LocationDetail({ location, language, onBack, recordCount, onViewRecords
         <div className="panel-content">
           {notes.length > 0 && (
             <section className="info-section locality-note-section" id="locality-note">
-              <SectionTitle number="00" title={language === "zh" ? "产地概括与 M老师吐槽" : "Locality notes and M Teacher's aside"} />
+              <SectionTitle number="00" title={language === "zh" ? "简介" : "Introduction"} />
               <div className="locality-note-list">
                 {notes.map((note, index) => (
                   <article className="locality-note-card" key={`${location.id}-${note.title ?? index}`}>

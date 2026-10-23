@@ -1894,13 +1894,14 @@ button {
 
 .locality-note-card {
   padding: 16px;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--sea) 82%, transparent);
+  border: 1px solid #8fb5c2;
+  background: #bad6df;
+  color: #173f67;
 }
 
 .locality-note-card h3 {
   margin: 0 0 10px;
-  color: var(--rust);
+  color: #173f67;
   font-family: var(--font-display), serif;
   font-size: 18px;
   font-weight: 650;
@@ -1908,7 +1909,7 @@ button {
 
 .locality-note-summary {
   margin: 0;
-  color: var(--ink);
+  color: #173f67;
   font-size: 11px;
   line-height: 1.72;
 }
@@ -1919,13 +1920,13 @@ button {
   align-items: baseline;
   gap: .18em;
   margin: 15px 0 0;
-  color: var(--ink-soft);
+  color: #3f6179;
   font-size: 8px;
   line-height: 1.65;
 }
 
 .mteacher-commentary strong {
-  color: var(--ink);
+  color: #173f67;
 }
 
 .mteacher-secret {
