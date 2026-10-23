@@ -91,6 +91,24 @@ test("offers distinct Weymouth field sheets and station routes", async () => {
   assert.match(css, /\.weymouth-site-options article\.is-selected/);
 });
 
+test("adds supplied locality notes with a hover-reveal M Teacher label", async () => {
+  const [component, css, notes, documentLocations] = await Promise.all([
+    read("../app/FossilMap.tsx"),
+    read("../app/globals.css"),
+    read("../app/locality-notes.ts"),
+    read("../app/document-locations.ts"),
+  ]);
+
+  assert.match(component, /locality-note-section/);
+  assert.match(component, /mteacher-secret/);
+  assert.match(component, /（非常个人风格）/);
+  assert.match(css, /\.mteacher-secret:hover/);
+  assert.match(css, /color:\s*#ffffff/);
+  assert.match(notes, /title: "Suffolk"/);
+  assert.match(notes, /孩子们，情报是假的，这里怎么成农场了？/);
+  assert.match(documentLocations, /name: "Suffolk · Nacton Shore"/);
+});
+
 test("adds private smart location matching and a basic trip profile", async () => {
   const [component, css] = await Promise.all([
     read("../app/FossilMap.tsx"),

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { documentLocations } from "./document-locations";
 import { documentLocationZh } from "./document-location-zh";
+import { localityNotes } from "./locality-notes";
 import { locationPhotos } from "./location-photos";
 import { COAST_CLUSTER_WIDTH, coastGroups, mapLabelFor } from "./map-layout";
 import { COLLECTION_CARD_HEIGHT, COLLECTION_CARD_WIDTH, drawCollectionCard } from "./collection-card";
@@ -1505,7 +1506,7 @@ const detailCopy = {
     nearestStation: "nearest station", access: "Beach / field access", recommendedStart: "recommended start", exitPoint: "Exit point",
     cafe: "Café", onFoot: "ON FOOT", actionMap: "ACTION MAP · COORDINATES APPROXIMATE",
     walkingRoute: "walking route", collectingKey: "collecting area", hazardKey: "hazard", allSites: "All UK sites",
-    locationDetails: "Location details", navRoute: "Route", navGeology: "Geology", navFinds: "Field guide", navKit: "Kit", navRules: "Rules",
+    locationDetails: "Location details", navLocalityNote: "Locality note", navRoute: "Route", navGeology: "Geology", navFinds: "Field guide", navKit: "Kit", navRules: "Rules",
     section1: "How to get there", section2: "Recommended route", section3: "Collector's field guide", section4: "Best time to visit",
     section5: "Equipment", section6: "Safety", section7: "Environment & collecting rules", typicalTotal: "Typical total",
     london: "LONDON", recommendedDeparture: "recommended departure", train: "TRAIN", checkService: "check same-day service", local: "LOCAL",
@@ -1525,7 +1526,7 @@ const detailCopy = {
     nearestStation: "最近火车站", access: "海滩 / 现场入口", recommendedStart: "推荐起点", exitPoint: "撤离点",
     cafe: "咖啡馆", onFoot: "步行", actionMap: "行动地图 · 坐标为近似位置",
     walkingRoute: "步行路线", collectingKey: "采集区域", hazardKey: "危险区域", allSites: "返回英国全部地点",
-    locationDetails: "地点信息", navRoute: "路线", navGeology: "地质", navFinds: "图鉴", navKit: "装备", navRules: "规则",
+    locationDetails: "地点信息", navLocalityNote: "产地概括", navRoute: "路线", navGeology: "地质", navFinds: "图鉴", navKit: "装备", navRules: "规则",
     section1: "如何抵达", section2: "推荐现场路线", section3: "可收集化石图鉴", section4: "最佳前往时间",
     section5: "装备清单", section6: "安全信息", section7: "环境与采集规则", typicalTotal: "典型总耗时",
     london: "伦敦", recommendedDeparture: "推荐出发站", train: "火车", checkService: "出发当天再次确认班次", local: "当地交通",
@@ -4698,6 +4699,7 @@ function LocationDetail({ location, language, onBack, recordCount, onViewRecords
   const activeWeymouthOption = weymouthSites.find((option) => option.id === weymouthSiteId);
   const geology = activeLocation.geology?.[language];
   const fieldIntel = activeLocation.fieldIntel?.[language];
+  const notes = localityNotes[location.id] ?? [];
   const isDinosaurIsle = location.id === "isle-of-wight";
   const photo = locationPhotos[location.id];
   const [photoFailed, setPhotoFailed] = useState(false);
@@ -4751,6 +4753,7 @@ function LocationDetail({ location, language, onBack, recordCount, onViewRecords
         {photo && !photoFailed && <p className="place-photo-credit"><a href={photo.source} target="_blank" rel="noreferrer noopener">{photo.caption} · © {photo.author}</a><span> · </span><a href={photo.licenseUrl} target="_blank" rel="noreferrer noopener">{photo.license}</a><span> · {language === "zh" ? "裁切 / 低饱和度" : "Cropped / desaturated"}</span></p>}
         </header>
         <nav className="section-nav" aria-label={t.locationDetails}>
+          {notes.length > 0 && <a href="#locality-note">{t.navLocalityNote}</a>}
           <a href="#get-there">{t.navRoute}</a>
           {fieldIntel && <a href="#field-intel">{fieldIntel.navLabel}</a>}
           {geology && <a href="#geology">{t.navGeology}</a>}
@@ -4760,6 +4763,25 @@ function LocationDetail({ location, language, onBack, recordCount, onViewRecords
         </nav>
 
         <div className="panel-content">
+          {notes.length > 0 && (
+            <section className="info-section locality-note-section" id="locality-note">
+              <SectionTitle number="00" title={language === "zh" ? "产地概括与 M老师吐槽" : "Locality notes and M Teacher's aside"} />
+              <div className="locality-note-list">
+                {notes.map((note, index) => (
+                  <article className="locality-note-card" key={`${location.id}-${note.title ?? index}`}>
+                    {note.title && <h3>{note.title}</h3>}
+                    <p className="locality-note-summary">{note.summary}</p>
+                    <p className="mteacher-commentary">
+                      <strong>M老师</strong>
+                      <span className="mteacher-secret" tabIndex={0} aria-label="非常个人风格，悬停或聚焦后显示">（非常个人风格）</span>
+                      <strong>的吐槽。</strong>
+                      <span>{note.roast}</span>
+                    </p>
+                  </article>
+                ))}
+              </div>
+            </section>
+          )}
           <section className="info-section route-section" id="get-there">
             <SectionTitle number="01" title={t.section1} />
             {weymouthSites.length > 0 && (

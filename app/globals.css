@@ -1887,6 +1887,78 @@ button {
   scroll-margin-top: 40px;
 }
 
+.locality-note-list {
+  display: grid;
+  gap: 12px;
+}
+
+.locality-note-card {
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--sea) 82%, transparent);
+}
+
+.locality-note-card h3 {
+  margin: 0 0 10px;
+  color: var(--rust);
+  font-family: var(--font-display), serif;
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.locality-note-summary {
+  margin: 0;
+  color: var(--ink);
+  font-size: 11px;
+  line-height: 1.72;
+}
+
+.mteacher-commentary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .18em;
+  margin: 15px 0 0;
+  color: var(--ink-soft);
+  font-size: 8px;
+  line-height: 1.65;
+}
+
+.mteacher-commentary strong {
+  color: var(--ink);
+}
+
+.mteacher-secret {
+  display: inline-block;
+  padding: 0 .42em;
+  border: 1px solid #020202;
+  border-radius: 2px;
+  background: #020202;
+  color: #020202;
+  cursor: help;
+  transition: color 140ms ease, box-shadow 140ms ease;
+  user-select: none;
+}
+
+.mteacher-secret:hover,
+.mteacher-secret:focus-visible {
+  color: #ffffff;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--rust) 75%, transparent);
+}
+
+@media (forced-colors: active) {
+  .mteacher-secret {
+    border-color: CanvasText;
+    background: CanvasText;
+    color: CanvasText;
+  }
+
+  .mteacher-secret:hover,
+  .mteacher-secret:focus-visible {
+    color: Canvas;
+  }
+}
+
 .weymouth-site-picker {
   margin-bottom: 20px;
   padding: 15px;

@@ -79,9 +79,9 @@ export type DocumentLocation = {
 export const documentLocations: DocumentLocation[] = [
   {
     id: "nacton",
-    name: "Nacton Shore",
-    shortName: "Nacton",
-    region: "Suffolk · River Orwell",
+    name: "Suffolk · Nacton Shore",
+    shortName: "Suffolk",
+    region: "Suffolk · Nacton Shore · River Orwell",
     period: "Eocene & Pleistocene",
     age: "c. 55 million years & younger glacial deposits",
     type: "Estuary foreshore",
