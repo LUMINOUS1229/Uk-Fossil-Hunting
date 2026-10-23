@@ -1640,7 +1640,7 @@ const maxNotebookCopy = {
     prompt: "Huh? You found a strange notebook.",
     label: "Open Max's strange field notebook",
     eyebrow: "RECOVERED FIELD NOTES · MAX",
-    title: "Max's Grudge Log",
+    title: "Max's Notebook",
     intro: "Seven reminders that the coast always gets the last word.",
     close: "Close notebook",
     notes: [
@@ -1657,7 +1657,7 @@ const maxNotebookCopy = {
     prompt: "咦？捡到一份奇怪的笔记。",
     label: "打开 Max 的奇怪笔记",
     eyebrow: "捡到的野外笔记 · MAX",
-    title: "Max 的怨念笔记",
+    title: "Max 的笔记",
     intro: "七次被英国海岸针对的真实记录。请勿模仿，尤其不要连续模仿。",
     close: "合上笔记",
     notes: [

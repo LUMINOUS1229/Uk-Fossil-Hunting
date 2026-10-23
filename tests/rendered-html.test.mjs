@@ -16,7 +16,7 @@ test("ships the bounded community photo workflow", async () => {
   assert.match(component, /function CommunityView/);
   assert.match(component, /nav: "探险笔记"/);
   assert.match(component, /咦？捡到一份奇怪的笔记。/);
-  assert.match(component, /Max 的怨念笔记/);
+  assert.match(component, /Max 的笔记/);
   assert.match(component, /错过最后一班晚间巴士/);
   assert.match(component, /role="dialog"/);
   assert.match(css, /\.community-stamp[\s\S]*cursor:\s*pointer/);
