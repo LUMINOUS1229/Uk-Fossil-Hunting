@@ -1614,7 +1614,7 @@ const museumCopy = {
 
 const communityCopy = {
   en: {
-    nav: "Field notes", back: "Back to the map", eyebrow: "COMMUNITY FIELD LOG · PHOTO EXCHANGE", title: "Fossil Finds Forum",
+    nav: "Adventure notes", back: "Back to the map", eyebrow: "ADVENTURE LOG · PHOTO EXCHANGE", title: "Adventure Notes",
     intro: "Share a recent find, the beach or quarry context, and what you think it might be. Keep precise locations of rare material private.",
     compose: "Share your find", name: "Display name", note: "What did you find? Add size, rock type and visible features.",
     place: "Field region (optional)", unknownPlace: "Another / private location", photos: "Add 1–3 photos", publish: "Publish field note",
@@ -1624,7 +1624,7 @@ const communityCopy = {
     privacy: "Safety note", privacyBody: "Do not publish exact coordinates for rare vertebrate material. Record it privately and contact a local museum.",
   },
   zh: {
-    nav: "收获交流", back: "返回地图", eyebrow: "社区野外日志 · 图片交流", title: "化石收获交流区",
+    nav: "探险笔记", back: "返回地图", eyebrow: "野外探险日志 · 图片交流", title: "探险笔记",
     intro: "上传最近的发现、岩层或海滩环境，以及你的初步判断。稀有标本的精确坐标请保留在私人记录中。",
     compose: "分享这次发现", name: "显示昵称", note: "发现了什么？可写尺寸、岩石类型和可见特征。",
     place: "采集地区（可选）", unknownPlace: "其他 / 不公开地点", photos: "添加 1–3 张照片", publish: "发布野外记录",
@@ -1632,6 +1632,43 @@ const communityCopy = {
     loading: "正在加载野外记录……", empty: "还没有人发布记录，你可以成为第一位。", retry: "重试", compressing: "正在整理照片……",
     publishing: "正在发布……", success: "你的野外记录已经发布。", remove: "移除照片", photoAlt: "社区成员上传的化石发现",
     privacy: "安全提醒", privacyBody: "稀有脊椎动物材料不要公开精确坐标，请单独记录并联系当地博物馆。",
+  },
+} as const;
+
+const maxNotebookCopy = {
+  en: {
+    prompt: "Huh? You found a strange notebook.",
+    label: "Open Max's strange field notebook",
+    eyebrow: "RECOVERED FIELD NOTES · MAX",
+    title: "Max's Grudge Log",
+    intro: "Seven reminders that the coast always gets the last word.",
+    close: "Close notebook",
+    notes: [
+      ["Folkestone", "The rising tide cut off the route back."],
+      ["Grange Chine", "A winter wave swept Max into the sea."],
+      ["Grange Chine", "Camping beside the cliff nearly ended with both Max and the tent being carried into the sea when the cliff collapsed."],
+      ["Grange Chine", "After missing the final evening bus, Max had to walk the dark forest road all the way to Newport."],
+      ["Lyme Regis", "Half of Max's body sank into loose clay."],
+      ["Warden Point", "Falling clay nearly buried Max alive."],
+      ["Whitby", "A cliff rockfall nearly killed Max."],
+    ],
+  },
+  zh: {
+    prompt: "咦？捡到一份奇怪的笔记。",
+    label: "打开 Max 的奇怪笔记",
+    eyebrow: "捡到的野外笔记 · MAX",
+    title: "Max 的怨念笔记",
+    intro: "七次被英国海岸针对的真实记录。请勿模仿，尤其不要连续模仿。",
+    close: "合上笔记",
+    notes: [
+      ["Folkestone", "被涨潮的海水截断退路"],
+      ["Grange Chine", "被冬季的海浪卷到海里"],
+      ["Grange Chine", "悬崖边露营，结果因为悬崖崩塌，差点被连人带帐篷卷到海里"],
+      ["Grange Chine", "错过最后一班晚间巴士，最后只能沿着漆黑的森林小路走到 Newport"],
+      ["Lyme Regis", "半个身子陷入松散的粘土"],
+      ["Warden Point", "差点被坠落的粘土活埋"],
+      ["Whitby", "差点被悬崖落石砸死"],
+    ],
   },
 } as const;
 
@@ -3048,6 +3085,7 @@ async function prepareCommunityPhoto(file: File) {
 
 function CommunityView({ language, onBack, initialLocationId, onPublished }: { language: Language; onBack: () => void; initialLocationId: string; onPublished: () => void }) {
   const t = communityCopy[language];
+  const maxNotes = maxNotebookCopy[language];
   const localizedForumLocations = useMemo(() => locations.map((location) => ({
     original: location,
     localized: localizeLocation(location, language),
@@ -3065,6 +3103,7 @@ function CommunityView({ language, onBack, initialLocationId, onPublished }: { l
   const [nextCursor, setNextCursor] = useState<{ createdAt: string; id: string } | null>(null);
   const requestSequence = useRef(0);
   const [photos, setPhotos] = useState<PreparedPhoto[]>([]);
+  const [maxNotebookOpen, setMaxNotebookOpen] = useState(false);
 
   const loadPosts = useCallback(async (cursor: { createdAt: string; id: string } | null = null) => {
     const sequence = ++requestSequence.current;
@@ -3091,6 +3130,15 @@ function CommunityView({ language, onBack, initialLocationId, onPublished }: { l
     const invalidateRequests = () => { requestSequence.current++; };
     return () => { window.clearTimeout(loadTimer); invalidateRequests(); };
   }, [loadPosts]);
+
+  useEffect(() => {
+    if (!maxNotebookOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMaxNotebookOpen(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [maxNotebookOpen]);
 
   const addPhotos = async (files: FileList | null) => {
     if (!files) return;
@@ -3157,8 +3205,27 @@ function CommunityView({ language, onBack, initialLocationId, onPublished }: { l
         <button className="community-back" onClick={onBack}><span>←</span> {t.back}</button>
         <header className="community-hero">
           <div><p>{t.eyebrow}</p><h1>{t.title}</h1><span>{t.intro}</span></div>
-          <div className="community-stamp" aria-hidden="true"><img src="/shell-field-badge.png" alt="" /><b>FIELD</b><span>LOG</span><i>✦</i></div>
+          <button className="community-stamp" type="button" onClick={() => setMaxNotebookOpen(true)} aria-label={maxNotes.label}>
+            <img src="/shell-field-badge.png" alt="" />
+            <span>{maxNotes.prompt}</span>
+          </button>
         </header>
+
+        {maxNotebookOpen && (
+          <div className="max-notebook-backdrop" onClick={() => setMaxNotebookOpen(false)}>
+            <article className="max-notebook" role="dialog" aria-modal="true" aria-labelledby="max-notebook-title" onClick={(event) => event.stopPropagation()}>
+              <button className="max-notebook-close" type="button" onClick={() => setMaxNotebookOpen(false)} aria-label={maxNotes.close} autoFocus>×</button>
+              <p>{maxNotes.eyebrow}</p>
+              <h2 id="max-notebook-title">{maxNotes.title}</h2>
+              <span>{maxNotes.intro}</span>
+              <ol>
+                {maxNotes.notes.map(([place, note], index) => (
+                  <li key={`${place}-${index}`}><b>{String(index + 1).padStart(2, "0")}</b><div><strong>{place}</strong><span>{note}</span></div></li>
+                ))}
+              </ol>
+            </article>
+          </div>
+        )}
 
         <div className="community-layout">
           <form className="community-compose" onSubmit={publish}>

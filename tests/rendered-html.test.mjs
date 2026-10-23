@@ -5,14 +5,22 @@ import test from "node:test";
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
 
 test("ships the bounded community photo workflow", async () => {
-  const [component, route, hosting, schema] = await Promise.all([
+  const [component, css, route, hosting, schema] = await Promise.all([
     read("../app/FossilMap.tsx"),
+    read("../app/globals.css"),
     read("../app/api/community/route.ts"),
     read("../.openai/hosting.json"),
     read("../db/schema.ts"),
   ]);
 
   assert.match(component, /function CommunityView/);
+  assert.match(component, /nav: "探险笔记"/);
+  assert.match(component, /咦？捡到一份奇怪的笔记。/);
+  assert.match(component, /Max 的怨念笔记/);
+  assert.match(component, /错过最后一班晚间巴士/);
+  assert.match(component, /role="dialog"/);
+  assert.match(css, /\.community-stamp[\s\S]*cursor:\s*pointer/);
+  assert.match(css, /\.max-notebook-backdrop/);
   assert.match(component, /maxEdge = 1600/);
   assert.match(component, /photos\.length < 3/);
   assert.match(route, /const MAX_IMAGES = 3/);

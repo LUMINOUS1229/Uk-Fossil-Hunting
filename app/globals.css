@@ -3835,7 +3835,7 @@ button {
 
 .community-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 126px;
+  grid-template-columns: minmax(0, 1fr) 190px;
   gap: 30px;
   align-items: center;
   margin-top: 24px;
@@ -3870,23 +3870,73 @@ button {
 
 .community-stamp {
   position: relative;
-  display: grid;
-  width: 116px;
-  height: 116px;
-  place-content: center;
+  display: flex;
+  width: 190px;
+  min-height: 154px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px;
   border: 0;
-  border-radius: 0;
+  border-radius: 8px;
+  background: transparent;
   color: var(--rust);
   text-align: center;
   transform: rotate(6deg);
+  cursor: pointer;
+  transition: background 160ms ease, transform 160ms ease;
 }
 
 .community-stamp::before { content: none; }
-.community-stamp img { position: absolute; inset: -12%; width: 124%; height: 124%; object-fit: contain; pointer-events: none; }
-.community-stamp b, .community-stamp span, .community-stamp i { position: relative; z-index: 1; }
-.community-stamp b,
-.community-stamp span { font-family: var(--font-mono), monospace; font-size: 14px; letter-spacing: .14em; }
-.community-stamp i { margin-top: 4px; font-style: normal; }
+.community-stamp img { width: 116px; height: 116px; object-fit: contain; pointer-events: none; filter: drop-shadow(0 0 9px rgba(98, 239, 255, .22)); }
+.community-stamp > span { color: var(--ink-soft); font-family: var(--font-sans), sans-serif; font-size: 10px; line-height: 1.45; letter-spacing: .02em; }
+.community-stamp:hover,
+.community-stamp:focus-visible { background: rgba(78, 211, 239, .1); transform: rotate(0) translateY(-3px); }
+.community-stamp:focus-visible { outline: 2px solid var(--rust); outline-offset: 4px; }
+
+.max-notebook-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 130;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(1, 11, 27, .78);
+  backdrop-filter: blur(10px);
+}
+
+.max-notebook {
+  position: relative;
+  width: min(720px, 100%);
+  max-height: calc(100vh - 124px);
+  overflow-y: auto;
+  padding: clamp(28px, 5vw, 50px) clamp(24px, 6vw, 62px);
+  border: 1px solid #c79a65;
+  border-radius: 3px;
+  background:
+    linear-gradient(90deg, transparent 42px, rgba(166, 63, 62, .36) 42px 44px, transparent 44px),
+    repeating-linear-gradient(180deg, transparent 0 30px, rgba(66, 103, 126, .18) 30px 31px),
+    linear-gradient(135deg, #fff6d9, #ead6a7);
+  color: #2a3540;
+  box-shadow: 0 28px 80px rgba(0, 8, 21, .55), 8px 10px 0 rgba(90, 45, 33, .28);
+  transform: rotate(-.4deg);
+}
+
+.max-notebook > p { margin: 0 0 8px; color: #9a3e3d; font-family: var(--font-mono), monospace; font-size: 9px; font-weight: 800; letter-spacing: .13em; }
+.max-notebook > h2 { margin: 0; color: #253443; font-family: var(--font-display), "Songti SC", serif; font-size: clamp(34px, 6vw, 58px); line-height: 1; }
+.max-notebook > span { display: block; margin-top: 13px; color: #6f4c43; font-size: 12px; line-height: 1.65; }
+.max-notebook ol { display: grid; gap: 5px; margin: 24px 0 0; padding: 0; list-style: none; }
+.max-notebook li { display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: start; min-height: 54px; padding: 8px 0 9px; border-bottom: 1px dashed rgba(93, 72, 60, .3); }
+.max-notebook li > b { color: #b24945; font-family: var(--font-mono), monospace; font-size: 10px; }
+.max-notebook li strong,
+.max-notebook li span { display: block; }
+.max-notebook li strong { color: #263f55; font-family: var(--font-mono), monospace; font-size: 11px; }
+.max-notebook li span { margin-top: 3px; color: #3f464c; font-size: 13px; line-height: 1.55; }
+.max-notebook-close { position: absolute; top: 14px; right: 16px; display: grid; width: 36px; height: 36px; place-items: center; border: 1px solid #9f594f; border-radius: 50%; background: rgba(255, 248, 222, .72); color: #8d3737; font-size: 24px; line-height: 1; cursor: pointer; }
+.max-notebook-close:hover,
+.max-notebook-close:focus-visible { background: #8d3737; color: #fff9e6; }
+.max-notebook-close:focus-visible { outline: 2px solid #fff9e6; outline-offset: 3px; }
 
 .community-layout {
   display: grid;
@@ -4104,7 +4154,11 @@ button {
   .community-shell { width: 100%; padding: 0 0 86px; }
   .community-back { margin: 12px 16px; }
   .community-hero { grid-template-columns: 1fr; margin: 0; padding: 28px 20px; border-width: 1px 0; }
-  .community-stamp { display: none; }
+  .community-stamp { display: flex; width: 100%; min-height: 0; flex-direction: row; justify-content: flex-start; padding: 10px 12px; transform: none; text-align: left; }
+  .community-stamp img { flex: 0 0 66px; width: 66px; height: 66px; }
+  .community-stamp > span { font-size: 12px; }
+  .max-notebook-backdrop { padding: 12px; }
+  .max-notebook { max-height: calc(100vh - 128px); padding: 36px 22px 28px 34px; background: linear-gradient(90deg, transparent 23px, rgba(166, 63, 62, .34) 23px 25px, transparent 25px), repeating-linear-gradient(180deg, transparent 0 30px, rgba(66, 103, 126, .18) 30px 31px), linear-gradient(135deg, #fff6d9, #ead6a7); transform: none; }
   .community-hero h1,
   .lang-zh .community-hero h1 { max-width: 100%; font-size: clamp(35px, 11vw, 50px); line-height: 1.14; overflow-wrap: anywhere; }
   .community-hero > div > span { font-size: 13px; line-height: 1.7; }
@@ -10285,8 +10339,8 @@ body {
     font-size: 0 !important;
   }
 
-  .lang-zh .community-link::after { content: "◉ 收获交流"; font-size: 9px; }
-  .lang-en .community-link::after { content: "◉ FIELD LOG"; font-size: 9px; }
+  .lang-zh .community-link::after { content: "◉ 探险笔记"; font-size: 9px; }
+  .lang-en .community-link::after { content: "◉ NOTES"; font-size: 9px; }
   .lang-zh .museum-link::after { content: "✦ 图鉴馆"; font-size: 9px; }
   .lang-en .museum-link::after { content: "✦ DEX"; font-size: 9px; }
   .lang-zh .reference-link::after { content: "参考"; font-size: 9px; }
