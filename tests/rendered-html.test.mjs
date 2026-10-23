@@ -99,13 +99,15 @@ test("adds supplied locality notes with a hover-reveal M Teacher label", async (
     read("../app/document-locations.ts"),
   ]);
 
-  assert.match(component, /locality-note-section/);
+  assert.match(component, /hero-locality-note/);
+  assert.match(component, /place-tags[\s\S]*hero-locality-note[\s\S]*field-profile/);
   assert.match(component, /language === "zh" \? "简介" : "Introduction"/);
   assert.match(component, /mteacher-secret/);
   assert.match(component, /（非常个人风格）/);
   assert.match(css, /\.mteacher-secret:hover/);
   assert.match(css, /color:\s*#ffffff/);
-  assert.match(css, /\.locality-note-card\s*\{[\s\S]*background:\s*#bad6df/);
+  assert.match(css, /\.hero-locality-note\s*\{[\s\S]*color:\s*#ffffff/);
+  assert.match(css, /\.hero-locality-note \.locality-note-summary\s*\{[\s\S]*color:\s*#ffffff/);
   assert.match(notes, /title: "Suffolk"/);
   assert.match(notes, /孩子们，情报是假的，这里怎么成农场了？/);
   assert.match(documentLocations, /name: "Suffolk · Nacton Shore"/);

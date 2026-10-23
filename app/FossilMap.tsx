@@ -4742,6 +4742,25 @@ function LocationDetail({ location, language, onBack, recordCount, onViewRecords
             <p>{activeLocation.region}</p>
             <h2>{location.name}</h2>
             <div className="place-tags"><span>{activeLocation.period}</span><span>{activeLocation.type}</span><span>{activeLocation.level}</span></div>
+            {notes.length > 0 && (
+              <section className="hero-locality-note" id="locality-note" aria-labelledby="locality-note-title">
+                <h3 id="locality-note-title"><span>00</span>{language === "zh" ? "简介" : "Introduction"}</h3>
+                <div className="hero-locality-note-list">
+                  {notes.map((note, index) => (
+                    <article className="hero-locality-note-card" key={`${location.id}-${note.title ?? index}`}>
+                      {note.title && <h4>{note.title}</h4>}
+                      <p className="locality-note-summary">{note.summary}</p>
+                      <p className="mteacher-commentary">
+                        <strong>M老师</strong>
+                        <span className="mteacher-secret" tabIndex={0} aria-label="非常个人风格，悬停或聚焦后显示">（非常个人风格）</span>
+                        <strong>的吐槽。</strong>
+                        <span>{note.roast}</span>
+                      </p>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            )}
             {isDinosaurIsle && <div className="isle-secret-badge"><span>◆</span>{language === "zh" ? "恐龙岛 · 彩蛋已解锁" : "Dinosaur Island · secret hatched"}</div>}
             <div className="field-profile">
               <ProfileRating label={t.findFrequency} rating={activeLocation.findRating} />
@@ -4763,25 +4782,6 @@ function LocationDetail({ location, language, onBack, recordCount, onViewRecords
         </nav>
 
         <div className="panel-content">
-          {notes.length > 0 && (
-            <section className="info-section locality-note-section" id="locality-note">
-              <SectionTitle number="00" title={language === "zh" ? "简介" : "Introduction"} />
-              <div className="locality-note-list">
-                {notes.map((note, index) => (
-                  <article className="locality-note-card" key={`${location.id}-${note.title ?? index}`}>
-                    {note.title && <h3>{note.title}</h3>}
-                    <p className="locality-note-summary">{note.summary}</p>
-                    <p className="mteacher-commentary">
-                      <strong>M老师</strong>
-                      <span className="mteacher-secret" tabIndex={0} aria-label="非常个人风格，悬停或聚焦后显示">（非常个人风格）</span>
-                      <strong>的吐槽。</strong>
-                      <span>{note.roast}</span>
-                    </p>
-                  </article>
-                ))}
-              </div>
-            </section>
-          )}
           <section className="info-section route-section" id="get-there">
             <SectionTitle number="01" title={t.section1} />
             {weymouthSites.length > 0 && (

@@ -1887,46 +1887,70 @@ button {
   scroll-margin-top: 40px;
 }
 
-.locality-note-list {
+.hero-locality-note {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(213, 237, 242, .32);
+  color: #ffffff;
+}
+
+.hero-locality-note > h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  color: #ffffff;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+
+.hero-locality-note > h3 span {
+  color: #b7edf1;
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+}
+
+.hero-locality-note-list {
   display: grid;
   gap: 12px;
 }
 
-.locality-note-card {
-  padding: 16px;
-  border: 1px solid #8fb5c2;
-  background: #bad6df;
-  color: #173f67;
+.hero-locality-note-card {
+  color: #ffffff;
 }
 
-.locality-note-card h3 {
-  margin: 0 0 10px;
-  color: #173f67;
+.hero-locality-note-card h4 {
+  margin: 0 0 7px;
+  color: #ffffff;
   font-family: var(--font-display), serif;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 650;
 }
 
-.locality-note-summary {
+.hero-locality-note .locality-note-summary {
   margin: 0;
-  color: #173f67;
+  color: #ffffff;
   font-size: 11px;
   line-height: 1.72;
+  text-shadow: 0 1px 7px rgba(0, 17, 28, .55);
 }
 
-.mteacher-commentary {
+.hero-locality-note .mteacher-commentary {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: .18em;
   margin: 15px 0 0;
-  color: #3f6179;
+  color: #ffffff;
   font-size: 8px;
   line-height: 1.65;
+  text-shadow: 0 1px 7px rgba(0, 17, 28, .55);
 }
 
-.mteacher-commentary strong {
-  color: #173f67;
+.hero-locality-note .mteacher-commentary strong {
+  color: #ffffff;
 }
 
 .mteacher-secret {
