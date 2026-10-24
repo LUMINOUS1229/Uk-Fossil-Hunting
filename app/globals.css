@@ -12270,3 +12270,372 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .museum-care > summary > i { transition: none; }
 }
+
+/* Sunset theme completion: keep every interface surface in the rose palette. */
+.site-shell.sunset-theme {
+  --sunset-cream: #fff0df;
+  --sunset-blush: #ffd9dc;
+  --sunset-pink: #f3b4c5;
+  --sunset-rose: #bd547c;
+  --sunset-wine: #64324d;
+  --sunset-muted: #80566b;
+  --sunset-line: rgba(156, 69, 103, .3);
+  --sunset-shadow: 0 16px 38px rgba(119, 52, 78, .16);
+  color-scheme: light;
+}
+
+.sunset-theme :is(
+  .quest-hud,
+  .location-list,
+  .map-viewport-controls,
+  .map-gesture-hint,
+  .location-list-hint,
+  .nori-restore,
+  .guide-panel,
+  .guide-hover-line,
+  .nori-quest-menu,
+  .nori-pet-message,
+  .site-visit-counter
+) {
+  border-color: var(--sunset-line);
+  background: linear-gradient(145deg, rgba(255, 239, 223, .97), rgba(250, 190, 203, .95));
+  color: var(--sunset-wine);
+  box-shadow: var(--sunset-shadow);
+}
+
+.sunset-theme :is(.quest-hud, .location-list, .modal, .museum-hero, .community-hero, .equipment-hero)::before {
+  background: linear-gradient(90deg, #d75f91, #f18eb0 62%, #ffd08d);
+  box-shadow: 0 0 12px rgba(205, 82, 130, .42);
+}
+
+.sunset-theme .map-viewport-controls button {
+  border-color: var(--sunset-line);
+  color: var(--sunset-wine);
+}
+.sunset-theme .map-viewport-controls button:hover,
+.sunset-theme .map-viewport-controls button:focus-visible,
+.sunset-theme .map-viewport-controls output {
+  border-color: var(--sunset-line);
+  background: rgba(239, 147, 176, .28);
+  color: var(--sunset-wine);
+}
+.sunset-theme .location-list > button:hover,
+.sunset-theme .location-list > button:focus-visible {
+  background: linear-gradient(90deg, rgba(235, 118, 158, .28), rgba(255, 203, 184, .42));
+  box-shadow: inset 3px 0 0 var(--sunset-rose);
+}
+.sunset-theme .location-list .list-icon-wrap > i,
+.sunset-theme .location-list .list-heading {
+  background: var(--sunset-blush);
+  color: var(--sunset-wine);
+}
+.sunset-theme .location-list .rating-divider { color: rgba(100, 50, 77, .48); }
+.sunset-theme .location-list-hint:hover,
+.sunset-theme .location-list-hint:focus-visible,
+.sunset-theme .location-list-hint.is-open,
+.sunset-theme .mobile-sites-button {
+  border-color: var(--sunset-line);
+  background: var(--sunset-blush);
+  color: var(--sunset-wine);
+}
+
+.sunset-theme :is(.guide-panel, .guide-hover-line, .nori-quest-menu, .nori-pet-message) {
+  --ink: var(--sunset-wine);
+  --ink-soft: var(--sunset-muted);
+  --rust: var(--sunset-rose);
+  --line: var(--sunset-line);
+  --paper: var(--sunset-cream);
+  --paper-deep: var(--sunset-blush);
+  --sea: var(--sunset-pink);
+}
+.sunset-theme .guide-panel-header,
+.sunset-theme .guide-turn p,
+.sunset-theme .guide-turn.user p,
+.sunset-theme .nori-quest-menu > article,
+.sunset-theme .nori-quest-menu button,
+.sunset-theme .guide-turn div > button {
+  border-color: var(--sunset-line);
+  background: rgba(244, 170, 190, .36);
+  color: var(--sunset-wine);
+}
+.sunset-theme .guide-form input,
+.sunset-theme .guide-panel-actions button {
+  border-color: var(--sunset-line);
+  background: var(--sunset-cream);
+  color: var(--sunset-wine);
+}
+.sunset-theme .guide-form > button {
+  border-color: var(--sunset-rose);
+  background: var(--sunset-rose);
+  color: #fff8ef;
+}
+.sunset-theme .nori-pet-strip > span,
+.sunset-theme .nori-quest-toggle,
+.sunset-theme .nori-hide-button,
+.sunset-theme .nori-restore {
+  border-color: var(--sunset-line);
+  background: var(--sunset-blush);
+  color: var(--sunset-wine);
+  box-shadow: var(--sunset-shadow);
+}
+.sunset-theme .nori-quest-toggle,
+.sunset-theme .nori-pet-strip > span:first-of-type,
+.sunset-theme .site-visit-counter > span:first-child { color: var(--sunset-rose); }
+.sunset-theme .site-visit-counter > span:first-child { text-shadow: 0 0 8px rgba(205, 82, 130, .35); }
+
+.sunset-theme .modal-backdrop {
+  background: rgba(77, 44, 61, .62);
+}
+.sunset-theme .modal {
+  --ink: var(--sunset-wine);
+  --ink-soft: var(--sunset-muted);
+  --rust: var(--sunset-rose);
+  --line: var(--sunset-line);
+  --paper: var(--sunset-cream);
+  --paper-deep: var(--sunset-blush);
+  --sea: var(--sunset-pink);
+  border-color: var(--sunset-line);
+  background: linear-gradient(145deg, #fff0df, #fac8cf);
+  color: var(--sunset-wine);
+  box-shadow: 0 28px 75px rgba(87, 35, 61, .34), 0 0 30px rgba(220, 96, 145, .18);
+}
+.sunset-theme :is(.modal-note, .about-thanks, .reference-field-note) {
+  border-color: var(--sunset-line);
+  background: rgba(239, 151, 180, .3);
+  color: var(--sunset-wine);
+}
+.sunset-theme .reference-list a {
+  border-color: var(--sunset-line);
+  background: linear-gradient(105deg, #f8b9c8, #ffd8d7);
+  color: var(--sunset-wine);
+  box-shadow: 0 8px 18px rgba(119, 52, 78, .09);
+}
+.sunset-theme .reference-list a:hover,
+.sunset-theme .reference-list a:focus-visible { background: linear-gradient(105deg, #ee95b2, #ffc5c9); }
+.sunset-theme .reference-list a > span { background: #eda0b8; color: #7b3154; }
+.sunset-theme .reference-list small { color: var(--sunset-muted); }
+
+.sunset-theme :is(.detail-view.detail-text-only, .museum-view, .community-view, .equipment-view, .finder-view) {
+  background:
+    linear-gradient(rgba(162, 73, 107, .045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(162, 73, 107, .045) 1px, transparent 1px),
+    linear-gradient(155deg, #ffe5dc, #f7becd 56%, #ffe6bd);
+  background-size: 28px 28px, 28px 28px, auto;
+  color: var(--sunset-wine);
+}
+.sunset-theme .detail-text-only .info-panel {
+  --ink: var(--sunset-wine);
+  --ink-soft: var(--sunset-muted);
+  --rust: var(--sunset-rose);
+  --line: var(--sunset-line);
+  --paper-deep: var(--sunset-blush);
+  --sea: var(--sunset-pink);
+  border-color: var(--sunset-line);
+  background: linear-gradient(145deg, rgba(255, 239, 223, .97), rgba(247, 185, 204, .93));
+  color: var(--sunset-wine);
+  box-shadow: var(--sunset-shadow);
+}
+.sunset-theme .detail-text-only .info-panel .section-nav {
+  border-block-color: var(--sunset-line);
+  background: rgba(248, 190, 203, .96);
+  box-shadow: 0 8px 18px rgba(119, 52, 78, .12);
+}
+.sunset-theme .detail-text-only .info-panel .section-nav a { color: var(--sunset-muted); }
+.sunset-theme .detail-text-only .info-panel .section-nav a:hover,
+.sunset-theme .detail-text-only .info-panel .section-nav a:focus-visible { color: var(--sunset-rose); }
+.sunset-theme .detail-text-only .info-panel :is(.place-tags span, .kit-group > div > span, .section-title > span, .geology-units header > span) {
+  border-color: var(--sunset-line);
+  background: rgba(238, 145, 176, .3);
+  color: var(--sunset-wine);
+}
+.sunset-theme .detail-text-only .info-panel :is(.hazard-list li, .coastguard-note) {
+  background: rgba(211, 91, 121, .2);
+  color: #79384f;
+}
+.sunset-theme .field-comments {
+  border-color: var(--sunset-line);
+  background: rgba(255, 238, 225, .86);
+  color: var(--sunset-wine);
+}
+.sunset-theme .field-comments :is(p, label, strong) { color: var(--sunset-wine); }
+.sunset-theme .field-comments :is(input, textarea, button) {
+  border-color: var(--sunset-line);
+  background: var(--sunset-blush);
+  color: var(--sunset-wine);
+}
+
+.sunset-theme :is(.museum-view, .community-view) {
+  --ink: var(--sunset-wine);
+  --ink-soft: var(--sunset-muted);
+  --rust: var(--sunset-rose);
+  --line: var(--sunset-line);
+}
+.sunset-theme :is(
+  .museum-hero,
+  .museum-tracker-copy,
+  .museum-progress-grid,
+  .museum-filters,
+  .museum-category-note,
+  .museum-region,
+  .community-hero,
+  .community-compose,
+  .community-feed
+) {
+  --ink: var(--sunset-wine);
+  --ink-soft: var(--sunset-muted);
+  --rust: var(--sunset-rose);
+  --line: var(--sunset-line);
+  --paper: var(--sunset-cream);
+  --paper-deep: var(--sunset-blush);
+  --sea: var(--sunset-pink);
+  border-color: var(--sunset-line);
+  background: linear-gradient(145deg, rgba(255, 239, 223, .97), rgba(247, 185, 204, .93));
+  color: var(--sunset-wine);
+  box-shadow: var(--sunset-shadow);
+}
+.sunset-theme :is(.museum-progress-grid > div, .museum-region-head, .community-privacy) {
+  border-color: var(--sunset-line);
+  background: rgba(238, 145, 176, .28);
+}
+.sunset-theme :is(.museum-chip-row button, .museum-region-actions button, .community-retry) {
+  border-color: var(--sunset-line);
+  background: rgba(241, 163, 186, .3);
+  color: var(--sunset-wine);
+}
+.sunset-theme :is(.museum-chip-row button, .museum-region-actions button):is(:hover, :focus-visible, .active, .visited) {
+  border-color: var(--sunset-rose);
+  background: var(--sunset-rose);
+  color: #fff8ef;
+}
+.sunset-theme .community-compose :is(input, select, textarea),
+.sunset-theme .record-filter select {
+  border-color: var(--sunset-line);
+  background: var(--sunset-blush);
+  color: var(--sunset-wine);
+}
+.sunset-theme .community-compose :is(input, textarea)::placeholder { color: #98647a; }
+.sunset-theme .community-publish {
+  border-color: var(--sunset-rose);
+  background: linear-gradient(90deg, #b84875, #e2769e);
+  color: #fff8ef;
+  box-shadow: 0 8px 22px rgba(169, 57, 103, .22);
+}
+.sunset-theme .community-photo-previews figure,
+.sunset-theme .community-add-photo { border-color: var(--sunset-rose); background: var(--sunset-pink); }
+.sunset-theme .community-post {
+  --ink: var(--sunset-wine);
+  --ink-soft: var(--sunset-muted);
+  --rust: var(--sunset-rose);
+  --line: var(--sunset-line);
+  --paper: var(--sunset-cream);
+  --paper-deep: var(--sunset-cream);
+  --sea: var(--sunset-pink);
+  border-color: var(--sunset-line);
+  background: linear-gradient(145deg, #fff5e8, #ffdfe2);
+  color: var(--sunset-wine);
+  box-shadow: 0 10px 28px rgba(119, 52, 78, .15);
+}
+.sunset-theme .community-post > header > span { background: var(--sunset-rose); }
+
+.sunset-theme .finder-back,
+.sunset-theme .equipment-back { color: var(--sunset-wine); }
+.sunset-theme :is(.finder-back, .equipment-back):is(:hover, :focus-visible) {
+  border-bottom-color: var(--sunset-rose);
+  color: var(--sunset-rose);
+}
+.sunset-theme .finder-hero {
+  border-color: #e9a0b8;
+  background: linear-gradient(120deg, #7a3856, #bd5d7d 58%, #e48ca5);
+  color: #fff8ef;
+  box-shadow: var(--sunset-shadow);
+}
+.sunset-theme .finder-hero > div > p { color: #ffd1dc; }
+.sunset-theme .finder-hero > div > span,
+.sunset-theme .finder-hero > small { border-color: rgba(255, 222, 224, .42); color: #ffe7e6; }
+.sunset-theme .finder-hero > small { background: rgba(95, 37, 66, .28); }
+.sunset-theme :is(.finder-controls, .finder-profile, .finder-results) {
+  border-color: var(--sunset-line);
+  background: rgba(255, 239, 223, .9);
+  color: var(--sunset-wine);
+  box-shadow: var(--sunset-shadow);
+}
+.sunset-theme :is(.finder-section-heading > span, .finder-results-heading > div > span, .finder-profile-card > p, .finder-metrics label b) { color: var(--sunset-rose); }
+.sunset-theme :is(.finder-section-heading h2, .finder-results-heading h2, .finder-profile-card h3, .finder-result-grid h3, .finder-empty h3) { color: var(--sunset-wine); }
+.sunset-theme .finder-section-heading > button,
+.sunset-theme :is(.finder-profile-card > span, .finder-profile-card > small, .finder-results-heading strong, .finder-results-heading p, .finder-result-grid article > p, .finder-result-grid dt, .finder-result-grid dd, .finder-reasons, .finder-empty p) { color: var(--sunset-muted); }
+.sunset-theme .finder-option-group { border-color: var(--sunset-line); }
+.sunset-theme .finder-option-group legend { color: var(--sunset-wine); }
+.sunset-theme .finder-option-group button {
+  border-color: var(--sunset-line);
+  background: var(--sunset-blush);
+  color: var(--sunset-muted);
+}
+.sunset-theme .finder-option-group button:is(:hover, :focus-visible, .is-active) {
+  border-color: var(--sunset-rose);
+  background: var(--sunset-rose);
+  color: #fff8ef;
+}
+.sunset-theme .finder-profile-card,
+.sunset-theme .finder-result-grid article,
+.sunset-theme .finder-empty {
+  border-color: var(--sunset-line);
+  background: linear-gradient(150deg, #fff5e6, #ffdadd);
+}
+.sunset-theme .finder-profile-orbit i,
+.sunset-theme .finder-result-icon { border-color: var(--sunset-line); }
+.sunset-theme .finder-profile-orbit b { color: var(--sunset-rose); }
+.sunset-theme .finder-result-icon,
+.sunset-theme .finder-result-grid article > header b { background: var(--sunset-pink); color: var(--sunset-wine); }
+.sunset-theme .finder-result-grid article.is-top-match { border-top-color: var(--sunset-rose); background: linear-gradient(150deg, #fff0df, #ffcfd8); }
+.sunset-theme .finder-result-grid article > button {
+  border-color: var(--sunset-rose);
+  background: var(--sunset-rose);
+  color: #fff8ef;
+}
+
+.sunset-theme .equipment-hero-kit {
+  border-color: rgba(194, 82, 124, .52);
+  background: rgba(232, 135, 167, .28);
+  box-shadow: inset 0 0 0 10px rgba(132, 48, 82, .16), 0 0 24px rgba(200, 78, 126, .16);
+}
+.sunset-theme .equipment-hero-kit::before,
+.sunset-theme .equipment-hero-kit::after { border-color: rgba(194, 82, 124, .35); }
+.sunset-theme .equipment-plan,
+.sunset-theme .equipment-catalog {
+  border-color: var(--sunset-line);
+  background: rgba(255, 239, 223, .82);
+  box-shadow: var(--sunset-shadow);
+}
+.sunset-theme .equipment-section-heading > span { color: var(--sunset-rose); }
+.sunset-theme .equipment-section-heading h2 { color: var(--sunset-wine); }
+.sunset-theme .equipment-plan-grid article,
+.sunset-theme .equipment-card {
+  --gear-accent: var(--sunset-rose);
+  border-color: var(--sunset-line);
+  background: linear-gradient(145deg, #fff5e8, #ffdce0);
+  color: var(--sunset-wine);
+}
+.sunset-theme .equipment-plan-grid article > span {
+  border-color: var(--sunset-line);
+  color: var(--sunset-rose);
+}
+.sunset-theme .equipment-plan-grid h3,
+.sunset-theme .equipment-card h3 { color: var(--sunset-wine); }
+.sunset-theme .equipment-plan-grid p,
+.sunset-theme .equipment-card :is(dd, footer p, .equipment-card-number) { color: var(--sunset-muted); }
+.sunset-theme .equipment-card h3,
+.sunset-theme .equipment-card footer { border-color: var(--sunset-line); }
+.sunset-theme .equipment-card footer { background: rgba(241, 164, 187, .2); }
+.sunset-theme .museum-care {
+  border-color: var(--sunset-line);
+  background: rgba(255, 239, 223, .94);
+  box-shadow: var(--sunset-shadow);
+}
+.sunset-theme .museum-care > summary {
+  background: linear-gradient(135deg, #ffe2df, #f6bfd0);
+  color: var(--sunset-wine);
+}
+.sunset-theme .museum-care > summary :is(span, p, h2, small, i) { color: var(--sunset-wine); border-color: var(--sunset-line); }
+.sunset-theme .museum-care-steps li,
+.sunset-theme .museum-care-special article,
+.sunset-theme .museum-care-museum-note { border-color: var(--sunset-line); background: #ffe4e2; }

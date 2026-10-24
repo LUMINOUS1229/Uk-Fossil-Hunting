@@ -123,6 +123,33 @@
   background: linear-gradient(135deg, rgba(255, 246, 239, .7), rgba(255, 218, 225, .32)); border-color: rgba(255, 245, 229, .88);
 }
 .sunset-theme .coast-marker .site-pixel-icon { background: #fff0cc; border-color: #b76781; }
+.sunset-theme .coast-connection line { stroke: #d45f91; }
+.sunset-theme .coast-connection circle { fill: #b84672; stroke: #ffe8d2; }
+.sunset-theme .coast-connection.is-active line { stroke: #b84672; }
+.sunset-theme .coast-connection.is-active circle { fill: #8f315b; stroke: #fff0d9; }
+.sunset-theme .coast-marker:is(:hover, :focus-visible, .is-active) .site-pixel-icon {
+  border-color: #ad416b;
+  background: #ffd4da;
+  box-shadow: 0 0 0 3px #ef93b150, 0 5px 18px #8f315b33;
+}
+.sunset-theme .coast-marker-name {
+  border-color: #e58ead;
+  background: #71354f;
+  color: #fff0df;
+}
+.sunset-theme .coast-cluster {
+  border-color: #b95179;
+  background: linear-gradient(145deg, #ffd9dc, #ffc3ce);
+  color: #64324d;
+  box-shadow: 0 6px 18px #8f315b24;
+}
+.sunset-theme .coast-cluster span { color: #80566b; }
+.sunset-theme .coast-cluster:hover,
+.sunset-theme .coast-cluster:focus-visible {
+  outline-color: #b84672;
+  background: #ffe7df;
+}
+.sunset-theme .map-dock-legend i { background: #b84672; box-shadow: 0 0 0 1px #e58ead; }
 @media (max-width: 980px) and (min-width: 721px) {
   .map-location-dock { width: 27%; padding: 16px; }
   .map-location-dock h2 { font-size: 23px; }
@@ -205,4 +232,26 @@
   .hero-ripples { display: none; }
   .site-shell .map-location-dock { animation: none; opacity: 1; visibility: visible; clip-path: none; }
   .map-location-dock::before, .map-location-dock::after { display: none; }
+}
+
+@media (max-width: 720px) {
+  .sunset-theme .map-touch-toggle,
+  .sunset-theme .map-dock-sites,
+  .sunset-theme .map-dock-expand {
+    border-color: #c9688b;
+    background: #ffd9dc;
+    color: #64324d;
+  }
+  .sunset-theme .map-touch-toggle[aria-pressed="true"] {
+    border-color: #963f64;
+    background: #bd547c;
+    color: #fff8ef;
+  }
+  .sunset-theme .map-touch-toggle:focus-visible { outline-color: #963f64; }
+  .site-shell.sunset-theme:not(:is(.detail-open, .museum-open, .community-open)) > .site-visit-counter {
+    border-color: rgba(156, 69, 103, .3);
+    background: #ffd9dc;
+    color: #80566b;
+  }
+  .site-shell.sunset-theme:not(:is(.detail-open, .museum-open, .community-open)) > .site-visit-counter strong { color: #64324d; }
 }
