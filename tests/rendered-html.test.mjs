@@ -100,6 +100,36 @@ test("offers distinct Weymouth field sheets and station routes", async () => {
   assert.match(css, /\.weymouth-site-options article\.is-selected/);
 });
 
+test("adds whale and mammoth finds and labels Weymouth clay as Kimmeridge Clay", async () => {
+  const [component, documentLocations, documentZh, notes] = await Promise.all([
+    read("../app/FossilMap.tsx"),
+    read("../app/document-locations.ts"),
+    read("../app/document-location-zh.ts"),
+    read("../app/locality-notes.ts"),
+  ]);
+
+  const waltonStart = component.indexOf('id: "walton"');
+  const waltonEnd = component.indexOf('id: "wootton-bassett"', waltonStart);
+  const walton = component.slice(waltonStart, waltonEnd);
+  const weymouthStart = component.indexOf('id: "weymouth"');
+  const weymouthEnd = component.indexOf('id: "peterborough"', weymouthStart);
+  const weymouth = component.slice(weymouthStart, weymouthEnd);
+  const suffolkStart = documentLocations.indexOf('id: "nacton"');
+  const suffolkEnd = documentLocations.indexOf('id: "fort-victoria"', suffolkStart);
+  const suffolk = documentLocations.slice(suffolkStart, suffolkEnd);
+
+  assert.match(walton, /name: "Whale bone"/);
+  assert.match(walton, /name: "Mammoth bone or tusk fragment"/);
+  assert.match(suffolk, /name: "Whale bone"/);
+  assert.match(suffolk, /name: "Mammoth bone or tusk fragment"/);
+  assert.match(component, /Mammals: "哺乳动物"/);
+  assert.match(documentZh, /猛犸象骨或象牙碎片/);
+  assert.match(notes, /鲸骨并不少见/);
+  assert.match(notes, /鲸骨也有不少/);
+  assert.match(weymouth, /Kimmeridge Clay Formation/);
+  assert.doesNotMatch(weymouth, /Oxford Clay/);
+});
+
 test("adds supplied locality notes with a hover-reveal M Teacher label", async () => {
   const [component, css, notes, documentLocations] = await Promise.all([
     read("../app/FossilMap.tsx"),

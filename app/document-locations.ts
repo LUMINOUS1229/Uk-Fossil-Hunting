@@ -116,6 +116,8 @@ export const documentLocations: DocumentLocation[] = [
       { glyph: "◈", category: "Fish", name: "Fish remain", zh: "鱼类遗骸", rarity: "Rare", size: "2–30 mm", tip: "Look for small teeth, scales and vertebrae in loose clay." },
       { glyph: "◇", category: "Reptile", name: "Reptile fragment", zh: "爬行动物碎片", rarity: "Very rare", size: "Varies", tip: "Photograph the context and report significant bone." },
       { glyph: "✣", category: "Echinoderms", name: "Flint echinoid or sponge", zh: "燧石海胆或海绵", rarity: "Occasional", size: "2–10 cm", tip: "Glacial flints may preserve five-fold tests or porous sponge texture." },
+      { glyph: "▰", category: "Mammals", name: "Whale bone", zh: "鲸骨", rarity: "Common", size: "2–20 cm", tip: "Water-worn whale bone is often dense and porous; record larger or diagnostic pieces." },
+      { glyph: "▣", category: "Mammals", name: "Mammoth bone or tusk fragment", zh: "猛犸象骨或象牙碎片", rarity: "Occasional", size: "2–20 cm", tip: "Check reworked gravel for dense bone or layered ivory, and record the exact loose-find context." },
     ],
     required: ["Tide plan", "Wellington boots", "Walking pole", "Phone", "Water"],
     useful: ["Hand lens", "Small specimen boxes", "Gloves"],

@@ -302,8 +302,8 @@ const baseLocations: Location[] = [
     name: "Walton-on-the-Naze",
     shortName: "Walton-on-the-Naze",
     region: "Essex · North Sea coast",
-    period: "Eocene & Pliocene",
-    age: "c. 54 & 3 million years",
+    period: "Eocene, Pliocene & Pleistocene",
+    age: "c. 54, 3 & 0.1 million years",
     type: "Cliff & foreshore",
     risk: "MODERATE",
     level: "Beginner friendly",
@@ -336,6 +336,8 @@ const baseLocations: Location[] = [
       { glyph: "⌇", category: "Plant Fossils", name: "Fossil wood", zh: "化石木", rarity: "Common", size: "1–20 cm", tip: "Grain-like texture; often pyritised." },
       { glyph: "◒", category: "Bivalves & Brachiopods", name: "Red Crag shell", zh: "红砂层贝类", rarity: "Common", size: "1–8 cm", tip: "Fragile orange-brown shells in loose sand." },
       { glyph: "✦", category: "Vertebrates", name: "Bird bone", zh: "鸟类骨骼", rarity: "Very rare", size: "1–6 cm", tip: "Thin-walled; report rather than prepare." },
+      { glyph: "▰", category: "Mammals", name: "Whale bone", zh: "鲸骨", rarity: "Common", size: "2–20 cm", tip: "Water-worn whale bone is often dense and porous; record larger or diagnostic pieces." },
+      { glyph: "▣", category: "Mammals", name: "Mammoth bone or tusk fragment", zh: "猛犸象骨或象牙碎片", rarity: "Occasional", size: "2–20 cm", tip: "Check reworked gravel for dense bone or layered ivory, and record the exact loose-find context." },
     ],
     required: ["Sturdy boots", "Tide plan", "Water", "Rigid sample boxes", "Tissue"],
     useful: ["Knee pads", "Small trowel", "Hand lens"],
@@ -657,12 +659,12 @@ const baseLocations: Location[] = [
     conditions: "Best after safe beach scour; wait for cliffs and slips to settle",
     geology: {
       en: {
-        intro: "Bowleaze Cove crosses Upper Jurassic Oxford Clay and younger Corallian rocks. The change from marine mud to shallower, higher-energy sand and limestone is written into the fossils and abundant burrows.",
+        intro: "Bowleaze Cove exposes Upper Jurassic Kimmeridge Clay alongside Corallian rocks. The change from marine mud to shallower, higher-energy sand and limestone is written into the fossils and abundant burrows.",
         units: [
           {
-            name: "Oxford Clay Formation · Weymouth Member",
-            age: "Late Oxfordian · around 160 million years",
-            environment: "Warm shallow marine mud",
+            name: "Kimmeridge Clay Formation",
+            age: "Early Kimmeridgian · around 155 million years",
+            environment: "Low-energy offshore marine mud",
             description: "Organic-rich grey clay exposed around Redcliff and Furzy Cliff, locally folded, faulted and affected by major landslides.",
             fossils: "Ammonites, belemnites, Gryphaea and occasional vertebrate remains",
           },
@@ -674,18 +676,18 @@ const baseLocations: Location[] = [
             fossils: "Trace fossils, bivalves, gastropods and ammonite fragments",
           },
         ],
-        beds: ["Oxford Clay mudstone", "Nothe Grit", "Preston Grit", "Corallian limestone and sandstone"],
+        beds: ["Kimmeridge Clay mudstone", "Nothe Grit", "Preston Grit", "Corallian limestone and sandstone"],
         fieldNote: "Loose blocks are the safest place to read the succession. Large in-situ trace-fossil slabs should be photographed and left where they are.",
         sourceLabel: "Southampton Wessex Coast Geology · UK Fossils",
         sourceLink: "https://wessexcoastgeology.soton.ac.uk/Bowleaze-Redcliff.htm",
       },
       zh: {
-        intro: "Bowleaze Cove 横跨上侏罗统牛津黏土与较年轻的 Corallian 岩层。从海相软泥到浅水、高能砂岩与石灰岩的环境变化，记录在化石和密集生痕中。",
+        intro: "Bowleaze Cove 出露上侏罗统 Kimmeridge Clay 与 Corallian 岩层。从海相软泥到浅水、高能砂岩与石灰岩的环境变化，记录在化石和密集生痕中。",
         units: [
           {
-            name: "牛津黏土组 · Weymouth 段",
-            age: "晚牛津期 · 约 1.60 亿年前",
-            environment: "温暖浅海软泥",
+            name: "Kimmeridge Clay 组",
+            age: "早启莫里期 · 约 1.55 亿年前",
+            environment: "低能外海软泥",
             description: "Redcliff 与 Furzy Cliff 一带出露富有机质灰色黏土，局部受褶皱、断层和大型滑坡影响。",
             fossils: "菊石、箭石、Gryphaea 牡蛎及偶见脊椎动物遗骸",
           },
@@ -697,7 +699,7 @@ const baseLocations: Location[] = [
             fossils: "遗迹化石、双壳类、腹足类和菊石碎片",
           },
         ],
-        beds: ["牛津黏土泥岩", "Nothe Grit", "Preston Grit", "Corallian 石灰岩与砂岩"],
+        beds: ["Kimmeridge Clay 泥岩", "Nothe Grit", "Preston Grit", "Corallian 石灰岩与砂岩"],
         fieldNote: "观察松散岩块最安全。大型原位遗迹化石板应拍照记录并留在原处。",
         sourceLabel: "Southampton Wessex Coast Geology · UK Fossils",
         sourceLink: "https://wessexcoastgeology.soton.ac.uk/Bowleaze-Redcliff.htm",
@@ -971,7 +973,7 @@ const baseLocationZh: Record<string, LocationTranslation> = {
   },
   walton: {
     region: "埃塞克斯郡 · 北海海岸",
-    period: "始新世与上新世",
+    period: "始新世、上新世与更新世",
     type: "悬崖与潮间带",
     level: "新手友好",
     local: "乘出租车前往 Naze Tower，或步行穿过小镇",
@@ -988,7 +990,7 @@ const baseLocationZh: Record<string, LocationTranslation> = {
     tideWindow: "退潮时前往；为返程预留 2 小时余量",
     season: "秋至春，在安全冲刷后前往",
     conditions: "风暴后可能丰富，但必须等待悬崖稳定",
-    findTips: ["在黄铁矿和化石木之间寻找蓝黑色珐琅质。", "可见木纹，常被黄铁矿化。", "松散沙层中的脆弱橙褐色贝壳。", "薄壁骨骼；先报告，不要自行处理。"],
+    findTips: ["在黄铁矿和化石木之间寻找蓝黑色珐琅质。", "可见木纹，常被黄铁矿化。", "松散沙层中的脆弱橙褐色贝壳。", "薄壁骨骼；先报告，不要自行处理。", "水磨鲸骨通常致密且带多孔骨质；较大或具有鉴定特征的碎片应记录。", "猛犸象骨或象牙碎片可能混在再搬运砾石中；留意致密骨骼与象牙层理，并记录准确环境。"],
     required: ["结实靴", "潮汐计划", "饮用水", "硬质标本盒", "纸巾"],
     useful: ["护膝", "小铲", "手持放大镜"],
     avoid: ["攀爬悬崖", "挖掘 Red Crag 崖壁", "敲击基岩"],
@@ -1225,6 +1227,7 @@ const fossilCategoryZh: Record<string, string> = {
   "Plant Fossils": "植物化石",
   Gastropods: "腹足类",
   Vertebrates: "脊椎动物",
+  Mammals: "哺乳动物",
 };
 
 const localizeLocation = (location: Location, language: Language): Location => {
@@ -1405,7 +1408,7 @@ const weymouthPickerCopy = {
     stationRoute: "Navigate from Weymouth station",
     selected: "CURRENT FIELD SHEET",
     bowleazeEyebrow: "EAST OF TOWN · ROUGH FORESHORE",
-    bowleazeSummary: "Oxford Clay and Corallian blocks: larger shells, ammonites, belemnites and abundant burrow traces.",
+    bowleazeSummary: "Kimmeridge Clay and Corallian blocks: larger shells, ammonites, belemnites and abundant burrow traces.",
     smallmouthEyebrow: "PORTLAND HARBOUR · SLOW SEARCH",
     smallmouthSummary: "Lower Kimmeridge Clay: tiny fish, shell and rare reptile or pterosaur material requiring careful recording.",
   },
@@ -1416,7 +1419,7 @@ const weymouthPickerCopy = {
     stationRoute: "从 Weymouth 车站导航",
     selected: "当前现场指南",
     bowleazeEyebrow: "城东 · 崎岖潮间带",
-    bowleazeSummary: "Oxford Clay 与 Corallian 岩块：较大的贝壳、菊石、箭石和丰富的洞穴遗迹化石。",
+    bowleazeSummary: "Kimmeridge Clay 与 Corallian 岩块：较大的贝壳、菊石、箭石和丰富的洞穴遗迹化石。",
     smallmouthEyebrow: "PORTLAND HARBOUR · 慢速细找",
     smallmouthSummary: "下部 Kimmeridge Clay：细小鱼类、贝壳及罕见爬行动物或翼龙材料，需要认真记录。",
   },
@@ -1972,6 +1975,10 @@ const categoryDescriptions: Record<string, Record<Language, string>> = {
   Vertebrates: {
     en: "Porous or thin-walled bones can be fragile and significant; unusual finds should be recorded.",
     zh: "多孔或薄壁骨骼通常脆弱且可能具有科研价值，异常发现应及时记录。",
+  },
+  Mammals: {
+    en: "Whale and mammoth remains may be water-worn or reworked; bone texture and ivory layering are important identification clues.",
+    zh: "鲸类与猛犸象材料可能经历水磨或再搬运；骨质纹理与象牙层理是重要鉴定线索。",
   },
 };
 
