@@ -1,7 +1,9 @@
 "use client";
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type Comment = { id: string; author: string; body: string; createdAt: string; parentId: string | null; replyTo: string | null };
+
+const COMMENT_PREVIEW_LIMIT = 3;
 
 export default function FieldComments({ postId, language }: { postId: string; language: "zh" | "en" }) {
   const zh = language === "zh";
@@ -19,7 +21,7 @@ export default function FieldComments({ postId, language }: { postId: string; la
   const input = useRef<HTMLTextAreaElement>(null);
   const pendingId = useRef<string | null>(null);
   const busy = useRef(false);
-  async function load(offset = 0) {
+  const load = useCallback(async (offset = 0) => {
     setLoading(true); setError("");
     try {
       const response = await fetch(`/api/community-comments?postId=${postId}&offset=${offset}`, { cache: "no-store" });
@@ -29,7 +31,8 @@ export default function FieldComments({ postId, language }: { postId: string; la
       setMore(data.hasMore); setLoaded(true);
     } catch { setError(zh ? "评论加载失败，请重试。" : "Could not load comments. Please retry."); }
     finally { setLoading(false); }
-  }
+  }, [postId, zh]);
+  useEffect(() => { void load(); }, [load]);
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     if (busy.current) return;
@@ -47,17 +50,21 @@ export default function FieldComments({ postId, language }: { postId: string; la
     } catch { setError(zh ? "网络异常，内容已保留，请重试。" : "Connection failed. Your draft is still here; please retry."); }
     finally { busy.current = false; setSaving(false); }
   }
+  const visibleComments = open ? comments : comments.slice(0, COMMENT_PREVIEW_LIMIT);
+  const panelId = `field-comments-${postId}`;
   return <section className="field-comments">
-    <button type="button" aria-expanded={open} onClick={() => { setOpen(!open); if (!open && !loaded) void load(); }}>{open ? (zh ? "收起评论" : "Hide comments") : (zh ? "评论与回复" : "Comments & replies")}</button>
-    {open && <div>
-      {comments.map(comment => <article className={comment.parentId ? "field-comment is-reply" : "field-comment"} key={comment.id}>
+    <div className="field-comments-preview">
+      {visibleComments.map(comment => <article className={comment.parentId ? "field-comment is-reply" : "field-comment"} key={comment.id}>
         <strong>{comment.author}</strong> <time dateTime={comment.createdAt}>{new Date(comment.createdAt).toLocaleString(zh ? "zh-CN" : "en-GB")}</time>
         {comment.replyTo && <small>{zh ? "回复 " : "Reply to "}{comment.replyTo}</small>}
         <p>{comment.body}</p>
-        <button type="button" disabled={saving} onClick={() => { setReply(comment); pendingId.current = null; input.current?.focus(); }}>{zh ? "回复" : "Reply"}</button>
+        {open && <button type="button" disabled={saving} onClick={() => { setReply(comment); pendingId.current = null; input.current?.focus(); }}>{zh ? "回复" : "Reply"}</button>}
       </article>)}
-      {loading && <p role="status">{zh ? "正在加载评论…" : "Loading comments…"}</p>}
-      {loaded && !comments.length && <p>{zh ? "还没有评论，来聊聊这次发现吧。" : "No comments yet. Share your thoughts on this find."}</p>}
+      {open && loading && <p role="status">{zh ? "正在加载评论…" : "Loading comments…"}</p>}
+      {open && loaded && !comments.length && <p>{zh ? "还没有评论，来聊聊这次发现吧。" : "No comments yet. Share your thoughts on this find."}</p>}
+    </div>
+    <button className="field-comments-toggle" type="button" aria-expanded={open} aria-controls={panelId} onClick={() => setOpen(!open)}>{open ? (zh ? "收起评论与回复" : "Hide comments & replies") : (zh ? "展开评论与回复" : "Expand comments & replies")}</button>
+    {open && <div id={panelId}>
       {!loading && (!loaded || more) && <button type="button" onClick={() => void load(loaded ? comments.length : 0)}>{loaded ? (zh ? "加载更多" : "Load more") : (zh ? "重新加载" : "Retry")}</button>}
       <form onSubmit={submit}>
         {reply && <div>{zh ? "回复 " : "Reply to "}{reply.author} <button type="button" disabled={saving} onClick={() => { setReply(null); pendingId.current = null; }}>{zh ? "取消回复" : "Cancel reply"}</button></div>}

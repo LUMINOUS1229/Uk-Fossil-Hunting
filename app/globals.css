@@ -11241,6 +11241,7 @@ body {
 .field-comments button:hover:not(:disabled) { background: #eaf3fa; border-color: #2f80c0; }
 .field-comments button:disabled { opacity: .5; cursor: default; }
 .field-comments button:focus-visible, .field-comments input:focus-visible, .field-comments textarea:focus-visible { outline: 2px solid #2f80c0; outline-offset: 3px; }
+.field-comments-toggle { margin-top: .75rem; }
 .field-comments form { display: grid; gap: .75rem; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid #c6d7e5; }
 .field-comments label { display: grid; gap: .4rem; }
 .field-comments input, .field-comments textarea { width: 100%; box-sizing: border-box; background: #fff; color: #173f67; border: 1px solid #b6ccde; padding: .7rem; border-radius: 3px; font: inherit; }
