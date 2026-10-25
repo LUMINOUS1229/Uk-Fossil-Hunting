@@ -2148,13 +2148,21 @@ const pickGuideReply = (lines: readonly string[]) => lines[Math.floor(Math.rando
 
 const finishWithNoriVoice = (text: string, language: Language) => {
   const trimmed = text.trim();
+  if (/螺[。！？!?]?$/.test(trimmed)) return trimmed;
   if (language === "zh") {
-    if (/螺[。！？!?]?$/.test(trimmed)) return trimmed;
     return `${trimmed.replace(/[。！？!?]+$/, "")}螺。`;
   }
   if (/luo[.!?]?$/.test(trimmed.toLocaleLowerCase())) return trimmed;
   return `${trimmed.replace(/[.!?]+$/, "")}—luo.`;
 };
+
+function answerNoriEasterEgg(query: string): string | null {
+  if (query.includes("修修")) return "修修最棒螺！";
+  if (/(?:max\s*(?:是谁|是誰|是什么|是什麼)|(?:谁|誰)是\s*max|\bwho\s+is\s+max\b)/i.test(query)) {
+    return "是一只傲娇的小鳄鱼螺。";
+  }
+  return null;
+}
 
 function answerNoriEquipmentQuestion(query: string, language: Language): Omit<GuideTurn, "id" | "role"> {
   const isZh = language === "zh";
@@ -2375,6 +2383,8 @@ function answerNoriSmallTalk(query: string, language: Language): string | null {
 
 function answerGuideQuestion(question: string, siteLocations: Location[], language: Language): Omit<GuideTurn, "id" | "role"> {
   const query = normalizeGuideQuery(question);
+  const easterEgg = answerNoriEasterEgg(query);
+  if (easterEgg) return { text: easterEgg };
   if (/(日落|夕阳|晚霞|带我去看海|想看海|\bsunset\b|take me to (the )?(sea|beach))/i.test(query)) {
     return { text: language === "zh" ? "一起给地图披上粉黄的夕阳吧螺。点下面的按钮就能切换配色，地图仍然可以照常探索。" : "Let's bathe the map in a pink and golden sunset. Change the palette below and keep exploring—luo.", sunsetInvite: true };
   }

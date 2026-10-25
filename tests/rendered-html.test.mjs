@@ -84,6 +84,16 @@ test("keeps the guide focused and adds the requested discovery play", async () =
   assert.match(css, /height:\s*104px/);
 });
 
+test("adds the Xiuxiu and Max Nori easter eggs without changing their exact voice lines", async () => {
+  const component = await read("../app/FossilMap.tsx");
+
+  assert.match(component, /function answerNoriEasterEgg/);
+  assert.match(component, /query\.includes\("修修"\).*修修最棒螺！/);
+  assert.match(component, /who\\s\+is\\s\+max[\s\S]*是一只傲娇的小鳄鱼螺。/);
+  assert.match(component, /if \(\/螺\[。！？!\?\]\?\$\/\.test\(trimmed\)\) return trimmed/);
+  assert.match(component, /const easterEgg = answerNoriEasterEgg\(query\)/);
+});
+
 test("offers distinct Weymouth field sheets and station routes", async () => {
   const [component, css] = await Promise.all([
     read("../app/FossilMap.tsx"),
