@@ -12640,3 +12640,124 @@ body {
 .sunset-theme .museum-care-steps li,
 .sunset-theme .museum-care-special article,
 .sunset-theme .museum-care-museum-note { border-color: var(--sunset-line); background: #ffe4e2; }
+
+/* Locality discoveries sit at the end of every field sheet and mirror Adventure Notes. */
+.discoveries-section {
+  padding-bottom: 42px;
+  border-bottom: 0;
+}
+
+.discoveries-intro {
+  max-width: 720px;
+  margin: -4px 0 20px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.72;
+}
+
+.discoveries-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.discovery-card {
+  overflow: hidden;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px 2px 8px 2px;
+  background: var(--paper-deep);
+  box-shadow: 0 12px 26px rgba(1, 14, 31, .14);
+}
+
+.discovery-card-featured {
+  border-color: color-mix(in srgb, var(--rust) 58%, var(--line));
+}
+
+.discovery-images {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  height: 190px;
+  overflow: hidden;
+  background: var(--sea);
+}
+
+.discovery-images.count-1 { grid-template-columns: 1fr; }
+.discovery-images.count-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.discovery-images a { min-width: 0; overflow: hidden; }
+.discovery-images img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 180ms ease, filter 180ms ease;
+}
+.discovery-images a:hover img,
+.discovery-images a:focus-visible img { transform: scale(1.025); filter: saturate(1.08); }
+
+.discovery-card-body { padding: 15px 16px 17px; }
+.discovery-origin {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--rust);
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.discovery-card h3 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-display), "Songti SC", "STSong", serif;
+  font-size: 20px;
+  font-weight: 600;
+}
+.discovery-card p {
+  margin: 9px 0 13px;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.68;
+  white-space: pre-wrap;
+}
+.discovery-card small {
+  color: var(--ink-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  letter-spacing: .04em;
+}
+
+.discoveries-status {
+  margin: 14px 0 0;
+  padding: 13px 14px;
+  border: 1px dashed var(--line);
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.discoveries-status.is-error { color: #ffbfc7; }
+.discoveries-action {
+  display: flex;
+  width: 100%;
+  min-height: 46px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding: 11px 15px;
+  border: 1px solid var(--rust);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--rust);
+  font: 700 11px/1.2 var(--font-sans), sans-serif;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
+}
+.discoveries-action:hover,
+.discoveries-action:focus-visible { background: var(--rust); color: #071b34; }
+.discoveries-action:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+
+@media (max-width: 720px) {
+  .discoveries-grid { grid-template-columns: 1fr; }
+  .discovery-images { height: 220px; }
+  .discoveries-intro { font-size: 11px; }
+}

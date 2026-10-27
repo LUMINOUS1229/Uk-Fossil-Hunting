@@ -31,6 +31,24 @@ test("ships the bounded community photo workflow", async () => {
   assert.match(schema, /communityPosts/);
 });
 
+test("adds locality discoveries sourced from Adventure Notes and the supplied ammonite reference", async () => {
+  const [component, css] = await Promise.all([
+    read("../app/FossilMap.tsx"),
+    read("../app/globals.css"),
+  ]);
+
+  assert.match(component, /function LocationDiscoveries/);
+  assert.match(component, /locationId: location\.id/);
+  assert.match(component, /id="discoveries"/);
+  assert.match(component, /<LocationDiscoveries location=\{activeLocation\}/);
+  assert.match(component, /\/specimens\/ammonite-fan-shicheng\.jpg/);
+  assert.match(component, /来源：樊士丞/);
+  assert.match(component, /来自探险笔记/);
+  assert.match(css, /\.discoveries-section/);
+  assert.match(css, /\.discoveries-grid/);
+  assert.match(css, /@media \(max-width: 720px\)[\s\S]*\.discoveries-grid \{ grid-template-columns: 1fr; \}/);
+});
+
 test("keeps the guide focused and adds the requested discovery play", async () => {
   const [component, css, museumCards] = await Promise.all([
     read("../app/FossilMap.tsx"),

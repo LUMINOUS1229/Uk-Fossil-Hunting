@@ -1509,7 +1509,7 @@ const detailCopy = {
     nearestStation: "nearest station", access: "Beach / field access", recommendedStart: "recommended start", exitPoint: "Exit point",
     cafe: "Café", onFoot: "ON FOOT", actionMap: "ACTION MAP · COORDINATES APPROXIMATE",
     walkingRoute: "walking route", collectingKey: "collecting area", hazardKey: "hazard", allSites: "All UK sites",
-    locationDetails: "Location details", navLocalityNote: "Locality note", navRoute: "Route", navGeology: "Geology", navFinds: "Field guide", navKit: "Kit", navRules: "Rules",
+    locationDetails: "Location details", navLocalityNote: "Locality note", navRoute: "Route", navGeology: "Geology", navFinds: "Field guide", navKit: "Kit", navRules: "Rules", navDiscoveries: "Discoveries",
     section1: "How to get there", section2: "Recommended route", section3: "Collector's field guide", section4: "Best time to visit",
     section5: "Equipment", section6: "Safety", section7: "Environment & collecting rules", typicalTotal: "Typical total",
     london: "LONDON", recommendedDeparture: "recommended departure", train: "TRAIN", checkService: "check same-day service", local: "LOCAL",
@@ -1523,13 +1523,15 @@ const detailCopy = {
     findFrequency: "FIND FREQUENCY", accessRating: "ACCESS", familyRating: "FAMILY",
     geologyTitle: "Site geology", formations: "FORMATIONS", environment: "ENVIRONMENT", typicalFossils: "TYPICAL FOSSILS",
     bedContext: "GAULT BED CONTEXT", fieldRule: "FIELD NOTE", reference: "REFERENCE", category: "CATEGORY",
+    discoveriesTitle: "Discoveries", discoveriesIntro: "Field notes linked to this locality appear here automatically. Curated specimen references are clearly labelled and do not imply a precise collecting location.",
+    importedNote: "IMPORTED FROM ADVENTURE NOTES", specimenReference: "REAL SPECIMEN REFERENCE", provenancePending: "Locality provenance not supplied", discoveriesLoading: "Loading locality discoveries…", discoveriesEmpty: "No locality notes yet. Add the first field discovery.", discoveriesError: "The field notes could not be loaded just now.", viewAllDiscoveries: "View or add Adventure Notes",
   },
   zh: {
     risk: "风险", lowWater: "低潮水位", collectingArea: "大致采集区域", hazard: "危险区域", rail: "铁路",
     nearestStation: "最近火车站", access: "海滩 / 现场入口", recommendedStart: "推荐起点", exitPoint: "撤离点",
     cafe: "咖啡馆", onFoot: "步行", actionMap: "行动地图 · 坐标为近似位置",
     walkingRoute: "步行路线", collectingKey: "采集区域", hazardKey: "危险区域", allSites: "返回英国全部地点",
-    locationDetails: "地点信息", navLocalityNote: "产地概括", navRoute: "路线", navGeology: "地质", navFinds: "图鉴", navKit: "装备", navRules: "规则",
+    locationDetails: "地点信息", navLocalityNote: "产地概括", navRoute: "路线", navGeology: "地质", navFinds: "图鉴", navKit: "装备", navRules: "规则", navDiscoveries: "发现",
     section1: "如何抵达", section2: "推荐现场路线", section3: "可收集化石图鉴", section4: "最佳前往时间",
     section5: "装备清单", section6: "安全信息", section7: "环境与采集规则", typicalTotal: "典型总耗时",
     london: "伦敦", recommendedDeparture: "推荐出发站", train: "火车", checkService: "出发当天再次确认班次", local: "当地交通",
@@ -1543,6 +1545,8 @@ const detailCopy = {
     findFrequency: "发现频率", accessRating: "通行难度", familyRating: "亲子适合度",
     geologyTitle: "地点地质剖面", formations: "地层单元", environment: "沉积环境", typicalFossils: "典型化石",
     bedContext: "GAULT 层位线索", fieldRule: "现场采集提示", reference: "参考资料", category: "类别",
+    discoveriesTitle: "发现", discoveriesIntro: "与当前产地关联的探险笔记会自动汇入这里。精选标本参考会单独标注，不代表照片提供了精确采集点。",
+    importedNote: "来自探险笔记", specimenReference: "真实标本参考", provenancePending: "未提供具体产地信息", discoveriesLoading: "正在导入这个产地的发现……", discoveriesEmpty: "这个产地还没有探险笔记，欢迎留下第一条发现。", discoveriesError: "暂时无法载入探险笔记。", viewAllDiscoveries: "查看或添加探险笔记",
   },
 } as const;
 
@@ -1902,9 +1906,9 @@ type CommunityPost = {
 
 const referencePhotos: Record<string, { src: string; href: string; credit: string }> = {
   "Ammonites & Heteromorphs": {
-    src: "/reference-ammonite.jpg",
-    href: "https://commons.wikimedia.org/wiki/File:Ammonite-Fossil.jpg",
-    credit: "FluffyBiscuit · CC BY 3.0",
+    src: "/specimens/ammonite-fan-shicheng.jpg",
+    href: "/specimens/ammonite-fan-shicheng.jpg",
+    credit: "来源：樊士丞",
   },
   "Other Cephalopods": {
     src: "/reference-belemnite.jpg",
@@ -3292,6 +3296,86 @@ function CommunityView({ language, onBack, initialLocationId, onPublished }: { l
           </section>
         </div>
       </div>
+    </section>
+  );
+}
+
+function LocationDiscoveries({ location, language, onViewRecords }: { location: Location; language: Language; onViewRecords: () => void }) {
+  const t = detailCopy[language];
+  const [posts, setPosts] = useState<CommunityPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false);
+  const hasAmmonite = location.finds.some((find) => /ammonite|菊石/i.test(`${find.name} ${find.zh} ${find.category}`));
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setPosts([]);
+    setLoading(true);
+    setFailed(false);
+
+    const load = async () => {
+      try {
+        const params = new URLSearchParams({ locationId: location.id });
+        const response = await fetch(`/api/community?${params}`, { cache: "no-store", signal: controller.signal });
+        if (!response.ok) throw new Error("load failed");
+        const result = await response.json() as { posts: CommunityPost[] };
+        setPosts(result.posts);
+      } catch (error) {
+        if (!(error instanceof DOMException && error.name === "AbortError")) setFailed(true);
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    };
+
+    void load();
+    return () => controller.abort();
+  }, [location.id]);
+
+  const formatDate = (date: string) => new Intl.DateTimeFormat(language === "zh" ? "zh-CN" : "en-GB", {
+    dateStyle: "medium",
+  }).format(new Date(date));
+
+  return (
+    <section className="info-section discoveries-section" id="discoveries" aria-labelledby="discoveries-title">
+      <SectionTitle number="08" title={t.discoveriesTitle} />
+      <p className="discoveries-intro">{t.discoveriesIntro}</p>
+      <div className="discoveries-grid" aria-live="polite">
+        {hasAmmonite && (
+          <article className="discovery-card discovery-card-featured">
+            <a className="discovery-images count-1" href="/specimens/ammonite-fan-shicheng.jpg" target="_blank" rel="noreferrer noopener">
+              <img src="/specimens/ammonite-fan-shicheng.jpg" alt={language === "zh" ? "菊石真实标本参考，来源樊士丞" : "Real ammonite specimen reference, source Fan Shicheng"} loading="lazy" />
+            </a>
+            <div className="discovery-card-body">
+              <span className="discovery-origin">{t.specimenReference}</span>
+              <h3>{language === "zh" ? "菊石" : "Ammonite"}</h3>
+              <p>{t.provenancePending}</p>
+              <small>{language === "zh" ? "来源：樊士丞" : "Source: 樊士丞"}</small>
+            </div>
+          </article>
+        )}
+
+        {posts.map((post) => (
+          <article className="discovery-card" key={post.id}>
+            <div className={`discovery-images count-${Math.min(post.imageUrls.length, 3)}`}>
+              {post.imageUrls.map((url, index) => (
+                <a href={url} target="_blank" rel="noreferrer noopener" key={url}>
+                  <img src={url} alt={`${language === "zh" ? "探险笔记发现" : "Adventure Note discovery"} ${index + 1}`} loading="lazy" />
+                </a>
+              ))}
+            </div>
+            <div className="discovery-card-body">
+              <span className="discovery-origin">{t.importedNote}</span>
+              <h3>{post.author}</h3>
+              <p>{post.body}</p>
+              <small>{formatDate(post.createdAt)}</small>
+            </div>
+          </article>
+        ))}
+      </div>
+      {loading && <p className="discoveries-status">{t.discoveriesLoading}</p>}
+      {!loading && failed && <p className="discoveries-status is-error">{t.discoveriesError}</p>}
+      {!loading && !failed && posts.length === 0 && !hasAmmonite && <p className="discoveries-status">{t.discoveriesEmpty}</p>}
+      <button className="discoveries-action" type="button" onClick={onViewRecords}>{t.viewAllDiscoveries} <span>↗</span></button>
     </section>
   );
 }
@@ -4863,6 +4947,7 @@ function LocationDetail({ location, language, onBack, recordCount, onViewRecords
           <a href="#finds">{t.navFinds}</a>
           <a href="#equipment">{t.navKit}</a>
           <a href="#rules">{t.navRules}</a>
+          <a href="#discoveries">{t.navDiscoveries}</a>
         </nav>
 
         <div className="panel-content">
@@ -5034,6 +5119,8 @@ function LocationDetail({ location, language, onBack, recordCount, onViewRecords
               <p>{t.precision}</p>
             </div>
           </section>
+
+          <LocationDiscoveries location={activeLocation} language={language} onViewRecords={onViewRecords} />
         </div>
       </aside>
     </section>
