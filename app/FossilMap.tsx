@@ -1921,6 +1921,11 @@ type CommunityPost = {
 };
 
 const referencePhotos: Record<string, { src: string; href: string; credit: string }> = {
+  "grange-chine:Crocodile or turtle fragment": {
+    src: "/specimens/grange-chine-crocodile-reference.jpg",
+    href: "/specimens/grange-chine-crocodile-reference.jpg",
+    credit: "来源：用户提供",
+  },
   "Ammonites & Heteromorphs": {
     src: "/specimens/ammonite-fan-shicheng.jpg",
     href: "/specimens/ammonite-fan-shicheng.jpg",
@@ -3322,6 +3327,7 @@ function LocationDiscoveries({ location, language, onViewRecords }: { location: 
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
   const hasAmmonite = location.finds.some((find) => /ammonite|菊石/i.test(`${find.name} ${find.zh} ${find.category}`));
+  const hasGrangeChineCrocodile = location.id === "grange-chine";
 
   useEffect(() => {
     const controller = new AbortController();
@@ -3370,6 +3376,20 @@ function LocationDiscoveries({ location, language, onViewRecords }: { location: 
           </article>
         )}
 
+        {hasGrangeChineCrocodile && (
+          <article className="discovery-card discovery-card-featured">
+            <a className="discovery-images count-1" href="/specimens/grange-chine-crocodile-reference.jpg" target="_blank" rel="noreferrer noopener">
+              <img src="/specimens/grange-chine-crocodile-reference.jpg" alt={language === "zh" ? "Grange Chine 鳄类真实标本参考" : "Real crocodilian specimen reference from Grange Chine"} loading="lazy" />
+            </a>
+            <div className="discovery-card-body">
+              <span className="discovery-origin">{t.specimenReference}</span>
+              <h3>{language === "zh" ? "鳄类标本" : "Crocodilian specimen"}</h3>
+              <p>Grange Chine / Brighstone Bay, Isle of Wight</p>
+              <small>{language === "zh" ? "来源：用户提供" : "Source: user-provided"}</small>
+            </div>
+          </article>
+        )}
+
         {posts.map((post) => (
           <article className="discovery-card" key={post.id}>
             <div className={`discovery-images count-${Math.min(post.imageUrls.length, 3)}`}>
@@ -3390,7 +3410,7 @@ function LocationDiscoveries({ location, language, onViewRecords }: { location: 
       </div>
       {loading && <p className="discoveries-status">{t.discoveriesLoading}</p>}
       {!loading && failed && <p className="discoveries-status is-error">{t.discoveriesError}</p>}
-      {!loading && !failed && posts.length === 0 && !hasAmmonite && <p className="discoveries-status">{t.discoveriesEmpty}</p>}
+      {!loading && !failed && posts.length === 0 && !hasAmmonite && !hasGrangeChineCrocodile && <p className="discoveries-status">{t.discoveriesEmpty}</p>}
       <button className="discoveries-action" type="button" onClick={onViewRecords}>{t.viewAllDiscoveries} <span>↗</span></button>
     </section>
   );
@@ -3719,7 +3739,8 @@ function MuseumView({
                     const owned = progress.ownedFinds.includes(key);
                     const stars = rarityStars(originalFind.rarity);
                     const revealed = revealedCards.includes(key);
-                    const referencePhoto = referencePhotos[originalFind.category];
+                    const specimenReferenceKey = `${original.id}:${originalFind.name}`;
+                    const referencePhoto = referencePhotos[specimenReferenceKey] ?? referencePhotos[originalFind.category];
                     const entryNumber = locations.flatMap((site) => site.finds.map((siteFind) => museumFindKey(site, siteFind))).indexOf(key) + 1;
                     const revealCard = () => {
                       setRevealedCards((cards) => cards.includes(key) ? cards : [...cards, key]);

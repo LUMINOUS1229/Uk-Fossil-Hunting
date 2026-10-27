@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, stat } from "node:fs/promises";
 import test from "node:test";
 
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
@@ -47,6 +47,18 @@ test("adds locality discoveries sourced from Adventure Notes and the supplied am
   assert.match(css, /\.discoveries-section/);
   assert.match(css, /\.discoveries-grid/);
   assert.match(css, /@media \(max-width: 720px\)[\s\S]*\.discoveries-grid \{ grid-template-columns: 1fr; \}/);
+});
+
+test("adds the supplied Grange Chine crocodilian photo to its museum card and discoveries", async () => {
+  const component = await read("../app/FossilMap.tsx");
+  const asset = await stat(new URL("../public/specimens/grange-chine-crocodile-reference.jpg", import.meta.url));
+
+  assert.match(component, /"grange-chine:Crocodile or turtle fragment"/);
+  assert.match(component, /referencePhotos\[specimenReferenceKey\] \?\? referencePhotos\[originalFind\.category\]/);
+  assert.match(component, /hasGrangeChineCrocodile = location\.id === "grange-chine"/);
+  assert.match(component, /Grange Chine 鳄类真实标本参考/);
+  assert.match(component, /\/specimens\/grange-chine-crocodile-reference\.jpg/);
+  assert.ok(asset.size > 1_000_000);
 });
 
 test("splits the generic marine-reptile card into the requested three rated groups", async () => {
