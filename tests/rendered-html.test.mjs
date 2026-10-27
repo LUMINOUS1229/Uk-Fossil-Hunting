@@ -49,6 +49,22 @@ test("adds locality discoveries sourced from Adventure Notes and the supplied am
   assert.match(css, /@media \(max-width: 720px\)[\s\S]*\.discoveries-grid \{ grid-template-columns: 1fr; \}/);
 });
 
+test("splits the generic marine-reptile card into the requested three rated groups", async () => {
+  const [component, documentLocations] = await Promise.all([
+    read("../app/FossilMap.tsx"),
+    read("../app/document-locations.ts"),
+  ]);
+  const catalog = `${component}\n${documentLocations}`;
+
+  assert.doesNotMatch(catalog, /name: "Marine reptile/);
+  assert.doesNotMatch(catalog, /zh: "海生爬行动物/);
+  assert.equal((catalog.match(/name: "Marine crocodile"[^\n]+rarity: "Rare"/g) ?? []).length, 6);
+  assert.equal((catalog.match(/name: "Ichthyosaur"[^\n]+rarity: "Very rare"/g) ?? []).length, 6);
+  assert.equal((catalog.match(/name: "Sauropterygian"[^\n]+rarity: "Very rare"/g) ?? []).length, 6);
+  assert.match(component, /if \(\/rare\|罕见\/i\.test\(rarity\)\) return 4;/);
+  assert.match(component, /if \(\/very rare\|非常罕见\/i\.test\(rarity\)\) return 5;/);
+});
+
 test("keeps the guide focused and adds the requested discovery play", async () => {
   const [component, css, museumCards] = await Promise.all([
     read("../app/FossilMap.tsx"),
