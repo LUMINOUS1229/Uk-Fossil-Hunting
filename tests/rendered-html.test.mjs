@@ -72,6 +72,17 @@ test("adds the supplied Folkestone oyster photo only to its bivalve museum card"
   assert.ok(asset.size > 100_000);
 });
 
+test("adds the supplied Isle of Wight dinosaur tooth photo only to its museum card", async () => {
+  const component = await read("../app/FossilMap.tsx");
+  const asset = await stat(new URL("../public/specimens/isle-of-wight-dinosaur-tooth-reference.jpg", import.meta.url));
+
+  assert.match(component, /"isle-of-wight:Dinosaur tooth": \{/);
+  assert.match(component, /\/specimens\/isle-of-wight-dinosaur-tooth-reference\.jpg/);
+  assert.match(component, /来源：Maxwell Wang · 怀特岛恐龙牙/);
+  assert.match(component, /referencePhotos\[specimenReferenceKey\] \?\? referencePhotos\[originalFind\.name\] \?\? referencePhotos\[originalFind\.category\]/);
+  assert.ok(asset.size > 10_000_000);
+});
+
 test("adds the supplied fossil-wood photo only to fossil-wood museum cards", async () => {
   const component = await read("../app/FossilMap.tsx");
   const asset = await stat(new URL("../public/specimens/fossil-wood-reference.jpg", import.meta.url));

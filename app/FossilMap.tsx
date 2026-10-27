@@ -1921,6 +1921,11 @@ type CommunityPost = {
 };
 
 const referencePhotos: Record<string, { src: string; href: string; credit: string }> = {
+  "isle-of-wight:Dinosaur tooth": {
+    src: "/specimens/isle-of-wight-dinosaur-tooth-reference.jpg",
+    href: "/specimens/isle-of-wight-dinosaur-tooth-reference.jpg",
+    credit: "来源：Maxwell Wang · 怀特岛恐龙牙",
+  },
   "folkestone:Bivalve": {
     src: "/specimens/folkestone-bivalve-reference.jpg",
     href: "/specimens/folkestone-bivalve-reference.jpg",
