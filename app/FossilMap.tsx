@@ -1926,6 +1926,11 @@ const referencePhotos: Record<string, { src: string; href: string; credit: strin
     href: "/specimens/grange-chine-crocodile-reference.jpg",
     credit: "来源：用户提供",
   },
+  "Fossil wood": {
+    src: "/specimens/fossil-wood-reference.jpg",
+    href: "/specimens/fossil-wood-reference.jpg",
+    credit: "来源：用户提供",
+  },
   "Ammonites & Heteromorphs": {
     src: "/specimens/ammonite-fan-shicheng.jpg",
     href: "/specimens/ammonite-fan-shicheng.jpg",
@@ -3740,7 +3745,7 @@ function MuseumView({
                     const stars = rarityStars(originalFind.rarity);
                     const revealed = revealedCards.includes(key);
                     const specimenReferenceKey = `${original.id}:${originalFind.name}`;
-                    const referencePhoto = referencePhotos[specimenReferenceKey] ?? referencePhotos[originalFind.category];
+                    const referencePhoto = referencePhotos[specimenReferenceKey] ?? referencePhotos[originalFind.name] ?? referencePhotos[originalFind.category];
                     const entryNumber = locations.flatMap((site) => site.finds.map((siteFind) => museumFindKey(site, siteFind))).indexOf(key) + 1;
                     const revealCard = () => {
                       setRevealedCards((cards) => cards.includes(key) ? cards : [...cards, key]);
