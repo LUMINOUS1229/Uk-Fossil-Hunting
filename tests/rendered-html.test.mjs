@@ -65,6 +65,14 @@ test("splits the generic marine-reptile card into the requested three rated grou
   assert.match(component, /if \(\/very rare\|非常罕见\/i\.test\(rarity\)\) return 5;/);
 });
 
+test("adds the requested rare sixgill-shark card to Peterborough", async () => {
+  const component = await read("../app/FossilMap.tsx");
+
+  assert.equal((component.match(/name: "Sixgill shark", zh: "六鳃魦类", rarity: "Very rare"/g) ?? []).length, 1);
+  assert.match(component, /sharks including rare sixgill sharks/);
+  assert.match(component, /包括罕见的六鳃魦类/);
+});
+
 test("keeps the guide focused and adds the requested discovery play", async () => {
   const [component, css, museumCards] = await Promise.all([
     read("../app/FossilMap.tsx"),
