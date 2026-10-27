@@ -1921,6 +1921,11 @@ type CommunityPost = {
 };
 
 const referencePhotos: Record<string, { src: string; href: string; credit: string }> = {
+  "folkestone:Bivalve": {
+    src: "/specimens/folkestone-bivalve-reference.jpg",
+    href: "/specimens/folkestone-bivalve-reference.jpg",
+    credit: "来源：Chris · Folkestone 牡蛎／双壳类",
+  },
   "grange-chine:Crocodile or turtle fragment": {
     src: "/specimens/grange-chine-crocodile-reference.jpg",
     href: "/specimens/grange-chine-crocodile-reference.jpg",
@@ -1929,7 +1934,7 @@ const referencePhotos: Record<string, { src: string; href: string; credit: strin
   "Fossil wood": {
     src: "/specimens/fossil-wood-reference.jpg",
     href: "/specimens/fossil-wood-reference.jpg",
-    credit: "来源：用户提供",
+    credit: "来源：修修",
   },
   "Ammonites & Heteromorphs": {
     src: "/specimens/ammonite-fan-shicheng.jpg",

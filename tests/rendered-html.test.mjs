@@ -61,12 +61,24 @@ test("adds the supplied Grange Chine crocodilian photo to its museum card and di
   assert.ok(asset.size > 1_000_000);
 });
 
+test("adds the supplied Folkestone oyster photo only to its bivalve museum card", async () => {
+  const component = await read("../app/FossilMap.tsx");
+  const asset = await stat(new URL("../public/specimens/folkestone-bivalve-reference.jpg", import.meta.url));
+
+  assert.match(component, /"folkestone:Bivalve": \{/);
+  assert.match(component, /\/specimens\/folkestone-bivalve-reference\.jpg/);
+  assert.match(component, /来源：Chris · Folkestone 牡蛎／双壳类/);
+  assert.match(component, /referencePhotos\[specimenReferenceKey\] \?\? referencePhotos\[originalFind\.name\] \?\? referencePhotos\[originalFind\.category\]/);
+  assert.ok(asset.size > 100_000);
+});
+
 test("adds the supplied fossil-wood photo only to fossil-wood museum cards", async () => {
   const component = await read("../app/FossilMap.tsx");
   const asset = await stat(new URL("../public/specimens/fossil-wood-reference.jpg", import.meta.url));
 
   assert.match(component, /"Fossil wood": \{/);
   assert.match(component, /\/specimens\/fossil-wood-reference\.jpg/);
+  assert.match(component, /来源：修修/);
   assert.match(component, /referencePhotos\[specimenReferenceKey\] \?\? referencePhotos\[originalFind\.name\] \?\? referencePhotos\[originalFind\.category\]/);
   assert.ok(asset.size > 1_000_000);
 });
