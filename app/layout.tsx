@@ -10,7 +10,7 @@ const mono = DM_Mono({ variable: "--font-mono", subsets: ["latin"], weight: ["40
 
 export const metadata: Metadata = {
   title: "Fossil Hunters in UK",
-  description: "We collect fossils, and memories too. 21 个英国化石地点与从伦敦出发的路线。",
+  description: "We collect fossils, and memories too. 20 个英国化石地点与从伦敦出发的路线。",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

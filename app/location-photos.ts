@@ -81,14 +81,6 @@ export const locationPhotos: Record<string, LocationPhoto> = {
     "license": "CC BY-SA 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/"
   },
-  "ardley-quarry": {
-    "src": "/location-photos/ardley-quarry.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Ardley_nature_reserve_-_geograph.org.uk_-_116978.jpg",
-    "author": "chris cox",
-    "caption": "Ardley nature reserve",
-    "license": "CC BY-SA 2.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/"
-  },
   "kirtlington-quarry": {
     "src": "/location-photos/kirtlington-quarry.jpg",
     "source": "https://commons.wikimedia.org/wiki/File:East_face_of_Kirtlington_quarry_geograph_org_uk.jpg",

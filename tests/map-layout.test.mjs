@@ -11,7 +11,7 @@ const sites = ["../app/FossilMap.tsx", "../app/document-locations.ts"].flatMap((
 const side = (a, b, c) => (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
 
 test("offshore leaders do not cross and every site retains a label", () => {
-  assert.equal(sites.length, 21);
+  assert.equal(sites.length, 20);
   const segments = sites.map((site) => {
     assert.ok(mapLabels[site.id], site.id);
     return { id: site.id, a: { x: site.mapX, y: site.mapY }, b: mapLabelFor(site) };

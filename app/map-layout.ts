@@ -17,7 +17,6 @@ export const mapLabels: Record<string, { x: number; y: number }> = {
   nacton: { x: 98, y: 66 },
   "abbey-wood": { x: 80, y: 75 },
   "wootton-bassett": { x: 57, y: 81 },
-  "ardley-quarry": { x: 62, y: 68 },
   "kirtlington-quarry": { x: 58, y: 75 },
   "woodeaton-quarry": { x: 72, y: 81 },
   peterborough: { x: 72, y: 64 },
